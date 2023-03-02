@@ -1,8 +1,7 @@
 import Link from "next/link"
-import { useEffect } from "react"
+import {useEffect} from "react"
 
-export default function SideBar() {
-    
+export default function SideBar(props) {
     return (
         <>
             <aside id="sidebar" className="sidebar">
@@ -10,136 +9,56 @@ export default function SideBar() {
                 <ul className="sidebar-nav" id="sidebar-nav">
 
                     <li className="nav-item">
-                        <Link className="nav-link " href={'/admin/'}>
+                        <Link className="nav-link collapsed"
+                            href={'/admin/'}
+                            id="dashboard-sidebar">
                             <i className="bi bi-grid"></i>
                             <span>Dashboard</span>
                         </Link>
                     </li>
 
+                    {/* 
+
                     <li className="nav-item">
-                        <a className="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                            <i className="bi bi-menu-button-wide"></i>
-                            <span>Components</span>
+                        <a className="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                            <i className="bi bi-layout-text-window-reverse"></i>
+                            <span>Users</span>
                             <i className="bi bi-chevron-down ms-auto"></i>
                         </a>
-                        <ul id="components-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <ul id="tables-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
                             <li>
-                                <a href="components-alerts.html">
+                                <Link href="/admin/users/">
                                     <i className="bi bi-circle"></i>
-                                    <span>Alerts</span>
-                                </a>
+                                    <span>List Vehicles</span>
+                                </Link>
                             </li>
                             <li>
-                                <a href="components-accordion.html">
+                                <Link href="/admin/users/add">
                                     <i className="bi bi-circle"></i>
-                                    <span>Accordion</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-badges.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Badges</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-breadcrumbs.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Breadcrumbs</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-buttons.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Buttons</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-cards.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Cards</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-carousel.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Carousel</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-list-group.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>List group</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-modal.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Modal</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-tabs.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Tabs</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-pagination.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Pagination</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-progress.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Progress</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-spinners.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Spinners</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components-tooltips.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Tooltips</span>
-                                </a>
+                                    <span>Add Vehicles</span>
+                                </Link>
                             </li>
                         </ul>
-                    </li>
+                    </li> */}
 
                     <li className="nav-item">
                         <a className="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
                             <i className="bi bi-journal-text"></i>
-                            <span>Forms</span>
+                            <span>Duties</span>
                             <i className="bi bi-chevron-down ms-auto"></i>
                         </a>
                         <ul id="forms-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
                             <li>
-                                <a href="forms-elements.html">
+                                <Link href="/admin/duties/">
                                     <i className="bi bi-circle"></i>
-                                    <span>Form Elements</span>
-                                </a>
+                                    <span>List Duties</span>
+                                </Link>
                             </li>
                             <li>
-                                <a href="forms-layouts.html">
+                                <Link href="/admin/duties/add">
                                     <i className="bi bi-circle"></i>
-                                    <span>Form Layouts</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="forms-editors.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Form Editors</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="forms-validation.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Form Validation</span>
-                                </a>
+                                    <span>Add Duties</span>
+                                </Link>
                             </li>
                         </ul>
                     </li>
@@ -147,21 +66,21 @@ export default function SideBar() {
                     <li className="nav-item">
                         <a className="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
                             <i className="bi bi-layout-text-window-reverse"></i>
-                            <span>Tables</span>
+                            <span>Drivers</span>
                             <i className="bi bi-chevron-down ms-auto"></i>
                         </a>
                         <ul id="tables-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
                             <li>
-                                <a href="tables-general.html">
+                                <Link href="/admin/drivers/">
                                     <i className="bi bi-circle"></i>
-                                    <span>General Tables</span>
-                                </a>
+                                    <span>List Drivers</span>
+                                </Link>
                             </li>
                             <li>
-                                <a href="tables-data.html">
+                                <Link href="/admin/drivers/add">
                                     <i className="bi bi-circle"></i>
-                                    <span>Data Tables</span>
-                                </a>
+                                    <span>Add Driver</span>
+                                </Link>
                             </li>
                         </ul>
                     </li>
@@ -169,27 +88,21 @@ export default function SideBar() {
                     <li className="nav-item">
                         <a className="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
                             <i className="bi bi-bar-chart"></i>
-                            <span>Charts</span>
+                            <span>Vehicles</span>
                             <i className="bi bi-chevron-down ms-auto"></i>
                         </a>
                         <ul id="charts-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
                             <li>
-                                <a href="charts-chartjs.html">
+                                <Link href="/admin/vehicles/">
                                     <i className="bi bi-circle"></i>
-                                    <span>Chart.js</span>
-                                </a>
+                                    <span>List Vehicles</span>
+                                </Link>
                             </li>
                             <li>
-                                <a href="charts-apexcharts.html">
+                                <Link href="/admin/vehicles/add">
                                     <i className="bi bi-circle"></i>
-                                    <span>ApexCharts</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="charts-echarts.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>ECharts</span>
-                                </a>
+                                    <span>Add Vehicles</span>
+                                </Link>
                             </li>
                         </ul>
                     </li>
@@ -197,27 +110,21 @@ export default function SideBar() {
                     <li className="nav-item">
                         <a className="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
                             <i className="bi bi-gem"></i>
-                            <span>Icons</span>
+                            <span>Users</span>
                             <i className="bi bi-chevron-down ms-auto"></i>
                         </a>
                         <ul id="icons-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
-                            <li>
-                                <a href="icons-bootstrap.html">
+                        <li>
+                                <Link href="/admin/users/">
                                     <i className="bi bi-circle"></i>
-                                    <span>Bootstrap Icons</span>
-                                </a>
+                                    <span>List Users</span>
+                                </Link>
                             </li>
                             <li>
-                                <a href="icons-remix.html">
+                                <Link href="/admin/users/add">
                                     <i className="bi bi-circle"></i>
-                                    <span>Remix Icons</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="icons-boxicons.html">
-                                    <i className="bi bi-circle"></i>
-                                    <span>Boxicons</span>
-                                </a>
+                                    <span>Add Users</span>
+                                </Link>
                             </li>
                         </ul>
                     </li>
@@ -225,54 +132,13 @@ export default function SideBar() {
                     <li className="nav-heading">Pages</li>
 
                     <li className="nav-item">
-                        <Link className="nav-link collapsed"
+                        <Link className="nav-link collapsed" id="profile-sidebar"
                             href={"/admin/profile"}>
                             <i className="bi bi-person"></i>
                             <span>Profile</span>
                         </Link>
                     </li>
 
-                    <li className="nav-item">
-                        <a className="nav-link collapsed" href="pages-faq.html">
-                            <i className="bi bi-question-circle"></i>
-                            <span>F.A.Q</span>
-                        </a>
-                    </li>
-
-                    <li className="nav-item">
-                        <a className="nav-link collapsed" href="pages-contact.html">
-                            <i className="bi bi-envelope"></i>
-                            <span>Contact</span>
-                        </a>
-                    </li>
-
-                    <li className="nav-item">
-                        <a className="nav-link collapsed" href="pages-register.html">
-                            <i className="bi bi-card-list"></i>
-                            <span>Register</span>
-                        </a>
-                    </li>
-
-                    <li className="nav-item">
-                        <a className="nav-link collapsed" href="pages-login.html">
-                            <i className="bi bi-box-arrow-in-right"></i>
-                            <span>Login</span>
-                        </a>
-                    </li>
-
-                    <li className="nav-item">
-                        <a className="nav-link collapsed" href="pages-error-404.html">
-                            <i className="bi bi-dash-circle"></i>
-                            <span>Error 404</span>
-                        </a>
-                    </li>
-
-                    <li className="nav-item">
-                        <a className="nav-link collapsed" href="pages-blank.html">
-                            <i className="bi bi-file-earmark"></i>
-                            <span>Blank</span>
-                        </a>
-                    </li>
 
                 </ul>
 

@@ -1,19 +1,16 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from "next/font/google"
 import styles from '@/styles/Home.module.css'
 import Script from 'next/script'
-import Link from 'next/link'
 import Header from '../components/Header'
 import SideBar from '../components/Sidebar'
 import Footer from '../components/Footer'
 import Scripts from '../components/Scripts'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const [showSidebar,setShowSidebar]=useState(true);
   return (
     <>
       <Head>
@@ -24,10 +21,11 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
    
-    <Header parentCallback={()=>{
-      console.log("DATA");
+    <Header parentCallback={(data)=>{
+      console.log(data)
     }}/>
-    {showSidebar&&<SideBar/>}
+
+    <SideBar title='dashboard'/>
 
   <main id="main" className="main">
 

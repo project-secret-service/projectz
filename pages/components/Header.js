@@ -1,7 +1,12 @@
 import Link from "next/link"
-import { useEffect } from "react"
+import Script from "next/script";
+import { useEffect } from "react";
+import Scripts from "./Scripts";
 
-export default function Header(yes) {
+export default function Header({parentCallback}) {
+    function ChangeSidebar(){
+        document.body.classList.toggle('toggle-sidebar');
+    }
     return (
         <>
             <header id="header" className="header fixed-top d-flex align-items-center">
@@ -9,9 +14,9 @@ export default function Header(yes) {
                 <div className="d-flex align-items-center justify-content-between">
                     <Link href="/admin/" className="logo d-flex align-items-center" style={{textDecoration:"none"}}>
                         <img src="/assets/img/logo.png" alt=""/>
-                        <span className="d-none d-lg-block">NiceAdmin</span>
+                        <span className="d-none d-lg-block"><span style={{color:"red"}}>FLEET</span> MS</span>
                     </Link>
-                    <i className="bi bi-list toggle-sidebar-btn"></i>
+                    <i onClick={ChangeSidebar} className="bi bi-list toggle-sidebar-btn" id="sidebar-toggle"></i>
                 </div>
 
                 <div className="search-bar">

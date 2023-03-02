@@ -24,7 +24,7 @@ export default function Home() {
     <Header/>
     <SideBar/> */}
 
-                <Link href={'/admin/'}>
+                <Link href={'/login/'}>
                     <Button variant="primary">Admin</Button>
                 </Link>
 
