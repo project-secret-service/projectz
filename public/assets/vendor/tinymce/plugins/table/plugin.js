@@ -2104,7 +2104,7 @@
         caption: !!dom.select('caption', elm)[0],
         class: dom.getAttrib(elm, 'class', ''),
         align: getHAlignment(editor, elm),
-        ...hasAdvTableTab ? extractAdvancedStyles(elm) : {}
+        ...(hasAdvTableTab ? extractAdvancedStyles(elm) : {})
       };
     };
     const extractDataFromRowElement = (editor, elm, hasAdvancedRowTab) => {
@@ -2114,7 +2114,7 @@
         class: dom.getAttrib(elm, 'class', ''),
         type: getRowType(elm),
         align: getHAlignment(editor, elm),
-        ...hasAdvancedRowTab ? extractAdvancedStyles(elm) : {}
+        ...(hasAdvancedRowTab ? extractAdvancedStyles(elm) : {})
       };
     };
     const extractDataFromCellElement = (editor, cell, hasAdvancedCellTab, column) => {
@@ -2129,7 +2129,7 @@
         class: dom.getAttrib(cell, 'class', ''),
         halign: getHAlignment(editor, cell),
         valign: getVAlignment(editor, cell),
-        ...hasAdvancedCellTab ? extractAdvancedStyles(cell) : {}
+        ...(hasAdvancedCellTab ? extractAdvancedStyles(cell) : {})
       };
     };
 

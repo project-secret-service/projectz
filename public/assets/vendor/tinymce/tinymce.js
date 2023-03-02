@@ -22456,7 +22456,7 @@
           keyCode: VK.DOWN,
           action: action(moveV$3, editor, true)
         },
-        ...isMac ? [
+        ...(isMac ? [
           {
             keyCode: VK.UP,
             action: action(selectToEndPoint, editor, false),
@@ -22469,7 +22469,7 @@
             metaKey: true,
             shiftKey: true
           }
-        ] : [],
+        ] : []),
         {
           keyCode: VK.RIGHT,
           action: action(moveH, editor, true)
@@ -24188,7 +24188,7 @@
           keyCode: VK.HOME,
           action: action(moveToLineEndPoint$1, editor, false)
         },
-        ...!isMac ? [
+        ...(!isMac ? [
           {
             keyCode: VK.HOME,
             action: action(selectToEndPoint, editor, false),
@@ -24201,7 +24201,7 @@
             ctrlKey: true,
             shiftKey: true
           }
-        ] : [],
+        ] : []),
         {
           keyCode: VK.END,
           action: action(moveToLineEndPoint, editor, true)
@@ -27731,7 +27731,7 @@
       const defaultPhoneOptions = { menubar: false };
       return {
         ...defaultMobileOptions,
-        ...isPhone ? defaultPhoneOptions : {}
+        ...(isPhone ? defaultPhoneOptions : {})
       };
     };
     const getExternalPlugins = (overrideOptions, options) => {

@@ -105,3 +105,29 @@ a {
     color-scheme: dark;
   }
 }
+
+.c {
+	height: 200vh;
+	width: 960px;
+	margin: auto;
+	max-width: 95%;
+}
+
+
+::-webkit-scrollbar-track
+{
+	border: 5px solid white;
+	background-color: #b2bec3;
+}
+
+::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #dfe6e9;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: #a8abff;
+	border-radius: 10px;
+}

@@ -5353,7 +5353,7 @@ class Config {
         return cachedKeys(`${type}-plugin-${id}`, ()=>[
                 [
                     `plugins.${id}`,
-                    ...plugin.additionalOptionScopes || []
+                    ...(plugin.additionalOptionScopes || [])
                 ]
             ]);
     }

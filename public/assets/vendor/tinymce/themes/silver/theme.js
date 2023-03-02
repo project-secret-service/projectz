@@ -6564,7 +6564,7 @@
       rule(inSet(SPACE), specialInfo.onSpace)
     ];
     const getKeyupRules = (component, simulatedEvent, specialInfo) => [
-      ...specialInfo.stopSpaceKeyup ? [rule(inSet(SPACE), stopEventForFirefox)] : [],
+      ...(specialInfo.stopSpaceKeyup ? [rule(inSet(SPACE), stopEventForFirefox)] : []),
       rule(inSet(ESCAPE), specialInfo.onEscape)
     ];
     var SpecialType = typical(schema$q, NoState.init, getKeydownRules, getKeyupRules, specialInfo => specialInfo.focusIn);
@@ -6953,7 +6953,7 @@
           'role': getItemRole(detail),
           ...detail.domModification.attributes,
           'aria-haspopup': detail.hasSubmenu,
-          ...detail.hasSubmenu ? { 'aria-expanded': false } : {}
+          ...(detail.hasSubmenu ? { 'aria-expanded': false } : {})
         }
       },
       behaviours: SketchBehaviours.augment(detail.itemBehaviours, [
@@ -7589,12 +7589,12 @@
         run$1(onMenuItemDehighlightedEvent, (tmenuComp, se) => {
           detail.onDehighlightItem(tmenuComp, se.event.menuComp, se.event.itemComp);
         }),
-        ...detail.navigateOnHover ? [run$1(hover(), (tmenu, simulatedEvent) => {
+        ...(detail.navigateOnHover ? [run$1(hover(), (tmenu, simulatedEvent) => {
             const item = simulatedEvent.event.item;
             updateView(tmenu, item);
             expandRight(tmenu, item, ExpandHighlightDecision.HighlightParent);
             detail.onHover(tmenu, item);
-          })] : []
+          })] : [])
       ]);
       const getActiveItem = container => Highlighting.getHighlighted(container).bind(Highlighting.getHighlighted);
       const collapseMenuApi = container => {
@@ -8058,7 +8058,7 @@
           innerHtml: iconHtml
         },
         behaviours: derive$1([
-          ...(_b = spec.behaviours) !== null && _b !== void 0 ? _b : [],
+          ...((_b = spec.behaviours) !== null && _b !== void 0 ? _b : []),
           addFocusableBehaviour()
         ])
       };
@@ -8272,7 +8272,7 @@
           },
           lazySink: sharedBackstage.getSink,
           fireDismissalEventInstead: {},
-          ...sharedBackstage.header.isPositionedAtTop() ? {} : { fireRepositionEventInstead: {} }
+          ...(sharedBackstage.header.isPositionedAtTop() ? {} : { fireRepositionEventInstead: {} })
         }));
         uiMothership.add(notificationWrapper);
         if (isNumber(settings.timeout) && settings.timeout > 0) {
@@ -8954,7 +8954,7 @@
           dom: {
             ...item.dom,
             attributes: {
-              ...(_a = item.dom.attributes) !== null && _a !== void 0 ? _a : {},
+              ...((_a = item.dom.attributes) !== null && _a !== void 0 ? _a : {}),
               'id': generate$6('aria-item-search-result-id'),
               'aria-selected': 'false'
             }
@@ -9096,7 +9096,7 @@
             dom: {
               tag: 'div',
               classes: [
-                ...columns === 1 ? ['tox-collection--list'] : ['tox-collection--grid'],
+                ...(columns === 1 ? ['tox-collection--list'] : ['tox-collection--grid']),
                 searchResultsClass
               ],
               attributes: { id: ariaControlsSearchResults }
@@ -11459,7 +11459,7 @@
           attributes: {
             'aria-haspopup': 'true',
             ...detail.role.fold(() => ({}), role => ({ role })),
-            ...detail.dom.tag === 'button' ? { type: lookupAttr('type').getOr('button') } : {}
+            ...(detail.dom.tag === 'button' ? { type: lookupAttr('type').getOr('button') } : {})
           }
         }
       };
@@ -13715,7 +13715,7 @@
           factory: Input,
           inputAttributes: {
             type: 'text',
-            ...name === 'hex' ? { 'aria-live': 'polite' } : {}
+            ...(name === 'hex' ? { 'aria-live': 'polite' } : {})
           },
           inputClasses: [getClass('textfield')],
           inputBehaviours: derive$1([
@@ -14468,7 +14468,7 @@
       const attributes = {
         ...spec.label.map(title => ({ title })).getOr({}),
         ...initialData.map(html => ({ srcdoc: html })).getOr({}),
-        ...isSandbox ? { sandbox: 'allow-scripts allow-same-origin' } : {}
+        ...(isSandbox ? { sandbox: 'allow-scripts allow-same-origin' } : {})
       };
       const sourcing = getDynamicSource(initialData);
       const pLabel = spec.label.map(label => renderLabel$2(label, providersBackstage));
@@ -14691,7 +14691,7 @@
         classes: [`${ prefix }__select-chevron`]
       }, sharedBackstage.providers.icons);
       const memDropdown = record(Dropdown.sketch({
-        ...spec.uid ? { uid: spec.uid } : {},
+        ...(spec.uid ? { uid: spec.uid } : {}),
         ...role,
         dom: {
           tag: 'button',
@@ -16222,8 +16222,8 @@
       const baseClasses = calculateClassesFromButtonType(buttonType);
       const classes = [
         ...baseClasses,
-        ...icon.isSome() ? ['tox-button--icon'] : [],
-        ...spec.borderless ? ['tox-button--naked'] : [],
+        ...(icon.isSome() ? ['tox-button--icon'] : []),
+        ...(spec.borderless ? ['tox-button--naked'] : []),
         ...extraClasses
       ];
       const dom = {
@@ -19803,10 +19803,10 @@
           },
           viewConfig: internalViewConfig,
           components: [
-            ...internalViewConfig.buttons.length > 0 ? [View.parts.header({
+            ...(internalViewConfig.buttons.length > 0 ? [View.parts.header({
                 buttons: internalViewConfig.buttons,
                 providers
-              })] : [],
+              })] : []),
             View.parts.pane({})
           ]
         }));
@@ -24685,7 +24685,7 @@
               'tox-silver-sink',
               'tox-tinymce-aux'
             ].concat(deviceClasses),
-            attributes: { ...global$8.isRtl() ? { dir: 'rtl' } : {} }
+            attributes: { ...(global$8.isRtl() ? { dir: 'rtl' } : {}) }
           },
           behaviours: derive$1([Positioning.config({ useFixed: () => header.isDocked(lazyHeader) })])
         };
@@ -24730,8 +24730,8 @@
         const isHidden = isDistractionFree(editor);
         const attributes = {
           role: 'application',
-          ...global$8.isRtl() ? { dir: 'rtl' } : {},
-          ...isHidden ? { 'aria-hidden': 'true' } : {}
+          ...(global$8.isRtl() ? { dir: 'rtl' } : {}),
+          ...(isHidden ? { 'aria-hidden': 'true' } : {})
         };
         const outerContainer = build$1(OuterContainer.sketch({
           dom: {
@@ -24742,16 +24742,16 @@
             ].concat(isInline ? ['tox-tinymce-inline'] : []).concat(isToolbarBottom ? ['tox-tinymce--toolbar-bottom'] : []).concat(deviceClasses),
             styles: {
               visibility: 'hidden',
-              ...isHidden ? {
+              ...(isHidden ? {
                 opacity: '0',
                 border: '0'
-              } : {}
+              } : {})
             },
             attributes
           },
           components: [
             editorContainer,
-            ...isInline ? [] : [partViewWrapper],
+            ...(isInline ? [] : [partViewWrapper]),
             partThrobber
           ],
           behaviours: derive$1([
@@ -25979,7 +25979,7 @@
           classes: ['tox-dialog__content-js'],
           attributes: {
             ...contentId.map(x => ({ id: x })).getOr({}),
-            ...ariaAttrs ? ariaAttributes : {}
+            ...(ariaAttrs ? ariaAttributes : {})
           }
         },
         components: [],
@@ -28626,7 +28626,7 @@
               classes: []
             },
             fireDismissalEventInstead: {},
-            ...isToolbarLocationTop ? {} : { fireRepositionEventInstead: {} },
+            ...(isToolbarLocationTop ? {} : { fireRepositionEventInstead: {} }),
             inlineBehaviours: derive$1([
               config('window-manager-inline-events', [run$1(dismissRequested(), (_comp, _se) => {
                   emit(dialogUi.dialog, formCancelEvent);

@@ -4,7 +4,10 @@ import {Inter} from "next/font/google"
 import styles from '@/styles/Home.module.css'
 import Script from 'next/script'
 import Link from 'next/link'
-import {Button} from 'react-bootstrap'
+import Header from '../components/Header'
+import SideBar from '../components/Sidebar'
+import Footer from '../components/Footer'
+import Scripts from '../components/Scripts'
 
 const inter = Inter({subsets: ['latin']})
 
@@ -17,28 +20,23 @@ export default function Home() {
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
             </Head>
-            <main className={`${
+            <main className={
                 styles.main
-            } c`}>
-                {/*    
-    <Header/>
-    <SideBar/> */}
+            }>
 
-                <Link href={'/admin/'}>
-                    <Button variant="primary">Admin</Button>
-                </Link>
+                <Header/>
+                <SideBar/>
 
+                <main id="main" className="main"></main>
 
-                {/* <Footer/> */}
+                <Footer/>
 
                 <a href="#" className="back-to-top d-flex align-items-center justify-content-center">
                     <i className="bi bi-arrow-up-short"></i>
                 </a>
-
-
-                {/* <Scripts/> */}
-                <Script src="/assets/js/main.js"></Script>
             </main>
+            <Scripts/>
+            <Script src="/assets/js/main.js"></Script>
         </>
     )
 }
