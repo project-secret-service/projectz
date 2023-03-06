@@ -18,6 +18,7 @@ export default function Home() {
     const [vehicles, setVehicles] = useState([]);
     useEffect(() => {
         GetVehicles().then((data) => {
+            data.sort((a,b) => a.vehicle_sl_no - b.vehicle_sl_no);
             setVehicles(data);
         });
     }, []);
@@ -47,10 +48,9 @@ export default function Home() {
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Vehicle No</th>
+                                <th scope="col">Sl No</th>
+                                <th scope="col">Vehicle Name</th>
                                 <th scope="col">Type</th>
-                                <th scope="col">Category</th>
                                 <th scope="col">Available</th>
                             </tr>
                         </thead>
@@ -67,13 +67,7 @@ export default function Home() {
                                             () => OpenLink(vehicle._id)
                                     }>
                                         <th scope="row">
-                                            <i className="bi bi-truck"
-                                                style={
-                                                    {
-                                                        color: "red",
-                                                        fontSize: "1rem"
-                                                    }
-                                            }></i>
+                                           {vehicle.vehicle_sl_no}
                                         </th>
                                         <td>{
                                             vehicle.vehicle_no
