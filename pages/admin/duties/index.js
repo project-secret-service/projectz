@@ -79,8 +79,15 @@ export default function Home() {
                             {
                             duties.map((duty, index) => {
                                 console.log((duty.vehicle_id.vehicle_no));
+
+                                //Extracted date from date field
+                                var vv=new Date(duty.date)
+                                var dat=vv.toLocaleDateString();
+                                 
+                                //To store the mission satus
                                 var mission=duty.mission_ended
                                 var v1;
+                               
                                if(mission)
                                {
                                 v1="completed"
@@ -89,6 +96,10 @@ export default function Home() {
                                {
                                 v1="not completed"
                                }
+                               
+                               var outtime=new Date(duty.out_time)
+                               var newoutime=outtime.toLocaleTimeString();
+
                                 console.log(mission);
                                 return (
                                     <tr key={
@@ -119,7 +130,7 @@ export default function Home() {
                                            duty.out_time.substring(11,19)
                                         }</td>
                                         <td>{
-                                            duty.date.substring(0,10)
+                                            dat
                                         }</td>
                                        
                                         <td>{v1}</td>
