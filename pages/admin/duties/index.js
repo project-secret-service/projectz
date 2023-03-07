@@ -78,7 +78,7 @@ export default function Home() {
                         }>
                             {
                             duties.map((duty, index) => {
-                                console.log((duty.vehicle_id.vehicle_no));
+                                //console.log((duty.vehicle_id.vehicle_no));
 
                                 //Extracted date from date field
                                 var vv=new Date(duty.date)
@@ -111,7 +111,7 @@ export default function Home() {
                                          
                                         <th scope="row">
                                            
-                                            <i className="bi bi-truck" Script=""
+                                            <i className="bi bi-truck" 
                                             
                                                         
                                                 style={
