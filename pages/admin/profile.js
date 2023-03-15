@@ -6,10 +6,33 @@ import Header from '../components/Header'
 import SideBar from '../components/Sidebar'
 import Footer from '../components/Footer'
 import Scripts from '../components/Scripts'
+import {useEffect, useState} from 'react'
+import axios from 'axios'
+import Router from 'next/router'
 
-const inter = Inter({subsets: ['latin']})
+// const inter = Inter({subsets: ['latin']})
+async function GetUser() {
+    
+    const res=await axios({url:"http://localhost:3000/users/get_user_details",method:"GET",withCredentials:true})
+    // console.log(res.userID)
+    // console.log(res.data)
+
+    return res.data
+}
 
 export default function Home() {
+    const [user,setUser]=useState([]);
+    useEffect(()=>{
+        // GetUser();
+        GetUser().then((data)=>{
+            setUser(data);
+        });
+
+    },[])
+    
+// users.map((user)=>{
+   
+   
     return (
         <>
             <Head>
@@ -26,7 +49,7 @@ export default function Home() {
 
                     <div className="pagetitle">
                         <h1>Profile</h1>
-                        <nav>
+                        {/* <nav>
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item">
                                     <a href="index.html">Home</a>
@@ -34,7 +57,7 @@ export default function Home() {
                                 <li className="breadcrumb-item">Users</li>
                                 <li className="breadcrumb-item active">Profile</li>
                             </ol>
-                        </nav>
+                        </nav> */}
                     </div>
 
                     <section className="section profile">
@@ -44,10 +67,10 @@ export default function Home() {
                                 <div className="card">
                                     <div className="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                                        <img src="/assets/img/profile-img.jpg" alt="Profile" className="rounded-circle"/>
-                                        <h2>Kevin Anderson</h2>
-                                        <h3>Web Designer</h3>
-                                        <div className="social-links mt-2">
+                                        <img src="/assets/img/profile1.png" alt="Profile" className="rounded-circle"/>
+                                        <h2>{user.username}</h2>
+                                        <h3>{user.rank}</h3>
+                                        {/* <div className="social-links mt-2">
                                             <a href="#" className="twitter">
                                                 <i className="bi bi-twitter"></i>
                                             </a>
@@ -60,7 +83,7 @@ export default function Home() {
                                             <a href="#" className="linkedin">
                                                 <i className="bi bi-linkedin"></i>
                                             </a>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
 
@@ -92,44 +115,50 @@ export default function Home() {
                                         <div className="tab-content pt-2">
 
                                             <div className="tab-pane fade show active profile-overview" id="profile-overview">
-                                                <h5 className="card-title">About</h5>
-                                                <p className="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p>
+                                                {/* <h5 className="card-title">About</h5> */}
+                                                {/* <p className="small fst-italic">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</p> */}
 
                                                 <h5 className="card-title">Profile Details</h5>
 
                                                 <div className="row">
                                                     <div className="col-lg-3 col-md-4 label ">Full Name</div>
-                                                    <div className="col-lg-9 col-md-8">Kevin Anderson</div>
+                                                    <div className="col-lg-9 col-md-8">{user.username}</div>
                                                 </div>
 
-                                                <div className="row">
+                                                {/* <div className="row">
                                                     <div className="col-lg-3 col-md-4 label">Company</div>
                                                     <div className="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
+                                                </div> */}
+
+                                                <div className="row">
+                                                    <div className="col-lg-3 col-md-4 label">Role</div>
+                                                    <div className="col-lg-9 col-md-8">jay mata di</div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-lg-3 col-md-4 label">Rank</div>
+                                                    <div className="col-lg-9 col-md-8">{user.rank}</div>
+                                                </div>
+                                               
+
+                                                <div className="row">
+                                                    <div className="col-lg-3 col-md-4 label">Camp</div>
+                                                    <div className="col-lg-9 col-md-8">1037 jhar ctc</div>
                                                 </div>
 
                                                 <div className="row">
-                                                    <div className="col-lg-3 col-md-4 label">Job</div>
-                                                    <div className="col-lg-9 col-md-8">Web Designer</div>
-                                                </div>
-
-                                                <div className="row">
-                                                    <div className="col-lg-3 col-md-4 label">Country</div>
-                                                    <div className="col-lg-9 col-md-8">USA</div>
-                                                </div>
-
-                                                <div className="row">
-                                                    <div className="col-lg-3 col-md-4 label">Address</div>
+                                                    <div className="col-lg-3 col-md-4 label">Camp Address</div>
                                                     <div className="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
                                                 </div>
 
                                                 <div className="row">
                                                     <div className="col-lg-3 col-md-4 label">Phone</div>
-                                                    <div className="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
+                                                    <div className="col-lg-9 col-md-8">{user.contact_no}</div>
                                                 </div>
+                                                
 
                                                 <div className="row">
                                                     <div className="col-lg-3 col-md-4 label">Email</div>
-                                                    <div className="col-lg-9 col-md-8">k.anderson@example.com</div>
+                                                    <div className="col-lg-9 col-md-8">{user.email_id}</div>
                                                 </div>
 
                                             </div>
@@ -140,7 +169,7 @@ export default function Home() {
                                                     <div className="row mb-3">
                                                         <label htmlFor="profileImage" className="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                                         <div className="col-md-8 col-lg-9">
-                                                            <img src="/assets/img/profile-img.jpg" alt="Profile"/>
+                                                            <img src="/assets/img/profile1.png" alt="Profile"/>
                                                             <div className="pt-2">
                                                                 <a href="#" className="btn btn-primary btn-sm" title="Upload new profile image">
                                                                     <i className="bi bi-upload"></i>
@@ -155,11 +184,11 @@ export default function Home() {
                                                     <div className="row mb-3">
                                                         <label htmlFor="fullName" className="col-md-4 col-lg-3 col-form-label">Full Name</label>
                                                         <div className="col-md-8 col-lg-9">
-                                                            <input name="fullName" type="text" className="form-control" id="fullName" defaultValue="Kevin Anderson"/>
+                                                            <input name="fullName" type="text" className="form-control" id="fullName" defaultValue={user.username} placeholder="Enter your name"/>
                                                         </div>
                                                     </div>
 
-                                                    <div className="row mb-3">
+                                                    {/* <div className="row mb-3">
                                                         <label htmlFor="about" className="col-md-4 col-lg-3 col-form-label">About</label>
                                                         <div className="col-md-8 col-lg-9">
                                                             <textarea name="about" className="form-control" id="about"
@@ -168,77 +197,77 @@ export default function Home() {
                                                                 }
                                                                 defaultValue="Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde."></textarea>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
 
                                                     <div className="row mb-3">
-                                                        <label htmlFor="company" className="col-md-4 col-lg-3 col-form-label">Company</label>
+                                                        <label htmlFor="company" className="col-md-4 col-lg-3 col-form-label">Role</label>
                                                         <div className="col-md-8 col-lg-9">
-                                                            <input name="company" type="text" className="form-control" id="company" defaultValue="Lueilwitz, Wisoky and Leuschke"/>
+                                                            <input name="company" type="text" className="form-control" id="company" defaultValue={user.role} placeholder="Enter your role"/>
                                                         </div>
                                                     </div>
 
                                                     <div className="row mb-3">
-                                                        <label htmlFor="Job" className="col-md-4 col-lg-3 col-form-label">Job</label>
+                                                        <label htmlFor="Job" className="col-md-4 col-lg-3 col-form-label">Rank</label>
                                                         <div className="col-md-8 col-lg-9">
-                                                            <input name="job" type="text" className="form-control" id="Job" defaultValue="Web Designer"/>
+                                                            <input name="job" type="text" className="form-control" id="Job" defaultValue={user.rank} placeholder="Enter your rank"/>
                                                         </div>
                                                     </div>
 
                                                     <div className="row mb-3">
-                                                        <label htmlFor="Country" className="col-md-4 col-lg-3 col-form-label">Country</label>
+                                                        <label htmlFor="Country" className="col-md-4 col-lg-3 col-form-label">Camp</label>
                                                         <div className="col-md-8 col-lg-9">
-                                                            <input name="country" type="text" className="form-control" id="Country" defaultValue="USA"/>
+                                                            <input name="country" type="text" className="form-control" id="Country" defaultValue={user.camp} placeholder="Enter your camp name"/>
                                                         </div>
                                                     </div>
 
                                                     <div className="row mb-3">
-                                                        <label htmlFor="Address" className="col-md-4 col-lg-3 col-form-label">Address</label>
+                                                        <label htmlFor="Address" className="col-md-4 col-lg-3 col-form-label">Camp Address</label>
                                                         <div className="col-md-8 col-lg-9">
-                                                            <input name="address" type="text" className="form-control" id="Address" defaultValue="A108 Adam Street, New York, NY 535022"/>
+                                                            <input name="address" type="text" className="form-control" id="Address" defaultValue={user.camp_address} placeholder="Enter your camp address"/>
                                                         </div>
                                                     </div>
 
                                                     <div className="row mb-3">
-                                                        <label htmlFor="Phone" className="col-md-4 col-lg-3 col-form-label">Phone</label>
+                                                        <label htmlFor="Phone" className="col-md-4 col-lg-3 col-form-label">Phone_no</label>
                                                         <div className="col-md-8 col-lg-9">
-                                                            <input name="phone" type="text" className="form-control" id="Phone" defaultValue="(436) 486-3538 x29071"/>
+                                                            <input name="phone" type="text" className="form-control" id="Phone" defaultValue={user.contact_no} placeholder="Enter your contact_No"/>
                                                         </div>
                                                     </div>
 
                                                     <div className="row mb-3">
-                                                        <label htmlFor="Email" className="col-md-4 col-lg-3 col-form-label">Email</label>
+                                                        <label htmlFor="Email" className="col-md-4 col-lg-3 col-form-label" >Email</label>
                                                         <div className="col-md-8 col-lg-9">
-                                                            <input name="email" type="email" className="form-control" id="Email" defaultValue="k.anderson@example.com"/>
+                                                            <input name="email" type="email" className="form-control" id="Email" defaultValue={user.email_id} placeholder="Enter your email id"/>
                                                         </div>
                                                     </div>
 
-                                                    <div className="row mb-3">
+                                                    {/* <div className="row mb-3">
                                                         <label htmlFor="Twitter" className="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
                                                         <div className="col-md-8 col-lg-9">
                                                             <input name="twitter" type="text" className="form-control" id="Twitter" defaultValue="https://twitter.com/#"/>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
 
-                                                    <div className="row mb-3">
+                                                    {/* <div className="row mb-3">
                                                         <label htmlFor="Facebook" className="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
                                                         <div className="col-md-8 col-lg-9">
                                                             <input name="facebook" type="text" className="form-control" id="Facebook" defaultValue="https://facebook.com/#"/>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
 
-                                                    <div className="row mb-3">
+                                                    {/* <div className="row mb-3">
                                                         <label htmlFor="Instagram" className="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
                                                         <div className="col-md-8 col-lg-9">
                                                             <input name="instagram" type="text" className="form-control" id="Instagram" defaultValue="https://instagram.com/#"/>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
 
-                                                    <div className="row mb-3">
+                                                    {/* <div className="row mb-3">
                                                         <label htmlFor="Linkedin" className="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
                                                         <div className="col-md-8 col-lg-9">
                                                             <input name="linkedin" type="text" className="form-control" id="Linkedin" defaultValue="https://linkedin.com/#"/>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
 
                                                     <div className="text-center">
                                                         <button type="submit" className="btn btn-primary">Save Changes</button>
@@ -336,4 +365,8 @@ export default function Home() {
             <Script src="/assets/js/main.js"></Script>
         </>
     )
+
+// }
+// )
 }
+    
