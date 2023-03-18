@@ -12,12 +12,26 @@ import Router from 'next/router'
 
 // const inter = Inter({subsets: ['latin']})
 async function GetUser() {
-    
     const res=await axios({url:"http://localhost:3000/users/get_user_details",method:"GET",withCredentials:true})
-    // console.log(res.userID)
-    // console.log(res.data)
-
     return res.data
+}
+
+var v;
+async function updateDetails(event){
+    event.preventDefault();
+   
+    var data={
+       
+        username:event.target.fullName.value,
+        role:event.target.company.value,
+        rank:event.target.job.value,
+        contact_no:event.target.phone.value,
+        email_id:event.target.email.value
+    }
+    console.log(data);
+// console.log(v);
+    const res=await axios({url: "http://localhost:3000/users/update/"+v,method:"PUT",withCredentials:true,data:data})
+    console.log(res);
 }
 
 export default function Home() {
@@ -26,12 +40,13 @@ export default function Home() {
         // GetUser();
         GetUser().then((data)=>{
             setUser(data);
+            //console.log(data);
         });
 
     },[])
     
 // users.map((user)=>{
-   
+    v=user._id;
    
     return (
         <>
@@ -120,19 +135,22 @@ export default function Home() {
 
                                                 <h5 className="card-title">Profile Details</h5>
 
+                                                
+
                                                 <div className="row">
                                                     <div className="col-lg-3 col-md-4 label ">Full Name</div>
                                                     <div className="col-lg-9 col-md-8">{user.username}</div>
                                                 </div>
+                                                <div className="row">
+                                                    <div className="col-lg-3 col-md-4 label ">Registration_No</div>
+                                                    <div className="col-lg-9 col-md-8">{user.user_registration_no}</div>
+                                                </div>
 
-                                                {/* <div className="row">
-                                                    <div className="col-lg-3 col-md-4 label">Company</div>
-                                                    <div className="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
-                                                </div> */}
+                                                
 
                                                 <div className="row">
                                                     <div className="col-lg-3 col-md-4 label">Role</div>
-                                                    <div className="col-lg-9 col-md-8">jay mata di</div>
+                                                    <div className="col-lg-9 col-md-8">{user.role}</div>
                                                 </div>
                                                 <div className="row">
                                                     <div className="col-lg-3 col-md-4 label">Rank</div>
@@ -140,15 +158,8 @@ export default function Home() {
                                                 </div>
                                                
 
-                                                <div className="row">
-                                                    <div className="col-lg-3 col-md-4 label">Camp</div>
-                                                    <div className="col-lg-9 col-md-8">1037 jhar ctc</div>
-                                                </div>
-
-                                                <div className="row">
-                                                    <div className="col-lg-3 col-md-4 label">Camp Address</div>
-                                                    <div className="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
-                                                </div>
+                                                
+                                                
 
                                                 <div className="row">
                                                     <div className="col-lg-3 col-md-4 label">Phone</div>
@@ -165,7 +176,7 @@ export default function Home() {
 
                                             <div className="tab-pane fade profile-edit pt-3" id="profile-edit">
 
-                                                <form>
+                                                <form onSubmit={updateDetails}>
                                                     <div className="row mb-3">
                                                         <label htmlFor="profileImage" className="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                                         <div className="col-md-8 col-lg-9">
@@ -187,6 +198,12 @@ export default function Home() {
                                                             <input name="fullName" type="text" className="form-control" id="fullName" defaultValue={user.username} placeholder="Enter your name"/>
                                                         </div>
                                                     </div>
+                                                    {/* <div className="row mb-3">
+                                                        <label htmlFor="fullName" className="col-md-4 col-lg-3 col-form-label">User Id</label>
+                                                        <div className="col-md-8 col-lg-9">
+                                                            <input name="userid" type="text" className="form-control" id="fullName" defaultValue={user._id} placeholder="Enter your name"/>
+                                                        </div>
+                                                    </div> */}
 
                                                     {/* <div className="row mb-3">
                                                         <label htmlFor="about" className="col-md-4 col-lg-3 col-form-label">About</label>
@@ -212,20 +229,16 @@ export default function Home() {
                                                             <input name="job" type="text" className="form-control" id="Job" defaultValue={user.rank} placeholder="Enter your rank"/>
                                                         </div>
                                                     </div>
-
-                                                    <div className="row mb-3">
-                                                        <label htmlFor="Country" className="col-md-4 col-lg-3 col-form-label">Camp</label>
+                                                    {/* <div className="row mb-3">
+                                                        <label htmlFor="Job" className="col-md-4 col-lg-3 col-form-label">Registration_No</label>
                                                         <div className="col-md-8 col-lg-9">
-                                                            <input name="country" type="text" className="form-control" id="Country" defaultValue={user.camp} placeholder="Enter your camp name"/>
+                                                            <input name="job" type="text" className="form-control" id="Job" defaultValue={user.user_registration_no} placeholder="Enter your rank"/>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
 
-                                                    <div className="row mb-3">
-                                                        <label htmlFor="Address" className="col-md-4 col-lg-3 col-form-label">Camp Address</label>
-                                                        <div className="col-md-8 col-lg-9">
-                                                            <input name="address" type="text" className="form-control" id="Address" defaultValue={user.camp_address} placeholder="Enter your camp address"/>
-                                                        </div>
-                                                    </div>
+                                                    
+
+                                                    
 
                                                     <div className="row mb-3">
                                                         <label htmlFor="Phone" className="col-md-4 col-lg-3 col-form-label">Phone_no</label>
