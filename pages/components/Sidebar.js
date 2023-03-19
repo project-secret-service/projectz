@@ -60,6 +60,12 @@ export default function SideBar(props) {
                                     <span>Add Duties</span>
                                 </Link>
                             </li>
+                            <li>
+                                <Link href="/admin/duties/update">
+                                    <i className="bi bi-circle"></i>
+                                    <span>Update Duties</span>
+                                </Link>
+                            </li>
                         </ul>
                     </li>
 
