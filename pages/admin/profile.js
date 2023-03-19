@@ -213,13 +213,9 @@ export default function Home() {
                                                         <label htmlFor="profileImage" className="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                                         <div className="col-md-8 col-lg-9">
                                                             <img src="/assets/img/profile1.png" alt="Profile"/>
-                                                            <div className="pt-2">
-                                                                <a href="#" className="btn btn-primary btn-sm" title="Upload new profile image">
-                                                                    <i className="bi bi-upload"></i>
-                                                                </a>
-                                                                <a href="#" className="btn btn-danger btn-sm" title="Remove my profile image">
-                                                                    <i className="bi bi-trash"></i>
-                                                                </a>
+                                                            <div>
+                                                            <input type="file" id="image_input" accept="image/png , image/jpg" />
+                                                            <div id="display_image"></div>
                                                             </div>
                                                         </div>
                                                     </div>
