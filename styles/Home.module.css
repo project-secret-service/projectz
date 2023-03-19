@@ -10,6 +10,7 @@
   
   width: 100vw;
   height: 100vh;
+  margin:150px;
 
 }
 .landing_page_image{
@@ -26,7 +27,7 @@
 .landing_page_button{
   width: 100px;
   font-size: larger;
-  margin-top: 10px;
+  margin-top: 15px;
   background-color:black
 }
 .landing_page_button:hover{
