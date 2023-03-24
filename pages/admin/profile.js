@@ -5,10 +5,13 @@ import Script from 'next/script'
 import Header from '../components/Header'
 import SideBar from '../components/Sidebar'
 import Footer from '../components/Footer'
+
 import Scripts from '../components/Scripts'
 import {useEffect, useState} from 'react'
 import axios from 'axios'
 import Router from 'next/router'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // const inter = Inter({subsets: ['latin']})
 async function GetUser() {
@@ -28,12 +31,28 @@ async function updateDetails(event){
         contact_no:event.target.phone.value,
         email_id:event.target.email.value
     }
-    console.log(data);
-// console.log(v);
+    
     const res=await axios({url: "http://localhost:3000/users/update/"+v,method:"PUT",withCredentials:true,data:data})
     console.log(res);
 }
-
+const notify = () => toast.success(' Saved Changes!', {
+    position: "bottom-center",
+    autoClose: 2500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
+// function alert(){
+    
+//         <div class="alert alert-primary" role="alert">
+//                 Saved Changes
+//         </div>
+//     // )
+//     // alert("I am an alert box!");
+// }
 export default function Home() {
     const [user,setUser]=useState([]);
     useEffect(()=>{
@@ -76,6 +95,7 @@ export default function Home() {
                     </div>
 
                     <section className="section profile">
+                       
                         <div className="row">
                             <div className="col-xl-4">
 
@@ -177,17 +197,25 @@ export default function Home() {
                                             <div className="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                                 <form onSubmit={updateDetails}>
+                                                <ToastContainer
+                                                position="bottom-center"
+                                                autoClose={2500}
+                                                hideProgressBar={false}
+                                                newestOnTop={false}
+                                                closeOnClick
+                                                rtl={false}
+                                                pauseOnFocusLoss
+                                                draggable
+                                                pauseOnHover
+                                                theme="light"
+                                                />
                                                     <div className="row mb-3">
                                                         <label htmlFor="profileImage" className="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                                         <div className="col-md-8 col-lg-9">
                                                             <img src="/assets/img/profile1.png" alt="Profile"/>
-                                                            <div className="pt-2">
-                                                                <a href="#" className="btn btn-primary btn-sm" title="Upload new profile image">
-                                                                    <i className="bi bi-upload"></i>
-                                                                </a>
-                                                                <a href="#" className="btn btn-danger btn-sm" title="Remove my profile image">
-                                                                    <i className="bi bi-trash"></i>
-                                                                </a>
+                                                            <div>
+                                                            <input type="file" id="image_input" accept="image/png , image/jpg" />
+                                                            <div id="display_image"></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -283,7 +311,7 @@ export default function Home() {
                                                     </div> */}
 
                                                     <div className="text-center">
-                                                        <button type="submit" className="btn btn-primary">Save Changes</button>
+                                                        <button onClick={notify} type="submit" className="btn btn-primary">Save Changes</button>
                                                     </div>
                                                 </form>
 
