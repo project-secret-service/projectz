@@ -6,11 +6,11 @@ import Header from '../components/Header'
 import SideBar from '../components/Sidebar'
 import Footer from '../components/Footer'
 import Scripts from '../components/Scripts'
-import { useEffect } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  
   return (
     <>
       <Head>

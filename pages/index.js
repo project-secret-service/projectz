@@ -6,8 +6,6 @@ import Script from 'next/script'
 import Link from 'next/link'
 import {Button} from 'react-bootstrap'
 
-const inter = Inter({subsets: ['latin']})
-
 export default function Home() {
     return (
         <>

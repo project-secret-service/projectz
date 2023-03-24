@@ -19,6 +19,7 @@ export default function Home() {
     useEffect(() => {
         GetVehicles().then((data) => {
             data.sort((a, b) => a.vehicle_sl_no - b.vehicle_sl_no);
+            console.table(data);
             setVehicles(data);
         });
     }, []);
