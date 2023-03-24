@@ -23,10 +23,21 @@ export default function Home() {
                 {/*    
     <Header/>
     <SideBar/> */}
+                
+               <div className={styles.landing_page}>
+                    <Image className={styles.landing_page_image} src="/assets/img/3.jpg" alt="The langing Image background"  layout ='fill' objectFit='cover' objectPosition='center'/> 
+                    <div className={styles.landing_page_content}>
+                        <Image  src='/assets/img/CRPF-1.png'alt="landing page center image" width={200} height={200}/>
+                        <Link href={'/login/'}>
+                            <Button  className={styles.landing_page_button} variant="dark" >Enter</Button>
+                        </Link>
+                    </div>
+               </div>
+                                       
+                
+                
 
-                <Link href={'/login/'}>
-                    <Button variant="primary">Admin</Button>
-                </Link>
+               
 
 
                 {/* <Footer/> */}
