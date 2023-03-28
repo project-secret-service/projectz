@@ -3,8 +3,6 @@ import Head from "next/head"
 import styles from "@/styles/Home.module.css"
 import Header from "../../components/Header"
 import SideBar from '../../components/Sidebar'
-import Link from "next/link"
-import { Button } from "react-bootstrap"
 import axios from "axios"
 import { useEffect,useState } from 'react'
 
@@ -25,6 +23,7 @@ const Post = () => {
     if(!router.isReady) return;
     const {id} = router.query
     GetUserDetails(id).then((data)=>{
+      console.log(data);
       setUsers(data);
       console.data
     });
@@ -53,11 +52,7 @@ const Post = () => {
             </div>
             <div style={{width: '3rem',   padding: '4rem',  margin: '1.8rem'}}>
               <div class="card" style={{width: "12rem",float:'left'}}>
-                {/* <img src="..." class="card-img-top" alt="..." title=""/>
-                <div class="card-body">
-                  <h3 class="card-title">Photo</h3>
-                </div> */}
-                <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"  style={{width: '100%'}}
+                <img src={"http://localhost:3000/images/profilepic/"+user.profile_pic}  style={{width: '100%'}}
                      alt="Avatar" />
               </div>
             </div>                                 

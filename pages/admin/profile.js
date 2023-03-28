@@ -24,7 +24,6 @@ async function updateDetails(event){
     event.preventDefault();
    
     var data={
-       
         username:event.target.fullName.value,
         role:event.target.company.value,
         rank:event.target.job.value,
@@ -45,26 +44,14 @@ const notify = () => toast.success(' Saved Changes!', {
     progress: undefined,
     theme: "light",
     });
-// function alert(){
-    
-//         <div class="alert alert-primary" role="alert">
-//                 Saved Changes
-//         </div>
-//     // )
-//     // alert("I am an alert box!");
-// }
 export default function Home() {
     const [user,setUser]=useState([]);
     useEffect(()=>{
-        // GetUser();
         GetUser().then((data)=>{
             setUser(data);
-            //console.log(data);
         });
 
     },[])
-    
-// users.map((user)=>{
     v=user._id;
    
     return (
@@ -83,15 +70,6 @@ export default function Home() {
 
                     <div className="pagetitle">
                         <h1>Profile</h1>
-                        {/* <nav>
-                            <ol className="breadcrumb">
-                                <li className="breadcrumb-item">
-                                    <a href="index.html">Home</a>
-                                </li>
-                                <li className="breadcrumb-item">Users</li>
-                                <li className="breadcrumb-item active">Profile</li>
-                            </ol>
-                        </nav> */}
                     </div>
 
                     <section className="section profile">
