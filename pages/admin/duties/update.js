@@ -10,13 +10,46 @@ import Router from 'next/router'
 import DatalistInput from 'react-datalist-input';
 import 'react-datalist-input/dist/styles.css';
 import moment from "moment";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 async function GetuncompVehicles() {
     const res = await axios({url: "http://localhost:3000/duty_log/uncompleted", method: "GET", withCredentials: true});
     console.log(res.data);
     return res.data;
 }
-
+function sucessful()
+{
+    toast.success("Sucessfully Update");
+<ToastContainer
+position="top-center"
+autoClose={2500}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/>
+}
+function unsucessful()
+{
+    toast.error("Server Error");
+<ToastContainer
+position="top-center"
+autoClose={2500}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/>
+}
 function convertUTCDateToLocalDate(date) {
     var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
 
@@ -53,6 +86,11 @@ async function UpdateDetails(event) {
   console.log(event.target.vehicle_no.value);
     const res = await axios({url: "http://localhost:3000/duty_log/update/"+vehicle_id1, withCredentials: true, method: "PUT", data: data});
     console.log(res.data);
+    if(res.status==200)
+    sucessful();
+    else
+    unsucessful();
+   
 }
 // async function getparticularVehicle(req)
 // {
@@ -100,7 +138,7 @@ export default function Home() {
                                 <h1>Update Duty</h1>
      
                                 <form onSubmit={UpdateDetails}>
-                                   
+                                   <ToastContainer/>
                                   
                                     <div className="row mb-3">
                                  
@@ -110,7 +148,7 @@ export default function Home() {
                                                 { 
                                             uncompvehicles.map((uncompvehicle,index)=>(
                                                
-                        <option  value={uncompvehicle._id}>{uncompvehicle.vehicle_id.vehicle_no}</option>
+                        <option  value={uncompvehicle._id}>{uncompvehicle.vehicle_id.vehicle_crp_no}  -    {uncompvehicle.vehicle_id.registration_no}</option>
                                             ))}
                                             
                                             </select>

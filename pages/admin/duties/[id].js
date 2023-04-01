@@ -73,6 +73,7 @@ const Post = () => {
           <ReactToPrint
         trigger={() => <button><AiFillPrinter/></button>}
         content={() => componentRef.current}
+        // onAfterPrint={  <Link href={"/admin/duties"}></Link>}
       />
       </IconContext.Provider>
           </div>
