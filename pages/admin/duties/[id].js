@@ -85,7 +85,7 @@ const Post = () => {
                     <th scope="row">1.</th>
                     <td>Vehicle no:</td>
                     
-                    <td>{duty.vehicle_id && (<>{duty.vehicle_id.vehicle_no}</>)}</td>
+                    <td>{duty.vehicle_id && (<>{duty.vehicle_id.registration_no}</>)}</td>
                   
                 </tr>
                 <tr>
