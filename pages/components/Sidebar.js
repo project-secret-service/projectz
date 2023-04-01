@@ -66,7 +66,7 @@ export default function SideBar(props) {
                             </li>
                         </ul>
                     </li>
-
+                    
                     <li className="nav-item">
                         <a className="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
                             <i className="bi bi-truck"></i>
@@ -110,6 +110,31 @@ export default function SideBar(props) {
                             </li>
                         </ul>
                     </li>
+
+                    <li className="nav-item">
+                        <a className="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+                            <i className="bi bi-fuel-pump"></i>
+                            <span>Fuel</span>
+                            <i className="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="icons-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            <li>
+                                <Link href="/admin/fuel/balance">
+                                    <i className="bi bi-circle"></i>
+                                    <span>List Users</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/admin/fuel/update">
+                                    <i className="bi bi-circle"></i>
+                                    <span>Add Users</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+                 
+                 
+
 
                     <li className="nav-item">
                         <a className="nav-link collapsed" data-bs-target="#workshop-nav" data-bs-toggle="collapse" href="#">
