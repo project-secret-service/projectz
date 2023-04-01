@@ -112,22 +112,22 @@ export default function SideBar(props) {
                     </li>
 
                     <li className="nav-item">
-                        <a className="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+                        <a className="nav-link collapsed" data-bs-target="#fuel-nav" data-bs-toggle="collapse" href="#">
                             <i className="bi bi-fuel-pump"></i>
                             <span>Fuel</span>
                             <i className="bi bi-chevron-down ms-auto"></i>
                         </a>
-                        <ul id="icons-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <ul id="fuel-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
                             <li>
                                 <Link href="/admin/fuel/balance">
                                     <i className="bi bi-circle"></i>
-                                    <span>List Users</span>
+                                    <span>Balance</span>
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/admin/fuel/update">
                                     <i className="bi bi-circle"></i>
-                                    <span>Add Users</span>
+                                    <span>Update Fuel</span>
                                 </Link>
                             </li>
                         </ul>
