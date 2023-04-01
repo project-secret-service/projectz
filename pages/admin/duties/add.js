@@ -1,18 +1,18 @@
-import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
-import Script from 'next/script'
-import Header from '../../components/Header'
-import SideBar from '../../components/Sidebar'
-import Scripts from '../../components/Scripts'
-import {useEffect, useState} from 'react'
-import axios from 'axios'
+import Head from "next/head";
+import styles from "@/styles/Home.module.css";
+import Script from "next/script";
+import Header from "../../components/Header";
+import SideBar from "../../components/Sidebar";
+import Scripts from "../../components/Scripts";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Link from "next/link";
-import Router from 'next/router'
-import DatalistInput from 'react-datalist-input';
-import 'react-datalist-input/dist/styles.css';
-import { Button,Row } from 'react-bootstrap'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Router from "next/router";
+import DatalistInput from "react-datalist-input";
+import "react-datalist-input/dist/styles.css";
+import { Button, Row } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 async function GetVehicles() {
   const res = await axios({
@@ -22,39 +22,36 @@ async function GetVehicles() {
   });
   return res.data;
 }
- 
 
-function sucessful()
-{
-    toast.success("Sucessfully Added");
-<ToastContainer
-position="top-center"
-autoClose={5000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light"
-/>
+function sucessful() {
+  toast.success("Sucessfully Added");
+  <ToastContainer
+    position="top-center"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="light"
+  />;
 }
-function unsucessful()
-{
-    toast.error("Server Error");
-<ToastContainer
-position="top-center"
-autoClose={5000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light"
-/>
+function unsucessful() {
+  toast.error("Server Error");
+  <ToastContainer
+    position="top-center"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="light"
+  />;
 }
 
 function convertUTCDateToLocalDate(date) {
@@ -101,14 +98,16 @@ async function addNewVehicle(event) {
     mission_ended: event.target.completed.value,
   };
 
-    console.log(event.target.vehicle_no.value);
-    const res = await axios({url: "http://localhost:3000/duty_log/add", withCredentials: true, method: "POST", data: data});
-    console.log(res.status);
-    if(res.status==200)
-     sucessful();
-     else
-     unsucessful();
-    
+  console.log(event.target.vehicle_no.value);
+  const res = await axios({
+    url: "http://localhost:3000/duty_log/add",
+    withCredentials: true,
+    method: "POST",
+    data: data,
+  });
+  console.log(res.status);
+  if (res.status == 200) sucessful();
+  else unsucessful();
 }
 
 export default function Home() {
@@ -126,242 +125,241 @@ export default function Home() {
     Router.push("/admin/vehicles/" + link);
   }
 
-    return (
-        <>
-           
-                <title>Add Duty</title>
-               
+  return (
+    <>
+      <title>Add Duty</title>
 
-            
-            <main className={
-                styles.main
-            }>
-                <Header/>
-                <SideBar/>
+      <main className={styles.main}>
+        <Header />
+        <SideBar />
 
-                <main id="main" className="col-lg-11 main mt-0">
+        <main id="main" className="col-lg-11 main mt-0">
           <Row>
             <div className="col-lg-8">
               <div className="card">
                 <div className="card-body">
                   <h1>Add New Duty</h1>
 
-                                <form onSubmit={addNewVehicle}>
-
-
-                                    <div className="row mb-3">
-
-                                        <label className="col-sm-5 col-form-label">
-                                            Vehicle Number :</label>
-                                        <div className="col-sm-7">
-                                            <select name='vehicle_no' className="form-select" aria-label="Default select example">
-                                                {
-                                                vehicles.map((vehicle, index) => (
-
-                                                    <option value={
-                                                        vehicle._id
-                                                    }>
-                                                        {
-                                                        vehicle.vehicle_no
-                                                    }</option>
-                                                ))
-                                            } </select>
-                                        </div>
-
-                                    </div>
-
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Date of travel:
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="date"
-                        name="date_of_travel"
-                        className="form-control"
-                      />
+                  <form onSubmit={addNewVehicle}>
+                    <div className="row mb-3">
+                      <label className="col-sm-5 col-form-label">
+                        Vehicle Number :
+                      </label>
+                      <div className="col-sm-7">
+                        <select
+                          name="vehicle_no"
+                          className="form-select"
+                          aria-label="Default select example"
+                        >
+                          {vehicles.map((vehicle, index) => (
+                            <option value={vehicle._id}>
+                              {vehicle.vehicle_no}
+                            </option>
+                          ))}{" "}
+                        </select>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Out Time:
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="time"
-                        name="out_time"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Purpose :
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="text"
-                        name="Purpose"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      In time :
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="time"
-                        name="In_time"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      From :
-                    </label>
-                    <div className="col-sm-7">
-                      <input type="text" name="From" className="form-control" />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      To :
-                    </label>
-                    <div className="col-sm-7">
-                      <input type="text" name="To" className="form-control" />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Km Run :
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="number"
-                        name="Km_run"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Meter Count:
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="number"
-                        name="Meter_count"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label className="col-sm-5 col-form-label">
-                      Approved By Mto :
-                    </label>
-                    <div className="col-sm-7">
-                      <select
-                        name="approved"
-                        className="form-select"
-                        aria-label="Default select example"
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
                       >
-                        <option value="true">Approved</option>
-                        <option value="false">Not Approved</option>
-                      </select>
+                        Date of travel:
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="date"
+                          name="date_of_travel"
+                          className="form-control"
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Fuel :
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="number"
-                        name="Fuel"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label className="col-sm-5 col-form-label">
-                      Completed :
-                    </label>
-                    <div className="col-sm-7">
-                      <select
-                        name="completed"
-                        className="form-select"
-                        aria-label="Default select example"
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
                       >
-                        <option value="true">Completed</option>
-                        <option value="false">Not Completed</option>
-                      </select>
+                        Out Time:
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="time"
+                          name="out_time"
+                          className="form-control"
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                                    <div className="row mb-3">
-                                        <div className="col-sm-10">
-                                            <button type="submit" className="btn btn-primary"
-                                                style={
-                                                    {float: "right"}
-                                            }>Submit Form</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        Purpose :
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="text"
+                          name="Purpose"
+                          className="form-control"
+                        />
+                      </div>
                     </div>
-                    <div className="col-lg-3 card p-4 m-1" style={{maxHeight:"10vh"}}>
+
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        In time :
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="time"
+                          name="In_time"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        From :
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="text"
+                          name="From"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        To :
+                      </label>
+                      <div className="col-sm-7">
+                        <input type="text" name="To" className="form-control" />
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        Km Run :
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="number"
+                          name="Km_run"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        Meter Count:
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="number"
+                          name="Meter_count"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label className="col-sm-5 col-form-label">
+                        Approved By Mto :
+                      </label>
+                      <div className="col-sm-7">
+                        <select
+                          name="approved"
+                          className="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option value="true">Approved</option>
+                          <option value="false">Not Approved</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        Fuel :
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="number"
+                          name="Fuel"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label className="col-sm-5 col-form-label">
+                        Completed :
+                      </label>
+                      <div className="col-sm-7">
+                        <select
+                          name="completed"
+                          className="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option value="true">Completed</option>
+                          <option value="false">Not Completed</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <div className="col-sm-10">
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          style={{ float: "right" }}
+                        >
+                          Submit Form
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col-lg-3 card p-4 m-1"
+              style={{ maxHeight: "10vh" }}
+            >
               <Link href={"/admin/duties"}>
                 <Button className="w-100 mb-1">List Vehicles</Button>
               </Link>
             </div>
-                    </Row>
-                </main>
-
-            </main>
-            <Scripts/>
-            <Script src="/assets/js/main.js"></Script>
-        </>
-    )
+          </Row>
+        </main>
+      </main>
+      <Scripts />
+      <Script src="/assets/js/main.js"></Script>
+    </>
+  );
 }
