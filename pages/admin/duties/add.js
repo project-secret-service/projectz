@@ -11,10 +11,46 @@ import Router from 'next/router'
 import DatalistInput from 'react-datalist-input';
 import 'react-datalist-input/dist/styles.css';
 import { Button,Row } from 'react-bootstrap'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 async function GetVehicles() {
     const res = await axios({url: "http://localhost:3000/vehicles/", method: "GET", withCredentials: true});
     return res.data;
+}
+ 
+
+function sucessful()
+{
+    toast.success("Sucessfully Added");
+<ToastContainer
+position="top-center"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/>
+}
+function unsucessful()
+{
+    toast.error("Server Error");
+<ToastContainer
+position="top-center"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/>
 }
 
 function convertUTCDateToLocalDate(date) {
@@ -64,7 +100,12 @@ async function addNewVehicle(event) {
 
     console.log(event.target.vehicle_no.value);
     const res = await axios({url: "http://localhost:3000/duty_log/add", withCredentials: true, method: "POST", data: data});
-    console.log(res.data);
+    console.log(res.status);
+    if(res.status==200)
+     sucessful();
+     else
+     unsucessful();
+    
 }
 
 export default function Home() {
@@ -105,6 +146,9 @@ export default function Home() {
                   <h1>Add New Duty</h1>
 
                                 <form onSubmit={addNewVehicle}>
+                                <ToastContainer
+
+/>
 
 
                                     <div className="row mb-3">
