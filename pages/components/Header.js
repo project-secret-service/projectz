@@ -207,7 +207,11 @@ export default function Header({parentCallback}) {
 
                             <a  className="nav-link nav-profile d-flex align-items-center pe-0" href="/" data-bs-toggle="dropdown">
                                 <img src="/assets/img/profile1.png" alt="Profile" className="rounded-circle"/>
+                                
+
+                                
                                 <span className="d-none d-md-block dropdown-toggle ps-2">{user.username}</span>
+                               
                             </a>
 
                             <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -220,7 +224,7 @@ export default function Header({parentCallback}) {
                                 </li>
 
                                 <li>
-                                    <a className="dropdown-item d-flex align-items-center" href="users-profile.html">
+                                    <a className="dropdown-item d-flex align-items-center" href="/admin/profile">
                                         <i className="bi bi-person"></i>
                                         <span>My Profile</span>
                                     </a>
@@ -250,7 +254,7 @@ export default function Header({parentCallback}) {
                                 </li>
 
                                 <li>
-                                    <a className="dropdown-item d-flex align-items-center" href="#">
+                                    <a className="dropdown-item d-flex align-items-center" href="/login">
                                         <i className="bi bi-box-arrow-right"></i>
                                         <span>Sign Out</span>
                                     </a>
