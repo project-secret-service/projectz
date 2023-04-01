@@ -6,8 +6,12 @@ import SideBar from '../../components/Sidebar'
 import Link from "next/link"
 import { Button } from "react-bootstrap"
 import axios from "axios"
-import { useEffect,useState } from 'react'
+import { useEffect,useState,useRef} from 'react'
+import ReactToPrint from 'react-to-print';
+import { AiFillPrinter} from "react-icons/ai";
+import { IconContext } from "react-icons";
 
+//const componentRef=useRef()
 
 async function GetUserDetails(id){
   const res = await axios({
@@ -34,6 +38,7 @@ if (typeof document !== 'undefined') {
   document.body.innerHTML = originalContents;
 }}
 const Post = () => {
+  
   const [duty,setDuty] = useState({});
   const router = useRouter();
   const { id } = router.query
@@ -47,7 +52,7 @@ const Post = () => {
       
     });
   }, [router.isReady]);
-  
+  const componentRef = useRef();
   return( 
     <>
         <Head>
@@ -64,9 +69,15 @@ const Post = () => {
        
           <div style={{ marginTop: "1rem ",  height: '80%'}}>  
           <div style={{fontSize:"1rem",marginTop: "1rem",right:10,position:'absolute'}}>
-          <input type="button" value="Print" onClick={window.print} ></input>
+          <IconContext.Provider value={{ color: "blue", className: "global-class-name"  }}>
+          <ReactToPrint
+        trigger={() => <button><AiFillPrinter/></button>}
+        content={() => componentRef.current}
+      />
+      </IconContext.Provider>
           </div>
-          <div id="printableArea">
+          <div id="printableArea" ref={componentRef} className="p-5">
+         
             <div style={{fontSize:"4rem",marginTop: "1rem",marginBottom:"2rem",marginLeft: 10,marginRight: 10,}}>
               <span>DUTY DETAILS</span>
               <hr  style={{
@@ -85,7 +96,7 @@ const Post = () => {
                     <th scope="row">1.</th>
                     <td>Vehicle no:</td>
                     
-                    <td>{duty.vehicle_id && (<>{duty.vehicle_id.vehicle_no}</>)}</td>
+                    <td>{duty.vehicle_id && (<>{duty.vehicle_id. vehicle_crp_no}{"   "} - {"   "}{duty.vehicle_id.registration_no}</>)}</td>
                   
                 </tr>
                 <tr>
@@ -143,8 +154,9 @@ const Post = () => {
               </tbody>
                 }
             </table>
-          </div>   
-          </div>    
+          
+          </div>  
+          </div>  
         </main> 
     </>
   )  

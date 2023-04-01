@@ -131,3 +131,8 @@ a {
 	background-color: #a8abff;
 	border-radius: 10px;
 }
+@media print{
+  .Print{
+  display:none;
+  }
+  }
