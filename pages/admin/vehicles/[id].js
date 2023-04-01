@@ -131,14 +131,14 @@ export default function Home() {
               </div>
             </Col>
             <Col lg="7" className="card m-2 p-2">
-              <div class="list-group">
+              <div className="list-group">
                 <Link
                   href={"/admin/vehicles"}
                   style={{ textDecoration: "none" }}
                 >
                   <li
                     href="#"
-                    class="list-group-item list-group-item-action"
+                    className="list-group-item list-group-item-action"
                     style={{
                       cursor: "pointer",
                       textAlign: "center",
@@ -150,10 +150,10 @@ export default function Home() {
                 </Link>
 
                 <br />
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Year of Manufacture : <b>{vehicle.year_of_manufacture}</b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Date of Supply :{" "}
                   <b>
                     {vehicle.date_of_supply &&
@@ -163,7 +163,7 @@ export default function Home() {
                       )}
                   </b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Date of Service :{" "}
                   <b>
                     {dateFormat(
@@ -172,10 +172,10 @@ export default function Home() {
                     )}
                   </b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Vehicle Type : <b>{vehicle.vehicle_type}</b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Cost of Vehicle :{" "}
                   <b> &#8377; {indianNumberFormat.format(vehicle.cost)}</b>
                 </li>
