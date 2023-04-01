@@ -51,7 +51,6 @@ async function addNewVehicle(event) {
       event.target.distance_before_second_overhaul.value,
     date_of_second_overhaul: event.target.date_of_second_overhaul.value,
     registration_no: event.target.registration_no.value,
-    // vehicle_no: event.target.vehicle_no.value,
     vehicle_type: event.target.vehicle_type.value,
     date_of_service: event.target.date_of_service.value,
     chasis_no: event.target.chasis_no.value,
@@ -641,13 +640,12 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="row mb-3">
-                      <div className="col-sm-10">
+                      <div className="text-center">
                         <button
                           type="submit"
-                          className="btn btn-primary"
-                          style={{ float: "right" }}
+                          className="btn btn-primary w-100"
                         >
-                          Submit Form
+                          Add Vehicle
                         </button>
                       </div>
                     </div>
@@ -655,7 +653,10 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-lg-3 card p-4 m-1" style={{maxHeight:"10vh"}}>
+            <div
+              className="col-lg-3 card p-4 m-1"
+              style={{ maxHeight: "10vh" }}
+            >
               <Link href={"/admin/vehicles"}>
                 <Button className="w-100 mb-1">List Vehicles</Button>
               </Link>
