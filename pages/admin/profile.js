@@ -26,22 +26,27 @@ async function GetUser() {
 var v;
 async function updateDetails(event) {
   event.preventDefault();
-
   var data = {
     username: event.target.fullName.value,
     role: event.target.company.value,
     rank: event.target.job.value,
     contact_no: event.target.phone.value,
     email_id: event.target.email.value,
+    photo: event.target.profile_pic.files[0],
   };
 
+  console.log(data);
   const res = await axios({
     url: "http://localhost:3000/users/update/" + v,
     method: "PUT",
     withCredentials: true,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
     data: data,
   });
   console.log(res);
+  window.location.reload();
 }
 const notify = () =>
   toast.success(" Saved Changes!", {
@@ -53,7 +58,15 @@ const notify = () =>
     draggable: true,
     progress: undefined,
     theme: "light",
-  });
+  });<li className="nav-item">
+  <button
+    className="nav-link"
+    data-bs-toggle="tab"
+    data-bs-target="#profile-change-password"
+  >
+    Change Password
+  </button>
+</li>
 export default function Home() {
   const [user, setUser] = useState([]);
   useEffect(() => {
@@ -91,8 +104,13 @@ export default function Home() {
                       width="100%"
                       alt="Profile"
                     />
+                    
                     <h3>{user.username}</h3>
                     <h4>{user.rank}</h4>
+                    <a href="/admin">
+                    <button type="button" className="btn btn-dark" >Back</button>
+                    </a>
+                    {/* <button></button> */}
                   </div>
                 </div>
               </div>
@@ -121,7 +139,7 @@ export default function Home() {
                         </button>
                       </li>
 
-                      <li className="nav-item">
+                      {/* <li className="nav-item">
                         <button
                           className="nav-link"
                           data-bs-toggle="tab"
@@ -129,9 +147,9 @@ export default function Home() {
                         >
                           Settings
                         </button>
-                      </li>
+                      </li> */}
 
-                      <li className="nav-item">
+                      {/* <li className="nav-item">
                         <button
                           className="nav-link"
                           data-bs-toggle="tab"
@@ -139,7 +157,7 @@ export default function Home() {
                         >
                           Change Password
                         </button>
-                      </li>
+                      </li> */}
                     </ul>
                     <div className="tab-content pt-2">
                       <div
@@ -218,8 +236,10 @@ export default function Home() {
                                 width="100%"
                                 alt="Profile"
                               />
+                              
                               <div>
                                 <input
+                                  name="profile_pic"
                                   type="file"
                                   id="image_input"
                                   accept="image/png , image/jpg"
@@ -387,7 +407,7 @@ export default function Home() {
                         </form>
                       </div>
 
-                      <div className="tab-pane fade pt-3" id="profile-settings">
+                      {/* <div className="tab-pane fade pt-3" id="profile-settings">
                         <form>
                           <div className="row mb-3">
                             <label
@@ -454,17 +474,17 @@ export default function Home() {
                                 </label>
                               </div>
                             </div>
-                          </div>
+                          </div> 
 
-                          <div className="text-center">
+                           <div className="text-center">
                             <button type="submit" className="btn btn-primary">
                               Save Changes
                             </button>
                           </div>
                         </form>
-                      </div>
+                      </div> */}
 
-                      <div
+                      {/* <div
                         className="tab-pane fade pt-3"
                         id="profile-change-password"
                       >
@@ -526,7 +546,9 @@ export default function Home() {
                             </button>
                           </div>
                         </form>
-                      </div>
+                      </div> */}
+
+
                     </div>
                   </div>
                 </div>

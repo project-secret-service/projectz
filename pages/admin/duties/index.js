@@ -7,7 +7,8 @@ import Scripts from '../../components/Scripts'
 import {useEffect, useState} from 'react'
 import axios from 'axios'
 import Router from 'next/router'
-
+import Link from "next/link";
+import { Button,Row } from "react-bootstrap";
 async function GetDuties() {
     const res = await axios({url: "http://localhost:3000/duty_log/", method: "GET", withCredentials: true});
     return res.data;
@@ -54,10 +55,16 @@ export default function Home() {
                 <Header/>
                 <SideBar/>
 
-                <main id="main" className=" col-lg-9 main">
+                <main id="main" className=" col-lg-11 main mt-0">
+                    <Row>
+                {/* <Row className="p-1"> */}
+                <div className="col-lg-8">
+              <div className="card">
+                <div className="card-body">
                     <h1>
                         All Duties
                     </h1>
+                    {/* </Row> */}
                     <hr></hr>
                     <table className="table table-hover">
                         <thead>
@@ -115,7 +122,7 @@ export default function Home() {
                                             }></i>
                                         </th>
                                         <td>{
-                                            duty.vehicle_id.vehicle_no
+                                            duty.vehicle_id.registration_no
                                         }</td>
                                         <td>{
                                             duty.out_time.substring(11, 19)
@@ -130,6 +137,15 @@ export default function Home() {
                             })
                         } </tbody>
                     </table>
+                    </div>
+                    </div>
+                    </div>
+                    <div className="col-lg-3 card p-4 m-1" style={{maxHeight:"10vh"}}>
+              <Link href={"/admin/duties/add"}>
+                <Button className="w-100 mb-1">Add Duties</Button>
+              </Link>
+            </div>
+            </Row>
                 </main>
 
             </main>

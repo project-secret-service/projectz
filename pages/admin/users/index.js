@@ -7,6 +7,8 @@ import Scripts from '../../components/Scripts'
 import {useEffect, useState} from 'react'
 import axios from 'axios'
 import Router from 'next/router'
+import Link from "next/link"
+import { Button,Row } from "react-bootstrap";
 
 async function GetUsers() {
     const res = await axios({url: "http://localhost:3000/users/", method: "GET", withCredentials: true});
@@ -39,20 +41,16 @@ export default function Home() {
                 <Header/>
                 <SideBar/>
 
-                <main id="main" className=" col-lg-9 main">
-                    <h1>
-                        All Users
-                    </h1>
-                                <hr  style={{
-                                    color: '#000000',
-                                    backgroundColor: '#000000',
-                                    height: 2.5,
-                                    borderColor : '#000000'
-                                    }}/>
+                <main id="main" className="col-lg-11 main mt-0">
+                    <Row className="p-1">
+                        <h1>All Users</h1>
+                    </Row>
+                    <div className="col-lg-12 d-flex">
+                    <div className="col-lg-8 card m-1 p-4">
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">Sl No.</th>
                                 <th scope="col">User Name</th>
                                 <th scope="col">Contact No</th>
                                 <th scope="col">Rank</th>
@@ -72,13 +70,7 @@ export default function Home() {
                                             () => OpenLink(user._id)
                                     }>
                                         <th scope="row">
-                                            <i className="bi bi-truck"
-                                                style={
-                                                    {
-                                                        color: "red",
-                                                        fontSize: "1rem"
-                                                    }
-                                            }></i>
+                                            {index+1}
                                         </th>
                                         <td>{
                                             user.username
@@ -95,8 +87,19 @@ export default function Home() {
                             })
                         } </tbody>
                     </table>
-                </main>
+                    </div>
+                    <div className="col-lg-2 card p-3 m-1" style={{maxHeight:"10vh"}}>
+                        <Link href={"/admin/users/add"}>
+                            <Button className="w-100 mb-1 btn btn-info">Add User</Button>
+                        </Link>
+                    </div>
+                </div>
 
+            <button 
+                  className="btn btn-primary"
+                  style={{ float: "left" }}                
+                  onClick={() => Router.back()}>Go Back</button>
+            </main>
             </main>
             <Scripts/>
             <Script src="/assets/js/main.js"></Script>
