@@ -52,7 +52,7 @@ export default function Home() {
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">Sl No.</th>
                                 <th scope="col">User Name</th>
                                 <th scope="col">Contact No</th>
                                 <th scope="col">Rank</th>
@@ -72,13 +72,7 @@ export default function Home() {
                                             () => OpenLink(user._id)
                                     }>
                                         <th scope="row">
-                                            <i className="bi bi-truck"
-                                                style={
-                                                    {
-                                                        color: "red",
-                                                        fontSize: "1rem"
-                                                    }
-                                            }></i>
+                                            {index+1}
                                         </th>
                                         <td>{
                                             user.username
