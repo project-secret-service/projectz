@@ -99,13 +99,6 @@ async function addNewVehicle(event) {
 
     }
 
-  console.log(event.target.vehicle_no.value);
-  const res = await axios({
-    url: "http://localhost:3000/duty_log/add",
-    withCredentials: true,
-    method: "POST",
-    data: data,
-  });
   console.log(res.status);
   if (res.status == 200) sucessful();
   else unsucessful();
