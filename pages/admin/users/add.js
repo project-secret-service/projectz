@@ -1,6 +1,6 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import styless from "@/styles/Profile.module.css";
+import pic_styles from "@/styles/Profile.module.css";
 import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
@@ -10,6 +10,8 @@ import axios from "axios";
 import Router from "next/router";
 import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
+import { Button,Row } from 'react-bootstrap';
+import Link from "next/link";
 
 async function GetUsers() {
   const res = await axios({
@@ -80,7 +82,6 @@ export default function Home() {
       CheckRegistrationNoinDB(s[0].value).then((data) => {
         console.log(data);
         if (data === "F") {
-          // setErrors((errors)=>(...errors,{vehicle_sl_no:"SL NO. ALREADY EXISTS")})
           setErrors((errors) => {
             return {
               ...errors,
@@ -94,7 +95,6 @@ export default function Home() {
               user_registration_no: "",
             };
           });
-          // setErrors((errors)=>{return{...errors,{vehicle_sl_no:"OK"}})
         }
       });
     }
@@ -111,8 +111,9 @@ export default function Home() {
         <Header />
         <SideBar />
 
-        <main id="main" className="col-lg-10 main">
-          <div className="col-lg-10">
+        <main id="main" className="col-lg-11 main mt-0">
+          <Row>
+          <div className="col-lg-8">
             <div className="card">
               <div className="card-body">
                 <h1>Add New User</h1>
@@ -126,9 +127,9 @@ export default function Home() {
                 />
 
                 <form onSubmit={addNewUser}>
-                  <div className={styless.container}>
-                    <div className={styless.pictureContainer}>
-                      <div className={styless.picture}>
+                  <div className={pic_styles.container}>
+                    <div className={pic_styles.pictureContainer}>
+                      <div className={pic_styles.picture}>
                         <input
                           name="profile_pic"
                           type="file"
@@ -167,9 +168,7 @@ export default function Home() {
                         type="text"
                         name="user_registration_no"
                         className="form-control"
-                        // onChange={() => CheckRegistrationNo(this)}
                       />
-                      {/* <p>{errors.user_registration_no} </p> */}
                     </div>
                   </div>
 
@@ -255,7 +254,7 @@ export default function Home() {
                     <div className="col-sm-10">
                       <button
                         type="submit"
-                        className="btn btn-primary"
+                        className="btn btn-success"
                         style={{ float: "right" }}
                       >
                         Add User
@@ -266,6 +265,17 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          <div className="col-lg-2 card p-4 m-1"  style={{maxHeight:"10vh"}}>
+              <Link href={"/admin/users"}>
+                <Button className="w-100 mb-1 btn btn-info">Users List</Button>
+              </Link>
+            </div>
+          </Row>
+          <button 
+                  className="btn btn-primary"
+                  style={{ float: "left"}}                
+                  onClick={() => Router.back()}>Go Back</button>
         </main>
       </main>
       <Scripts />
