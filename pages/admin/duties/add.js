@@ -154,8 +154,9 @@ export default function Home() {
                           aria-label="Default select example"
                         >
                           {vehicles.map((vehicle, index) => (
-                            <option value={vehicle._id}>
-                              {vehicle.vehicle_no}
+                            <option key={index + 1} value={vehicle._id}>
+                            CRP - {vehicle.vehicle_crp_no}{" "}
+                            {vehicle.registration_no}
                             </option>
                           ))}{" "}
                         </select>

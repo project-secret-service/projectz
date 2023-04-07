@@ -23,6 +23,28 @@ async function GetVehicles() {
   return res.data;
 }
 
+async function GetlastEntry() {
+  const res = await axios({
+    url: "http://localhost:3000/oilbalance/last",
+    method: "GET",
+    withCredentials: true,
+  });
+  console.log(res.data);
+  return res.data;
+}
+
+async function updatebalance(data) {
+  console.log(data);
+  const res = await axios({
+    url: "http://localhost:3000/oilbalance/add",
+    withCredentials: true,
+    method: "POST",
+    data: data,
+  });
+  console.log(res.data);
+  return res.data;
+}
+
 function sucessful() {
   toast.success("Sucessfully Added");
   <ToastContainer
@@ -53,69 +75,98 @@ function unsucessful() {
     theme="light"
   />;
 }
-async function allotFuel(event) {
-  var va = 1;
+async function updabalance(event) {}
 
-  // console.log(s)
-  var data = {
-    vehicle_id: event.target.vehicle_no.value,
-    Date: event.target.date.value,
-    voucher_no: event.target.voucher1.value,
-    issued: event.target.issued.value,
-    balance: event.target.issued.value,
-    signature_of_pol_havaldar: event.target.approvedha1.value,
-    signature_of_mto: event.target.approvedmt1.value,
-    remarks: event.target.remarks1.value,
-  };
 
-  console.log(data);
-  const res = await axios({
-    url: "http://localhost:3000/oilstockregister/add",
-    withCredentials: true,
-    method: "POST",
-    data: data,
-  });
-  console.log(res.status);
-  if (res.status == 200) sucessful();
-  else unsucessful();
-}
 
-async function addFuel(event) {
-  var va = 1;
-
-  // console.log(s)
-  var data = {
-    Name_of_store: event.target.name.value,
-    Date: event.target.date_of_travel.value,
-    voucher_no: event.target.voucher.value,
-    from_whom_received_to_whom_issued: event.target.from_whom.value,
-    recived: event.target.recived.value,
-
-    balance: event.target.recived.value,
-    signature_of_pol_havaldar: event.target.approvedha.value,
-    signature_of_mto: event.target.approvedmt.value,
-    remarks: event.target.remarks.value,
-  };
-
-  console.log(data);
-  const res = await axios({
-    url: "http://localhost:3000/oilstockregister/add",
-    withCredentials: true,
-    method: "POST",
-    data: data,
-  });
-  console.log(res.status);
-  if (res.status == 200) sucessful();
-  else unsucessful();
-}
 
 export default function Home() {
   const [vehicles, setVehicles] = useState([]);
+  const [lastentry, setlasteENtry] = useState({});
   // const [particularvehicles, setnewVehicles] = useState([]);
   const [errors, setErrors] = useState({ vehicle_sl_no: "" });
+  async function addFuel(event) {
+    event.preventDefault();
+    var va = 1;
+  
+    // console.log(s)
+    var data = {
+      Name_of_store: event.target.name.value,
+      Date: event.target.date_of_travel.value,
+      voucher_no: event.target.voucher.value,
+      from_whom_received_to_whom_issued: event.target.from_whom.value,
+      recived: event.target.recived.value,
+  
+      balance: event.target.recived.value,
+      signature_of_pol_havaldar: event.target.approvedha.value,
+      signature_of_mto: event.target.approvedmt.value,
+      remarks: event.target.remarks.value,
+    };
+  
+    console.log(data);
+    const res = await axios({
+      url: "http://localhost:3000/oilstockregister/add",
+      withCredentials: true,
+      method: "POST",
+      data: data,
+    });
+    console.log(res.data);
+    if (res.status == 200) {
+      sucessful();
+      var data1 = {
+        balance_id: res.data,
+        recived: true,
+        issued: false,
+        Date: event.target.date_of_travel.value,
+        balance:parseInt(lastentry.balance)+parseInt(event.target.recived.value)
+      };
+  
+      updatebalance(data1);
+    } else unsucessful();
+  }
+
+  async function allotFuel(event) {
+    var va = 1;
+  
+    // console.log(s)
+    var data = {
+      vehicle_id: event.target.vehicle_no.value,
+      Date: event.target.date.value,
+      voucher_no: event.target.voucher1.value,
+      issued: event.target.issued.value,
+      balance: event.target.issued.value,
+      signature_of_pol_havaldar: event.target.approvedha1.value,
+      signature_of_mto: event.target.approvedmt1.value,
+      remarks: event.target.remarks1.value,
+    };
+  
+    console.log(data);
+    const res = await axios({
+      url: "http://localhost:3000/oilstockregister/add",
+      withCredentials: true,
+      method: "POST",
+      data: data,
+    });
+    console.log(res.data);
+    if (res.status == 200) {
+      sucessful();
+      var data1 = {
+        balance_id: res.data,
+        recived: true,
+        issued: false,
+        Date: event.target.date_of_travel.value,
+        balance:parseInt(lastentry.balance)-parseInt(event.target.recived.value)
+      };
+  
+      updatebalance(data1);
+    } else unsucessful();
+  }
   useEffect(() => {
     GetVehicles().then((data) => {
       setVehicles(data);
+    });
+    GetlastEntry().then((data) => {
+      setlasteENtry(data);
     });
   }, []);
 
@@ -228,7 +279,9 @@ export default function Home() {
                         <input
                           type="number"
                           name="balance"
+                          defaultValue={lastentry.balance}
                           className="form-control"
+                          readOnly
                         />
                       </div>
                     </div>
@@ -322,7 +375,7 @@ export default function Home() {
                           aria-label="Default select example"
                         >
                           {vehicles.map((vehicle, index) => (
-                            <option key={index+1} value={vehicle._id}>
+                            <option key={index + 1} value={vehicle._id}>
                               CRP - {vehicle.vehicle_crp_no}{" "}
                               {vehicle.registration_no}
                             </option>
@@ -357,7 +410,7 @@ export default function Home() {
                         <input
                           type="number"
                           name="balance1"
-                          value="666"
+                          defaultValue={lastentry.balance}
                           className="form-control"
                           readOnly
                         />
