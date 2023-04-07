@@ -47,12 +47,12 @@ const Post = () => {
                 }}/>
             </div>
             <div style={{width: '3rem',   padding: '4rem',  margin: '1.8rem'}}>
-              <div class="card" style={{width: "12rem",float:'left'}}>
+              <div className="card" style={{width: "12rem",float:'left'}}>
                 <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"  style={{width: '100%'}}
                      alt="Avatar" />
               </div>
             </div>                                 
-            <table class="table">
+            <table className="table">
               <tbody>
                 <tr>
                     <th scope="row">1.</th>

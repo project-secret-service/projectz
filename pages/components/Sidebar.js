@@ -23,7 +23,7 @@ export default function SideBar(props) {
                             <span>Duties</span>
                             <i className="bi bi-chevron-down ms-auto"></i>
                         </a>
-                        <ul id="forms-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <ul id="forms-nav" className="nav-content collapse" data-bs-parent="#sidebar-nav">
                             <li>
                                 <Link href="/admin/duties/">
                                     <i className="bi bi-circle"></i>
@@ -165,6 +165,60 @@ export default function SideBar(props) {
                                 <Link href="/admin/workshop/jobcard">
                                     <i className="bi bi-circle"></i>
                                     <span>Job Card</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link collapsed" data-bs-target="#inspection-nav" data-bs-toggle="collapse" href="#">
+                            <i className="bi bi-layout-text-window-reverse"></i>
+                            <span>Inspection</span>
+                            <i className="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="inspection-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            <li>
+                                <Link href="/admin/inspection/inspect/">
+                                    <i className="bi bi-circle"></i>
+                                    <span>Inspect Vehicle</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/admin/inspection/">
+                                    <i className="bi bi-circle"></i>
+                                    <span>Inspection History</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link collapsed" data-bs-target="#inspection-nav" data-bs-toggle="collapse" href="#">
+                            <i className="bi bi-layout-text-window-reverse"></i>
+                            <span>Inventory</span>
+                            <i className="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="inspection-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            <li>
+                                <Link href="/admin/inventory/order/">
+                                    <i className="bi bi-circle"></i>
+                                    <span>Order an Item</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/admin/inventory/issue/">
+                                    <i className="bi bi-circle"></i>
+                                    <span>Issue an item</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/admin/inventory/storage">
+                                    <i className="bi bi-circle"></i>
+                                    <span>Storage</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/admin/inventory/history">
+                                    <i className="bi bi-circle"></i>
+                                    <span>Inventory History</span>
                                 </Link>
                             </li>
                         </ul>
