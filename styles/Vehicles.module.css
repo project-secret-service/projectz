@@ -1,3 +1,66 @@
-.vehicle_name{
-    font-family: 'Josefin Sans', sans-serif;
+.vehicle_name {
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.odometer {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.odometer_heading {
+  color: #333;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.odometer_value {
+  display: flex;
+  justify-content: center;
+}
+
+.odometer_digit {
+  display: inline-block;
+  font-size: 40px;
+  font-weight: bold;
+  margin: 0 10px;
+  padding: 7px 14px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease;
+}
+
+.odometer_label {
+  margin-top: 20px;
+}
+
+.odometer_text {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.fuel_box{
+    /* background-color: aqua; */
+    position: relative;
+    border: 1px solid black;
+}
+
+.fuel_text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.fuel_box .fuel_empty{
+    height: 90%;
+    background-color: rgb(255, 255, 255);
+}
+
+.fuel_box .fuel_percent{
+    height: 10%;
+    background-color: rgb(128, 255, 0);
 }

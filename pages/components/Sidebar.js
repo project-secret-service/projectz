@@ -12,7 +12,7 @@ export default function SideBar(props) {
                         <Link className="nav-link collapsed"
                             href={'/admin/'}
                             id="dashboard-sidebar">
-                            <i class="bi bi-speedometer2"></i>
+                            <i className="bi bi-speedometer2"></i>
                             <span>Dashboard</span>
                         </Link>
                     </li>

@@ -23,6 +23,30 @@ async function GetVehicle(id) {
   return res.data;
 }
 
+function setFuel(fuel,fuelCapacity){
+  let fuelPercentage=((fuel/fuelCapacity)*100).toFixed(2);
+  const fuelPercent = document.getElementById('fuel_percentage');
+  fuelPercent.innerText=fuelPercentage+"%";
+  const fuelDetails = document.getElementById('fuel_details');
+  fuelDetails.innerText=fuel+"L/"+fuelCapacity+"L";
+  console.log(fuelPercent);
+  document.querySelectorAll(".fuel-box")[0].children[1].style.height=(100-fuelPercentage)+"%";
+  document.querySelectorAll(".fuel-box")[0].children[2].style.height=fuelPercentage+"%";
+  if (fuelPercentage<=20) {
+    document.querySelectorAll(".fuel-box")[0].children[2].style.backgroundColor="red";
+
+  }
+}
+
+function setKms(km) {
+  const odometerDigits = document.querySelectorAll(".odometer-digit");
+  const odometerValue = document.querySelector(".odometer-value");
+  let totalDistance = km;
+  const digits = totalDistance.toString().padStart(7, "0").split("");
+  odometerDigits.forEach((digit, index) => {
+    digit.innerText = digits[index];
+  });
+}
 export default function Home() {
   const [vehicle, setVehicle] = useState({});
   const router = useRouter();
@@ -32,6 +56,8 @@ export default function Home() {
     const { id } = router.query;
     GetVehicle(id).then((data) => {
       setVehicle(data);
+      setKms(data.total_kilo_meter);
+      setFuel(data.fuel,data.fuel_capacity)
     });
   }, [router.isReady]);
   return (
@@ -131,14 +157,14 @@ export default function Home() {
               </div>
             </Col>
             <Col lg="7" className="card m-2 p-2">
-              <div class="list-group">
+              <div className="list-group">
                 <Link
                   href={"/admin/vehicles"}
                   style={{ textDecoration: "none" }}
                 >
                   <li
                     href="#"
-                    class="list-group-item list-group-item-action"
+                    className="list-group-item list-group-item-action"
                     style={{
                       cursor: "pointer",
                       textAlign: "center",
@@ -150,10 +176,10 @@ export default function Home() {
                 </Link>
 
                 <br />
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Year of Manufacture : <b>{vehicle.year_of_manufacture}</b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Date of Supply :{" "}
                   <b>
                     {vehicle.date_of_supply &&
@@ -163,7 +189,7 @@ export default function Home() {
                       )}
                   </b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Date of Service :{" "}
                   <b>
                     {dateFormat(
@@ -172,14 +198,84 @@ export default function Home() {
                     )}
                   </b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Vehicle Type : <b>{vehicle.vehicle_type}</b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Cost of Vehicle :{" "}
                   <b> &#8377; {indianNumberFormat.format(vehicle.cost)}</b>
                 </li>
               </div>
+
+              <div className="p-2">
+                <Row>
+                  <div
+                    className={`${vehicle_styles.odometer} p-2 text-center col-9 m-1`}
+                  >
+                    <h4 className={`${vehicle_styles.odometer_heading} mb-4`}>
+                      Total Distance Traveled
+                    </h4>
+                    <div
+                      className={`${vehicle_styles.odometer_value} odometer-value`}
+                    >
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                    </div>
+                    <div className={vehicle_styles.odometer_label}>
+                      <span className={vehicle_styles.odometer_text}>
+                        Kilometeres
+                      </span>
+                    </div>
+                  </div>
+                  <div className={`${vehicle_styles.fuel_box} col-2 p-2 m-1 fuel-box text-center`}>
+                    <div className={vehicle_styles.fuel_text}>
+                      Fuel
+                      <p id="fuel_percentage">
+                        50%
+                      </p>
+                      <p id="fuel_details">
+                        
+                      </p>
+                    </div>
+                    <div className={vehicle_styles.fuel_empty}> </div>
+                    <div className={vehicle_styles.fuel_percent}> </div>
+                  </div>
+                </Row>
+              </div>
+
               <div className="m-3">
                 <Link href={"/admin/vehicles/" + vehicle._id + "/update"}>
                   {" "}
