@@ -1,6 +1,5 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import styless from "@/styles/Profile.module.css";
 import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
@@ -8,7 +7,6 @@ import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Router from "next/router";
-import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
 
 async function GetDetails() {
