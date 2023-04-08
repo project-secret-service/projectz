@@ -210,6 +210,12 @@ export default function SideBar(props) {
                                 </Link>
                             </li>
                             <li>
+                                <Link href="/admin/inventory/add/">
+                                    <i className="bi bi-circle"></i>
+                                    <span>Add an item</span>
+                                </Link>
+                            </li>
+                            <li>
                                 <Link href="/admin/inventory/storage">
                                     <i className="bi bi-circle"></i>
                                     <span>Storage</span>
