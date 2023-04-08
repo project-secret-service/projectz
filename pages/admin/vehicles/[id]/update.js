@@ -23,43 +23,25 @@ async function GetVehicle(id) {
 
 export default function Home() {
   const [vehicle, setVehicle] = useState({});
+  const [updatedVehicle, setUpdatedVehicle] = useState({});
   const router = useRouter();
 
-  async function updateVehicle(event) {
-    event.preventDefault();
-    var data = {
-      vehicle_crp_no: event.target.vehicle_crp_no.value,
-      name: event.target.name.value,
-      year_of_manufacture: event.target.year_of_manufacture.value,
-      no_of_wheels: event.target.no_of_wheels.value,
-      cost: event.target.cost.value,
-      date_of_supply: event.target.date_of_supply.value,
-      tappet: event.target.tappet.value,
-      circuit_breaker: event.target.circuit_breaker.value,
-      firing_order: event.target.firing_order.value,
-      wheel_base: event.target.wheel_base.value,
-      body_type: event.target.body_type.value,
-      front: event.target.front.value,
-      tyre_size: event.target.tyre_size.value,
-      front_tyre_pressure: event.target.front_tyre_pressure.value,
-      rear_tyre_pressure: event.target.rear_tyre_pressure.value,
-      battery_type: event.target.battery_type.value,
-      battery_volt: event.target.battery_volt.value,
-      battery_no: event.target.battery_no.value,
-      registration_no: event.target.registration_no.value,
-      vehicle_type: event.target.vehicle_type.value,
-      date_of_service: event.target.date_of_service.value,
-      chasis_no: event.target.chasis_no.value,
-      engine_no: event.target.engine_no.value,
-      no_of_cylinders: event.target.no_of_cylinders.value,
-      horse_power: event.target.horse_power.value,
-      size_of_sparkling_plug: event.target.size_of_sparkling_plug.value,
-      front_view: event.target.front_view.files[0],
-      back_view: event.target.back_view.files[0],
-      top_view: event.target.top_view.files[0],
-      right_view: event.target.right_view.files[0],
-      left_view: event.target.left_view.files[0],
-    };
+  const setP = (event) => {
+    const selectedFile = event.target.files[0];
+    const name = event.target.name;
+    setUpdatedVehicle({ ...updatedVehicle, [name]: selectedFile });
+  };
+
+  function setV({ target: { name, value } }) {
+    setUpdatedVehicle({ ...updatedVehicle, [name]: value });
+  }
+
+  async function updateVehicle(e) {
+    e.preventDefault();
+    setUpdatedVehicle({
+      ...updatedVehicle,
+      [e.target.vehicle_type.name]: e.target.vehicle_type.value,
+    });
     const res = await axios({
       url: "http://localhost:3000/vehicles/" + vehicle._id + "/update",
       method: "POST",
@@ -67,9 +49,9 @@ export default function Home() {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      data: data,
+      data: updatedVehicle,
     });
-    window.location.href="/admin/vehicles/"+vehicle._id;
+    window.location.href = "/admin/vehicles/" + vehicle._id;
   }
 
   useEffect(() => {
@@ -94,6 +76,9 @@ export default function Home() {
                 <div className="input-group mb-3">
                   <div className="custom-file">
                     <input
+                      onChange={(e) => {
+                        setP(e);
+                      }}
                       name="front_view"
                       type="file"
                       className="custom-file-input"
@@ -107,6 +92,9 @@ export default function Home() {
                 <div className="input-group mb-3">
                   <div className="custom-file">
                     <input
+                      onChange={(e) => {
+                        setP(e);
+                      }}
                       name="back_view"
                       type="file"
                       className="custom-file-input"
@@ -120,6 +108,9 @@ export default function Home() {
                 <div className="input-group mb-3">
                   <div className="custom-file">
                     <input
+                      onChange={(e) => {
+                        setP(e);
+                      }}
                       name="left_view"
                       type="file"
                       className="custom-file-input"
@@ -132,6 +123,9 @@ export default function Home() {
                 <div className="input-group mb-3">
                   <div className="custom-file">
                     <input
+                      onChange={(e) => {
+                        setP(e);
+                      }}
                       name="right_view"
                       type="file"
                       className="custom-file-input"
@@ -144,6 +138,9 @@ export default function Home() {
                 <div className="input-group mb-3">
                   <div className="custom-file">
                     <input
+                      onChange={(e) => {
+                        setP(e);
+                      }}
                       name="top_view"
                       type="file"
                       className="custom-file-input"
@@ -157,7 +154,7 @@ export default function Home() {
               <Col lg="7" className="card m-2 p-2">
                 <div className="list-group">
                   <Link
-                    href={"/admin/vehicles/"+vehicle._id}
+                    href={"/admin/vehicles/" + vehicle._id}
                     style={{ textDecoration: "none" }}
                   >
                     <li
@@ -179,13 +176,15 @@ export default function Home() {
                     href="#"
                     className="list-group-item list-group-item-action"
                   >
-                    Vehicle Name{" "}
+                    Vehicle Name
                     <input
+                      onChange={(e) => {
+                        setV(e);
+                      }}
                       className="form-control form-control-sm"
                       defaultValue={vehicle.name}
                       name="name"
                       type="text"
-                      placeholder=".form-control-sm"
                     ></input>
                   </li>
                   <li
@@ -194,11 +193,13 @@ export default function Home() {
                   >
                     CRP No
                     <input
+                      onChange={(e) => {
+                        setV(e);
+                      }}
                       className="form-control form-control-sm"
                       defaultValue={vehicle.vehicle_crp_no}
                       name="vehicle_crp_no"
                       type="text"
-                      placeholder=".form-control-sm"
                     ></input>
                   </li>
                   <li
@@ -207,11 +208,13 @@ export default function Home() {
                   >
                     Registration No
                     <input
+                      onChange={(e) => {
+                        setV(e);
+                      }}
                       className="form-control form-control-sm"
                       defaultValue={vehicle.registration_no}
                       name="registration_no"
                       type="text"
-                      placeholder=".form-control-sm"
                     ></input>
                   </li>
                   <li
@@ -220,11 +223,13 @@ export default function Home() {
                   >
                     Year of Manufacture
                     <input
+                      onChange={(e) => {
+                        setV(e);
+                      }}
                       className="form-control form-control-sm"
                       defaultValue={vehicle.year_of_manufacture}
                       name="year_of_manufacture"
                       type="number"
-                      placeholder=".form-control-sm"
                     ></input>
                   </li>
                   <li
@@ -233,6 +238,9 @@ export default function Home() {
                   >
                     Date of Supply
                     <input
+                      onChange={(e) => {
+                        setV(e);
+                      }}
                       className="form-control form-control-sm"
                       name="date_of_supply"
                       defaultValue={
@@ -240,7 +248,6 @@ export default function Home() {
                         dateFormat(vehicle.date_of_supply, "yyyy-mm-dd")
                       }
                       type="date"
-                      placeholder=".form-control-sm"
                     ></input>
                   </li>
                   <li
@@ -249,6 +256,9 @@ export default function Home() {
                   >
                     Date of Service
                     <input
+                      onChange={(e) => {
+                        setV(e);
+                      }}
                       className="form-control form-control-sm"
                       name="date_of_service"
                       defaultValue={
@@ -256,7 +266,6 @@ export default function Home() {
                         dateFormat(vehicle.date_of_service, "yyyy-mm-dd")
                       }
                       type="date"
-                      placeholder=".form-control-sm"
                     ></input>
                   </li>
                   <li
@@ -288,6 +297,9 @@ export default function Home() {
                   >
                     Cost of Vehicle : <b> &#8377;</b>
                     <input
+                      onChange={(e) => {
+                        setV(e);
+                      }}
                       name="cost"
                       className="form-control form-control-sm"
                       defaultValue={vehicle.cost}
@@ -305,6 +317,9 @@ export default function Home() {
                   <br />
                   Body Type
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="body_type"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.body_type}
@@ -313,6 +328,9 @@ export default function Home() {
                   <br />
                   Front
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="front"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.front}
@@ -321,6 +339,9 @@ export default function Home() {
                   <br />
                   Number of Wheels
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="no_of_wheels"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.no_of_wheels}
@@ -329,6 +350,9 @@ export default function Home() {
                   <br />
                   Number of Cylinders
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="no_of_cylinders"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.no_of_cylinders}
@@ -337,6 +361,9 @@ export default function Home() {
                   <br />
                   Wheel Base
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="wheel_base"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.wheel_base}
@@ -345,6 +372,9 @@ export default function Home() {
                   <br />
                   Tappet Adjustment
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="tappet"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.tappet}
@@ -353,6 +383,9 @@ export default function Home() {
                   <br />
                   Circuit Breaker
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="circuit_breaker"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.circuit_breaker}
@@ -368,6 +401,9 @@ export default function Home() {
                   <br />
                   Engine Number
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="engine_no"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.engine_no}
@@ -376,6 +412,9 @@ export default function Home() {
                   <br />
                   Chasis Number
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="chasis_no"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.chasis_no}
@@ -384,6 +423,9 @@ export default function Home() {
                   <br />
                   Firing Order
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="firing_order"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.firing_order}
@@ -392,6 +434,9 @@ export default function Home() {
                   <br />
                   Horse Power
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="horse_power"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.horse_power}
@@ -400,6 +445,9 @@ export default function Home() {
                   <br />
                   Size of Sparkling Plug
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="size_of_sparkling_plug"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.size_of_sparkling_plug}
@@ -415,6 +463,9 @@ export default function Home() {
                   <br />
                   Battery No
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="battery_no"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.battery_no}
@@ -423,6 +474,9 @@ export default function Home() {
                   <br />
                   Battery Type
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="battery_type"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.battery_type}
@@ -431,6 +485,9 @@ export default function Home() {
                   <br />
                   Battery Volt
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="battery_volt"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.battery_volt}
@@ -444,6 +501,9 @@ export default function Home() {
                   <br />
                   Tyre Size
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="tyre_size"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.tyre_size}
@@ -452,6 +512,9 @@ export default function Home() {
                   <br />
                   Front Tire Pressure
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="front_tyre_pressure"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.front_tyre_pressure}
@@ -460,6 +523,9 @@ export default function Home() {
                   <br />
                   Rear Type Pressure
                   <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
                     name="rear_tyre_pressure"
                     className="form-control form-control-sm"
                     defaultValue={vehicle.rear_tyre_pressure}

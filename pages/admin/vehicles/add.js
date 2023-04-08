@@ -3,71 +3,12 @@ import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import Router from "next/router";
 import Link from "next/link";
 import "react-datalist-input/dist/styles.css";
 import Head from "next/head";
-import { Button, Row, Col } from "react-bootstrap";
-
-async function GetVehicles() {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function addNewVehicle(event) {
-  event.preventDefault();
-  console.log(event.target.vehicle);
-  var data = {
-    vehicle_crp_no: event.target.vehicle_crp_no.value,
-    name: event.target.name.value,
-    year_of_manufacture: event.target.year_of_manufacture.value,
-    no_of_wheels: event.target.no_of_wheels.value,
-    cost: event.target.cost.value,
-    date_of_supply: event.target.date_of_supply.value,
-    tappet: event.target.tappet.value,
-    circuit_breaker: event.target.circuit_breaker.value,
-    firing_order: event.target.firing_order.value,
-    wheel_base: event.target.wheel_base.value,
-    body_type: event.target.body_type.value,
-    front: event.target.front.value,
-    tyre_size: event.target.tyre_size.value,
-    front_tyre_pressure: event.target.front_tyre_pressure.value,
-    rear_tyre_pressure: event.target.rear_tyre_pressure.value,
-    battery_type: event.target.battery_type.value,
-    battery_volt: event.target.battery_volt.value,
-    battery_no: event.target.battery_no.value,
-    engine_first_overhaul: event.target.engine_first_overhaul.value,
-    distance_before_first_overhaul:
-      event.target.distance_before_first_overhaul.value,
-    date_of_first_overhaul: event.target.date_of_first_overhaul.value,
-    engine_second_overhaul: event.target.engine_second_overhaul.value,
-    distance_before_second_overhaul:
-      event.target.distance_before_second_overhaul.value,
-    date_of_second_overhaul: event.target.date_of_second_overhaul.value,
-    registration_no: event.target.registration_no.value,
-    vehicle_type: event.target.vehicle_type.value,
-    date_of_service: event.target.date_of_service.value,
-    chasis_no: event.target.chasis_no.value,
-    engine_no: event.target.engine_no.value,
-    no_of_cylinders: event.target.no_of_cylinders.value,
-    horse_power: event.target.horse_power.value,
-    size_of_sparkling_plug: event.target.size_of_sparkling_plug.value,
-  };
-
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/add",
-    withCredentials: true,
-    method: "POST",
-    data: data,
-  });
-  console.log(res.data);
-}
+import { Button, Row } from "react-bootstrap";
 
 async function CheckCrpNoinDB(crp_no) {
   var res = await axios({
@@ -82,17 +23,27 @@ async function CheckCrpNoinDB(crp_no) {
 }
 
 export default function Home() {
-  const [vehicles, setVehicles] = useState([]);
   const [errors, setErrors] = useState({ vehicle_crp_no: "" });
-  useEffect(() => {
-    GetVehicles().then((data) => {
-      setVehicles(data);
-    });
-  }, []);
+  const [vehicle, setVehicle] = useState({});
 
-  function OpenLink(link) {
-    console.log(link);
-    Router.push("/admin/vehicles/" + link);
+  function setV({ target: { name, value } }) {
+    setVehicle({ ...vehicle, [name]: value });
+  }
+
+  async function addNewVehicle(e) {
+    e.preventDefault();
+    setVehicle({
+      ...vehicle,
+      [e.target.vehicle_type.name]: e.target.vehicle_type.value,
+    });
+
+    const res = await axios({
+      url: "http://localhost:3000/vehicles/add",
+      withCredentials: true,
+      method: "POST",
+      data: vehicle,
+    });
+    window.location.href = "/admin/vehicles/";
   }
 
   function CheckCrpNo() {
@@ -107,6 +58,7 @@ export default function Home() {
               vehicle_crp_no: "CRP NO. ALREADY EXISTS",
             };
           });
+          return true;
         } else {
           setErrors((errors) => {
             return {
@@ -114,6 +66,7 @@ export default function Home() {
               vehicle_crp_no: "",
             };
           });
+          return false;
         }
       });
     }
@@ -143,6 +96,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="name"
                           className="form-control"
@@ -158,10 +112,14 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => {
+                            setV(e);
+                            CheckCrpNo(this);
+                          }}
                           type="number"
                           name="vehicle_crp_no"
                           className="form-control"
-                          onChange={() => CheckCrpNo(this)}
+                          // onChange={() => }
                         />
                         <p>{errors.vehicle_crp_no} </p>
                       </div>
@@ -173,6 +131,9 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <select
+                          onChange={(e) => {
+                            setV(e);
+                          }}
                           name="vehicle_type"
                           className="form-select"
                           aria-label="Default select example"
@@ -197,6 +158,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="registration_no"
                           className="form-control"
@@ -213,6 +175,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="number"
                           name="cost"
                           className="form-control"
@@ -229,6 +192,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="number"
                           name="no_of_wheels"
                           className="form-control"
@@ -245,6 +209,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="number"
                           name="year_of_manufacture"
                           className="form-control"
@@ -261,6 +226,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="date"
                           name="date_of_service"
                           className="form-control"
@@ -277,6 +243,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="chasis_no"
                           className="form-control"
@@ -293,6 +260,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="engine_no"
                           className="form-control"
@@ -309,6 +277,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="number"
                           name="no_of_cylinders"
                           className="form-control"
@@ -325,6 +294,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="number"
                           name="horse_power"
                           className="form-control"
@@ -341,6 +311,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="number"
                           name="size_of_sparkling_plug"
                           className="form-control"
@@ -357,6 +328,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="tappet"
                           className="form-control"
@@ -373,6 +345,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="circuit_breaker"
                           className="form-control"
@@ -389,6 +362,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="firing_order"
                           className="form-control"
@@ -405,6 +379,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="wheel_base"
                           className="form-control"
@@ -421,6 +396,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="string"
                           name="body_type"
                           className="form-control"
@@ -437,6 +413,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="front"
                           className="form-control"
@@ -452,6 +429,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="tyre_size"
                           className="form-control"
@@ -467,6 +445,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="front_tyre_pressure"
                           className="form-control"
@@ -482,6 +461,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="rear_tyre_pressure"
                           className="form-control"
@@ -497,6 +477,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="number"
                           name="battery_no"
                           className="form-control"
@@ -512,6 +493,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="battery_type"
                           className="form-control"
@@ -527,6 +509,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="text"
                           name="battery_volt"
                           className="form-control"
@@ -542,6 +525,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="date"
                           name="date_of_supply"
                           className="form-control"
@@ -557,6 +541,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="number"
                           name="engine_first_overhaul"
                           className="form-control"
@@ -572,6 +557,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="number"
                           name="distance_before_first_overhaul"
                           className="form-control"
@@ -587,6 +573,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="date"
                           name="date_of_first_overhaul"
                           className="form-control"
@@ -602,6 +589,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="number"
                           name="engine_second_overhaul"
                           className="form-control"
@@ -617,6 +605,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="number"
                           name="distance_before_second_overhaul"
                           className="form-control"
@@ -633,6 +622,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          onChange={(e) => setV(e)}
                           type="date"
                           name="date_of_second_overhaul"
                           className="form-control"
@@ -641,10 +631,7 @@ export default function Home() {
                     </div>
                     <div className="row mb-3">
                       <div className="text-center">
-                        <button
-                          type="submit"
-                          className="btn btn-primary w-100"
-                        >
+                        <button type="submit" className="btn btn-primary w-100">
                           Add Vehicle
                         </button>
                       </div>
