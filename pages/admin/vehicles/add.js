@@ -3,7 +3,7 @@ import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import "react-datalist-input/dist/styles.css";
@@ -26,17 +26,20 @@ export default function Home() {
   const [errors, setErrors] = useState({ vehicle_crp_no: "" });
   const [vehicle, setVehicle] = useState({});
 
+  useEffect(() => {
+    setVehicle({
+      ...vehicle,
+      vehicle_type: "TWOWHEELER",
+    });
+  }, []);
+
   function setV({ target: { name, value } }) {
     setVehicle({ ...vehicle, [name]: value });
   }
 
   async function addNewVehicle(e) {
     e.preventDefault();
-    setVehicle({
-      ...vehicle,
-      [e.target.vehicle_type.name]: e.target.vehicle_type.value,
-    });
-
+    console.log(vehicle);
     const res = await axios({
       url: "http://localhost:3000/vehicles/add",
       withCredentials: true,

@@ -453,6 +453,17 @@ export default function Home() {
                     defaultValue={vehicle.size_of_sparkling_plug}
                     type="number"
                   ></input>
+                  <br />
+                  Fuel Capacity (L)
+                  <input
+                    onChange={(e) => {
+                      setV(e);
+                    }}
+                    name="fuel_capacity"
+                    className="form-control form-control-sm"
+                    defaultValue={vehicle.size_of_sparkling_plug}
+                    type="number"
+                  ></input>
                 </div>
               </Col>
               <Col lg="4">

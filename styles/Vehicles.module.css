@@ -9,6 +9,14 @@
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
 }
 
+.odometer:hover{
+  cursor: pointer;
+  border: 1px solid #1eff00;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
 .odometer_heading {
   color: #333;
   font-size: 24px;
@@ -42,25 +50,32 @@
   font-weight: bold;
 }
 
-.fuel_box{
-    /* background-color: aqua; */
-    position: relative;
-    border: 1px solid black;
+.fuel_box {
+  /* background-color: aqua; */
+  position: relative;
+  border: 1px solid black;
 }
 
-.fuel_text{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.fuel_box:hover {
+  /* background-color: aqua; */
+  cursor: pointer;
+  position: relative;
+  border: 1px solid rgb(56, 255, 79);
 }
 
-.fuel_box .fuel_empty{
-    height: 90%;
-    background-color: rgb(255, 255, 255);
+.fuel_text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.fuel_box .fuel_percent{
-    height: 10%;
-    background-color: rgb(128, 255, 0);
+.fuel_box .fuel_empty {
+  height: 90%;
+  background-color: rgb(255, 255, 255);
+}
+
+.fuel_box .fuel_percent {
+  height: 10%;
+  background-color: #80ff00;
 }
