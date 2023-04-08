@@ -9,7 +9,7 @@ import axios from 'axios'
 import Router from 'next/router'
 
 async function Getoilbalancce() {
-    const res = await axios({url: "http://localhost:3000/oilbalance/", method: "GET", withCredentials: true});
+    const res = await axios({url: "http://localhost:3000/oilstockregister/", method: "GET", withCredentials: true});
     console.log(res.data);
     return res.data;
 }
@@ -24,7 +24,11 @@ export default function Home() {
     }, []);
     function OpenLink(link) {
         console.log(link);
-        Router.push('/admin/fuel/' + link);
+        Router.push('/admin/fuel/recieve/' + link);
+    }
+    function OpenLink1(link) {
+        console.log(link);
+        Router.push('/admin/fuel/issue/' + link);
     }
     return (
         <>
@@ -66,15 +70,18 @@ export default function Home() {
                         }>
                             {
                             oilbalance.map((oilbalances, index) => {
+                                {var index1=index+1}
                                 return (
                                     <tr key={
                                             index + 1
                                         }
+                                      
                                         onClick={
-                                            () => OpenLink(oilbalances.balance_id._id)
+                                          
+                                            () =>   oilbalances.recivedd==true?OpenLink(oilbalances._id):OpenLink1(oilbalances._id)
                                     }>
                                         <td>{
-                                           
+                                         index1
                                         }
                                         {/* {console.log(oilbalances.Date)} */}
                                         </td>
@@ -85,15 +92,15 @@ export default function Home() {
                                       
                                         <td>{
                                             
-                                             oilbalances.balance_id.Date
+                                             oilbalances.Date
 
 
                                         }</td>
                                         <td>{
-                                            oilbalances.issued==false?"":"YES"
+                                            oilbalances.issueed==false?"":"YES"
                                            
                                         }</td>
-                                        <td>{ oilbalances.issued==true?"":"YES"
+                                        <td>{ oilbalances.issueed==true?"":"YES"
                                         }</td>
                                        
                                     </tr>

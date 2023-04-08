@@ -25,7 +25,7 @@ async function GetVehicles() {
 
 async function GetlastEntry() {
   const res = await axios({
-    url: "http://localhost:3000/oilbalance/last",
+    url: "http://localhost:3000/oilstockregister/last1",
     method: "GET",
     withCredentials: true,
   });
@@ -36,7 +36,7 @@ async function GetlastEntry() {
 async function updatebalance(data) {
   console.log(data);
   const res = await axios({
-    url: "http://localhost:3000/oilbalance/add",
+    url: "http://localhost:3000/oilstockregister/add",
     withCredentials: true,
     method: "POST",
     data: data,
@@ -75,6 +75,23 @@ function unsucessful() {
     theme="light"
   />;
 }
+function greaterval()
+{
+  toast.error("Balance insuffiecient");
+  <ToastContainer
+    position="top-center"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="light"
+  />;
+
+} 
 async function updabalance(event) {}
 
 
@@ -87,7 +104,11 @@ export default function Home() {
   const [errors, setErrors] = useState({ vehicle_sl_no: "" });
   async function addFuel(event) {
     event.preventDefault();
-    var va = 1;
+    var va;
+    if(lastentry.balance==null)
+    va=0;
+    else
+    va=parseInt(lastentry.balance);
   
     // console.log(s)
     var data = {
@@ -96,83 +117,103 @@ export default function Home() {
       voucher_no: event.target.voucher.value,
       from_whom_received_to_whom_issued: event.target.from_whom.value,
       recived: event.target.recived.value,
-  
-      balance: event.target.recived.value,
+      recivedd:true,
+      issueed:false,
+      balance: va+parseInt(event.target.recived.value),
       signature_of_pol_havaldar: event.target.approvedha.value,
       signature_of_mto: event.target.approvedmt.value,
       remarks: event.target.remarks.value,
+      slno:lastentry.slno+1,
+      last:true,
     };
+    var data1 = {
+      last:false,
+     };
   
     console.log(data);
     const res = await axios({
-      url: "http://localhost:3000/oilstockregister/add",
+      url: "http://localhost:3000/oilstockregister/update/"+lastentry._id,
       withCredentials: true,
-      method: "POST",
-      data: data,
+      method: "PUT",
+      data: data1,
     });
+    
     console.log(res.data);
     if (res.status == 200) {
       sucessful();
-      var data1 = {
-        balance_id: res.data,
-        recived: true,
-        issued: false,
-        Date: event.target.date_of_travel.value,
-        balance:parseInt(lastentry.balance)+parseInt(event.target.recived.value)
-      };
+      
   
-      updatebalance(data1);
+      updatebalance(data);
     } else unsucessful();
   }
 
   async function allotFuel(event) {
-    var va = 1;
+    event.preventDefault();
+    var va;
+    if(lastentry.balance==null)
+    va=0;
+    else
+    va=parseInt(lastentry.balance);
   
     // console.log(s)
+    if(parseInt(lastentry.balance)< parseInt(event.target.issued.value))
+    {greaterval()}
+    else
+    {
     var data = {
       vehicle_id: event.target.vehicle_no.value,
       Date: event.target.date.value,
       voucher_no: event.target.voucher1.value,
       issued: event.target.issued.value,
-      balance: event.target.issued.value,
+      balance: va-parseInt(event.target.issued.value),
       signature_of_pol_havaldar: event.target.approvedha1.value,
       signature_of_mto: event.target.approvedmt1.value,
       remarks: event.target.remarks1.value,
+      slno:lastentry.slno+1,
+      last:true,
+      recivedd:false,
+      issueed:true,
     };
   
     console.log(data);
+    var data1 = {
+      last:false,
+     };
     const res = await axios({
-      url: "http://localhost:3000/oilstockregister/add",
+      url: "http://localhost:3000/oilstockregister/update/"+lastentry._id,
       withCredentials: true,
-      method: "POST",
-      data: data,
+      method: "PUT",
+      data: data1,
     });
+   
     console.log(res.data);
     if (res.status == 200) {
       sucessful();
-      var data1 = {
-        balance_id: res.data,
-        recived: true,
-        issued: false,
-        Date: event.target.date_of_travel.value,
-        balance:parseInt(lastentry.balance)-parseInt(event.target.recived.value)
-      };
+    
   
-      updatebalance(data1);
+      updatebalance(data);
     } else unsucessful();
-  }
+  }}
   useEffect(() => {
     GetVehicles().then((data) => {
       setVehicles(data);
     });
     GetlastEntry().then((data) => {
       setlasteENtry(data);
+      console.log(lastentry.balance);
     });
   }, []);
-
+  const disablePastDate = () => {
+    const today = new Date();
+    const dd = String(today.getDate() + 1).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const yyyy = today.getFullYear();
+    return yyyy + "-" + mm + "-" + dd;
+};
   return (
     <>
-      <title>Add Duty</title>
+     
+      <title>Add Fuel</title>
 
       <main className={styles.main}>
         <Header />
@@ -214,6 +255,7 @@ export default function Home() {
                       <div className="col-sm-7">
                         <input
                           type="date"
+                          min={disablePastDate()}
                           name="date_of_travel"
                           className="form-control"
                         />
@@ -395,6 +437,7 @@ export default function Home() {
                         <input
                           type="date"
                           name="date"
+                          min={disablePastDate()}
                           className="form-control"
                         />
                       </div>

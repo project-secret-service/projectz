@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import Head from "next/head"
 import styles from "@/styles/Home.module.css"
-import Header from "../../components/Header"
-import SideBar from '../../components/Sidebar'
+import Header from "../../../components/Header"
+import SideBar from '../../../components/Sidebar'
 import Link from "next/link"
 import { Button } from "react-bootstrap"
 import axios from "axios"
@@ -74,7 +74,7 @@ const Post = () => {
           <div id="printableArea" ref={componentRef} className="p-5">
          
             <div style={{fontSize:"4rem",marginTop: "1rem",marginBottom:"2rem",marginLeft: 10,marginRight: 10,}}>
-              <span>Oil DETAILS</span>
+              <span>Oil DETAILS(RECIVED)</span>
               <hr
                 style={{
                   color: "#000000",
@@ -99,52 +99,43 @@ const Post = () => {
                     <td>Recived:</td>
                     <td>{oil.recived}</td>
                   </tr>
+                
                   <tr>
                     <th scope="row">3.</th>
-                    <td>Issued:</td>
-                    <td>{oil.issued}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4.</th>
                     <td>Balance</td>
                     <td>{oil.balance}</td>
                   </tr>
                   <tr>
-                    <th scope="row">5.</th>
+                    <th scope="row">4.</th>
                     <td>Name of Store:</td>
                     <td>{oil.Name_of_store}</td>
                   </tr>
                   <tr>
-                    <th scope="row">6.</th>
-                    <td>From WHom recived:</td>
+                    <th scope="row">5.</th>
+                    <td>From Whom recived:</td>
                     <td>{oil.from_whom_received_to_whom_issued}</td>
                   </tr>
                   <tr>
-                    <th scope="row">7.</th>
+                    <th scope="row">6.</th>
                     <td>Remarks:</td>
                     <td>{oil.remarks}</td>
                   </tr>
                   <tr>
-                    <th scope="row">8.</th>
+                    <th scope="row">7.</th>
                     <td>Signature of mto:</td>
                     <td>{oil.signature_of_mto==true?"YES":"NO"}</td>
                   </tr>
                   <tr>
-                    <th scope="row">9.</th>
+                    <th scope="row">8.</th>
                     <td>Signature of havaldar:</td>
-                    <td>{}</td>
+                    <td>{oil.signature_of_pol_havaldar==true?"YES":"NO"}</td>
                   </tr>
                   <tr>
-                    <th scope="row">10.</th>
-                    <td>Indent No:</td>
-                    <td>{}</td>
+                    <th scope="row">9.</th>
+                    <td>Voucher No:</td>
+                    <td>{oil.voucher_no}</td>
                   </tr>
-                  <tr>
-                    <th scope="row">11.</th>
-                    <td>Approved By Mto:</td>
-
-                    <td>{}</td>
-                  </tr>
+                  
                 </tbody>
               }
             </table>
