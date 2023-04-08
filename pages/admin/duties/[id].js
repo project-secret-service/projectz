@@ -11,8 +11,6 @@ import ReactToPrint from 'react-to-print';
 import { AiFillPrinter} from "react-icons/ai";
 import { IconContext } from "react-icons";
 
-//const componentRef=useRef()
-
 async function GetUserDetails(id){
   const res = await axios({
     url:"http://localhost:3000/duty_log/"+id,

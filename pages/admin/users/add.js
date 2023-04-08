@@ -10,7 +10,7 @@ import axios from "axios";
 import Router from "next/router";
 import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
-import { Button,Row } from 'react-bootstrap';
+import { Button, Row } from 'react-bootstrap';
 import Link from "next/link";
 
 async function GetUsers() {
@@ -113,169 +113,169 @@ export default function Home() {
 
         <main id="main" className="col-lg-11 main mt-0">
           <Row>
-          <div className="col-lg-8">
-            <div className="card">
-              <div className="card-body">
-                <h1>Add New User</h1>
-                <hr
-                  style={{
-                    color: "#000000",
-                    backgroundColor: "#000000",
-                    height: 1.5,
-                    padding: ".2rem",
-                  }}
-                />
+            <div className="col-lg-8">
+              <div className="card">
+                <div className="card-body">
+                  <h1>Add New User</h1>
+                  <hr
+                    style={{
+                      color: "#000000",
+                      backgroundColor: "#000000",
+                      height: 1.5,
+                      padding: ".2rem",
+                    }}
+                  />
 
-                <form onSubmit={addNewUser}>
-                  <div className={pic_styles.container}>
-                    <div className={pic_styles.pictureContainer}>
-                      <div className={pic_styles.picture}>
-                        <input
-                          name="profile_pic"
-                          type="file"
-                          id="image_input"
-                          accept="image/png , image/jpg"
-                        />
-                        <div id="display_image"></div>
+                  <form onSubmit={addNewUser}>
+                    <div className={pic_styles.container}>
+                      <div className={pic_styles.pictureContainer}>
+                        <div className={pic_styles.picture}>
+                          <input
+                            name="profile_pic"
+                            type="file"
+                            id="image_input"
+                            accept="image/png , image/jpg"
+                          />
+                          <div id="display_image"></div>
+                        </div>
+                        <h4>Choose Picture</h4>
                       </div>
-                      <h4>Choose Picture</h4>
                     </div>
-                  </div>
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Name :
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="text"
-                        name="username"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      User Registration No :
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="text"
-                        name="user_registration_no"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Password:
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="password"
-                        name="password"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Contact no:
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="number"
-                        name="contact_no"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Email Id:
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="email"
-                        name="email_id"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Rank:
-                    </label>
-                    <div className="col-sm-7">
-                      <input type="text" name="rank" className="form-control" />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label className="col-sm-5 col-form-label">
-                      Employee Role :
-                    </label>
-                    <div className="col-sm-7">
-                      <select
-                        name="vehicle_type"
-                        className="form-select"
-                        aria-label="Default select example"
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
                       >
-                        <option value="">--Please choose an option--</option>
-                        <option value="Admin">Admin</option>
-                        <option value="FI">Fuel Incharge</option>
-                        <option value="WI">WorkShop Incharge</option>
-                      </select>
+                        Name :
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="text"
+                          name="username"
+                          className="form-control"
+                        />
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <div className="col-sm-10">
-                      <button
-                        type="submit"
-                        className="btn btn-success"
-                        style={{ float: "right" }}
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
                       >
-                        Add User
-                      </button>
+                        User Registration No :
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="text"
+                          name="user_registration_no"
+                          className="form-control"
+                        />
+                      </div>
                     </div>
-                  </div>
-                </form>
+
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        Password:
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="password"
+                          name="password"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        Contact no:
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="number"
+                          name="contact_no"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        Email Id:
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          type="email"
+                          name="email_id"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        Rank:
+                      </label>
+                      <div className="col-sm-7">
+                        <input type="text" name="rank" className="form-control" />
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label className="col-sm-5 col-form-label">
+                        Employee Role :
+                      </label>
+                      <div className="col-sm-7">
+                        <select
+                          name="vehicle_type"
+                          className="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option value="">--Please choose an option--</option>
+                          <option value="Admin">Admin</option>
+                          <option value="FI">Fuel Incharge</option>
+                          <option value="WI">WorkShop Incharge</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <div className="col-sm-10">
+                        <button
+                          type="submit"
+                          className="btn btn-success"
+                          style={{ float: "right" }}
+                        >
+                          Add User
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="col-lg-2 card p-4 m-1"  style={{maxHeight:"10vh"}}>
+            <div className="col-lg-2 card p-4 m-1" style={{ maxHeight: "10vh" }}>
               <Link href={"/admin/users"}>
                 <Button className="w-100 mb-1 btn btn-info">Users List</Button>
               </Link>
             </div>
           </Row>
-          <button 
-                  className="btn btn-primary"
-                  style={{ float: "left"}}                
-                  onClick={() => Router.back()}>Go Back</button>
+          <button
+            className="btn btn-primary"
+            style={{ float: "left" }}
+            onClick={() => Router.back()}>Go Back</button>
         </main>
       </main>
       <Scripts />
