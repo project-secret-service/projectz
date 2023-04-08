@@ -13,41 +13,35 @@ import { IconContext } from "react-icons";
 
 async function GetUserDetails(id){
   const res = await axios({
-    url:"http://localhost:3000/duty_log/"+id,
-    withCredentials:true,
-    method:"GET"
+    url: "http://localhost:3000/duty_log/" + id,
+    withCredentials: true,
+    method: "GET",
   });
   return res.data;
 }
 
 function printDiv(divName) {
-
-if (typeof document !== 'undefined') {
-  if(document.getElementById(divName) != null){
-    var printContents=document.getElementById(divName).innerHTML;
+  if (typeof document !== "undefined") {
+    if (document.getElementById(divName) != null) {
+      var printContents = document.getElementById(divName).innerHTML;
+    }
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+  }
 }
-
-  var originalContents = document.body.innerHTML;
-
-  document.body.innerHTML = printContents;
-
-  window.print();
-
-  document.body.innerHTML = originalContents;
-}}
 const Post = () => {
   
   const [duty,setDuty] = useState({});
   const router = useRouter();
-  const { id } = router.query
-  useEffect(()=>{
-    if(!router.isReady) return;
-    const {id} = router.query
-    GetUserDetails(id).then((data)=>{
+  const { id } = router.query;
+  useEffect(() => {
+    if (!router.isReady) return;
+    const { id } = router.query;
+    GetUserDetails(id).then((data) => {
       setDuty(data);
-      //console.data
       console.log(data);
-      
     });
   }, [router.isReady]);
   const componentRef = useRef();
@@ -79,19 +73,19 @@ const Post = () => {
          
             <div style={{fontSize:"4rem",marginTop: "1rem",marginBottom:"2rem",marginLeft: 10,marginRight: 10,}}>
               <span>DUTY DETAILS</span>
-              <hr  style={{
-                color: '#000000',
-                backgroundColor: '#000000',
-                height: 2.5,                
-                }}/>
+              <hr
+                style={{
+                  color: "#000000",
+                  backgroundColor: "#000000",
+                  height: 2.5,
+                }}
+              />
             </div>
-          
-                               
+
             <table class="table">
-            {
-                  
-              <tbody>
-                <tr>
+              {
+                <tbody>
+                  <tr>
                     <th scope="row">1.</th>
                     <td>Vehicle no:</td>
                     
@@ -101,63 +95,62 @@ const Post = () => {
                 <tr>
                     <th scope="row">2.</th>
                     <td>Date:</td>
-                    <td>{(duty.date)}</td>
-                </tr>
-                <tr>
+                    <td>{duty.date}</td>
+                  </tr>
+                  <tr>
                     <th scope="row">3.</th>
                     <td>From:</td>
                     <td>{duty.from}</td>
-                </tr>
-                <tr>
+                  </tr>
+                  <tr>
                     <th scope="row">4.</th>
                     <td>To:</td>
                     <td>{duty.to}</td>
-                </tr>
-                <tr>
+                  </tr>
+                  <tr>
                     <th scope="row">5.</th>
                     <td>Out Time:</td>
                     <td>{duty.out_time}</td>
-                </tr>
-                <tr>
+                  </tr>
+                  <tr>
                     <th scope="row">6.</th>
                     <td>In Time:</td>
                     <td>{duty.in_time}</td>
-                </tr>
-                <tr>
+                  </tr>
+                  <tr>
                     <th scope="row">7.</th>
                     <td>Meter Count:</td>
                     <td>{duty.meter_count}</td>
-                </tr>
-                <tr>
+                  </tr>
+                  <tr>
                     <th scope="row">8.</th>
                     <td>Km Run:</td>
                     <td>{duty.km_run}</td>
-                </tr>
-                <tr>
+                  </tr>
+                  <tr>
                     <th scope="row">9.</th>
                     <td>Purpose:</td>
                     <td>{duty.purpose}</td>
-                </tr>
-                <tr>
+                  </tr>
+                  <tr>
                     <th scope="row">10.</th>
                     <td>Indent No:</td>
                     <td>{duty.indent_no}</td>
-                </tr>
-                <tr>
+                  </tr>
+                  <tr>
                     <th scope="row">11.</th>
                     <td>Approved By Mto:</td>
-                   
-                    <td>{(duty.approved_by_mto==true)?"Yes":"NO"}</td>
-                </tr>
-                                                    
-              </tbody>
-                }
+
+                    <td>{duty.approved_by_mto == true ? "Yes" : "NO"}</td>
+                  </tr>
+                </tbody>
+              }
             </table>
           
           </div>  
           </div>  
         </main> 
     </>
-  )  
-}
-export default Post
+  );
+};
+export default Post;

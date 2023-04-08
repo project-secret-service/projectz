@@ -1,9 +1,9 @@
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -107,32 +107,28 @@ a {
 }
 
 .c {
-	height: 200vh;
-	width: 960px;
-	margin: auto;
-	max-width: 95%;
+  height: 200vh;
+  width: 960px;
+  margin: auto;
+  max-width: 95%;
 }
 
-
-::-webkit-scrollbar-track
-{
-	border: 5px solid white;
-	background-color: #b2bec3;
+::-webkit-scrollbar-track {
+  border: 5px solid white;
+  background-color: #b2bec3;
 }
 
-::-webkit-scrollbar
-{
-	width: 6px;
-	background-color: #dfe6e9;
+::-webkit-scrollbar {
+  width: 6px;
+  background-color: #dfe6e9;
 }
 
-::-webkit-scrollbar-thumb
-{
-	background-color: #a8abff;
-	border-radius: 10px;
+::-webkit-scrollbar-thumb {
+  background-color: #a8abff;
+  border-radius: 10px;
 }
-@media print{
-  .Print{
-  display:none;
+@media print {
+  .Print {
+    display: none;
   }
-  }
+}

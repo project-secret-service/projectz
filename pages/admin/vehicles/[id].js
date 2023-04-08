@@ -19,21 +19,109 @@ async function GetVehicle(id) {
     method: "GET",
     withCredentials: true,
   });
-  console.log(res.data);
   return res.data;
 }
 
+function setFuel(fuel, fuelCapacity) {
+  if (fuel <= fuelCapacity) {
+    let fuelPercentage = ((fuel / fuelCapacity) * 100).toFixed(2);
+    const fuelPercent = document.getElementById("fuel_percentage");
+    fuelPercent.innerText = fuelPercentage + "%";
+    const fuelDetails = document.getElementById("fuel_details");
+    fuelDetails.innerText = fuel + "L/" + fuelCapacity + "L";
+    document.querySelectorAll(".fuel-box")[0].children[1].style.height =
+      100 - fuelPercentage + "%";
+    document.querySelectorAll(".fuel-box")[0].children[2].style.height =
+      fuelPercentage + "%";
+    if (fuelPercentage <= 20) {
+      document.querySelectorAll(
+        ".fuel-box"
+      )[0].children[2].style.backgroundColor = "red";
+    } else {
+      document.querySelectorAll(
+        ".fuel-box"
+      )[0].children[2].style.backgroundColor = "#80ff00";
+    }
+  }
+}
+
+function setKms(km) {
+  const odometerDigits = document.querySelectorAll(".odometer-digit");
+  const odometerValue = document.querySelector(".odometer-value");
+  let totalDistance = km;
+  const digits = totalDistance.toString().padStart(7, "0").split("");
+  odometerDigits.forEach((digit, index) => {
+    digit.innerText = digits[index];
+  });
+}
 export default function Home() {
   const [vehicle, setVehicle] = useState({});
+  const [fuelInput, setfuelInput] = useState(false);
+  const [fuelLimitError, setFuelLimitError] = useState(false);
+  const [kmLimitError, setKmLimitError] = useState(false);
+  const [kmRun, setKmRun] = useState(false);
+
   const router = useRouter();
+
+  function handleFuelChange({ target: { name, value } }) {
+    if (parseFloat(value) > vehicle.fuel_capacity) {
+      setFuelLimitError(true);
+    } else {
+      setFuelLimitError(false);
+    }
+  }
+
+  function handleKmChange({ target: { name, value } }) {
+    if (parseFloat(value) < vehicle.total_kilo_meter) {
+      setKmLimitError(true);
+    } else {
+      setKmLimitError(false);
+    }
+  }
+
+  function showFuelLog() {
+    router.push("/admin/vehicles/" + vehicle._id + "/fuel_log");
+  }
 
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
     GetVehicle(id).then((data) => {
       setVehicle(data);
+      setKms(data.total_kilo_meter);
+      setFuel(data.fuel, data.fuel_capacity);
     });
   }, [router.isReady]);
+
+  async function updateKmRun() {
+    let newKM = document.getElementById("km_run").value;
+    if (newKM > vehicle.total_kilo_meter) {
+      const res = await axios({
+        url: "http://localhost:3000/vehicles/" + vehicle._id + "/update_km_run",
+        method: "POST",
+        withCredentials: true,
+        data: {
+          km: newKM,
+        },
+      });
+      setKms(newKM);
+      setKmRun(false);
+    }
+  }
+
+  async function updateFuel() {
+    let newFuel = document.getElementById("new_fuel").value;
+    const res = await axios({
+      url: "http://localhost:3000/vehicles/" + vehicle._id + "/fuel_update",
+      method: "POST",
+      withCredentials: true,
+      data: {
+        fuel: newFuel,
+      },
+    });
+    setFuel(parseFloat(newFuel), vehicle.fuel_capacity);
+    setfuelInput(false);
+  }
   return (
     <>
       <Head title="Vehicles List" />
@@ -43,7 +131,7 @@ export default function Home() {
         <main id="main" className="col-lg-11 main mt-0">
           <Row>
             <Col lg="4" className="card m-2 p-5 text-center">
-              <div style={{ height: "40vh" }}>
+              <div>
                 <Carousel slide={false}>
                   {vehicle.front_view && (
                     <Carousel.Item>
@@ -131,14 +219,14 @@ export default function Home() {
               </div>
             </Col>
             <Col lg="7" className="card m-2 p-2">
-              <div class="list-group">
+              <div className="list-group">
                 <Link
                   href={"/admin/vehicles"}
                   style={{ textDecoration: "none" }}
                 >
                   <li
                     href="#"
-                    class="list-group-item list-group-item-action"
+                    className="list-group-item list-group-item-action"
                     style={{
                       cursor: "pointer",
                       textAlign: "center",
@@ -150,10 +238,10 @@ export default function Home() {
                 </Link>
 
                 <br />
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Year of Manufacture : <b>{vehicle.year_of_manufacture}</b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Date of Supply :{" "}
                   <b>
                     {vehicle.date_of_supply &&
@@ -163,7 +251,7 @@ export default function Home() {
                       )}
                   </b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Date of Service :{" "}
                   <b>
                     {dateFormat(
@@ -172,22 +260,174 @@ export default function Home() {
                     )}
                   </b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Vehicle Type : <b>{vehicle.vehicle_type}</b>
                 </li>
-                <li href="#" class="list-group-item list-group-item-action">
+                <li href="#" className="list-group-item list-group-item-action">
                   Cost of Vehicle :{" "}
                   <b> &#8377; {indianNumberFormat.format(vehicle.cost)}</b>
                 </li>
               </div>
+
+              <div className="p-2">
+                <Row>
+                  <div
+                    className={`${vehicle_styles.odometer} p-2 text-center col-9 m-1`}
+                    onClick={() => {
+                      router.push('/admin/vehicles/'+vehicle._id+'/km_run');
+                    }}
+                  >
+                    <h4 className={`${vehicle_styles.odometer_heading} mb-4`}>
+                      Total Distance Traveled
+                    </h4>
+                    <div
+                      className={`${vehicle_styles.odometer_value} odometer-value`}
+                    >
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                      <span
+                        className={`${vehicle_styles.odometer_digit} odometer-digit`}
+                      >
+                        0
+                      </span>
+                    </div>
+                    <div className={vehicle_styles.odometer_label}>
+                      <span className={vehicle_styles.odometer_text}>
+                        Kilometeres
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    className={`${vehicle_styles.fuel_box} col-2 p-2 m-1 fuel-box text-center`}
+                    onClick={showFuelLog}
+                  >
+                    <div className={vehicle_styles.fuel_text}>
+                      Fuel
+                      <p id="fuel_percentage">50%</p>
+                      <p id="fuel_details"></p>
+                    </div>
+                    <div className={vehicle_styles.fuel_empty}> </div>
+                    <div className={vehicle_styles.fuel_percent}> </div>
+                  </div>
+                </Row>
+              </div>
+
               <div className="m-3">
                 <Link href={"/admin/vehicles/" + vehicle._id + "/update"}>
                   {" "}
-                  <Button className="btn-success m-1">UPDATE VEHICLE</Button>
+                  <Button className="btn-primary m-1">UPDATE VEHICLE</Button>
                 </Link>
                 <Link href={"/admin/vehicles/" + vehicle._id + "/delete"}>
                   <Button className="btn-danger m-1">DELETE VEHICLE</Button>
                 </Link>
+                {/* <Link href={"/admin/vehicles/" + vehicle._id + "/delete"}> */}
+
+                {!fuelInput && (
+                  <Button
+                    className="btn-success m-1"
+                    onClick={() => {
+                      setfuelInput(true);
+                    }}
+                  >
+                    UPDATE FUEL
+                  </Button>
+                )}
+                {!kmRun && (
+                  <Button
+                    className="btn-dark m-1"
+                    onClick={() => {
+                      setKmRun(true);
+                    }}
+                  >
+                    UPDATE KM RUN
+                  </Button>
+                )}
+                {fuelInput && (
+                  <>
+                    <hr />
+                    <div className="row mb-3 d-flex col-12">
+                      <div className="">
+                        <input
+                          onChange={(e) => {
+                            handleFuelChange(e);
+                          }}
+                          id="new_fuel"
+                          type="number"
+                          name="name"
+                          className="form-control text-center"
+                        />
+                      </div>
+                      <br />
+                      <br />
+                      <Button className="btn-success" onClick={updateFuel}>
+                        UPDATE FUEL
+                      </Button>
+                    </div>
+                  </>
+                )}
+                {fuelLimitError && (
+                  <div className="text-center" style={{ color: "red" }}>
+                    Fuel Limit : {vehicle.fuel_capacity} L
+                  </div>
+                )}
+
+                {kmRun && (
+                  <>
+                    <hr />
+                    <div className="row mb-3 d-flex col-12">
+                      <div className="">
+                        <input
+                          onChange={(e) => {
+                            handleKmChange(e);
+                          }}
+                          defaultValue={vehicle.total_kilo_meter}
+                          id="km_run"
+                          type="number"
+                          name="name"
+                          className="form-control text-center"
+                        />
+                      </div>
+                      <br />
+                      <br />
+                      <Button className="btn-dark" onClick={updateKmRun}>
+                        UPDATE KM RUN
+                      </Button>
+                    </div>
+                  </>
+                )}
+                {kmLimitError && (
+                  <div className="text-center" style={{ color: "red" }}>
+                    Cannot Be Less Than : {vehicle.total_kilo_meter} Km
+                  </div>
+                )}
               </div>
             </Col>
           </Row>

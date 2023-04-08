@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Router from "next/router";
-import { Button,Row } from "react-bootstrap";
+import { Button, Row } from "react-bootstrap";
 
 async function GetVehicles() {
   const res = await axios({
@@ -28,7 +28,6 @@ export default function Home() {
   useEffect(() => {
     GetVehicles().then((data) => {
       data.sort((a, b) => a.vehicle_sl_no - b.vehicle_sl_no);
-      console.table(data);
       setVehicles(data);
     });
   }, []);
@@ -60,7 +59,6 @@ export default function Home() {
     }
   }
   function OpenLink(link) {
-    console.log(link);
     Router.push("/admin/vehicles/" + link);
   }
   return (

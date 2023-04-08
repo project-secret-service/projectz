@@ -7,7 +7,6 @@ import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Router from "next/router";
-import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Button, Row } from 'react-bootstrap';
@@ -36,6 +35,15 @@ async function createDefectMemo(event) {
     condition_of_engine: event.target.condition_of_engine.value,
     signature: event.target.signature.value,
     designation: event.target.designation.value,
+    vehicle_no: event.target.vehicle_no.value,
+    vehicle_model: event.target.vehicle_model.value,
+    vehicle_make: event.target.vehicle_make.value,
+    vehicle_type: event.target.vehicle_type.value,
+    date: event.target.date.value,
+    kilometers_run: event.target.kilometers_run.value,
+    condition_of_engine: event.target.condition_of_engine.value,
+    signature: event.target.signature.value,
+    designation: event.target.designation.value,
     defect: event.target.defect.value,
     defect_reason: event.target.defect_reason.value,
     suggestion: event.target.suggestion.value,
@@ -51,6 +59,7 @@ async function createDefectMemo(event) {
     url: "http://localhost:3000/defectmemos/add",
     withCredentials: true,
     method: "POST",
+
 
     data: data,
   });
@@ -426,6 +435,8 @@ export default function Home() {
                   </Scrollbars>
                 </div>
               </div>
+            </div>
+          </Row>
             </div>
           </Row>
         </main>
