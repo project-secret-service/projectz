@@ -9,7 +9,7 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import dynamic from "next/dynamic";
 
-const MapWithNoSSR = dynamic(async() =>import("./Map"), {
+const MapWithNoSSR = dynamic(() => import("../../../nossr/Map"), {
   ssr: false,
 });
 

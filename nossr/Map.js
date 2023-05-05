@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import L from "leaflet";
@@ -40,13 +41,6 @@ export default function Map() {
   
 
   useEffect(() => {
-    // const socket = io("https://c741-2409-4064-2d1e-147a-a4e4-79df-2737-7da4.ngrok-free.app/",{transports: ['websocket']});
-    // socket.on("connect", () => {
-    //   console.log("connected");
-    // }); 
-    // socket.on("location", (data) => {
-    //   console.log(data);
-    // });
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         setGeoData({
