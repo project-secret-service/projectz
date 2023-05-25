@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Router from "next/router";
 import "react-datalist-input/dist/styles.css";
-import { Scrollbars } from 'react-custom-scrollbars';
 import { Button, Row } from 'react-bootstrap';
 import Link from "next/link";
 import dateFormat from "dateformat";
