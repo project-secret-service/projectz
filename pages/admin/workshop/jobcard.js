@@ -6,184 +6,112 @@ import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Link from "next/link";
 import Router from "next/router";
-import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
-import { Button, Row } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Scrollbars } from 'react-custom-scrollbars';
+import { Button, Row } from 'react-bootstrap';
+import Link from "next/link";
+import dateFormat from "dateformat";
 
-async function GetIssues() {
+
+
+async function GetMemos() {
   const res = await axios({
-    url: "http://localhost:3000/inventory/items",
+    url: "http://localhost:3000/job_card/",
     method: "GET",
     withCredentials: true,
   });
   return res.data;
 }
 
+async function createJobCard(event) {
+  event.preventDefault();
+  var data = {
+    vehicle_no: event.target.vehicle_no.value,
+    vehicle_model: event.target.vehicle_model.value,
+    vehicle_make: event.target.vehicle_make.value,
+    vehicle_type: event.target.vehicle_type.value,
+    date: event.target.date.value,
+    kilometers_run: event.target.kilometers_run.value,
+    condition_of_engine: event.target.condition_of_engine.value,
+    signature: event.target.signature.value,
+    designation: event.target.designation.value,
+    vehicle_no: event.target.vehicle_no.value,
+    vehicle_model: event.target.vehicle_model.value,
+    vehicle_make: event.target.vehicle_make.value,
+    vehicle_type: event.target.vehicle_type.value,
+    date: event.target.date.value,
+    kilometers_run: event.target.kilometers_run.value,
+    condition_of_engine: event.target.condition_of_engine.value,
+    signature: event.target.signature.value,
+    designation: event.target.designation.value,
+    defect: event.target.defect.value,
+    defect_reason: event.target.defect_reason.value,
+    suggestion: event.target.suggestion.value,
+    required_parts: event.target.required_parts.value,
+    availability_of_parts: event.target.availability_of_parts.value,
+    execution_report: event.target.execution_report.value,
+    remarks: event.target.remarks.value
+  };
+
+  console.log(data);
+
+  const res = await axios({
+    url: "http://localhost:3000/defectmemos/add",
+    withCredentials: true,
+    method: "POST",
+
+
+    data: data,
+  });
+  console.log(res.data);
+}
+
 export default function Home() {
-  const [Fields, setFields] = useState([
-    {
-      name: "",
-      rate: "",
-      quantity: "",
-      amount: "",
-      description: "",
-      items: [],
-    },
-  ]);
-
-  const [error, setError] = useState([]);
-  const [arrayOfItemIds, setArrayOfItemIds] = useState([]);
-
-  const [arrayOfFields, setArrayOfFields] = useState([1]);
-
-  const [Items, setItems] = useState([]);
+  const [memos, setMemos] = useState([]);
   useEffect(() => {
-    GetIssues().then((data) => {
-      setItems(data);
+    GetMemos().then((data) => {
+      setMemos(data);
     });
   }, []);
-
-  const handleformChange = (event, index) => {
-      document.getElementsByName("amount" + (index + 1))[0].value =
-      document.getElementsByName("rate" + (index + 1))[0].value *
-      document.getElementsByName("quantity" + (index + 1))[0].value;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const l = arrayOfFields.length;
-    // console.log(l);
-    let items = [];
-    for (let i = 1; i <= l; i++) {
-      let name = document.getElementsByName("name" + i)[0].value;
-      let rate = document.getElementsByName("rate" + i)[0].value;
-      let quantity = document.getElementsByName("quantity" + i)[0].value;
-      let amount = document.getElementsByName("amount" + i)[0].value;
-      let description = document.getElementsByName("description" + i)[0].value;
-      let item = {
-        name: name,
-        rate: rate,
-        quantity: quantity,
-        amount: amount,
-        description: description,
-      };
-      items.push(item);
-    }
-    // console.log(items);
-    setFields({ items: items });
-    IssueItems(e, items);
-  };
-
-  async function IssueItems(event, items) {
-    event.preventDefault();
-    var data = {
-      recieveVoucherNo: event.target.recieve_voucher_no.value,
-      date: event.target.date.value,
-      station: event.target.station.value,
-      items: items,
-    };
-    console.log(data);
-    const res = await axios({
-      url: "http://localhost:3000/inventory/issue/add",
-      method: "POST",
-      withCredentials: true,
-      data: data,
-    });
-    console.log(res.data);
-  };
-
-  function checkId({ target: { name, value } }) {
-    // if (arrayOfItemIds.includes(value)) {
-    //   setError("Duplicate items are ordered please correct it");
-    // } else {
-    //   setArrayOfItemIds([...arrayOfItemIds, value]);
-    // }
-
-    // console.log(value);
-    var ids = new Set();
-    for (let i = 0; i < arrayOfFields.length; i++) {
-      var id = document.getElementsByName("name" + (i + 1))[0].value;
-      ids.add(id);
-    }
-    if (ids.size === arrayOfFields.length) {
-      setError("");
-    } else {
-      setError("Contains Duplicate Items");
-    }
-  };
-  const addFields = () => {
-    setArrayOfFields([...arrayOfFields, 1]);
-    // console.log(arrayOfFields);
-  };
-
-  const removeField = (index) => {
-    const values = [...arrayOfFields];
-    // console.log(values);
-    values.splice(index, 1);
-    setArrayOfFields(values);
-  };
-  
+  function OpenLink(link) {
+    console.log(link);
+    Router.push('/admin/workshop/' + link);
+  }
   return (
     <>
-      <title>Job Card</title>
+      <Head>
+        <title>Defect Memo</title>
+        <meta name="description" content="Generated by create next app" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <main className={styles.main}>
         <Header />
         <SideBar />
-
-        <main id="main" className="col-lg-11 main mt-0">
+        <main id="main" className="col-lg-10 main mt-0">
           <Row>
-            <form onSubmit={handleSubmit}>
-              <div>
-                <div className="col-lg-8">
-                  <div className="card">
-                    <div className="card-body">
-                      <h1>Job Card</h1>
-                      <div className="row mb-3">
-                        <label
-                          htmlFor="inputText"
-                          className="col-sm-5 col-form-label"
-                        >
-                          SL NO :
-                        </label>
-                        <div className="col-sm-7">
-                          <input
-                            type="number"
-                            name="name"
-                            className="form-control"
-                            placeholder="25"
-                            value="1"
-                            readOnly
-                          />
-                        </div>
-                      </div>
-                      <div className="row mb-3">
-                        <label
-                          htmlFor="inputText"
-                          className="col-sm-5 col-form-label"
-                        >
-                          Issue Voucher NO :
-                        </label>
-                        <div className="col-sm-7">
-                          <input
-                            type="string"
-                            name="recieve_voucher_no"
-                            className="form-control"
-                          />
-                        </div>
-                      </div>
+            <div className="col-lg-7">
+              <div className="card">
+                <div className="card-body">
+                  <h1>Create Defect Memo</h1>
+                  <hr
+                    style={{
+                      color: "#000000",
+                      backgroundColor: "#000000",
+                      height: 1.5,
+                      padding: ".1rem",
+                    }}
+                  />
+                    <form onSubmit={createDefectMemo}>
 
                       <div className="row mb-3">
                         <label
                           htmlFor="inputText"
                           className="col-sm-5 col-form-label"
                         >
-                          Date:
+                          Date :
                         </label>
-                        <div className="col-sm-7">
+                        <div className="col-sm-5">
                           <input
                             type="date"
                             name="date"
@@ -197,173 +125,319 @@ export default function Home() {
                           htmlFor="inputText"
                           className="col-sm-5 col-form-label"
                         >
-                          Station:
+                          Vehicle No :
                         </label>
-                        <div className="col-sm-7">
+                        <div className="col-sm-5">
                           <input
                             type="text"
-                            name="station"
+                            name="vehicle_no"
                             className="form-control"
-                            placeholder="CRPF CAMP RANCHI"
                           />
                         </div>
                       </div>
 
                       <div className="row mb-3">
-                        <div className="col-sm-10">
-                          <button
-                            onClick={addFields}
-                            type="button"
-                            className="btn btn-primary"
-                            style={{ float: "left" }}
-                          >
-                            Create Job Card
-                          </button>
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Vehicle Model :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="text"
+                            name="vehicle_model"
+                            className="form-control"
+                          />
                         </div>
                       </div>
 
-                      <div className="Items col-lg 11">
-                        {arrayOfFields.map((fields, index) => {
-                          return (
-                            <div key={index}>
-                              <div className="Items border p-3 m-3">
-                                <div className="row mb-0">
-                                  <label
-                                    htmlFor="inputText"
-                                    className="col-sm-5 col-form-label"
-                                  >
-                                    Name:
-                                  </label>
-                                  <div className="col-sm-7">
-                                    <select
-                                      name={"name" + (index + 1)}
-                                      onChange={(e) => checkId(e)}
-                                      className="form-select"
-                                      aria-label="Default select example"
-                                    >
-                                      {/* <option value={form.name}>
-                                        Fuel Filter Stainer
-                                      </option> */}
-                                      {Items.map((item, index) => {
-                                        return (
-                                          <option key={index} value={item._id}>
-                                            {item.name}
-                                          </option>
-                                        );
-                                      })}
-                                    </select>
-                                  </div>
-                                </div>
-
-                                <div className="row mb-3 mt-3">
-                                  <label
-                                    htmlFor="inputText"
-                                    className="col-sm-5 col-form-label"
-                                  >
-                                    Rate:
-                                  </label>
-                                  <div className="col-sm-7">
-                                    <input
-                                      name={"rate" + (index + 1)}
-                                      type="number"
-                                      defaultValue={0}
-                                      className="form-control"
-                                      placeholder="Enter the cost of one item"
-                                      onChange={(event) =>
-                                        handleformChange(event, index)
-                                      }
-                                    ></input>
-                                  </div>
-                                </div>
-
-                                <div className="row mb-3">
-                                  <label
-                                    htmlFor="inputText"
-                                    className="col-sm-5 col-form-label"
-                                  >
-                                    Quantity:
-                                  </label>
-                                  <div className="col-sm-7">
-                                    <input
-                                      name={"quantity" + (index + 1)}
-                                      defaultValue={0}
-                                      type="number"
-                                      className="form-control"
-                                      placeholder="Enter the number of Items"
-                                      onChange={(event) =>
-                                        handleformChange(event, index)
-                                      }
-                                    ></input>
-                                  </div>
-                                </div>
-
-                                <div className="row mb-3">
-                                  <label
-                                    htmlFor="inputText"
-                                    className="col-sm-5 col-form-label"
-                                  >
-                                    Amount:
-                                  </label>
-                                  <div className="col-sm-7">
-                                    <input
-                                      name={"amount" + (index + 1)}
-                                      type="number"
-                                      className="form-control"
-                                      readOnly
-                                    ></input>
-                                  </div>
-                                </div>
-
-                                <div className="row mb-3">
-                                  <label
-                                    htmlFor="inputText"
-                                    className="col-sm-5 col-form-label"
-                                  >
-                                    Description:
-                                  </label>
-                                  <div className="col-sm-7">
-                                    <input
-                                      name={"description" + (index + 1)}
-                                      className="form-control"
-                                      placeholder="Add remark"
-                                    ></input>
-                                  </div>
-
-                                  <button
-                                    onClick={() => removeField(index)}
-                                    type="button"
-                                    className="btn btn-warning m-2"
-                                    style={{ float: "right" }}
-                                  >
-                                    Delete this Item
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Vehicle Make :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="text"
+                            name="vehicle_make"
+                            className="form-control"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div style={{ color: "red" }}>{error}</div>
-                <div className="row mb-3">
-                  <div className="col-sm-10">
-                    <button
-                      // onClick={notify}
-                      type="submit"
-                      className="btn btn-primary"
-                      style={{ float: "left" }}
-                    >
-                      Submit Form
-                    </button>
-                  </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Vehicle Type :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="number"
+                            name="vehicle_type"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          kilometers Run :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="number"
+                            name="kilometers_run"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Condition Of Engine :
+                        </label>
+                        <div className="col-sm-5">
+                          <input type="text" name="condition_of_engine" className="form-control" />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Defect :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="text"
+                            name="defect"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Defect Reason :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="text"
+                            name="defect_reason"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Suggestion :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="text"
+                            name="suggestion"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Required Parts :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="text"
+                            name="required_parts"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Availability Of Parts :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="bool"
+                            name="availability_of_parts"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Execution Report :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="text"
+                            name="execution_report"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Remarks :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="text"
+                            name="remarks"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Signature :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="bool"
+                            name="signature"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Designation :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="text"
+                            name="designation"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <div className="col-sm-7">
+                          <button
+                            type="submit"
+                            className="btn btn-primary"
+                            style={{ float: "right" }}
+                          >
+                            Create Defect Memo
+                          </button>
+                        </div>
+                      </div>
+                    </form>
                 </div>
               </div>
-            </form>
+              <button
+                className="btn btn-primary"
+                style={{ float: "left" }}
+                onClick={() => Router.back()}>
+                Go Back
+              </button>
+            </div>
+            <div className="col-lg-5">
+              <div className="card">
+                <div className="card-body">
+                  <h1>Defect Memo List</h1>
+                  <hr
+                    style={{
+                      color: "#000000",
+                      backgroundColor: "#000000",
+                      height: 1.5,
+                      padding: ".1rem",
+                    }}
+                  />
+                    <table className="table table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">Sl No.</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Vehicle No</th>
+                          <th scope="col">KM Run</th>
+                          <th scope="col">Condition Of Engine</th>
+                        </tr>
+                      </thead>
+                      <tbody style={
+                        { cursor: "pointer" }
+                      }>
+                        {
+                          memos.map((memo, index) => {
+                            return (
+                              <tr key={
+                                index + 1
+                              }
+                                onClick={
+                                  () => OpenLink(memo._id)
+                                }>
+                                <th scope="row">
+                                  {index + 1}
+                                </th>
+                                <td>{memo.date &&
+                                  dateFormat(
+                                    memo.date,
+                                    "dS mmmm, yyyy - dddd"
+                                  )}</td>
+                                <td>{
+                                  memo.vehicle_no
+                                }</td>
+                                <td>{
+                                  memo.kilometers_run
+                                }</td>
+                                <td>{memo.condition_of_engine}</td>
+                              </tr>
+                            )
+                          })
+                        }
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
           </Row>
         </main>
-      </main>
+      </main >
       <Scripts />
       <Script src="/assets/js/main.js"></Script>
     </>

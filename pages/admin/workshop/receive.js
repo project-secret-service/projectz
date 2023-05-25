@@ -13,7 +13,6 @@ import "react-datalist-input/dist/styles.css";
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Button, Row } from 'react-bootstrap';
 import Link from "next/link";
-import MultiSetDropdown from '../../components/MultiSetDropdown';
 
 
 async function GetReceiveVouchers() {
@@ -218,9 +217,10 @@ export default function Home() {
                                                     Items :
                                                 </label>
                                                 <div className="col-sm-5">
-                                                    <MultiSetDropdown
-                                                        selectedValues={selectedValues}
-                                                        handleChange={handleChange}
+                                                <input
+                                                        type="text"
+                                                        name="items"
+                                                        className="form-control"
                                                     />
                                                 </div>
                                             </div>
