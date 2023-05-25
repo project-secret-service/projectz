@@ -7,6 +7,7 @@ import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Router from "next/router";
+import dateFormat from "dateformat";
 import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -33,10 +34,8 @@ async function createReceiveVoucher(event) {
         vehicle_type: event.target.vehicle_type.value,
         date: event.target.date.value,
         kilometers_run: event.target.kilometers_run.value,
-        remarks: event.target.remarks.value,
         quantity: event.target.quantity.value,
         rate: event.target.rate.value,
-        amount: event.target.amount.value,
         receive_voucher_no: event.target.receive_voucher_no.value,
         station: event.target.station.value,
         items: event.target.items.value
@@ -55,7 +54,7 @@ async function createReceiveVoucher(event) {
 }
 
 export default function Home() {
-    
+
     const [selectedValues, setSelectedValues] = useState([]);
 
     const handleChange = (selectedOptions) => {
@@ -96,9 +95,7 @@ export default function Home() {
                                             padding: ".1rem",
                                         }}
                                     />
-                                    <Scrollbars style={{ width: 700, height: 600 }}>
                                         <form onSubmit={createReceiveVoucher}>
-
                                             <div className="row mb-3">
                                                 <label
                                                     htmlFor="inputText"
@@ -221,7 +218,6 @@ export default function Home() {
                                                     Items :
                                                 </label>
                                                 <div className="col-sm-5">
-
                                                     <MultiSetDropdown
                                                         selectedValues={selectedValues}
                                                         handleChange={handleChange}
@@ -289,7 +285,6 @@ export default function Home() {
                                                 </div>
                                             </div>
                                         </form>
-                                    </Scrollbars>
                                 </div>
                             </div>
                             <button
@@ -311,7 +306,6 @@ export default function Home() {
                                             padding: ".1rem",
                                         }}
                                     />
-                                    <Scrollbars style={{ width: 490, height: 600 }}>
                                         <table className="table table-hover">
                                             <thead>
                                                 <tr>
@@ -336,14 +330,16 @@ export default function Home() {
                                                                 <th scope="row">
                                                                     {index + 1}
                                                                 </th>
-                                                                <td>{
-                                                                    receiveVoucher.date.substring(0, 10)
-                                                                }</td>
+                                                                <td>{receiveVoucher.date &&
+                                                                    dateFormat(
+                                                                        receiveVoucher.date,
+                                                                        "dS mmmm, yyyy - dddd"
+                                                                    )}</td>
                                                                 <td>{
                                                                     receiveVoucher.receive_voucher_no
                                                                 }</td>
                                                                 <td>{
-                                                                    receiveVoucher.vehicle_no
+                                                                    receiveVoucher.vehicle_reg_no
                                                                 }</td>
                                                             </tr>
                                                         )
@@ -351,7 +347,6 @@ export default function Home() {
                                                 }
                                             </tbody>
                                         </table>
-                                    </Scrollbars>
                                 </div>
                             </div>
                         </div>

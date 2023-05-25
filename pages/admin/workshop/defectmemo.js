@@ -11,6 +11,7 @@ import "react-datalist-input/dist/styles.css";
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Button, Row } from 'react-bootstrap';
 import Link from "next/link";
+import dateFormat from "dateformat";
 
 
 
@@ -101,7 +102,6 @@ export default function Home() {
                       padding: ".1rem",
                     }}
                   />
-                  <Scrollbars style={{ width: 700, height: 600 }}>
                     <form onSubmit={createDefectMemo}>
 
                       <div className="row mb-3">
@@ -368,7 +368,6 @@ export default function Home() {
                         </div>
                       </div>
                     </form>
-                  </Scrollbars>
                 </div>
               </div>
               <button
@@ -390,7 +389,6 @@ export default function Home() {
                       padding: ".1rem",
                     }}
                   />
-                  <Scrollbars style={{ width: 490, height: 600 }}>
                     <table className="table table-hover">
                       <thead>
                         <tr>
@@ -416,9 +414,11 @@ export default function Home() {
                                 <th scope="row">
                                   {index + 1}
                                 </th>
-                                <td>{
-                                  memo.date.substring(0, 10)
-                                }</td>
+                                <td>{memo.date &&
+                                  dateFormat(
+                                    memo.date,
+                                    "dS mmmm, yyyy - dddd"
+                                  )}</td>
                                 <td>{
                                   memo.vehicle_no
                                 }</td>
@@ -432,15 +432,12 @@ export default function Home() {
                         }
                       </tbody>
                     </table>
-                  </Scrollbars>
                 </div>
               </div>
             </div>
           </Row>
-            </div>
-          </Row>
         </main>
-      </main>
+      </main >
       <Scripts />
       <Script src="/assets/js/main.js"></Script>
     </>
