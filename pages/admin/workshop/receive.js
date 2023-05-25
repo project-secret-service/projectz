@@ -10,7 +10,6 @@ import Router from "next/router";
 import dateFormat from "dateformat";
 import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
-import { Scrollbars } from 'react-custom-scrollbars';
 import { Button, Row } from 'react-bootstrap';
 import Link from "next/link";
 
