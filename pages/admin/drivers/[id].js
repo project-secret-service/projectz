@@ -10,7 +10,7 @@ import { useEffect,useState } from 'react'
 
 async function GetDriverDetails(id){
   const res = await axios({
-    url:"http://localhost:3000/drivers/"+id,
+    url:"https://projectx-production.up.railway.app/drivers/"+id,
     withCredentials:true,
     method:"GET"
   });

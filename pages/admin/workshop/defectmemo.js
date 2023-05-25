@@ -17,7 +17,7 @@ import dateFormat from "dateformat";
 
 async function GetMemos() {
   const res = await axios({
-    url: "http://localhost:3000/defectmemos/",
+    url: "https://projectx-production.up.railway.app/defectmemos/",
     method: "GET",
     withCredentials: true,
   });
@@ -57,7 +57,7 @@ async function createDefectMemo(event) {
   console.log(data);
 
   const res = await axios({
-    url: "http://localhost:3000/defectmemos/add",
+    url: "https://projectx-production.up.railway.app/defectmemos/add",
     withCredentials: true,
     method: "POST",
 

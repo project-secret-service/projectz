@@ -10,7 +10,7 @@ import Router from 'next/router'
 import Link from "next/link";
 import { Button,Row } from "react-bootstrap";
 async function GetDuties() {
-    const res = await axios({url: "http://localhost:3000/duty_log/", method: "GET", withCredentials: true});
+    const res = await axios({url: "https://projectx-production.up.railway.app/duty_log/", method: "GET", withCredentials: true});
     return res.data;
 }
 

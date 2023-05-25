@@ -14,7 +14,7 @@ import Link from "next/link";
 
 async function GetVehicle(id) {
   const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id,
+    url: "https://projectx-production.up.railway.app/vehicles/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -43,7 +43,7 @@ export default function Home() {
       [e.target.vehicle_type.name]: e.target.vehicle_type.value,
     });
     const res = await axios({
-      url: "http://localhost:3000/vehicles/" + vehicle._id + "/update",
+      url: "https://projectx-production.up.railway.app/vehicles/" + vehicle._id + "/update",
       method: "POST",
       withCredentials: true,
       headers: {

@@ -11,7 +11,7 @@ import Link from "next/link"
 import { Button, Row } from "react-bootstrap";
 
 async function GetUsers() {
-    const res = await axios({ url: "http://localhost:3000/users/", method: "GET", withCredentials: true });
+    const res = await axios({ url: "https://projectx-production.up.railway.app/users/", method: "GET", withCredentials: true });
     return res.data;
 }
 

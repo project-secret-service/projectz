@@ -10,14 +10,12 @@ import Router from "next/router";
 import dateFormat from "dateformat";
 import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
-import { Scrollbars } from 'react-custom-scrollbars';
 import { Button, Row } from 'react-bootstrap';
 import Link from "next/link";
 
-
 async function GetReceiveVouchers() {
     const res = await axios({
-        url: "http://localhost:3000/receivevoucher/",
+        url: "https://projectx-production.up.railway.app/receivevoucher/",
         method: "GET",
         withCredentials: true,
     });
@@ -43,7 +41,7 @@ async function createReceiveVoucher(event) {
     console.log(data);
 
     const res = await axios({
-        url: "http://localhost:3000/receivevoucher/add",
+        url: "https://projectx-production.up.railway.app/receivevoucher/add",
         withCredentials: true,
         method: "POST",
 

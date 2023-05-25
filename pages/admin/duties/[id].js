@@ -13,7 +13,7 @@ import { IconContext } from "react-icons";
 
 async function GetUserDetails(id){
   const res = await axios({
-    url: "http://localhost:3000/duty_log/" + id,
+    url: "https://projectx-production.up.railway.app/duty_log/" + id,
     withCredentials: true,
     method: "GET",
   });

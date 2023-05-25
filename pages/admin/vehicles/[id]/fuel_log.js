@@ -37,7 +37,7 @@ function setFuel(fuel, fuelCapacity) {
 
 async function GetVehicle(id) {
   const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id,
+    url: "https://projectx-production.up.railway.app/vehicles/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -61,7 +61,7 @@ export default function Home() {
   async function updateFuel() {
     let newFuel = document.getElementById("new_fuel").value;
     const res = await axios({
-      url: "http://localhost:3000/vehicles/" + vehicle._id + "/fuel_update",
+      url: "https://projectx-production.up.railway.app/vehicles/" + vehicle._id + "/fuel_update",
       method: "POST",
       withCredentials: true,
       data: {

@@ -12,7 +12,7 @@ import DatalistInput from 'react-datalist-input';
 import 'react-datalist-input/dist/styles.css';
 
 async function GetUsers() {
-    const res = await axios({url: "http://localhost:3000/drivers/", method: "GET", withCredentials: true});
+    const res = await axios({url: "https://projectx-production.up.railway.app/drivers/", method: "GET", withCredentials: true});
     return res.data;
 }
 
@@ -29,7 +29,7 @@ async function addNewDriver(event) {
         rank: event.target.rank.value
     }
 
-    const res = await axios({url: "http://localhost:3000/drivers/add", withCredentials: true, method: "POST", data: data});
+    const res = await axios({url: "https://projectx-production.up.railway.app/drivers/add", withCredentials: true, method: "POST", data: data});
     console.log(res.data);
 }
 

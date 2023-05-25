@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 async function GetUser() {
   const res = await axios({
-    url: "http://localhost:3000/users/get_user_details",
+    url: "https://projectx-production.up.railway.app/users/get_user_details",
     method: "GET",
     withCredentials: true,
   });

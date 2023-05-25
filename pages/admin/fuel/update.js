@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 async function GetVehicles() {
   const res = await axios({
-    url: "http://localhost:3000/vehicles/",
+    url: "https://projectx-production.up.railway.app/vehicles/",
     method: "GET",
     withCredentials: true,
   });
@@ -25,7 +25,7 @@ async function GetVehicles() {
 
 async function GetlastEntry() {
   const res = await axios({
-    url: "http://localhost:3000/oilstockregister/last1",
+    url: "https://projectx-production.up.railway.app/oilstockregister/last1",
     method: "GET",
     withCredentials: true,
   });
@@ -36,7 +36,7 @@ async function GetlastEntry() {
 async function updatebalance(data) {
   console.log(data);
   const res = await axios({
-    url: "http://localhost:3000/oilstockregister/add",
+    url: "https://projectx-production.up.railway.app/oilstockregister/add",
     withCredentials: true,
     method: "POST",
     data: data,
@@ -132,7 +132,7 @@ export default function Home() {
   
     console.log(data);
     const res = await axios({
-      url: "http://localhost:3000/oilstockregister/update/"+lastentry._id,
+      url: "https://projectx-production.up.railway.app/oilstockregister/update/"+lastentry._id,
       withCredentials: true,
       method: "PUT",
       data: data1,
@@ -180,7 +180,7 @@ export default function Home() {
       last:false,
      };
     const res = await axios({
-      url: "http://localhost:3000/oilstockregister/update/"+lastentry._id,
+      url: "https://projectx-production.up.railway.app/oilstockregister/update/"+lastentry._id,
       withCredentials: true,
       method: "PUT",
       data: data1,

@@ -9,7 +9,7 @@ import axios from 'axios'
 import Router from 'next/router'
 
 async function Getoilbalancce() {
-    const res = await axios({url: "http://localhost:3000/oilstockregister/", method: "GET", withCredentials: true});
+    const res = await axios({url: "https://projectx-production.up.railway.app/oilstockregister/", method: "GET", withCredentials: true});
     console.log(res.data);
     return res.data;
 }

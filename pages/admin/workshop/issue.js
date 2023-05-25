@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 async function GetIssues() {
   const res = await axios({
-    url: "http://localhost:3000/inventory/items",
+    url: "https://projectx-production.up.railway.app/inventory/items",
     method: "GET",
     withCredentials: true,
   });
@@ -81,14 +81,14 @@ export default function Home() {
   async function IssueItems(event, items) {
     event.preventDefault();
     var data = {
-      recieveVoucherNo: event.target.recieve_voucher_no.value,
+      issueVoucherNo: event.target.issue_voucher_no.value,
       date: event.target.date.value,
       station: event.target.station.value,
       items: items,
     };
     console.log(data);
     const res = await axios({
-      url: "http://localhost:3000/inventory/issue/add",
+      url: "https://projectx-production.up.railway.app/inventory/issue/add",
       method: "POST",
       withCredentials: true,
       data: data,

@@ -13,7 +13,7 @@ import Router from "next/router";
 
 async function GetVehicle(id) {
   const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id,
+    url: "https://projectx-production.up.railway.app/vehicles/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -26,7 +26,7 @@ export default function Home() {
 
   async function deleteVehicle() {
     const res = await axios({
-      url: "http://localhost:3000/vehicles/" + vehicle._id + "/delete",
+      url: "https://projectx-production.up.railway.app/vehicles/" + vehicle._id + "/delete",
       method: "POST",
       withCredentials: true,
     });
