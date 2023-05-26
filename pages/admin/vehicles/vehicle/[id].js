@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Image from "next/image";
 import styles from "@/styles/Home.module.css";
 import Script from "next/script";
 import Header from "../../../components/Header";
@@ -131,7 +132,7 @@ export default function Home() {
         <main id="main" className="col-lg-11 main mt-0">
           <Row>
             <Col lg="4" className="card m-2 p-5 text-center">
-              <div>
+              <div style={{ height: "80%", alignItems: "center" }}>
                 <Carousel slide={false}>
                   {vehicle.front_view && (
                     <Carousel.Item>
@@ -239,9 +240,17 @@ export default function Home() {
 
                 <br />
                 <li href="#" className="list-group-item list-group-item-action">
+                  <img
+                    src="/assets/img/vehicle/icons/year.png"
+                    style={{ width: "2rem" }}
+                  ></img>{" "}
                   Year of Manufacture : <b>{vehicle.year_of_manufacture}</b>
                 </li>
                 <li href="#" className="list-group-item list-group-item-action">
+                  <img
+                    src="/assets/img/vehicle/icons/dos.png"
+                    style={{ width: "2rem" }}
+                  ></img>{" "}
                   Date of Supply :{" "}
                   <b>
                     {vehicle.date_of_supply &&
@@ -252,6 +261,10 @@ export default function Home() {
                   </b>
                 </li>
                 <li href="#" className="list-group-item list-group-item-action">
+                  <img
+                    src="/assets/img/vehicle/icons/calender.png"
+                    style={{ width: "2rem" }}
+                  ></img>{" "}
                   Date of Service :{" "}
                   <b>
                     {dateFormat(
@@ -261,11 +274,23 @@ export default function Home() {
                   </b>
                 </li>
                 <li href="#" className="list-group-item list-group-item-action">
+                  <img
+                    src="/assets/img/vehicle/icons/vehicles.png"
+                    style={{ width: "2rem" }}
+                  ></img>{" "}
                   Vehicle Type : <b>{vehicle.vehicle_type}</b>
                 </li>
                 <li href="#" className="list-group-item list-group-item-action">
+                  <img
+                    src="/assets/img/vehicle/icons/rupee.png"
+                    style={{ width: "2rem" }}
+                  ></img>{" "}
                   Cost of Vehicle :{" "}
-                  <b> &#8377; {indianNumberFormat.format(vehicle.cost)}</b>
+                  <b>
+                    {vehicle.cost && (
+                      <>&#8377; {indianNumberFormat.format(vehicle.cost)} </>
+                    )}
+                  </b>
                 </li>
               </div>
 
@@ -274,7 +299,9 @@ export default function Home() {
                   <div
                     className={`${vehicle_styles.odometer} p-2 text-center col-9 m-1`}
                     onClick={() => {
-                      router.push("/admin/vehicles/vehicle/" + vehicle._id + "/km_run");
+                      router.push(
+                        "/admin/vehicles/vehicle/" + vehicle._id + "/km_run"
+                      );
                     }}
                   >
                     <h4 className={`${vehicle_styles.odometer_heading} mb-4`}>
@@ -358,7 +385,24 @@ export default function Home() {
           <Row className="col-lg-11">
             <Col lg="4">
               <div className="card p-4">
-                <h4 className={vehicle_styles.vehicle_name}>BODY DETAILS</h4>
+                <div className="d-flex" style={{ alignItems: "center" }}>
+                  <img
+                    src="/assets/img/vehicle/icons/body-repair.png"
+                    alt="Chassis"
+                    style={{
+                      height: "3rem",
+                      width: "3rem",
+                      marginRight: "1rem",
+                    }}
+                  />
+
+                  <h3
+                    className={`${vehicle_styles.vehicle_name}`}
+                    style={{ margin: 0 }}
+                  >
+                    BODY DETAILS
+                  </h3>
+                </div>
                 <hr />
                 <Row>
                   <Col lg="6">Body Front</Col>
@@ -405,7 +449,24 @@ export default function Home() {
             </Col>
             <Col lg="4">
               <div className="card p-4">
-                <h4 className={vehicle_styles.vehicle_name}>ENGINE DETAILS</h4>
+                <div className="d-flex" style={{ alignItems: "center" }}>
+                  <img
+                    src="/assets/img/vehicle/icons/car-engine.png"
+                    alt="Chassis"
+                    style={{
+                      height: "3rem",
+                      width: "3rem",
+                      marginRight: "1rem",
+                    }}
+                  />
+
+                  <h3
+                    className={`${vehicle_styles.vehicle_name}`}
+                    style={{ margin: 0 }}
+                  >
+                    ENGINE DETAILS
+                  </h3>
+                </div>
                 <hr />
                 <Row>
                   <Col lg="5"> Engine Number</Col>
@@ -445,7 +506,24 @@ export default function Home() {
             </Col>
             <Col lg="4">
               <div className="card p-4">
-                <h4 className={vehicle_styles.vehicle_name}>BATTERY DETAILS</h4>
+                <div className="d-flex" style={{ alignItems: "center" }}>
+                  <img
+                    src="/assets/img/vehicle/icons/accumulator.png"
+                    alt="Chassis"
+                    style={{
+                      height: "3rem",
+                      width: "3rem",
+                      marginRight: "1rem",
+                    }}
+                  />
+
+                  <h3
+                    className={`${vehicle_styles.vehicle_name}`}
+                    style={{ margin: 0 }}
+                  >
+                    BATTERY DETAILS
+                  </h3>
+                </div>
                 <hr />
                 <Row>
                   <Col lg="5"> Battery No: </Col>

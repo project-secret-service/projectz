@@ -3,13 +3,14 @@ import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Link from "next/link";
 import "react-datalist-input/dist/styles.css";
 import Head from "next/head";
 import { Button, Row, Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { ToastContainer, toast } from "react-toastify";
 
 async function CheckCrpNoinDB(crp_no) {
   var res = await axios({
@@ -24,6 +25,30 @@ async function CheckCrpNoinDB(crp_no) {
 }
 
 export default function Home() {
+  const vehicle_crp_no_input = useRef(null);
+  const checkVehicleNameToast = () =>
+    toast.error("Please Enter Vehicle Name", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
+  const checkCRPNoToast = (no) =>
+    toast.error("CRP No :" + no + " Already Taken !", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   const [errors, setErrors] = useState({
     vehicle_crp_no: "",
     vehicle_name: "",
@@ -35,12 +60,7 @@ export default function Home() {
   const handleClose = () => setShow(false);
   const handleShow = () => {
     if (!vehicle.name) {
-      setErrors((errors) => {
-        return {
-          ...errors,
-          vehicle_name: "Please Enter Vehicle Name",
-        };
-      });
+      checkVehicleNameToast();
     } else {
       setShow(true);
     }
@@ -54,23 +74,6 @@ export default function Home() {
   }, []);
 
   function setV({ target: { name, value } }) {
-    console.log(name);
-    console.log(value);
-    if (name === "name" && value != "") {
-      setErrors((errors) => {
-        return {
-          ...errors,
-          vehicle_name: "",
-        };
-      });
-    }else if (name==="name" && value ==="") {
-      setErrors((errors) => {
-        return {
-          ...errors,
-          vehicle_name: "Please Enter Vehicle Name",
-        };
-      });
-    }
     setVehicle({ ...vehicle, [name]: value });
   }
 
@@ -90,7 +93,6 @@ export default function Home() {
     var s = document.getElementsByName("vehicle_crp_no");
     if (s[0].value) {
       CheckCrpNoinDB(s[0].value).then((data) => {
-        console.log(data);
         if (data === "F") {
           setErrors((errors) => {
             return {
@@ -108,6 +110,13 @@ export default function Home() {
           });
           return false;
         }
+      });
+    } else {
+      setErrors((errors) => {
+        return {
+          ...errors,
+          vehicle_crp_no: "",
+        };
       });
     }
   }
@@ -158,11 +167,14 @@ export default function Home() {
                             setV(e);
                             CheckCrpNo(this);
                           }}
+                          ref={vehicle_crp_no_input}
                           type="number"
                           name="vehicle_crp_no"
                           className="form-control"
                         />
-                        <p>{errors.vehicle_crp_no} </p>
+                        <p className="mt-2 text-danger">
+                          {errors.vehicle_crp_no}
+                        </p>
                       </div>
                     </div>
 
@@ -310,6 +322,18 @@ export default function Home() {
                       </Modal.Footer>
                     </Modal>
                   </form>
+                  <ToastContainer
+                    position="bottom-center"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="colored"
+                  />
                 </div>
               </div>
             </div>
