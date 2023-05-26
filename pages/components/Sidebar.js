@@ -198,7 +198,7 @@ export default function SideBar(props) {
                         </a>
                         <ul id="inventory-nav" className="nav-content collapse " data-bs-parent="#sidebar-nav">
                             <li>
-                                <Link href="/admin/inventory/order/">
+                                <Link href="/admin/inventory/orders/order">
                                     <i className="bi bi-circle"></i>
                                     <span>Order an Item</span>
                                 </Link>
