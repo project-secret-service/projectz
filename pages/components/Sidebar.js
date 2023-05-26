@@ -273,7 +273,7 @@ export default function SideBar(props) {
                 </Link>
               </li>
               <li>
-                <Link href="/admin/inventory/issue/">
+                <Link href="/admin/inventory/issues/issue">
                   <i className="bi bi-circle"></i>
                   <span>Issue an item</span>
                 </Link>
