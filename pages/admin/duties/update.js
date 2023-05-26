@@ -1,96 +1,96 @@
-import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
-import Script from 'next/script'
-import Header from '../../components/Header'
-import SideBar from '../../components/Sidebar'
-import Scripts from '../../components/Scripts'
-import {useEffect, useState} from 'react'
-import axios from 'axios'
-import Router from 'next/router'
-import DatalistInput from 'react-datalist-input';
-import 'react-datalist-input/dist/styles.css';
+import Head from "next/head";
+import styles from "@/styles/Home.module.css";
+import Script from "next/script";
+import Header from "../../components/Header";
+import SideBar from "../../components/Sidebar";
+import Scripts from "../../components/Scripts";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Router from "next/router";
+import DatalistInput from "react-datalist-input";
+import "react-datalist-input/dist/styles.css";
 import moment from "moment";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 async function GetuncompVehicles() {
-    const res = await axios({url: "http://localhost:3000/duty_log/uncompleted", method: "GET", withCredentials: true});
-    console.log(res.data);
-    return res.data;
+  const res = await axios({
+    url: "http://localhost:3000/duty_log/uncompleted",
+    method: "GET",
+    withCredentials: true,
+  });
+  console.log(res.data);
+  return res.data;
 }
-function sucessful()
-{
-    toast.success("Sucessfully Update");
-<ToastContainer
-position="top-center"
-autoClose={2500}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light"
-/>
+function sucessful() {
+  toast.success("Sucessfully Update");
+  <ToastContainer
+    position="top-center"
+    autoClose={2500}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="light"
+  />;
 }
-function unsucessful()
-{
-    toast.error("Server Error");
-<ToastContainer
-position="top-center"
-autoClose={2500}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light"
-/>
+function unsucessful() {
+  toast.error("Server Error");
+  <ToastContainer
+    position="top-center"
+    autoClose={2500}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="light"
+  />;
 }
 function convertUTCDateToLocalDate(date) {
-    var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+  var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
 
-    var offset = date.getTimezoneOffset() / 60;
-    var hours = date.getHours();
+  var offset = date.getTimezoneOffset() / 60;
+  var hours = date.getHours();
 
-    newDate.setHours(hours - offset);
+  newDate.setHours(hours - offset);
 
-    return newDate;   
+  return newDate;
 }
 
-
-
 async function UpdateDetails(event) {
-    event.preventDefault();
-    console.log(event.target.vehicle);
-    
-    var inTime=event.target.date_of_travel.value+"T"+event.target.In_time.value
-    //inTime=new Date(inTime).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'})
-    const innTIme = new Date(inTime);
-    var inntime=convertUTCDateToLocalDate(innTIme)
-    
-   
-     var vehicle_id1=event.target.vehicle_no.value
+  event.preventDefault();
+  console.log(event.target.vehicle);
 
-    //console.log(s)
-    var data = {
-        
-        in_time :inntime,
-        mission_ended:event.target.completed.value
-    
-    }
+  var inTime =
+    event.target.date_of_travel.value + "T" + event.target.In_time.value;
+  //inTime=new Date(inTime).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'})
+  const innTIme = new Date(inTime);
+  var inntime = convertUTCDateToLocalDate(innTIme);
+
+  var vehicle_id1 = event.target.vehicle_no.value;
+
+  //console.log(s)
+  var data = {
+    in_time: inntime,
+    mission_ended: event.target.completed.value,
+  };
 
   console.log(event.target.vehicle_no.value);
-    const res = await axios({url: "http://localhost:3000/duty_log/update/"+vehicle_id1, withCredentials: true, method: "PUT", data: data});
-    console.log(res.data);
-    if(res.status==200)
-    sucessful();
-    else
-    unsucessful();
-   
+  const res = await axios({
+    url: "http://localhost:3000/duty_log/update/" + vehicle_id1,
+    withCredentials: true,
+    method: "PUT",
+    data: data,
+  });
+  console.log(res.data);
+  if (res.status == 200) sucessful();
+  else unsucessful();
 }
 // async function getparticularVehicle(req)
 // {
@@ -99,108 +99,123 @@ async function UpdateDetails(event) {
 // withCredentials:true})
 // }
 
-
-
 export default function Home() {
-    const [uncompvehicles, setuncompVehicles] = useState([]);
-    //const [particularvehicles, setnewVehicles] = useState([]);
-    const [errors, setErrors] = useState({vehicle_sl_no: ""})
-    useEffect(() => {
-        GetuncompVehicles().then((data) => {
-            setuncompVehicles(data);
-        });
-    }, []);
+  const [uncompvehicles, setuncompVehicles] = useState([]);
+  //const [particularvehicles, setnewVehicles] = useState([]);
+  const [errors, setErrors] = useState({ vehicle_sl_no: "" });
+  useEffect(() => {
+    GetuncompVehicles().then((data) => {
+      setuncompVehicles(data);
+    });
+  }, []);
 
+  return (
+    <>
+      <Head>
+        <title>Create Next App</title>
+        <meta name="description" content="Generated by create next app" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <main className={styles.main}>
+        <Header />
+        <SideBar />
 
-    
+        <main id="main" className="col-lg-10 main">
+          <div className="col-lg-10">
+            <div className="card">
+              <div className="card-body">
+                <h1>Update Duty</h1>
 
-    
-    return (
-        <>
-       
-            <Head>
-                <title>Create Next App</title>
-                <meta name="description" content="Generated by create next app"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <form onSubmit={UpdateDetails}>
+                  <ToastContainer />
 
-            </Head>
-            <main className={
-                styles.main
-            }>
-                <Header/>
-                <SideBar/>
-                
-                <main id="main" className="col-lg-10 main">
-                    <div className="col-lg-10">
-
-                        <div className="card">
-                            <div className="card-body">
-                                <h1>Update Duty</h1>
-     
-                                <form onSubmit={UpdateDetails}>
-                                   <ToastContainer/>
-                                  
-                                    <div className="row mb-3">
-                                 
-                                        <label className="col-sm-5 col-form-label"> Vehicle Number :</label>
-                                        <div className="col-sm-7">
-                                            <select name='vehicle_no' className="form-select" aria-label="Default select example">
-                                                { 
-                                            uncompvehicles.map((uncompvehicle,index)=>(
-                                               
-                        <option  value={uncompvehicle._id}>{uncompvehicle.vehicle_id.vehicle_crp_no}  -    {uncompvehicle.vehicle_id.registration_no}</option>
-                                            ))}
-                                            
-                                            </select>
-                                        </div>
-                                      
-                                    </div>
-                                       
-
-                                    <div className="row mb-3">
-                                        <label htmlFor="inputText" className="col-sm-5 col-form-label">In Time:</label>
-                                        <div className="col-sm-7">
-                                            <input type="time" name='In_time' className="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                        <label htmlFor="inputText" className="col-sm-5 col-form-label">In Time:</label>
-                                        <div className="col-sm-7">
-                                            <input type="date" name='date_of_travel' className="form-control"/>
-                                        </div>
-                                    </div>
-
-                                    <div className="row mb-3">
-                                        <label className="col-sm-5 col-form-label">Completed :</label>
-                                        <div className="col-sm-7">
-                                            <select name='completed' className="form-select" aria-label="Default select example">
-                                                <option value="true">Completed</option>
-                                                <option value="false">Not Completed</option>
-                                               
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    
-                                
-                                    
-                                    <div className="row mb-3">
-                                        <div className="col-sm-10">
-                                            <button type="submit" className="btn btn-primary"
-                                                style={
-                                                    {float: "right"}
-                                            }>Update Data</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                  <div className="row mb-3">
+                    <label className="col-sm-5 col-form-label">
+                      {" "}
+                      Vehicle Number :
+                    </label>
+                    <div className="col-sm-7">
+                      <select
+                        name="vehicle_no"
+                        className="form-select"
+                        aria-label="Default select example"
+                      >
+                        {uncompvehicles.map((uncompvehicle, index) => (
+                          <option value={uncompvehicle._id}>
+                            {uncompvehicle.vehicle_id.vehicle_crp_no} -{" "}
+                            {uncompvehicle.vehicle_id.registration_no}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                </main>
+                  </div>
 
-            </main>
-            <Scripts/>
-            <Script src="/assets/js/main.js"></Script>
-        </>
-    )
+                  <div className="row mb-3">
+                    <label
+                      htmlFor="inputText"
+                      className="col-sm-5 col-form-label"
+                    >
+                      In Time:
+                    </label>
+                    <div className="col-sm-7">
+                      <input
+                        type="time"
+                        name="In_time"
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+                  <div className="row mb-3">
+                    <label
+                      htmlFor="inputText"
+                      className="col-sm-5 col-form-label"
+                    >
+                      In Time:
+                    </label>
+                    <div className="col-sm-7">
+                      <input
+                        type="date"
+                        name="date_of_travel"
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row mb-3">
+                    <label className="col-sm-5 col-form-label">
+                      Completed :
+                    </label>
+                    <div className="col-sm-7">
+                      <select
+                        name="completed"
+                        className="form-select"
+                        aria-label="Default select example"
+                      >
+                        <option value="true">Completed</option>
+                        <option value="false">Not Completed</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="row mb-3">
+                    <div className="col-sm-10">
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        style={{ float: "right" }}
+                      >
+                        Update Data
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </main>
+      </main>
+      <Scripts />
+      <Script src="/assets/js/main.js"></Script>
+    </>
+  );
 }

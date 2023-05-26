@@ -11,18 +11,15 @@ async function GetUser() {
     method: "GET",
     withCredentials: true,
   });
-  // console.log(res.userID)
-  // console.log(res.data)
-
   return res.data;
 }
 
 export default function Header({ parentCallback }) {
   const [user, setUser] = useState([]);
   useEffect(() => {
-    // GetUser();
     GetUser().then((data) => {
       setUser(data);
+      console.log(data);
     });
   }, []);
 
@@ -258,11 +255,24 @@ export default function Header({ parentCallback }) {
                 href="/"
                 data-bs-toggle="dropdown"
               >
-                <img
-                  src="/assets/img/profile1.png"
-                  alt="Profile"
-                  className="rounded-circle"
-                />
+                {user.profile_pic && (
+                  <img
+                    src={
+                      "http://localhost:3000/images/profilepic/" +
+                      user.profile_pic
+                    }
+                    width="100%"
+                    alt="Profile"
+                  />
+                )}
+
+                {!user.profile_pic && (
+                  <img
+                    src="/assets/img/profile1.png"
+                    alt="Profile"
+                    className="rounded-circle"
+                  />
+                )}
 
                 <span className="d-none d-md-block dropdown-toggle ps-2">
                   {user.username}
@@ -272,33 +282,33 @@ export default function Header({ parentCallback }) {
               <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                 <li className="dropdown-header">
                   <h6>{user.username}</h6>
-                  <span>{user.rank}</span>
+                  <span>{user.role}</span>
                 </li>
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
 
                 <li>
-                  <a
+                  <Link
                     className="dropdown-item d-flex align-items-center"
                     href="/admin/profile"
                   >
                     <i className="bi bi-person"></i>
                     <span>My Profile</span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
 
                 <li>
-                  <a
+                  <Link
                     className="dropdown-item d-flex align-items-center"
-                    href="users-profile.html"
+                    href="/admin/profile"
                   >
                     <i className="bi bi-gear"></i>
                     <span>Account Settings</span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <hr className="dropdown-divider" />

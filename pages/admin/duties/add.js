@@ -81,35 +81,36 @@ async function addNewVehicle(event) {
   const ouTTIme = new Date(outTime);
   var outtime = convertUTCDateToLocalDate(ouTTIme);
 
-    // console.log(s)
-    var data = {
-        vehicle_id: event.target.vehicle_no.value,
-        date: event.target.date_of_travel.value,
-        indent_no: event.target.vehicle_no.value,
-        out_time: outtime,
-        in_time: inntime,
-        purpose: event.target.Purpose.value,
-        from: event.target.From.value,
-        to: event.target.To.value,
-        km_run: event.target.Km_run.value,
-        meter_count: event.target.Meter_count.value,
-        approved_by_mto: event.target.approved.value,
-        fuel: event.target.Fuel.value,
-        mission_ended: event.target.completed.value
+  // console.log(s)
+  var data = {
+    vehicle_id: event.target.vehicle_no.value,
+    date: event.target.date_of_travel.value,
+    indent_no: event.target.vehicle_no.value,
+    out_time: outtime,
+    in_time: inntime,
+    purpose: event.target.Purpose.value,
+    from: event.target.From.value,
+    to: event.target.To.value,
+    km_run: event.target.Km_run.value,
+    meter_count: event.target.Meter_count.value,
+    approved_by_mto: event.target.approved.value,
+    fuel: event.target.Fuel.value,
+    mission_ended: event.target.completed.value,
+  };
 
-    }
-
-    const res = await axios({url: "http://localhost:3000/duty_log/add", withCredentials: true, method: "POST", data: data});
-    console.log(res.status);
+  const res = await axios({
+    url: "http://localhost:3000/duty_log/add",
+    withCredentials: true,
+    method: "POST",
+    data: data,
+  });
+  console.log(res.status);
   if (res.status == 200) sucessful();
   else unsucessful();
-    
-    
 }
 
 export default function Home() {
   const [vehicles, setVehicles] = useState([]);
-  // const [particularvehicles, setnewVehicles] = useState([]);
   const [errors, setErrors] = useState({ vehicle_sl_no: "" });
   useEffect(() => {
     GetVehicles().then((data) => {
@@ -138,7 +139,7 @@ export default function Home() {
                   <h1>Add New Duty</h1>
 
                   <form onSubmit={addNewVehicle}>
-                  <ToastContainer/>
+                    <ToastContainer />
                     <div className="row mb-3">
                       <label className="col-sm-5 col-form-label">
                         Vehicle Number :
@@ -151,8 +152,8 @@ export default function Home() {
                         >
                           {vehicles.map((vehicle, index) => (
                             <option key={index + 1} value={vehicle._id}>
-                            CRP - {vehicle.vehicle_crp_no}{" "}
-                            {vehicle.registration_no}
+                              CRP - {vehicle.vehicle_crp_no}{" "}
+                              {vehicle.registration_no}
                             </option>
                           ))}{" "}
                         </select>
