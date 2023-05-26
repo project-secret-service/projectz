@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 
 async function GetUserDetails(id) {
   const res = await axios({
-    url: "http://localhost:3000/users/" + id,
+    url: "https://projectx-production.up.railway.app/users/" + id,
     withCredentials: true,
     method: "GET"
   });
@@ -52,7 +52,7 @@ const Post = () => {
           </div>
           <div style={{ width: '3rem', padding: '4rem', margin: '1.8rem' }}>
             <div class="card" style={{ width: "12rem", float: 'left' }}>
-              <img src={"http://localhost:3000/images/profilepic/" + user.profile_pic} style={{ width: '100%' }}
+              <img src={"https://projectx-production.up.railway.app/images/profilepic/" + user.profile_pic} style={{ width: '100%' }}
                 alt="Avatar" />
             </div>
           </div>

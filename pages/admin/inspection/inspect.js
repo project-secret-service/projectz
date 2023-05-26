@@ -11,7 +11,7 @@ import "react-datalist-input/dist/styles.css";
 
 async function GetDetails() {
   const res = await axios({
-    url: "http://localhost:3000/inspection/",
+    url: "https://projectx-production.up.railway.app/inspection/",
     method: "GET",
     withCredentials: true,
   });
@@ -38,7 +38,7 @@ async function addNewDriver(event) {
   };
 
   const res = await axios({
-    url: "http://localhost:3000/inspection/inspect",
+    url: "https://projectx-production.up.railway.app/inspection/inspect",
     withCredentials: true,
     method: "POST",
     data: data,

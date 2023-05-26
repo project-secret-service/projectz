@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 // const inter = Inter({subsets: ['latin']})
 async function GetUser() {
   const res = await axios({
-    url: "http://localhost:3000/users/get_user_details",
+    url: "https://projectx-production.up.railway.app/users/get_user_details",
     method: "GET",
     withCredentials: true,
   });
@@ -37,7 +37,7 @@ async function updateDetails(event) {
 
   console.log(data);
   const res = await axios({
-    url: "http://localhost:3000/users/update/" + v,
+    url: "https://projectx-production.up.railway.app/users/update/" + v,
     method: "PUT",
     withCredentials: true,
     headers: {
@@ -98,7 +98,7 @@ export default function Home() {
                   <div className="card-body p-4 text-center">
                     <img
                       src={
-                        "http://localhost:3000/images/profilepic/" +
+                        "https://projectx-production.up.railway.app/images/profilepic/" +
                         user.profile_pic
                       }
                       width="100%"
@@ -230,7 +230,7 @@ export default function Home() {
                             <div className="col-md-8 col-lg-9">
                               <img
                                 src={
-                                  "http://localhost:3000/images/profilepic/" +
+                                  "https://projectx-production.up.railway.app/images/profilepic/" +
                                   user.profile_pic
                                 }
                                 width="100%"

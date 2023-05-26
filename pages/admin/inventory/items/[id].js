@@ -8,7 +8,7 @@ import { useEffect,useState } from 'react'
 
 async function GetItemDetails(id){
   const res = await axios({
-    url:"http://localhost:3000/inventory/items/"+id,
+    url:"https://projectx-production.up.railway.app/inventory/items/"+id,
     method:"GET",
     withCredentials:true
   });

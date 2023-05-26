@@ -10,10 +10,11 @@ import Router from "next/router";
 import "react-datalist-input/dist/styles.css";
 import { Button, Row } from "react-bootstrap";
 import Link from "next/link";
+import dateFormat from "dateformat";
 
 async function GetMemos() {
   const res = await axios({
-    url: "http://localhost:3000/defectmemos/",
+    url: "https://projectx-production.up.railway.app/defectmemos/",
     method: "GET",
     withCredentials: true,
   });
@@ -53,7 +54,7 @@ async function createDefectMemo(event) {
   console.log(data);
 
   const res = await axios({
-    url: "http://localhost:3000/defectmemos/add",
+    url: "https://projectx-production.up.railway.app/defectmemos/add",
     withCredentials: true,
     method: "POST",
 
@@ -97,22 +98,23 @@ export default function Home() {
                       padding: ".1rem",
                     }}
                   />
-                  <form onSubmit={createDefectMemo}>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Date :
-                      </label>
-                      <div className="col-sm-5">
-                        <input
-                          type="date"
-                          name="date"
-                          className="form-control"
-                        />
+                    <form onSubmit={createDefectMemo}>
+
+                      <div className="row mb-3">
+                        <label
+                          htmlFor="inputText"
+                          className="col-sm-5 col-form-label"
+                        >
+                          Date :
+                        </label>
+                        <div className="col-sm-5">
+                          <input
+                            type="date"
+                            name="date"
+                            className="form-control"
+                          />
+                        </div>
                       </div>
-                    </div>
 
                     <div className="row mb-3">
                       <label
@@ -354,18 +356,18 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className="row mb-3">
-                      <div className="col-sm-7">
-                        <button
-                          type="submit"
-                          className="btn btn-primary"
-                          style={{ float: "right" }}
-                        >
-                          Create Defect Memo
-                        </button>
+                      <div className="row mb-3">
+                        <div className="col-sm-7">
+                          <button
+                            type="submit"
+                            className="btn btn-primary"
+                            style={{ float: "right" }}
+                          >
+                            Create Defect Memo
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </form>
+                    </form>
                 </div>
               </div>
               <button
@@ -388,39 +390,55 @@ export default function Home() {
                       padding: ".1rem",
                     }}
                   />
-                  <table className="table table-hover">
-                    <thead>
-                      <tr>
-                        <th scope="col">Sl No.</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Vehicle No</th>
-                        <th scope="col">KM Run</th>
-                        <th scope="col">Condition Of Engine</th>
-                      </tr>
-                    </thead>
-                    <tbody style={{ cursor: "pointer" }}>
-                      {memos.map((memo, index) => {
-                        return (
-                          <tr
-                            key={index + 1}
-                            onClick={() => OpenLink(memo._id)}
-                          >
-                            <th scope="row">{index + 1}</th>
-                            <td>{memo.date.substring(0, 10)}</td>
-                            <td>{memo.vehicle_no}</td>
-                            <td>{memo.kilometers_run}</td>
-                            <td>{memo.condition_of_engine}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+                    <table className="table table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">Sl No.</th>
+                          <th scope="col">Date</th>
+                          <th scope="col">Vehicle No</th>
+                          <th scope="col">KM Run</th>
+                          <th scope="col">Condition Of Engine</th>
+                        </tr>
+                      </thead>
+                      <tbody style={
+                        { cursor: "pointer" }
+                      }>
+                        {
+                          memos.map((memo, index) => {
+                            return (
+                              <tr key={
+                                index + 1
+                              }
+                                onClick={
+                                  () => OpenLink(memo._id)
+                                }>
+                                <th scope="row">
+                                  {index + 1}
+                                </th>
+                                <td>{memo.date &&
+                                  dateFormat(
+                                    memo.date,
+                                    "dS mmmm, yyyy - dddd"
+                                  )}</td>
+                                <td>{
+                                  memo.vehicle_no
+                                }</td>
+                                <td>{
+                                  memo.kilometers_run
+                                }</td>
+                                <td>{memo.condition_of_engine}</td>
+                              </tr>
+                            )
+                          })
+                        }
+                      </tbody>
+                    </table>
                 </div>
               </div>
             </div>
           </Row>
         </main>
-      </main>
+      </main >
       <Scripts />
       <Script src="/assets/js/main.js"></Script>
     </>

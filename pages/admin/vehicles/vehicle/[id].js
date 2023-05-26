@@ -16,7 +16,7 @@ import Link from "next/link";
 
 async function GetVehicle(id) {
   const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id,
+    url: "https://projectx-production.up.railway.app/vehicles/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -98,7 +98,7 @@ export default function Home() {
     let newKM = document.getElementById("km_run").value;
     if (newKM > vehicle.total_kilo_meter) {
       const res = await axios({
-        url: "http://localhost:3000/vehicles/" + vehicle._id + "/update_km_run",
+        url: "https://projectx-production.up.railway.app/vehicles/" + vehicle._id + "/update_km_run",
         method: "POST",
         withCredentials: true,
         data: {
@@ -113,7 +113,7 @@ export default function Home() {
   async function updateFuel() {
     let newFuel = document.getElementById("new_fuel").value;
     const res = await axios({
-      url: "http://localhost:3000/vehicles/" + vehicle._id + "/fuel_update",
+      url: "https://projectx-production.up.railway.app/vehicles/" + vehicle._id + "/fuel_update",
       method: "POST",
       withCredentials: true,
       data: {
@@ -139,7 +139,7 @@ export default function Home() {
                       <img
                         className="d-block w-100"
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          "https://projectx-production.up.railway.app/images/vehicle_images/" +
                           vehicle.front_view
                         }
                         alt="First slide"
@@ -154,7 +154,7 @@ export default function Home() {
                       <img
                         className="d-block w-100"
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          "https://projectx-production.up.railway.app/images/vehicle_images/" +
                           vehicle.back_view
                         }
                         alt="First slide"
@@ -169,7 +169,7 @@ export default function Home() {
                       <img
                         className="d-block w-100"
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          "https://projectx-production.up.railway.app/images/vehicle_images/" +
                           vehicle.top_view
                         }
                         alt="First slide"
@@ -184,7 +184,7 @@ export default function Home() {
                       <img
                         className="d-block w-100"
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          "https://projectx-production.up.railway.app/images/vehicle_images/" +
                           vehicle.left_view
                         }
                         alt="First slide"
@@ -199,7 +199,7 @@ export default function Home() {
                       <img
                         className="d-block w-100"
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          "https://projectx-production.up.railway.app/images/vehicle_images/" +
                           vehicle.right_view
                         }
                         alt="First slide"

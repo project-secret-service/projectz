@@ -13,7 +13,7 @@ export default function Login() {
     };
     const res = await axios({
       method: "POST",
-      url: "http://localhost:3000/login",
+      url: "https://projectx-production.up.railway.app/login",
       data: data,
       withCredentials: true,
     });
