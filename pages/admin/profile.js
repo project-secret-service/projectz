@@ -9,10 +9,10 @@ import Footer from "../components/Footer";
 import Scripts from "../components/Scripts";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import vehicle_styles from "@/styles/Vehicles.module.css";
 // const inter = Inter({subsets: ['latin']})
 async function GetUser() {
   const res = await axios({
@@ -24,30 +24,7 @@ async function GetUser() {
 }
 
 var v;
-async function updateDetails(event) {
-  event.preventDefault();
-  var data = {
-    username: event.target.fullName.value,
-    role: event.target.company.value,
-    rank: event.target.job.value,
-    contact_no: event.target.phone.value,
-    email_id: event.target.email.value,
-    photo: event.target.profile_pic.files[0],
-  };
 
-  console.log(data);
-  const res = await axios({
-    url: "http://localhost:3000/users/update/" + v,
-    method: "PUT",
-    withCredentials: true,
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-    data: data,
-  });
-  console.log(res);
-  window.location.reload();
-}
 const notify = () =>
   toast.success(" Saved Changes!", {
     position: "bottom-center",
@@ -59,6 +36,7 @@ const notify = () =>
     progress: undefined,
     theme: "light",
   });
+
 <li className="nav-item">
   <button
     className="nav-link"
@@ -70,6 +48,54 @@ const notify = () =>
 </li>;
 export default function Home() {
   const [user, setUser] = useState([]);
+  const [updatedUser, setUpdatedUser] = useState({});
+  const router = useRouter();
+  async function updateDetails(event) {
+    event.preventDefault();
+    var data = {
+      username: event.target.fullName.value,
+      role: event.target.company.value,
+      rank: event.target.rank.value,
+      contact_no: event.target.phone.value,
+      email_id: event.target.email.value,
+      photo: event.target.profile_pic.files[0],
+    };
+
+    const res = await axios({
+      url: "http://localhost:3000/users/update/" + v,
+      method: "PUT",
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: data,
+    });
+    window.location.reload();
+  }
+  function setUserInput({ target: { name, value } }) {
+    setUpdatedUser({ ...updatedUser, name: value });
+    console.log(updatedUser);
+  }
+
+  function setImage({ target }) {
+    console.log(target.value);
+  }
+
+  async function handleSubmit(e) {
+    if (e.target.profile_pic.files) {
+    }
+    const res = await axios({
+      url: "http://localhost:3000/users/update/" + v,
+      method: "POST",
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: data,
+    });
+    console.log(res);
+  }
+
   useEffect(() => {
     GetUser().then((data) => {
       setUser(data);
@@ -87,14 +113,14 @@ export default function Home() {
       <main className={styles.main}>
         <Header />
         <SideBar />
-        <main id="main" className="main">
+        <main id="main" className="main col-10">
           <div className="pagetitle">
             <h1>Profile</h1>
           </div>
 
           <section>
-            <div className="row col-lg-11">
-              <div className="col-lg-4">
+            <div className="row">
+              <div className="col-4">
                 <div className="card">
                   <div className="card-body p-4 text-center">
                     <img
@@ -106,19 +132,18 @@ export default function Home() {
                       alt="Profile"
                     />
 
-                    <h3>{user.username}</h3>
-                    <h4>{user.rank}</h4>
-                    <a href="/admin">
-                      <button type="button" className="btn btn-dark">
-                        Back
-                      </button>
-                    </a>
-                    {/* <button></button> */}
+                    <h1 className={vehicle_styles.vehicle_name}>
+                      {user.username}
+                    </h1>
+                    <h4>{user.role}</h4>
+                    <h4>
+                      Rank -<b> {user.rank}</b>
+                    </h4>
                   </div>
                 </div>
               </div>
 
-              <div className="col-lg-8">
+              <div className="col-8">
                 <div className="card">
                   <div className="card-body pt-3">
                     <ul className="nav nav-tabs nav-tabs-bordered">
@@ -128,7 +153,7 @@ export default function Home() {
                           data-bs-toggle="tab"
                           data-bs-target="#profile-overview"
                         >
-                          Overview
+                          <i class="bi bi-info-square"></i> Overview
                         </button>
                       </li>
 
@@ -138,29 +163,9 @@ export default function Home() {
                           data-bs-toggle="tab"
                           data-bs-target="#profile-edit"
                         >
-                          Edit Profile
+                          <i class="bi bi-pencil-square"></i> Edit Profile
                         </button>
                       </li>
-
-                      {/* <li className="nav-item">
-                        <button
-                          className="nav-link"
-                          data-bs-toggle="tab"
-                          data-bs-target="#profile-settings"
-                        >
-                          Settings
-                        </button>
-                      </li> */}
-
-                      {/* <li className="nav-item">
-                        <button
-                          className="nav-link"
-                          data-bs-toggle="tab"
-                          data-bs-target="#profile-change-password"
-                        >
-                          Change Password
-                        </button>
-                      </li> */}
                     </ul>
                     <div className="tab-content pt-2">
                       <div
@@ -168,40 +173,55 @@ export default function Home() {
                         id="profile-overview"
                       >
                         <h5 className="card-title">Profile Details</h5>
-                        <div className="row">
-                          <div className="col-lg-3 col-md-4 label ">
-                            Full Name
+                        <div style={{ fontSize: "1.2rem" }}>
+                          <div className="row mb-3">
+                            <div className="col-lg-3 col-md-4 label">
+                              <i class="bi bi-person-check"></i> Name
+                            </div>
+                            <div className="col-lg-9 col-md-8">
+                              : <b> {user.username}</b>
+                            </div>
                           </div>
-                          <div className="col-lg-9 col-md-8">
-                            {user.username}
+                          <div className="row mb-3">
+                            <div className="col-lg-3 col-md-4 label ">
+                              <i class="bi bi-person-lines-fill"></i>{" "}
+                              Registration No
+                            </div>
+                            <div className="col-lg-9 col-md-8">
+                              : <b>{user.user_registration_no}</b>
+                            </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-3 col-md-4 label ">
-                            Registration_No
+                          <div className="row mb-3">
+                            <div className="col-lg-3 col-md-4 label">
+                              <i class="bi bi-person-workspace"></i> Role
+                            </div>
+                            <div className="col-lg-9 col-md-8">
+                              : <b>{user.role}</b>
+                            </div>
                           </div>
-                          <div className="col-lg-9 col-md-8">
-                            {user.user_registration_no}
+                          <div className="row mb-3">
+                            <div className="col-lg-3 col-md-4 label">
+                              <i class="bi bi-arrow-up-circle-fill"></i> Rank
+                            </div>
+                            <div className="col-lg-9 col-md-8">
+                              : <b>{user.rank}</b>
+                            </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-3 col-md-4 label">Role</div>
-                          <div className="col-lg-9 col-md-8">{user.role}</div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-3 col-md-4 label">Rank</div>
-                          <div className="col-lg-9 col-md-8">{user.rank}</div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-3 col-md-4 label">Phone</div>
-                          <div className="col-lg-9 col-md-8">
-                            {user.contact_no}
+                          <div className="row mb-3">
+                            <div className="col-lg-3 col-md-4 label">
+                              <i class="bi bi-phone"></i> Phone
+                            </div>
+                            <div className="col-lg-9 col-md-8">
+                              : <b>{user.contact_no}</b>
+                            </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-3 col-md-4 label">Email</div>
-                          <div className="col-lg-9 col-md-8">
-                            {user.email_id}
+                          <div className="row mb-3">
+                            <div className="col-lg-3 col-md-4 label">
+                              <i class="bi bi-envelope-at"></i> Email
+                            </div>
+                            <div className="col-lg-9 col-md-8">
+                              : <b> {user.email_id}</b>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -228,7 +248,7 @@ export default function Home() {
                               htmlFor="profileImage"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              Profile Image
+                              <i class="bi bi-file-image"></i> Profile Image
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <img
@@ -236,12 +256,15 @@ export default function Home() {
                                   "http://localhost:3000/images/profilepic/" +
                                   user.profile_pic
                                 }
-                                width="100%"
+                                width="30%"
                                 alt="Profile"
                               />
+                              <br />
+                              <br />
 
                               <div>
                                 <input
+                                  onChange={setImage}
                                   name="profile_pic"
                                   type="file"
                                   id="image_input"
@@ -257,11 +280,12 @@ export default function Home() {
                               htmlFor="fullName"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              Full Name
+                              <i class="bi bi-person-check"></i> Name
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
-                                name="fullName"
+                                onChange={setUserInput}
+                                name="name"
                                 type="text"
                                 className="form-control"
                                 id="fullName"
@@ -270,34 +294,18 @@ export default function Home() {
                               />
                             </div>
                           </div>
-                          {/* <div className="row mb-3">
-                                                        <label htmlFor="fullName" className="col-md-4 col-lg-3 col-form-label">User Id</label>
-                                                        <div className="col-md-8 col-lg-9">
-                                                            <input name="userid" type="text" className="form-control" id="fullName" defaultValue={user._id} placeholder="Enter your name"/>
-                                                        </div>
-                                                    </div> */}
-
-                          {/* <div className="row mb-3">
-                                                        <label htmlFor="about" className="col-md-4 col-lg-3 col-form-label">About</label>
-                                                        <div className="col-md-8 col-lg-9">
-                                                            <textarea name="about" className="form-control" id="about"
-                                                                style={
-                                                                    {height: "100px"}
-                                                                }
-                                                                defaultValue="Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde."></textarea>
-                                                        </div>
-                                                    </div> */}
 
                           <div className="row mb-3">
                             <label
                               htmlFor="company"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              Role
+                              <i class="bi bi-person-workspace"></i> Role
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
-                                name="company"
+                                onChange={setUserInput}
+                                name="role"
                                 type="text"
                                 className="form-control"
                                 id="company"
@@ -312,11 +320,12 @@ export default function Home() {
                               htmlFor="Job"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              Rank
+                              <i class="bi bi-arrow-up-circle-fill"></i> Rank
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
-                                name="job"
+                                onChange={setUserInput}
+                                name="rank"
                                 type="text"
                                 className="form-control"
                                 id="Job"
@@ -325,22 +334,17 @@ export default function Home() {
                               />
                             </div>
                           </div>
-                          {/* <div className="row mb-3">
-                                                        <label htmlFor="Job" className="col-md-4 col-lg-3 col-form-label">Registration_No</label>
-                                                        <div className="col-md-8 col-lg-9">
-                                                            <input name="job" type="text" className="form-control" id="Job" defaultValue={user.user_registration_no} placeholder="Enter your rank"/>
-                                                        </div>
-                                                    </div> */}
 
                           <div className="row mb-3">
                             <label
                               htmlFor="Phone"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              Phone_no
+                              <i class="bi bi-phone"></i> Phone No
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
+                                onChange={setUserInput}
                                 name="phone"
                                 type="text"
                                 className="form-control"
@@ -356,10 +360,11 @@ export default function Home() {
                               htmlFor="Email"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              Email
+                              <i class="bi bi-envelope-at"></i> Email
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
+                                onChange={setUserInput}
                                 name="email"
                                 type="email"
                                 className="form-control"
@@ -370,186 +375,13 @@ export default function Home() {
                             </div>
                           </div>
 
-                          {/* <div className="row mb-3">
-                                                        <label htmlFor="Twitter" className="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
-                                                        <div className="col-md-8 col-lg-9">
-                                                            <input name="twitter" type="text" className="form-control" id="Twitter" defaultValue="https://twitter.com/#"/>
-                                                        </div>
-                                                    </div> */}
-
-                          {/* <div className="row mb-3">
-                                                        <label htmlFor="Facebook" className="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
-                                                        <div className="col-md-8 col-lg-9">
-                                                            <input name="facebook" type="text" className="form-control" id="Facebook" defaultValue="https://facebook.com/#"/>
-                                                        </div>
-                                                    </div> */}
-
-                          {/* <div className="row mb-3">
-                                                        <label htmlFor="Instagram" className="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
-                                                        <div className="col-md-8 col-lg-9">
-                                                            <input name="instagram" type="text" className="form-control" id="Instagram" defaultValue="https://instagram.com/#"/>
-                                                        </div>
-                                                    </div> */}
-
-                          {/* <div className="row mb-3">
-                                                        <label htmlFor="Linkedin" className="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
-                                                        <div className="col-md-8 col-lg-9">
-                                                            <input name="linkedin" type="text" className="form-control" id="Linkedin" defaultValue="https://linkedin.com/#"/>
-                                                        </div>
-                                                    </div> */}
-
                           <div className="text-center">
-                            <button
-                              onClick={notify}
-                              type="submit"
-                              className="btn btn-primary"
-                            >
+                            <button type="submit" className="btn btn-primary">
                               Save Changes
                             </button>
                           </div>
                         </form>
                       </div>
-
-                      {/* <div className="tab-pane fade pt-3" id="profile-settings">
-                        <form>
-                          <div className="row mb-3">
-                            <label
-                              htmlFor="fullName"
-                              className="col-md-4 col-lg-3 col-form-label"
-                            >
-                              Email Notifications
-                            </label>
-                            <div className="col-md-8 col-lg-9">
-                              <div className="form-check">
-                                <input
-                                  className="form-check-input"
-                                  type="checkbox"
-                                  id="changesMade"
-                                  defaultChecked
-                                />
-                                <label
-                                  className="form-check-label"
-                                  htmlFor="changesMade"
-                                >
-                                  Changes made to your account
-                                </label>
-                              </div>
-                              <div className="form-check">
-                                <input
-                                  className="form-check-input"
-                                  type="checkbox"
-                                  id="newProducts"
-                                  defaultChecked
-                                />
-                                <label
-                                  className="form-check-label"
-                                  htmlFor="newProducts"
-                                >
-                                  Information on new products and services
-                                </label>
-                              </div>
-                              <div className="form-check">
-                                <input
-                                  className="form-check-input"
-                                  type="checkbox"
-                                  id="proOffers"
-                                />
-                                <label
-                                  className="form-check-label"
-                                  htmlFor="proOffers"
-                                >
-                                  Marketing and promo offers
-                                </label>
-                              </div>
-                              <div className="form-check">
-                                <input
-                                  className="form-check-input"
-                                  type="checkbox"
-                                  id="securityNotify"
-                                  defaultChecked
-                                  disabled
-                                />
-                                <label
-                                  className="form-check-label"
-                                  htmlFor="securityNotify"
-                                >
-                                  Security alerts
-                                </label>
-                              </div>
-                            </div>
-                          </div> 
-
-                           <div className="text-center">
-                            <button type="submit" className="btn btn-primary">
-                              Save Changes
-                            </button>
-                          </div>
-                        </form>
-                      </div> */}
-
-                      {/* <div
-                        className="tab-pane fade pt-3"
-                        id="profile-change-password"
-                      >
-                        <form>
-                          <div className="row mb-3">
-                            <label
-                              htmlFor="currentPassword"
-                              className="col-md-4 col-lg-3 col-form-label"
-                            >
-                              Current Password
-                            </label>
-                            <div className="col-md-8 col-lg-9">
-                              <input
-                                name="password"
-                                type="password"
-                                className="form-control"
-                                id="currentPassword"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="row mb-3">
-                            <label
-                              htmlFor="newPassword"
-                              className="col-md-4 col-lg-3 col-form-label"
-                            >
-                              New Password
-                            </label>
-                            <div className="col-md-8 col-lg-9">
-                              <input
-                                name="newpassword"
-                                type="password"
-                                className="form-control"
-                                id="newPassword"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="row mb-3">
-                            <label
-                              htmlFor="renewPassword"
-                              className="col-md-4 col-lg-3 col-form-label"
-                            >
-                              Re-enter New Password
-                            </label>
-                            <div className="col-md-8 col-lg-9">
-                              <input
-                                name="renewpassword"
-                                type="password"
-                                className="form-control"
-                                id="renewPassword"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="text-center">
-                            <button type="submit" className="btn btn-primary">
-                              Change Password
-                            </button>
-                          </div>
-                        </form>
-                      </div> */}
                     </div>
                   </div>
                 </div>

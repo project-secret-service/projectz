@@ -10,7 +10,7 @@ import axios from "axios";
 import Router from "next/router";
 import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
-import { Button, Row } from 'react-bootstrap';
+import { Button, Row } from "react-bootstrap";
 import Link from "next/link";
 
 async function GetUsers() {
@@ -39,7 +39,7 @@ async function addNewUser(event) {
   console.log(formData);
 
   const res = await axios({
-    url: "http://localhost:3000//add",
+    url: "http://localhost:3000/users/add",
     withCredentials: true,
     method: "POST",
     headers: {
@@ -228,7 +228,11 @@ export default function Home() {
                         Rank:
                       </label>
                       <div className="col-sm-7">
-                        <input type="text" name="rank" className="form-control" />
+                        <input
+                          type="text"
+                          name="rank"
+                          className="form-control"
+                        />
                       </div>
                     </div>
 
@@ -266,7 +270,10 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="col-lg-2 card p-4 m-1" style={{ maxHeight: "10vh" }}>
+            <div
+              className="col-lg-2 card p-4 m-1"
+              style={{ maxHeight: "10vh" }}
+            >
               <Link href={"/admin/users"}>
                 <Button className="w-100 mb-1 btn btn-info">Users List</Button>
               </Link>
@@ -275,7 +282,10 @@ export default function Home() {
           <button
             className="btn btn-primary"
             style={{ float: "left" }}
-            onClick={() => Router.back()}>Go Back</button>
+            onClick={() => Router.back()}
+          >
+            Go Back
+          </button>
         </main>
       </main>
       <Scripts />

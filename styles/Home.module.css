@@ -14,6 +14,16 @@
     rgba(139, 217, 240, 0.6278886554621849) 99%
   );
 }
+
+.main_page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5rem;
+  min-height: 100vh;
+}
+
 .navbar {
   display: flex;
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
