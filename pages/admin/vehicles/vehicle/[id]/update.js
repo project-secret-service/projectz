@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Head from "@/pages/components/Head";
 import vehicle_styles from "@/styles/Vehicles.module.css";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Row, Modal } from "react-bootstrap";
 import dateFormat from "dateformat";
 import Link from "next/link";
 
@@ -25,6 +25,9 @@ export default function Home() {
   const [vehicle, setVehicle] = useState({});
   const [updatedVehicle, setUpdatedVehicle] = useState({});
   const router = useRouter();
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const setP = (event) => {
     const selectedFile = event.target.files[0];
@@ -36,12 +39,7 @@ export default function Home() {
     setUpdatedVehicle({ ...updatedVehicle, [name]: value });
   }
 
-  async function updateVehicle(e) {
-    e.preventDefault();
-    setUpdatedVehicle({
-      ...updatedVehicle,
-      [e.target.vehicle_type.name]: e.target.vehicle_type.value,
-    });
+  async function updateVehicle() {
     const res = await axios({
       url: "http://localhost:3000/vehicles/" + vehicle._id + "/update",
       method: "POST",
@@ -51,7 +49,7 @@ export default function Home() {
       },
       data: updatedVehicle,
     });
-    window.location.href = "/admin/vehicles/" + vehicle._id;
+    router.push("/admin/vehicles/vehicle/" + vehicle._id);
   }
 
   useEffect(() => {
@@ -67,7 +65,7 @@ export default function Home() {
       <main className={styles.main}>
         <Header />
         <SideBar />
-        <form method="POST" onSubmit={updateVehicle}>
+        <form method="POST">
           <main id="main" className="col-lg-11 main mt-0">
             <Row className="col-lg-12">
               <Col lg="4" className="card m-2 p-5 text-center">
@@ -154,7 +152,7 @@ export default function Home() {
               <Col lg="7" className="card m-2 p-2">
                 <div className="list-group">
                   <Link
-                    href={"/admin/vehicles/" + vehicle._id}
+                    href={"/admin/vehicles/vehicle/" + vehicle._id}
                     style={{ textDecoration: "none" }}
                   >
                     <li
@@ -547,10 +545,31 @@ export default function Home() {
             </Row>
             <Row className="col-11">
               <hr />
-              <Button type="submit" className="btn-success">
+              <Button type="button" className="btn-success" onClick={setShow}>
                 UPDATE
               </Button>
             </Row>
+            <Modal show={show} onHide={handleClose} centered>
+              <Modal.Header closeButton>
+                <Modal.Title>Update Vehicle : {vehicle.name}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                Do You want to Update the Vehicle with Following Details ?
+                <p>
+                  {/* <li>This will generate a new Vehicle ID</li> */}
+                  {Object.entries(updatedVehicle).map
+                  (([key,value])=>(<li>{key}: {value}</li>))}
+                </p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Close
+                </Button>
+                <Button variant="primary" onClick={updateVehicle}>
+                  Add New Vehicle
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </main>
         </form>
       </main>

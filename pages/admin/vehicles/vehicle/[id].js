@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import styles from "@/styles/Home.module.css";
 import Script from "next/script";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
-import Scripts from "../../components/Scripts";
+import Header from "../../../components/Header";
+import SideBar from "../../../components/Sidebar";
+import Scripts from "../../../components/Scripts";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Head from "@/pages/components/Head";
@@ -80,7 +80,7 @@ export default function Home() {
   }
 
   function showFuelLog() {
-    router.push("/admin/vehicles/" + vehicle._id + "/fuel_log");
+    router.push("/admin/vehicles/vehicle/" + vehicle._id + "/fuel_log");
   }
 
   useEffect(() => {
@@ -274,7 +274,7 @@ export default function Home() {
                   <div
                     className={`${vehicle_styles.odometer} p-2 text-center col-9 m-1`}
                     onClick={() => {
-                      router.push('/admin/vehicles/'+vehicle._id+'/km_run');
+                      router.push("/admin/vehicles/vehicle/" + vehicle._id + "/km_run");
                     }}
                   >
                     <h4 className={`${vehicle_styles.odometer_heading} mb-4`}>
@@ -341,93 +341,16 @@ export default function Home() {
               </div>
 
               <div className="m-3">
-                <Link href={"/admin/vehicles/" + vehicle._id + "/update"}>
-                  {" "}
+                <Link
+                  href={"/admin/vehicles/vehicle/" + vehicle._id + "/update"}
+                >
                   <Button className="btn-primary m-1">UPDATE VEHICLE</Button>
                 </Link>
-                <Link href={"/admin/vehicles/" + vehicle._id + "/delete"}>
+                <Link
+                  href={"/admin/vehicles/vehicle/" + vehicle._id + "/delete"}
+                >
                   <Button className="btn-danger m-1">DELETE VEHICLE</Button>
                 </Link>
-                {/* <Link href={"/admin/vehicles/" + vehicle._id + "/delete"}> */}
-
-                {!fuelInput && (
-                  <Button
-                    className="btn-success m-1"
-                    onClick={() => {
-                      setfuelInput(true);
-                    }}
-                  >
-                    UPDATE FUEL
-                  </Button>
-                )}
-                {!kmRun && (
-                  <Button
-                    className="btn-dark m-1"
-                    onClick={() => {
-                      setKmRun(true);
-                    }}
-                  >
-                    UPDATE KM RUN
-                  </Button>
-                )}
-                {fuelInput && (
-                  <>
-                    <hr />
-                    <div className="row mb-3 d-flex col-12">
-                      <div className="">
-                        <input
-                          onChange={(e) => {
-                            handleFuelChange(e);
-                          }}
-                          id="new_fuel"
-                          type="number"
-                          name="name"
-                          className="form-control text-center"
-                        />
-                      </div>
-                      <br />
-                      <br />
-                      <Button className="btn-success" onClick={updateFuel}>
-                        UPDATE FUEL
-                      </Button>
-                    </div>
-                  </>
-                )}
-                {fuelLimitError && (
-                  <div className="text-center" style={{ color: "red" }}>
-                    Fuel Limit : {vehicle.fuel_capacity} L
-                  </div>
-                )}
-
-                {kmRun && (
-                  <>
-                    <hr />
-                    <div className="row mb-3 d-flex col-12">
-                      <div className="">
-                        <input
-                          onChange={(e) => {
-                            handleKmChange(e);
-                          }}
-                          defaultValue={vehicle.total_kilo_meter}
-                          id="km_run"
-                          type="number"
-                          name="name"
-                          className="form-control text-center"
-                        />
-                      </div>
-                      <br />
-                      <br />
-                      <Button className="btn-dark" onClick={updateKmRun}>
-                        UPDATE KM RUN
-                      </Button>
-                    </div>
-                  </>
-                )}
-                {kmLimitError && (
-                  <div className="text-center" style={{ color: "red" }}>
-                    Cannot Be Less Than : {vehicle.total_kilo_meter} Km
-                  </div>
-                )}
               </div>
             </Col>
           </Row>
@@ -551,6 +474,7 @@ export default function Home() {
             <Col>
               <div className="card p-4">
                 <h4 className={vehicle_styles.vehicle_name}>FIRST OVERHAUL</h4>
+
                 <hr />
                 <Row>
                   <Col lg="5"> Date of First Overhaul </Col>
@@ -579,6 +503,7 @@ export default function Home() {
                     : <b>{vehicle.engine_first_overhaul}</b>
                   </Col>
                 </Row>
+                <button className="btn btn-primary mt-3">UPDATE</button>
               </div>
             </Col>
             <Col>
@@ -611,6 +536,7 @@ export default function Home() {
                   <Col>
                     :<b> {vehicle.engine_second_overhaul}</b>{" "}
                   </Col>
+                  <button className="btn btn-primary mt-3">UPDATE</button>
                 </Row>
               </div>
             </Col>

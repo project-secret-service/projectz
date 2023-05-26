@@ -180,7 +180,7 @@ export default function Home() {
                     )}
                     <br />
                     <br/>
-                    <Link href={"/admin/vehicles/" + vehicle._id}>
+                    <Link href={"/admin/vehicles/vehicle/" + vehicle._id}>
                       <Button
                         className="btn-primary w-100"
                         onClick={updateFuel}

@@ -59,7 +59,7 @@ export default function Home() {
     }
   }
   function OpenLink(link) {
-    Router.push("/admin/vehicles/" + link);
+    Router.push("/admin/vehicles/vehicle/" + link);
   }
   return (
     <>
@@ -121,7 +121,7 @@ export default function Home() {
                         )}
                       </tr>
                     );
-                  })}{" "}
+                  })}
                 </tbody>
               </table>
             </div>

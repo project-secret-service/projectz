@@ -8,7 +8,8 @@ import axios from "axios";
 import Link from "next/link";
 import "react-datalist-input/dist/styles.css";
 import Head from "next/head";
-import { Button, Row } from "react-bootstrap";
+import { Button, Row, Modal } from "react-bootstrap";
+import { useRouter } from "next/router";
 
 async function CheckCrpNoinDB(crp_no) {
   var res = await axios({
@@ -23,8 +24,27 @@ async function CheckCrpNoinDB(crp_no) {
 }
 
 export default function Home() {
-  const [errors, setErrors] = useState({ vehicle_crp_no: "" });
+  const [errors, setErrors] = useState({
+    vehicle_crp_no: "",
+    vehicle_name: "",
+  });
+  const [allowSubmit, setAllowSubmit] = useState(false);
   const [vehicle, setVehicle] = useState({});
+  const [show, setShow] = useState(false);
+  const router = useRouter();
+  const handleClose = () => setShow(false);
+  const handleShow = () => {
+    if (!vehicle.name) {
+      setErrors((errors) => {
+        return {
+          ...errors,
+          vehicle_name: "Please Enter Vehicle Name",
+        };
+      });
+    } else {
+      setShow(true);
+    }
+  };
 
   useEffect(() => {
     setVehicle({
@@ -34,19 +54,36 @@ export default function Home() {
   }, []);
 
   function setV({ target: { name, value } }) {
+    console.log(name);
+    console.log(value);
+    if (name === "name" && value != "") {
+      setErrors((errors) => {
+        return {
+          ...errors,
+          vehicle_name: "",
+        };
+      });
+    }else if (name==="name" && value ==="") {
+      setErrors((errors) => {
+        return {
+          ...errors,
+          vehicle_name: "Please Enter Vehicle Name",
+        };
+      });
+    }
     setVehicle({ ...vehicle, [name]: value });
   }
 
-  async function addNewVehicle(e) {
-    e.preventDefault();
-    console.log(vehicle);
+  async function handleSubmit() {
     const res = await axios({
       url: "http://localhost:3000/vehicles/add",
       withCredentials: true,
       method: "POST",
       data: vehicle,
     });
-    window.location.href = "/admin/vehicles/";
+    if (res.status == 200) {
+      router.push("/admin/vehicles/vehicle/" + res.data.vehicle_id);
+    }
   }
 
   function CheckCrpNo() {
@@ -89,7 +126,7 @@ export default function Home() {
                 <div className="card-body">
                   <h1>Add New Vehicle</h1>
 
-                  <form onSubmit={addNewVehicle}>
+                  <form>
                     <div className="row mb-3">
                       <label
                         htmlFor="inputText"
@@ -104,6 +141,8 @@ export default function Home() {
                           name="name"
                           className="form-control"
                         />
+
+                        <p>{errors.vehicle_name}</p>
                       </div>
                     </div>
                     <div className="row mb-3">
@@ -122,7 +161,6 @@ export default function Home() {
                           type="number"
                           name="vehicle_crp_no"
                           className="form-control"
-                          // onChange={() => }
                         />
                         <p>{errors.vehicle_crp_no} </p>
                       </div>
@@ -238,417 +276,52 @@ export default function Home() {
                     </div>
 
                     <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Chasis Number :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="chasis_no"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Engine Number:
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="engine_no"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Number of Cylinders :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="number"
-                          name="no_of_cylinders"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Horse Power :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="number"
-                          name="horse_power"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Size of Sparkling Plugs :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="number"
-                          name="size_of_sparkling_plug"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Tappet Adjustments :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="tappet"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Circuit Breaker Point Adjustment :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="circuit_breaker"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Firing Order :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="firing_order"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Wheel Base :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="wheel_base"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Type of Body :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="string"
-                          name="body_type"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Front :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="front"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Size of Tyre :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="tyre_size"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Tyre Pressure Front Wheels :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="front_tyre_pressure"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Tyre Pressure Rear Wheels :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="rear_tyre_pressure"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Battery No :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="number"
-                          name="battery_no"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Battery Type :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="battery_type"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Battery Voltage :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="text"
-                          name="battery_volt"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Date of Supply :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="date"
-                          name="date_of_supply"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Engine Number after First Overhaul :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="number"
-                          name="engine_first_overhaul"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Distance travelled before First Overhaul :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="number"
-                          name="distance_before_first_overhaul"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Date of First Overhaul :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="date"
-                          name="date_of_first_overhaul"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Engine Number after Second Overhaul :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="number"
-                          name="engine_second_overhaul"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Distance travelled before Second Overhaul :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="number"
-                          name="distance_before_second_overhaul"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        Date of Second Overhaul :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={(e) => setV(e)}
-                          type="date"
-                          name="date_of_second_overhaul"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
                       <div className="text-center">
-                        <button type="submit" className="btn btn-primary w-100">
+                        <button
+                          type="button"
+                          onClick={handleShow}
+                          className="btn btn-primary w-100"
+                        >
                           Add Vehicle
                         </button>
                       </div>
                     </div>
+                    <Modal show={show} onHide={handleClose} centered>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Add New Vehicle</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        Do You want to Add The Vehicle : <b>{vehicle.name}</b>{" "}
+                        <p>
+                          <li>This will generate a new Vehicle ID</li>
+                          <li>
+                            All Details of The vehicle can be Updated in Next
+                            Page
+                          </li>
+                        </p>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                          Close
+                        </Button>
+                        <Button variant="primary" onClick={handleSubmit}>
+                          Add New Vehicle
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
                   </form>
                 </div>
               </div>
             </div>
             <div
               className="col-lg-3 card p-4 m-1"
-              style={{ maxHeight: "10vh" }}
+              style={{ maxHeight: "20vh" }}
             >
               <Link href={"/admin/vehicles"}>
-                <Button className="w-100 mb-1">List Vehicles</Button>
+                <Button className="w-100 mb-1 btn-dark">List Vehicles</Button>
+              </Link>
+              <Link href={"/admin/vehicles/available"}>
+                <Button className="w-100 mb-1 btn-">Available Vehicles</Button>
               </Link>
             </div>
           </Row>

@@ -5,19 +5,23 @@ import Router from 'next/router';
 
 export default function Login() {
   async function UserLogin(event) {
+    console.log("HIII");
     event.preventDefault();
     let data = {
       username: event.target.username.value,
       password: event.target.password.value,
     };
-    const x = await axios({
+    const res = await axios({
       method: "POST",
       url: "http://localhost:3000/login",
       data: data,
       withCredentials: true,
     });
-    if (x.data === "LOGGED IN") {
+
+    if (res.status === 200) {
       Router.push("/admin/");
+    }else{
+      alert("Wrong Username or Password");
     }
   }
 
@@ -85,7 +89,7 @@ export default function Login() {
                 </div>
               </div>
               <div style={{ marginTop: "2rem" }}>
-                <button className={styles.login_button}>LOGIN</button>
+                <button className={styles.login_button} type='submit'>LOGIN</button>
               </div>
             </form>
           </div>
