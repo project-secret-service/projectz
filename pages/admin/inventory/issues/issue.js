@@ -18,13 +18,12 @@ import { useRef } from "react";
 import moment from "moment";
 import { Modal } from "react-bootstrap";
 
-async function GetOrders() {
+async function GetIssues() {
   const res = await axios({
     url: "http://localhost:3000/inventory/items",
     method: "GET",
     withCredentials: true,
   });
-
   return res.data;
 }
 
@@ -33,7 +32,6 @@ export default function Home() {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
-
   const [Fields, setFields] = useState([
     {
       name: "",
@@ -61,11 +59,12 @@ export default function Home() {
   const formRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [voucher_no, setVoucherNo] = useState("");
-  const [order, setOrder] = useState({});
+  const [issue, setIssue] = useState({});
+  
 
   function setO({ target: { name, value } }) {
-    console.log(order);
-    setOrder({ ...order, [name]: value });
+    console.log(issue);
+    setIssue({ ...issue, [name]: value });
   }
 
   const handleClose = () => {
@@ -77,17 +76,17 @@ export default function Home() {
   };
 
   useEffect(() => {
-    GetOrders().then((data) => {
+    GetIssues().then((data) => {
       setItems(data);
     });
-    LastOrder().then((data) => {
+    LastIssue().then((data) => {
       setsno(data + 1);
       var s = document.getElementById("sl_no");
       s.value = data + 1;
-      setOrder({ ...order, sno: data + 1 });
+      setIssue({ ...issue, sno: data + 1 });
 
       const voucher_no = (
-        "RV/" +
+        "IV/" +
         " " +
         moment().format("YYYY/MM/DD/") +
         (data + 1)
@@ -96,9 +95,9 @@ export default function Home() {
         .join("");
 
       setVoucherNo(voucher_no);
-      setOrder({ ...order, voucher_no: voucher_no + 1 });
+      setIssue({ ...issue, voucher_no: voucher_no + 1 });
     });
-    setOrder({ ...order, date: currentDate });
+    setIssue({ ...issue, date: currentDate });
   }, []);
 
   const handleformChange = (event, index) => {
@@ -108,7 +107,7 @@ export default function Home() {
   };
 
   const handleSubmit = (e) => {
-    console.log(order);
+    console.log(issue);
     const l = arrayOfFields.length;
     let items = [];
     for (let i = 1; i <= l; i++) {
@@ -127,7 +126,8 @@ export default function Home() {
       items.push(item);
     }
     setFields({ items: items });
-    OrderItems(e, items);
+    IssueItems(e, items); 
+   
   };
 
   const handleSubmitForm = (e) => {
@@ -137,7 +137,7 @@ export default function Home() {
     }
   };
 
-  async function OrderItems(event, items) {
+  async function IssueItems(event, items) {
     event.preventDefault();
     var data = {
       sno: sno,
@@ -148,14 +148,14 @@ export default function Home() {
     };
     console.log(data);
     const res = await axios({
-      url: "http://localhost:3000/inventory/order/add",
+      url: "http://localhost:3000/inventory/issue/add",
       method: "POST",
       withCredentials: true,
       data: data,
     });
     if (res.data.status === 200) {
       // console.log("HIii");
-      Router.push("/admin/inventory/orders/" + res.data.order_id);
+      Router.push("/admin/inventory/issues/" + res.data.issue_id);
     }
   }
 
@@ -175,7 +175,7 @@ export default function Home() {
       ids.add(id);
     }
     if (ids.size === arrayOfFields.length) {
-      setOrder({ ...order, [name]: value });
+      setIssue({ ...issue, [name]: value });
       GetItemDetails(value).then((data) => {
         let i = name.match(/[a-zA-Z]+|[0-9]+/g)[1];
         var rate_input = document.getElementsByName("rate" + i)[0];
@@ -187,8 +187,9 @@ export default function Home() {
       setError("");
     } else {
       setError("Contains Duplicate Items");
-    }
+    } 
   }
+  
   const addFields = () => {
     setArrayOfFields([...arrayOfFields, 1]);
   };
@@ -215,9 +216,9 @@ export default function Home() {
     window.print();
   };
 
-  async function LastOrder() {
+  async function LastIssue() {
     const res = await axios({
-      url: "http://localhost:3000/inventory/order",
+      url: "http://localhost:3000/inventory/issue",
       method: "GET",
       withCredentials: true,
     });
@@ -229,21 +230,21 @@ export default function Home() {
 
   return (
     <>
-      <title>Order an Item</title>
+      <title>Issue Item</title>
       <main className={styles.main}>
         <Header />
         <SideBar />
 
         <main id="main" className="col-lg-11 main mt-0">
           <Row>
-            <div className="col-1"></div>
+          <div className="col-1"></div>
             <div className="col-7">
               <form ref={formRef}>
                 <div>
                   <div>
                     <div className="card">
                       <div className="card-body">
-                        <h1>Order an Item</h1>
+                        <h1>Issue an Item</h1>
                         <div className="row mb-3">
                           <label
                             htmlFor="inputText"
@@ -268,7 +269,7 @@ export default function Home() {
                             htmlFor="inputText"
                             className="col-sm-5 col-form-label"
                           >
-                            Recieve Voucher NO :
+                            Issue Voucher NO :
                           </label>
                           <div className="col-sm-7">
                             <input
@@ -480,7 +481,7 @@ export default function Home() {
                               </Modal.Header>
                               <Modal.Body>
                                 <p>
-                                  Please check the recieve voucher and then
+                                  Please check the Issue voucher and then
                                   proceed
                                 </p>
                               </Modal.Body>
@@ -527,7 +528,6 @@ export default function Home() {
           </Row>
         </main>
       </main>
-
       <Scripts />
       <Script src="/assets/js/main.js"></Script>
     </>
