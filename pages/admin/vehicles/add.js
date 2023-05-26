@@ -14,7 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 async function CheckCrpNoinDB(crp_no) {
   var res = await axios({
-    url: "https://projectx-production.up.railway.app/vehicles/crp_no",
+    url: "http://localhost:3000/vehicles/crp_no",
     withCredentials: true,
     method: "POST",
     data: {
@@ -79,7 +79,7 @@ export default function Home() {
 
   async function handleSubmit() {
     const res = await axios({
-      url: "https://projectx-production.up.railway.app/vehicles/add",
+      url: "http://localhost:3000/vehicles/add",
       withCredentials: true,
       method: "POST",
       data: vehicle,

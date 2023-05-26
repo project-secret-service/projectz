@@ -14,7 +14,7 @@ import { IconContext } from "react-icons";
 //const componentRef=useRef()
 async function GetVehicles(id) {
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/vehicles/" + id,
+    url: "http://localhost:3000/vehicles/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -23,7 +23,7 @@ async function GetVehicles(id) {
 }
 async function GetOilDetails(id) {
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/oilstockregister/" + id,
+    url: "http://localhost:3000/oilstockregister/" + id,
     withCredentials: true,
     method: "GET",
   });

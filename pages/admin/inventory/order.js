@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 async function GetOrders() {
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/inventory/items",
+    url: "http://localhost:3000/inventory/items",
     method: "GET",
     withCredentials: true,
   });
@@ -88,7 +88,7 @@ export default function Home() {
     };
     console.log(data);
     const res = await axios({
-      url: "https://projectx-production.up.railway.app/inventory/order/add",
+      url: "http://localhost:3000/inventory/order/add",
       method: "POST",
       withCredentials: true,
       data: data,

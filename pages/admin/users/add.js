@@ -15,7 +15,7 @@ import Link from "next/link";
 
 async function GetUsers() {
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/users/",
+    url: "http://localhost:3000/users/",
     method: "GET",
     withCredentials: true,
   });
@@ -39,7 +39,7 @@ async function addNewUser(event) {
   console.log(formData);
 
   const res = await axios({
-    url: "https://projectx-production.up.railway.app//add",
+    url: "http://localhost:3000//add",
     withCredentials: true,
     method: "POST",
     headers: {
@@ -52,7 +52,7 @@ async function addNewUser(event) {
 
 async function CheckRegistrationNoinDB(registration_no) {
   var res = await axios({
-    url: "https://projectx-production.up.railway.app/users/registration_no",
+    url: "http://localhost:3000/users/registration_no",
     withCredentials: true,
     method: "POST",
     data: {

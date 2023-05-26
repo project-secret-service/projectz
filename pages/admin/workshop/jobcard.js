@@ -16,7 +16,7 @@ import dateFormat from "dateformat";
 
 async function GetCards() {
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/job_card/",
+    url: "http://localhost:3000/job_card/",
     method: "GET",
     withCredentials: true,
   });
@@ -41,7 +41,7 @@ async function createJobCard(event) {
   console.log(data);
 
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/job_card/add",
+    url: "http://localhost:3000/job_card/add",
     withCredentials: true,
     method: "POST",
 

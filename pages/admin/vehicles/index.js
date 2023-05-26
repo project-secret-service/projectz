@@ -12,7 +12,7 @@ import { Button, Row } from "react-bootstrap";
 
 async function GetVehicles() {
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/vehicles/",
+    url: "http://localhost:3000/vehicles/",
     method: "GET",
     withCredentials: true,
   });

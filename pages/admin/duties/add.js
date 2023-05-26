@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 async function GetVehicles() {
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/vehicles/",
+    url: "http://localhost:3000/vehicles/",
     method: "GET",
     withCredentials: true,
   });
@@ -99,7 +99,7 @@ async function addNewVehicle(event) {
 
     }
 
-    const res = await axios({url: "https://projectx-production.up.railway.app/duty_log/add", withCredentials: true, method: "POST", data: data});
+    const res = await axios({url: "http://localhost:3000/duty_log/add", withCredentials: true, method: "POST", data: data});
     console.log(res.status);
   if (res.status == 200) sucessful();
   else unsucessful();

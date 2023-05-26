@@ -15,7 +15,7 @@ import Link from "next/link";
 
 async function GetReceiveVouchers() {
     const res = await axios({
-        url: "https://projectx-production.up.railway.app/receivevoucher/",
+        url: "http://localhost:3000/receivevoucher/",
         method: "GET",
         withCredentials: true,
     });
@@ -41,7 +41,7 @@ async function createReceiveVoucher(event) {
   console.log(data);
 
     const res = await axios({
-        url: "https://projectx-production.up.railway.app/receivevoucher/add",
+        url: "http://localhost:3000/receivevoucher/add",
         withCredentials: true,
         method: "POST",
 

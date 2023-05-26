@@ -81,7 +81,6 @@ export default function Home() {
       setItems(data);
     });
     LastOrder().then((data) => {
-      // console.log(data);
       setsno(data + 1);
       var s = document.getElementById("sl_no");
       s.value = data + 1;
@@ -158,7 +157,6 @@ export default function Home() {
       // console.log("HIii");
       Router.push("/admin/inventory/orders/" + res.data.order_id);
     }
-    // console.log(res.data);
   }
 
   async function GetItemDetails(id) {
@@ -351,10 +349,8 @@ export default function Home() {
                                         className="form-select"
                                         aria-label="Default select example"
                                       >
-                                        {/* <option defaultValue={form.name}>
-                                        Fuel Filter Stainer
-                                      </option> */}
-                                        {Items.map((item, index) => {
+                                        
+                                        {Items && Items.map((item, index) => {
                                           return (
                                             <option
                                               key={index}

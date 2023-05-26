@@ -15,7 +15,7 @@ import { IconContext } from "react-icons";
 
 async function GetOilDetails(id){
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/oilstockregister/" + id,
+    url: "http://localhost:3000/oilstockregister/" + id,
     withCredentials: true,
     method: "GET",
   });

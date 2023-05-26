@@ -16,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 // const inter = Inter({subsets: ['latin']})
 async function GetUser() {
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/users/get_user_details",
+    url: "http://localhost:3000/users/get_user_details",
     method: "GET",
     withCredentials: true,
   });
@@ -37,7 +37,7 @@ async function updateDetails(event) {
 
   console.log(data);
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/users/update/" + v,
+    url: "http://localhost:3000/users/update/" + v,
     method: "PUT",
     withCredentials: true,
     headers: {
@@ -58,7 +58,8 @@ const notify = () =>
     draggable: true,
     progress: undefined,
     theme: "light",
-  });<li className="nav-item">
+  });
+<li className="nav-item">
   <button
     className="nav-link"
     data-bs-toggle="tab"
@@ -66,7 +67,7 @@ const notify = () =>
   >
     Change Password
   </button>
-</li>
+</li>;
 export default function Home() {
   const [user, setUser] = useState([]);
   useEffect(() => {
@@ -98,17 +99,19 @@ export default function Home() {
                   <div className="card-body p-4 text-center">
                     <img
                       src={
-                        "https://projectx-production.up.railway.app/images/profilepic/" +
+                        "http://localhost:3000/images/profilepic/" +
                         user.profile_pic
                       }
                       width="100%"
                       alt="Profile"
                     />
-                    
+
                     <h3>{user.username}</h3>
                     <h4>{user.rank}</h4>
                     <a href="/admin">
-                    <button type="button" className="btn btn-dark" >Back</button>
+                      <button type="button" className="btn btn-dark">
+                        Back
+                      </button>
                     </a>
                     {/* <button></button> */}
                   </div>
@@ -230,13 +233,13 @@ export default function Home() {
                             <div className="col-md-8 col-lg-9">
                               <img
                                 src={
-                                  "https://projectx-production.up.railway.app/images/profilepic/" +
+                                  "http://localhost:3000/images/profilepic/" +
                                   user.profile_pic
                                 }
                                 width="100%"
                                 alt="Profile"
                               />
-                              
+
                               <div>
                                 <input
                                   name="profile_pic"
@@ -547,8 +550,6 @@ export default function Home() {
                           </div>
                         </form>
                       </div> */}
-
-
                     </div>
                   </div>
                 </div>

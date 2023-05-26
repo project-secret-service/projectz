@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 async function GetuncompVehicles() {
-    const res = await axios({url: "https://projectx-production.up.railway.app/duty_log/uncompleted", method: "GET", withCredentials: true});
+    const res = await axios({url: "http://localhost:3000/duty_log/uncompleted", method: "GET", withCredentials: true});
     console.log(res.data);
     return res.data;
 }
@@ -84,7 +84,7 @@ async function UpdateDetails(event) {
     }
 
   console.log(event.target.vehicle_no.value);
-    const res = await axios({url: "https://projectx-production.up.railway.app/duty_log/update/"+vehicle_id1, withCredentials: true, method: "PUT", data: data});
+    const res = await axios({url: "http://localhost:3000/duty_log/update/"+vehicle_id1, withCredentials: true, method: "PUT", data: data});
     console.log(res.data);
     if(res.status==200)
     sucessful();
@@ -94,7 +94,7 @@ async function UpdateDetails(event) {
 }
 // async function getparticularVehicle(req)
 // {
-//     const res=await axios({url:"https://projectx-production.up.railway.app/vehicles/"+req,
+//     const res=await axios({url:"http://localhost:3000/vehicles/"+req,
 // method:"GET",
 // withCredentials:true})
 // }

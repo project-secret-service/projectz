@@ -9,7 +9,7 @@ import axios from 'axios'
 import Router from 'next/router'
 
 async function GetDrivers() {
-    const res = await axios({url: "https://projectx-production.up.railway.app/drivers/", method: "GET", withCredentials: true});
+    const res = await axios({url: "http://localhost:3000/drivers/", method: "GET", withCredentials: true});
     return res.data;
 }
 

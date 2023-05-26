@@ -11,7 +11,7 @@ import dateFormat from "dateformat";
 
 async function GetInspectionHistory() {
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/inspection/",
+    url: "http://localhost:3000/inspection/",
     method: "GET",
     withCredentials: true,
   });

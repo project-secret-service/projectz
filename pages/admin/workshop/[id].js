@@ -12,7 +12,7 @@ import { IconContext } from "react-icons";
 
 async function GetMemoDetails(id) {
   const res = await axios({
-    url: "https://projectx-production.up.railway.app/defectmemos/" + id,
+    url: "http://localhost:3000/defectmemos/" + id,
     withCredentials: true,
     method: "GET"
   });
