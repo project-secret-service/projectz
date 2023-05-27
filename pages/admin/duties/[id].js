@@ -17,17 +17,6 @@ async function GetUserDetails(id) {
   return res.data;
 }
 
-function printDiv(divName) {
-  if (typeof document !== "undefined") {
-    if (document.getElementById(divName) != null) {
-      var printContents = document.getElementById(divName).innerHTML;
-    }
-    var originalContents = document.body.innerHTML;
-    document.body.innerHTML = printContents;
-    window.print();
-    document.body.innerHTML = originalContents;
-  }
-}
 const Post = () => {
   const [duty, setDuty] = useState({});
   const router = useRouter();
@@ -37,6 +26,7 @@ const Post = () => {
     const { id } = router.query;
     GetUserDetails(id).then((data) => {
       setDuty(data);
+      console.log(data);
     });
   }, [router.isReady]);
   const componentRef = useRef();
@@ -70,14 +60,15 @@ const Post = () => {
           <div id="printableArea" ref={componentRef} className="p-5 card">
             <div
               style={{
-                fontSize: "2.5rem",
+                fontSize: "1.5rem",
                 marginTop: "1rem",
-                marginBottom: "2rem",
                 marginLeft: 10,
                 marginRight: 10,
               }}
             >
-              <span>DUTY DETAILS</span>
+              <span className="josefin-sans">
+                Central Reserve Police Force Vehicle Indent and Order
+              </span>
               <hr
                 style={{
                   color: "#000000",
@@ -86,111 +77,115 @@ const Post = () => {
                 }}
               />
             </div>
-            <div className="card" id="duty_details">
-              <Row>
-                <Col>Vehicle Reg No : {duty.vehicle_id.registration_no}</Col>
-              </Row>
-              <Row>
-                <Col>Vehicle CRP No : {duty.vehicle_id.vehicle_crp_no}</Col>
-              </Row>
-            </div>
-            <div className="card"></div>
-            <table className="table">
-              {
-                <tbody>
-                  <tr>
-                    <th scope="row">1.</th>
-                    <td>Vehicle no:</td>
-
-                    <td>
-                      {duty.vehicle_id && (
-                        <>
-                          {duty.vehicle_id.vehicle_crp_no}
-                          {"   "} - {"   "}
-                          {duty.vehicle_id.registration_no}
-                        </>
-                      )}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2.</th>
-                    <td>Date:</td>
-                    <td>
+            {duty.vehicle && (
+              <div className="p-1" id="duty_details">
+                <Row>
+                  <p>
+                    <b>{duty.vehicle.vehicle_type}</b> on Payment/Regimental/
+                    Govt. duty at
+                    <b>
+                      {duty.out_datetime &&
+                        dateFormat(duty.out_datetime, " hh:MM TT ")}
+                    </b>
+                    hrs on
+                    <b>
+                      {duty.out_datetime &&
+                        dateFormat(duty.out_datetime, " dS mmmm, yyyy - dddd")}
+                    </b>
+                  </p>{" "}
+                  <p>
+                    For the purpose of <b>{duty.purpose}</b>
+                  </p>
+                  <p>
+                    The vehicle should report at
+                    <br /> Place : <b>CTC (IT & T)</b>
+                    <br />
+                    Date :
+                    <b>
                       {duty.date &&
-                        dateFormat(duty.date, "dS mmmm, yyyy - dddd")}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3.</th>
-                    <td>From:</td>
-                    <td>{duty.from}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4.</th>
-                    <td>To:</td>
-                    <td>{duty.to}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5.</th>
-                    <td>Out Date:</td>
-                    <td>
-                      {duty.out_datetime &&
-                        dateFormat(duty.out_datetime, "dS mmmm, yyyy - dddd")}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5.</th>
-                    <td>Out Time:</td>
-                    <td>
-                      {duty.out_datetime &&
-                        dateFormat(duty.out_datetime, "hh:MM TT")}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">6.</th>
-                    <td>In Date :</td>
-                    <td>
-                      {duty.in_datetime &&
-                        dateFormat(duty.in_datetime, "dS mmmm, yyyy - dddd")}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">6.</th>
-                    <td>In Time :</td>
-                    <td>
-                      {duty.in_datetime &&
-                        dateFormat(duty.in_datetime, "hh:MM TT")}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">7.</th>
-                    <td>Meter Count:</td>
-                    <td>{duty.meter_count}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">8.</th>
-                    <td>Km Run:</td>
-                    <td>{duty.km_run}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">9.</th>
-                    <td>Purpose:</td>
-                    <td>{duty.purpose}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">10.</th>
-                    <td>Indent No:</td>
-                    <td>{duty.indent_no}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">11.</th>
-                    <td>Approved By Mto:</td>
-
-                    <td>{duty.approved_by_mto == true ? "Yes" : "NO"}</td>
-                  </tr>
-                </tbody>
-              }
-            </table>
+                        dateFormat(duty.date, " dS mmmm, yyyy - dddd")}
+                    </b>
+                  </p>
+                  <p style={{ textAlign: "right" }}>
+                    Signature and Designation of Indenter
+                  </p>
+                  <p
+                    style={{ textAlign: "center", fontSize: "1.2rem" }}
+                    className="josefin-sans"
+                  >
+                    ORDER
+                  </p>
+                  <p>
+                    Detailed CRPF Vehicle No :{" "}
+                    <b>{duty.vehicle.registration_no}, </b>
+                    <b>{duty.vehicle.name}, </b>
+                    <b>CRP - ({duty.vehicle.vehicle_crp_no})</b> for Above
+                    Purpose
+                  </p>
+                  <p>
+                    Place : <b>CTC (IT & T)</b>
+                    <br />
+                    Date :
+                    <b>
+                      {duty.date &&
+                        dateFormat(duty.date, " dS mmmm, yyyy - dddd")}
+                    </b>
+                  </p>
+                  <p style={{ textAlign: "right" }}>Signature of M.T.O.</p>
+                  <p>
+                    Transport Indent No - <b>{duty.indent_no},</b> Dated :{" "}
+                    <b>
+                      {" "}
+                      {duty.date &&
+                        dateFormat(duty.date, " dS mmmm, yyyy - dddd")}
+                      {", "}
+                    </b>
+                    CRPF Vehicle No : <b>{duty.vehicle.registration_no}</b>
+                    {", "}
+                    Detailed on..... at..... Driver's name..... Nature of
+                    duty......
+                  </p>
+                  <p>
+                    Place : <b>CTC (IT & T)</b>
+                    <br />
+                    Date :
+                    <b>
+                      {duty.date &&
+                        dateFormat(duty.date, " dS mmmm, yyyy - dddd")}
+                    </b>
+                  </p>
+                  <p style={{ textAlign: "right" }}>Signature of MT I/C</p>
+                  {duty.mission_ended && (
+                    <>
+                      {" "}
+                      <p>
+                        The vehicle mentioned above arived at{" "}
+                        <b>
+                          {duty.in_datetime &&
+                            dateFormat(duty.in_datetime, "hh:MM TT")}{" "}
+                        </b>
+                        hrs on{" "}
+                        <b>
+                          {duty.in_datetime &&
+                            dateFormat(
+                              duty.in_datetime,
+                              "dS mmmm, yyyy - dddd"
+                            )}
+                        </b>{" "}
+                        <br />
+                        Total Kms Run: <b>{duty.km_run} km</b> ,
+                        <br />
+                        Damage if any...... ,<br />
+                        and was dismissed at.......
+                      </p>
+                      <p style={{ textAlign: "right" }}>
+                        Signature of Indenting Office With Designation
+                      </p>
+                    </>
+                  )}
+                </Row>
+              </div>
+            )}
           </div>
         </div>
       </main>

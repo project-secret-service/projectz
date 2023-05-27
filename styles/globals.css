@@ -114,7 +114,6 @@ a {
   opacity: 80%;
 }
 
-
 .c {
   height: 200vh;
   width: 960px;
@@ -161,7 +160,11 @@ a {
   }
 }
 
+#duty_details div {
+  margin: 0.3rem;
+}
 
-#duty_details div{
-  margin: 0.5rem;
+
+.josefin-sans {
+  font-family: "Josefin Sans", sans-serif;
 }

@@ -24,6 +24,15 @@ async function GetVehicles() {
   return res.data;
 }
 
+async function GetDrivers() {
+  const res = await axios({
+    url: "http://localhost:3000/drivers/",
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}
+
 function sucessful() {
   toast.success("Sucessfully Added");
   <ToastContainer
@@ -57,6 +66,7 @@ function unsucessful() {
 
 export default function Home() {
   const [vehicles, setVehicles] = useState([]);
+  const [drivers, setDrivers] = useState([]);
   const [duty, setDuty] = useState([]);
   const [showCompletedView, setShowCompletedView] = useState(false);
   const router = useRouter();
@@ -83,6 +93,7 @@ export default function Home() {
       ...data,
       mission_ended: event.target.completed.value,
       date: event.target.date.value,
+      indent_no: event.target.indent_no.value,
     };
 
     const res = await axios({
@@ -106,19 +117,33 @@ export default function Home() {
     setDuty({ ...duty, [name]: value });
     setShowCompletedView(!showCompletedView);
   }
-
+  async function GetLatestIndentNo() {
+    const res = await axios({
+      url: "http://localhost:3000/duty_log/last_indent_no",
+      withCredentials: true,
+      method: "GET",
+    });
+    return res.data;
+    setDuty({ ...duty, indent_no: res.data + 1 });
+  }
   const [errors, setErrors] = useState({ vehicle_sl_no: "" });
 
   useEffect(() => {
     GetVehicles().then((data) => {
       setVehicles(data);
-      setDuty({
-        ...duty,
-        vehicle_id: data[0]._id,
-        date: moment().format("YYYY-MM-DD"),
-        out_datetime: moment().format("YYYY-MM-DDTHH:mm"),
-        completed: false,
+      GetLatestIndentNo().then((indent_no) => {
+        setDuty({
+          ...duty,
+          indent_no: indent_no + 1,
+          vehicle: data[0]._id,
+          date: moment().format("YYYY-MM-DD"),
+          out_datetime: moment().format("YYYY-MM-DDTHH:mm"),
+          completed: false,
+        });
       });
+    });
+    GetDrivers().then((data) => {
+      setDrivers(data);
     });
   }, []);
 
@@ -139,21 +164,42 @@ export default function Home() {
                   <form onSubmit={addNewVehicle}>
                     <ToastContainer />
                     <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        Indent No :
+                      </label>
+                      <div className="col-sm-7">
+                        <input
+                          defaultValue={duty.indent_no}
+                          onChange={setD}
+                          type="number"
+                          name="indent_no"
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+                    <div className="row mb-3">
                       <label className="col-sm-5 col-form-label">
                         Vehicle Number :
                       </label>
                       <div className="col-sm-7">
                         <select
-                          name="vehicle_no"
+                          name="vehicle"
                           className="form-select"
                           aria-label="Default select example"
                           onChange={setD}
                         >
                           {vehicles.map((vehicle, index) => (
-                            <option key={index + 1} value={vehicle._id}>
-                              CRP - {vehicle.vehicle_crp_no}{" "}
-                              {vehicle.registration_no}
-                            </option>
+                            <>
+                              {vehicle.available && (
+                                <option key={index + 1} value={vehicle._id}>
+                                  CRP - {vehicle.vehicle_crp_no}{" "}
+                                  {vehicle.registration_no}
+                                </option>
+                              )}
+                            </>
                           ))}
                         </select>
                       </div>
@@ -213,39 +259,29 @@ export default function Home() {
                     </div>
 
                     <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        From :
+                      <label className="col-sm-5 col-form-label">
+                        Driver :
                       </label>
                       <div className="col-sm-7">
-                        <input
+                        <select
+                          name="driver"
+                          className="form-select"
+                          aria-label="Default select example"
                           onChange={setD}
-                          type="text"
-                          name="from"
-                          className="form-control"
-                        />
+                        >
+                          {drivers.map((driver, index) => (
+                            <>
+                              {driver.available && (
+                                <option key={index + 1} value={vehicle._id}>
+                                  CRP - {vehicle.vehicle_crp_no}{" "}
+                                  {vehicle.registration_no}
+                                </option>
+                              )}
+                            </>
+                          ))}
+                        </select>
                       </div>
                     </div>
-
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="inputText"
-                        className="col-sm-5 col-form-label"
-                      >
-                        To :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          type="text"
-                          onChange={setD}
-                          name="to"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
                     <hr />
 
                     <div className="row mb-3">
