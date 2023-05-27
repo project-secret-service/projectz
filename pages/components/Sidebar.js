@@ -227,7 +227,7 @@ export default function SideBar(props) {
               data-bs-toggle="collapse"
               href="#"
             >
-              <i class="bi bi-list-check"></i>
+              <i className="bi bi-list-check"></i>
               <span>Inspection</span>
               <i className="bi bi-chevron-down ms-auto"></i>
             </a>
@@ -257,7 +257,7 @@ export default function SideBar(props) {
               data-bs-toggle="collapse"
               href="#"
             >
-              <i class="bi bi-box-seam"></i>
+              <i className="bi bi-box-seam"></i>
               <span>Inventory</span>
               <i className="bi bi-chevron-down ms-auto"></i>
             </a>

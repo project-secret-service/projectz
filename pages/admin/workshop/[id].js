@@ -1,27 +1,24 @@
-import { useRouter } from 'next/router'
-import Head from "next/head"
-import styles from "@/styles/Home.module.css"
-import Header from "../../components/Header"
-import SideBar from '../../components/Sidebar'
-import axios from "axios"
-import { useEffect, useState, useRef } from 'react'
+import { useRouter } from "next/router";
+import Head from "next/head";
+import styles from "@/styles/Home.module.css";
+import Header from "../../components/Header";
+import SideBar from "../../components/Sidebar";
+import axios from "axios";
+import { useEffect, useState, useRef } from "react";
 import dateFormat from "dateformat";
-import ReactToPrint from 'react-to-print';
-import { AiFillPrinter } from "react-icons/ai";
-import { IconContext } from "react-icons";
+import ReactToPrint from "react-to-print";
 
 async function GetMemoDetails(id) {
   const res = await axios({
     url: "http://localhost:3000/defectmemos/" + id,
     withCredentials: true,
-    method: "GET"
+    method: "GET",
   });
   return res.data;
 }
 
 function printDiv(divName) {
-
-  if (typeof document !== 'undefined') {
+  if (typeof document !== "undefined") {
     if (document.getElementById(divName) != null) {
       var printContents = document.getElementById(divName).innerHTML;
     }
@@ -39,14 +36,14 @@ function printDiv(divName) {
 const Post = () => {
   const [memo, setMemos] = useState({});
   const router = useRouter();
-  const { id } = router.query
+  const { id } = router.query;
   useEffect(() => {
     if (!router.isReady) return;
-    const { id } = router.query
+    const { id } = router.query;
     GetMemoDetails(id).then((data) => {
       console.log(data);
       setMemos(data);
-      console.data
+      console.data;
     });
   }, [router.isReady]);
   const componentRef = useRef();
@@ -61,31 +58,54 @@ const Post = () => {
       <Header />
       <SideBar />
       <main className={styles.main}>
-
-        <div style={{ marginTop: "-2rem ", height: '100%' }}>
-          <div style={{ fontSize: "1rem", marginTop: "1rem", right: 10, position: 'absolute' }}>
-            <IconContext.Provider value={{ color: "blue", className: "global-class-name" }}>
-              <ReactToPrint
-                trigger={() => <button type="button" className="btn btn-outline-primary btn-lg"><AiFillPrinter /></button>}
-                content={() => componentRef.current}
-              />
-            </IconContext.Provider>
+        <div style={{ marginTop: "-2rem ", height: "100%" }}>
+          <div
+            style={{
+              fontSize: "1rem",
+              marginTop: "1rem",
+              right: 10,
+              position: "absolute",
+            }}
+          >
+            <ReactToPrint
+              trigger={() => (
+                <button
+                  type="button"
+                  className="btn btn-outline-primary btn-lg"
+                >
+                  Print
+                </button>
+              )}
+              content={() => componentRef.current}
+            />
           </div>
           <div id="printableArea" ref={componentRef} className="p-0 ">
-            <div style={{ fontSize: "5rem", marginTop: "1rem", marginBottom: "1rem", marginLeft: "1rem", marginRight: "1rem" }}>
+            <div
+              style={{
+                fontSize: "5rem",
+                marginTop: "1rem",
+                marginBottom: "1rem",
+                marginLeft: "1rem",
+                marginRight: "1rem",
+              }}
+            >
               <span>MEMO DETAILS</span>
-              <hr style={{ color: '#000000', backgroundColor: '#000000', height: 2.5 }} />
+              <hr
+                style={{
+                  color: "#000000",
+                  backgroundColor: "#000000",
+                  height: 2.5,
+                }}
+              />
             </div>
             <table className="table">
               <tbody>
                 <tr>
                   <th scope="row">1.</th>
                   <td>Date :</td>
-                  <td>{memo.date &&
-                    dateFormat(
-                      memo.date,
-                      "dS mmmm, yyyy - dddd"
-                    )}</td>
+                  <td>
+                    {memo.date && dateFormat(memo.date, "dS mmmm, yyyy - dddd")}
+                  </td>
                 </tr>
                 <tr>
                   <th scope="row">2.</th>
@@ -135,7 +155,7 @@ const Post = () => {
                 <tr>
                   <th scope="row">11.</th>
                   <td>Availability Of Parts :</td>
-                  <td>{(memo.availability_of_parts == true) ? "Yes" : "No"}</td>
+                  <td>{memo.availability_of_parts == true ? "Yes" : "No"}</td>
                 </tr>
                 <tr>
                   <th scope="row">12.</th>
@@ -155,15 +175,14 @@ const Post = () => {
                 <tr>
                   <th scope="row">15.</th>
                   <td>Signature :</td>
-                  <td>{(memo.signature == true) ? "Yes" : "No"}</td>
+                  <td>{memo.signature == true ? "Yes" : "No"}</td>
                 </tr>
-
               </tbody>
             </table>
           </div>
         </div>
       </main>
     </>
-  )
-}
-export default Post
+  );
+};
+export default Post;

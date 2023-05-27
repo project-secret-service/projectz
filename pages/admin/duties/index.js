@@ -9,6 +9,8 @@ import axios from "axios";
 import Router from "next/router";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
+import dateFormat from "dateformat";
+
 async function GetDuties() {
   const res = await axios({
     url: "http://localhost:3000/duty_log/",
@@ -37,9 +39,7 @@ export default function Home() {
       setDuties(data);
     });
   }, []);
-  console.log(duties);
   function OpenLink(link) {
-    console.log(link);
     Router.push("/admin/duties/" + link);
   }
   return (
@@ -54,58 +54,66 @@ export default function Home() {
         <SideBar />
 
         <main id="main" className=" col-lg-11 main mt-0">
+          <h1>All Duties</h1>
           <Row>
             <div className="col-lg-8">
               <div className="card">
                 <div className="card-body">
-                  <h1>All Duties</h1>
-                  <hr></hr>
                   <table className="table table-hover">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">DATE</th>
+
                         <th scope="col">Vehicle No</th>
                         <th scope="col">OUT TIME</th>
-                        <th scope="col">DATE</th>
                         <th scope="col">Mission Satus</th>
                       </tr>
                     </thead>
                     <tbody style={{ cursor: "pointer" }}>
                       {duties.map((duty, index) => {
                         var vv = new Date(duty.date);
-                        var dat = vv.toLocaleDateString();
-
-                        //To store the mission satus
                         var mission = duty.mission_ended;
+                        let color = "#D0F5BE";
+                        let textColor = "#0C134F";
                         var v1;
                         if (mission) {
-                          v1 = "completed";
+                          v1 = "Completed";
+                          color = "#FBFFDC";
+                          textColor = "green";
                         } else {
-                          v1 = "not completed";
+                          v1 = "Active";
                         }
-                        console.log(mission);
                         return (
                           <tr
                             key={index + 1}
                             onClick={() => OpenLink(duty._id)}
+                            style={{ backgroundColor: color }}
                           >
                             <th scope="row">
-                              <i
-                                className="bi bi-truck"
-                                style={{
-                                  color: "red",
-                                  fontSize: "1rem",
-                                }}
-                              ></i>
+                              {duty.out_datetime &&
+                                dateFormat(duty.out_datetime, "dS mmmm, yyyy")}
                             </th>
                             <td>{duty.vehicle_id.registration_no}</td>
-                            <td>{duty.out_time.substring(11, 19)}</td>
-                            <td>{duty.date.substring(0, 10)}</td>
+                            <td>
+                              {duty.out_datetime &&
+                                dateFormat(duty.out_datetime, " h:MM TT")}
+                            </td>
 
-                            <td>{v1}</td>
+                            <td style={{ color: textColor }}>
+                              {v1 === "Active" && (
+                                <>
+                                  <span className="blinking">Active</span>
+                                </>
+                              )}
+                              {v1 === "Completed" && (
+                                <>
+                                  <span>Completed</span>
+                                </>
+                              )}
+                            </td>
                           </tr>
                         );
-                      })}{" "}
+                      })}
                     </tbody>
                   </table>
                 </div>
@@ -113,10 +121,13 @@ export default function Home() {
             </div>
             <div
               className="col-lg-3 card p-4 m-1"
-              style={{ maxHeight: "10vh" }}
+              style={{ maxHeight: "20vh" }}
             >
               <Link href={"/admin/duties/add"}>
-                <Button className="w-100 mb-1">Add Duties</Button>
+                <Button className="w-100 mb-1 btn-warning">Add Duties</Button>
+              </Link>
+              <Link href={"/admin/duties/update"}>
+                <Button className="w-100 mb-1 btn-dark">Update Duties</Button>
               </Link>
             </div>
           </Row>

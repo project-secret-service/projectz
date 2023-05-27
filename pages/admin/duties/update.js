@@ -6,7 +6,7 @@ import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
 import moment from "moment";
@@ -52,60 +52,34 @@ function unsucessful() {
     theme="light"
   />;
 }
-function convertUTCDateToLocalDate(date) {
-  var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
-
-  var offset = date.getTimezoneOffset() / 60;
-  var hours = date.getHours();
-
-  newDate.setHours(hours - offset);
-
-  return newDate;
-}
-
-async function UpdateDetails(event) {
-  event.preventDefault();
-  console.log(event.target.vehicle);
-
-  var inTime =
-    event.target.date_of_travel.value + "T" + event.target.In_time.value;
-  //inTime=new Date(inTime).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'})
-  const innTIme = new Date(inTime);
-  var inntime = convertUTCDateToLocalDate(innTIme);
-
-  var vehicle_id1 = event.target.vehicle_no.value;
-
-  //console.log(s)
-  var data = {
-    in_time: inntime,
-    mission_ended: event.target.completed.value,
-  };
-
-  console.log(event.target.vehicle_no.value);
-  const res = await axios({
-    url: "http://localhost:3000/duty_log/update/" + vehicle_id1,
-    withCredentials: true,
-    method: "PUT",
-    data: data,
-  });
-  console.log(res.data);
-  if (res.status == 200) sucessful();
-  else unsucessful();
-}
-// async function getparticularVehicle(req)
-// {
-//     const res=await axios({url:"http://localhost:3000/vehicles/"+req,
-// method:"GET",
-// withCredentials:true})
-// }
 
 export default function Home() {
   const [uncompvehicles, setuncompVehicles] = useState([]);
-  //const [particularvehicles, setnewVehicles] = useState([]);
-  const [errors, setErrors] = useState({ vehicle_sl_no: "" });
+  const [duty, setDuty] = useState({});
+  const router = useRouter();
+  async function UpdateDetails(event) {
+    event.preventDefault();
+    var data = {
+      in_datetime: event.target.in_datetime.value,
+      mission_ended: true,
+    };
+
+    const res = await axios({
+      url: "http://localhost:3000/duty_log/update/" + duty._id,
+      withCredentials: true,
+      method: "PUT",
+      data: data,
+    });
+
+    if (res.status == 200) {
+      sucessful();
+      router.push("/admin/duties");
+    } else unsucessful();
+  }
   useEffect(() => {
     GetuncompVehicles().then((data) => {
       setuncompVehicles(data);
+      setDuty(data[0]);
     });
   }, []);
 
@@ -131,7 +105,6 @@ export default function Home() {
 
                   <div className="row mb-3">
                     <label className="col-sm-5 col-form-label">
-                      {" "}
                       Vehicle Number :
                     </label>
                     <div className="col-sm-7">
@@ -141,9 +114,10 @@ export default function Home() {
                         aria-label="Default select example"
                       >
                         {uncompvehicles.map((uncompvehicle, index) => (
-                          <option value={uncompvehicle._id}>
-                            {uncompvehicle.vehicle_id.vehicle_crp_no} -{" "}
-                            {uncompvehicle.vehicle_id.registration_no}
+                          <option key={index} value={uncompvehicle._id}>
+                            {"CRP-" + uncompvehicle.vehicle_id.vehicle_crp_no}{" "}
+                            {uncompvehicle.vehicle_id.registration_no} {" : "}
+                            {uncompvehicle.purpose}
                           </option>
                         ))}
                       </select>
@@ -155,45 +129,15 @@ export default function Home() {
                       htmlFor="inputText"
                       className="col-sm-5 col-form-label"
                     >
-                      In Time:
+                      In Time And Date:
                     </label>
                     <div className="col-sm-7">
                       <input
-                        type="time"
-                        name="In_time"
+                        defaultValue={moment().format("YYYY-MM-DDTHH:mm")}
+                        type="datetime-local"
+                        name="in_datetime"
                         className="form-control"
                       />
-                    </div>
-                  </div>
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      In Time:
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="date"
-                        name="date_of_travel"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label className="col-sm-5 col-form-label">
-                      Completed :
-                    </label>
-                    <div className="col-sm-7">
-                      <select
-                        name="completed"
-                        className="form-select"
-                        aria-label="Default select example"
-                      >
-                        <option value="true">Completed</option>
-                        <option value="false">Not Completed</option>
-                      </select>
                     </div>
                   </div>
 
@@ -204,7 +148,7 @@ export default function Home() {
                         className="btn btn-primary"
                         style={{ float: "right" }}
                       >
-                        Update Data
+                        Complete Duty / End Mission
                       </button>
                     </div>
                   </div>

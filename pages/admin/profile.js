@@ -7,7 +7,7 @@ import SideBar from "../components/Sidebar";
 import Footer from "../components/Footer";
 
 import Scripts from "../components/Scripts";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Router, { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
@@ -50,17 +50,24 @@ export default function Home() {
   const [user, setUser] = useState([]);
   const [updatedUser, setUpdatedUser] = useState({});
   const router = useRouter();
+  const profile_pic = useRef(null);
+  const profile_pic_edit = useRef(null);
+
+  function setProfile() {
+    profile_pic.current.src = "/assets/img/profile1.png";
+    profile_pic_edit.current.src = "/assets/img/profile1.png";
+  }
+
   async function updateDetails(event) {
     event.preventDefault();
     var data = {
-      username: event.target.fullName.value,
+      name: event.target.name.value,
       role: event.target.company.value,
       rank: event.target.rank.value,
       contact_no: event.target.phone.value,
       email_id: event.target.email.value,
       photo: event.target.profile_pic.files[0],
     };
-
     const res = await axios({
       url: "http://localhost:3000/users/update/" + v,
       method: "PUT",
@@ -71,29 +78,6 @@ export default function Home() {
       data: data,
     });
     window.location.reload();
-  }
-  function setUserInput({ target: { name, value } }) {
-    setUpdatedUser({ ...updatedUser, name: value });
-    console.log(updatedUser);
-  }
-
-  function setImage({ target }) {
-    console.log(target.value);
-  }
-
-  async function handleSubmit(e) {
-    if (e.target.profile_pic.files) {
-    }
-    const res = await axios({
-      url: "http://localhost:3000/users/update/" + v,
-      method: "POST",
-      withCredentials: true,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: data,
-    });
-    console.log(res);
   }
 
   useEffect(() => {
@@ -123,18 +107,19 @@ export default function Home() {
               <div className="col-4">
                 <div className="card">
                   <div className="card-body p-4 text-center">
-                    <img
-                      src={
-                        "http://localhost:3000/images/profilepic/" +
-                        user.profile_pic
-                      }
-                      width="100%"
-                      alt="Profile"
-                    />
-
-                    <h1 className={vehicle_styles.vehicle_name}>
-                      {user.username}
-                    </h1>
+                    {user.profile_pic && (
+                      <img
+                        src={
+                          "http://localhost:3000/images/profilepic/" +
+                          user.profile_pic
+                        }
+                        onError={setProfile}
+                        ref={profile_pic}
+                        width="100%"
+                        alt="Profile"
+                      />
+                    )}
+                    <h1 className={vehicle_styles.vehicle_name}>{user.name}</h1>
                     <h4>{user.role}</h4>
                     <h4>
                       Rank -<b> {user.rank}</b>
@@ -153,7 +138,7 @@ export default function Home() {
                           data-bs-toggle="tab"
                           data-bs-target="#profile-overview"
                         >
-                          <i class="bi bi-info-square"></i> Overview
+                          <i className="bi bi-info-square"></i> Overview
                         </button>
                       </li>
 
@@ -163,7 +148,7 @@ export default function Home() {
                           data-bs-toggle="tab"
                           data-bs-target="#profile-edit"
                         >
-                          <i class="bi bi-pencil-square"></i> Edit Profile
+                          <i className="bi bi-pencil-square"></i> Edit Profile
                         </button>
                       </li>
                     </ul>
@@ -176,15 +161,15 @@ export default function Home() {
                         <div style={{ fontSize: "1.2rem" }}>
                           <div className="row mb-3">
                             <div className="col-lg-3 col-md-4 label">
-                              <i class="bi bi-person-check"></i> Name
+                              <i className="bi bi-person-check"></i> Name
                             </div>
                             <div className="col-lg-9 col-md-8">
-                              : <b> {user.username}</b>
+                              : <b> {user.name}</b>
                             </div>
                           </div>
                           <div className="row mb-3">
                             <div className="col-lg-3 col-md-4 label ">
-                              <i class="bi bi-person-lines-fill"></i>{" "}
+                              <i className="bi bi-person-lines-fill"></i>{" "}
                               Registration No
                             </div>
                             <div className="col-lg-9 col-md-8">
@@ -193,7 +178,7 @@ export default function Home() {
                           </div>
                           <div className="row mb-3">
                             <div className="col-lg-3 col-md-4 label">
-                              <i class="bi bi-person-workspace"></i> Role
+                              <i className="bi bi-person-workspace"></i> Role
                             </div>
                             <div className="col-lg-9 col-md-8">
                               : <b>{user.role}</b>
@@ -201,7 +186,8 @@ export default function Home() {
                           </div>
                           <div className="row mb-3">
                             <div className="col-lg-3 col-md-4 label">
-                              <i class="bi bi-arrow-up-circle-fill"></i> Rank
+                              <i className="bi bi-arrow-up-circle-fill"></i>{" "}
+                              Rank
                             </div>
                             <div className="col-lg-9 col-md-8">
                               : <b>{user.rank}</b>
@@ -209,7 +195,7 @@ export default function Home() {
                           </div>
                           <div className="row mb-3">
                             <div className="col-lg-3 col-md-4 label">
-                              <i class="bi bi-phone"></i> Phone
+                              <i className="bi bi-phone"></i> Phone
                             </div>
                             <div className="col-lg-9 col-md-8">
                               : <b>{user.contact_no}</b>
@@ -217,7 +203,7 @@ export default function Home() {
                           </div>
                           <div className="row mb-3">
                             <div className="col-lg-3 col-md-4 label">
-                              <i class="bi bi-envelope-at"></i> Email
+                              <i className="bi bi-envelope-at"></i> Email
                             </div>
                             <div className="col-lg-9 col-md-8">
                               : <b> {user.email_id}</b>
@@ -248,23 +234,27 @@ export default function Home() {
                               htmlFor="profileImage"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              <i class="bi bi-file-image"></i> Profile Image
+                              <i className="bi bi-file-image"></i> Profile Image
                             </label>
                             <div className="col-md-8 col-lg-9">
-                              <img
-                                src={
-                                  "http://localhost:3000/images/profilepic/" +
-                                  user.profile_pic
-                                }
-                                width="30%"
-                                alt="Profile"
-                              />
+                              {user.profile_pic && (
+                                <img
+                                  src={
+                                    "http://localhost:3000/images/profilepic/" +
+                                    user.profile_pic
+                                  }
+                                  onError={setProfile}
+                                  ref={profile_pic_edit}
+                                  width="30%"
+                                  alt="Profile"
+                                />
+                              )}
+
                               <br />
                               <br />
 
                               <div>
                                 <input
-                                  onChange={setImage}
                                   name="profile_pic"
                                   type="file"
                                   id="image_input"
@@ -280,16 +270,14 @@ export default function Home() {
                               htmlFor="fullName"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              <i class="bi bi-person-check"></i> Name
+                              <i className="bi bi-person-check"></i> Name
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
-                                onChange={setUserInput}
                                 name="name"
                                 type="text"
                                 className="form-control"
-                                id="fullName"
-                                defaultValue={user.username}
+                                defaultValue={user.name}
                                 placeholder="Enter your name"
                               />
                             </div>
@@ -300,11 +288,10 @@ export default function Home() {
                               htmlFor="company"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              <i class="bi bi-person-workspace"></i> Role
+                              <i className="bi bi-person-workspace"></i> Role
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
-                                onChange={setUserInput}
                                 name="role"
                                 type="text"
                                 className="form-control"
@@ -320,11 +307,11 @@ export default function Home() {
                               htmlFor="Job"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              <i class="bi bi-arrow-up-circle-fill"></i> Rank
+                              <i className="bi bi-arrow-up-circle-fill"></i>{" "}
+                              Rank
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
-                                onChange={setUserInput}
                                 name="rank"
                                 type="text"
                                 className="form-control"
@@ -340,11 +327,10 @@ export default function Home() {
                               htmlFor="Phone"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              <i class="bi bi-phone"></i> Phone No
+                              <i className="bi bi-phone"></i> Phone No
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
-                                onChange={setUserInput}
                                 name="phone"
                                 type="text"
                                 className="form-control"
@@ -360,11 +346,10 @@ export default function Home() {
                               htmlFor="Email"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              <i class="bi bi-envelope-at"></i> Email
+                              <i className="bi bi-envelope-at"></i> Email
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
-                                onChange={setUserInput}
                                 name="email"
                                 type="email"
                                 className="form-control"

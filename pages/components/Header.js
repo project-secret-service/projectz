@@ -19,7 +19,6 @@ export default function Header({ parentCallback }) {
   useEffect(() => {
     GetUser().then((data) => {
       setUser(data);
-      console.log(data);
     });
   }, []);
 
@@ -275,7 +274,7 @@ export default function Header({ parentCallback }) {
                 )}
 
                 <span className="d-none d-md-block dropdown-toggle ps-2">
-                  {user.username}
+                  {user.name}
                 </span>
               </a>
 

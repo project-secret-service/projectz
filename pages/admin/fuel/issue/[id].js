@@ -8,8 +8,6 @@ import { Button, Row } from "react-bootstrap";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import ReactToPrint from "react-to-print";
-import { AiFillPrinter } from "react-icons/ai";
-import { IconContext } from "react-icons";
 
 //const componentRef=useRef()
 async function GetVehicles(id) {
@@ -61,7 +59,7 @@ const Post = () => {
       setVehicles(data);
       console.log(data);
     });
-  },[]);
+  }, []);
 
   const componentRef = useRef();
   return (
@@ -84,19 +82,10 @@ const Post = () => {
               position: "absolute",
             }}
           >
-            <IconContext.Provider
-              value={{ color: "blue", className: "global-class-name" }}
-            >
-              <ReactToPrint
-                trigger={() => (
-                  <button>
-                    <AiFillPrinter />
-                  </button>
-                )}
-                content={() => componentRef.current}
-                // onAfterPrint={  <Link href={"/admin/duties"}></Link>}
-              />
-            </IconContext.Provider>
+            <ReactToPrint
+              trigger={() => <button>Print</button>}
+              content={() => componentRef.current}
+            />
           </div>
           <Row>
             <div id="printableArea" ref={componentRef} className="p-5">

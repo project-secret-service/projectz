@@ -6,8 +6,6 @@ import SideBar from "../../components/Sidebar";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import ReactToPrint from "react-to-print";
-import { AiFillPrinter } from "react-icons/ai";
-import { IconContext } from "react-icons";
 import dateFormat from "dateformat";
 
 async function GetUserDetails(id) {
@@ -63,19 +61,10 @@ const Post = () => {
               position: "absolute",
             }}
           >
-            <IconContext.Provider
-              value={{ color: "blue", className: "global-class-name" }}
-            >
-              <ReactToPrint
-                trigger={() => (
-                  <button>
-                    <AiFillPrinter />
-                  </button>
-                )}
-                content={() => componentRef.current}
-                // onAfterPrint={  <Link href={"/admin/duties"}></Link>}
-              />
-            </IconContext.Provider>
+            <ReactToPrint
+              trigger={() => <button>Print</button>}
+              content={() => componentRef.current}
+            />
           </div>
           <div id="printableArea" ref={componentRef} className="p-5">
             <div
@@ -97,7 +86,7 @@ const Post = () => {
               />
             </div>
 
-            <table class="table">
+            <table className="table">
               {
                 <tbody>
                   <tr>
@@ -144,8 +133,7 @@ const Post = () => {
                     <th scope="row">6.</th>
                     <td>In Time:</td>
                     <td>
-                      {duty.in_time &&
-                        dateFormat(duty.in_time, "hh:MM:ss TT")}
+                      {duty.in_time && dateFormat(duty.in_time, "hh:MM:ss TT")}
                     </td>
                   </tr>
                   <tr>
