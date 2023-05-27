@@ -104,7 +104,7 @@ export default function Home() {
               <Link href={"/admin/inventory/issue"}>
                 <Button className="w-100 mb-1 btn-light">Order an Item</Button>
               </Link>
-              <Link href={"/admin/inventory/history"}>
+              <Link href={"/admin/inventory/issues/issue"}>
                 <Button className="w-100 mb-1 btn-info">Issue an Item</Button>
               </Link>
               <Link href={"/admin"}>
