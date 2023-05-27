@@ -7,7 +7,7 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import ReactToPrint from "react-to-print";
 import dateFormat from "dateformat";
-
+import { Row, Col } from "react-bootstrap";
 async function GetUserDetails(id) {
   const res = await axios({
     url: "http://localhost:3000/duty_log/" + id,
@@ -37,7 +37,6 @@ const Post = () => {
     const { id } = router.query;
     GetUserDetails(id).then((data) => {
       setDuty(data);
-      console.log(data);
     });
   }, [router.isReady]);
   const componentRef = useRef();
@@ -52,24 +51,26 @@ const Post = () => {
       <Header />
       <SideBar />
       <main className={styles.main}>
-        <div style={{ marginTop: "1rem ", height: "80%" }}>
+        <div className="col-8 opac-80">
           <div
             style={{
               fontSize: "1rem",
               marginTop: "1rem",
-              right: 10,
+              right: "10rem",
               position: "absolute",
+              backgroundColor: "#fffddb",
             }}
           >
             <ReactToPrint
-              trigger={() => <button>Print</button>}
+              trigger={() => <button className="btn btn-primary">Print</button>}
               content={() => componentRef.current}
             />
           </div>
-          <div id="printableArea" ref={componentRef} className="p-5">
+
+          <div id="printableArea" ref={componentRef} className="p-5 card">
             <div
               style={{
-                fontSize: "4rem",
+                fontSize: "2.5rem",
                 marginTop: "1rem",
                 marginBottom: "2rem",
                 marginLeft: 10,
@@ -85,7 +86,15 @@ const Post = () => {
                 }}
               />
             </div>
-
+            <div className="card" id="duty_details">
+              <Row>
+                <Col>Vehicle Reg No : {duty.vehicle_id.registration_no}</Col>
+              </Row>
+              <Row>
+                <Col>Vehicle CRP No : {duty.vehicle_id.vehicle_crp_no}</Col>
+              </Row>
+            </div>
+            <div className="card"></div>
             <table className="table">
               {
                 <tbody>
@@ -123,17 +132,34 @@ const Post = () => {
                   </tr>
                   <tr>
                     <th scope="row">5.</th>
+                    <td>Out Date:</td>
+                    <td>
+                      {duty.out_datetime &&
+                        dateFormat(duty.out_datetime, "dS mmmm, yyyy - dddd")}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5.</th>
                     <td>Out Time:</td>
                     <td>
-                      {duty.out_time &&
-                        dateFormat(duty.out_time, "hh:MM:ss TT")}
+                      {duty.out_datetime &&
+                        dateFormat(duty.out_datetime, "hh:MM TT")}
                     </td>
                   </tr>
                   <tr>
                     <th scope="row">6.</th>
-                    <td>In Time:</td>
+                    <td>In Date :</td>
                     <td>
-                      {duty.in_time && dateFormat(duty.in_time, "hh:MM:ss TT")}
+                      {duty.in_datetime &&
+                        dateFormat(duty.in_datetime, "dS mmmm, yyyy - dddd")}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">6.</th>
+                    <td>In Time :</td>
+                    <td>
+                      {duty.in_datetime &&
+                        dateFormat(duty.in_datetime, "hh:MM TT")}
                     </td>
                   </tr>
                   <tr>

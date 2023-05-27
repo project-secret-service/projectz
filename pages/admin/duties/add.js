@@ -82,6 +82,7 @@ export default function Home() {
     data = {
       ...data,
       mission_ended: event.target.completed.value,
+      date: event.target.date.value,
     };
 
     const res = await axios({
@@ -129,7 +130,7 @@ export default function Home() {
         <Header />
         <SideBar />
 
-        <main id="main" className="col-lg-11 main mt-0">
+        <main id="main" className="col-lg-11 main mt-0 opac-80">
           <h3>Add New Duty</h3>
           <Row>
             <div className="col-lg-8">

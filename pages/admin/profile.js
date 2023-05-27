@@ -97,13 +97,10 @@ export default function Home() {
       <main className={styles.main}>
         <Header />
         <SideBar />
-        <main id="main" className="main col-10">
-          <div className="pagetitle">
-            <h1>Profile</h1>
-          </div>
-
+        <main id="main" className="main col-10 mt-0">
+          <h1>Profile</h1>
           <section>
-            <div className="row">
+            <div className="row opac-80">
               <div className="col-4">
                 <div className="card">
                   <div className="card-body p-4 text-center">

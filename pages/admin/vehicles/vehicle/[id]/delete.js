@@ -52,7 +52,7 @@ export default function Home() {
       <main className={styles.main}>
         <Header />
         <SideBar />
-        <main id="main" className="col-lg-11 main mt-0">
+        <main id="main" className="col-lg-11 main mt-0 opac-80">
           <Row>
             <Col lg="4" className="card m-2 p-5 text-center">
               <img

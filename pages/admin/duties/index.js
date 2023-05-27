@@ -57,7 +57,7 @@ export default function Home() {
           <h1>All Duties</h1>
           <Row>
             <div className="col-lg-8">
-              <div className="card">
+              <div className="card opac-90">
                 <div className="card-body">
                   <table className="table table-hover">
                     <thead>
@@ -120,7 +120,7 @@ export default function Home() {
               </div>
             </div>
             <div
-              className="col-lg-3 card p-4 m-1"
+              className="col-lg-3 card p-4 m-1 opac-80"
               style={{ maxHeight: "20vh" }}
             >
               <Link href={"/admin/duties/add"}>

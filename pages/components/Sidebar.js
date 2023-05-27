@@ -4,7 +4,7 @@ import { useEffect } from "react";
 export default function SideBar(props) {
   return (
     <>
-      <aside id="sidebar" className="sidebar">
+      <aside id="sidebar" className="sidebar opac-90">
         <ul className="sidebar-nav" id="sidebar-nav">
           <li className="nav-item">
             <Link

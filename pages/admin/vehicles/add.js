@@ -128,7 +128,7 @@ export default function Home() {
         <Header />
         <SideBar />
 
-        <main id="main" className="col-lg-11 main mt-0">
+        <main id="main" className="col-lg-11 main mt-0 opac-80">
           <Row>
             <div className="col-lg-8">
               <div className="card">

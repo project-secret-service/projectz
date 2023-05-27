@@ -30,7 +30,7 @@ export default function Header({ parentCallback }) {
     <>
       <header
         id="header"
-        className="header fixed-top d-flex align-items-center"
+        className="header fixed-top d-flex align-items-center opac-90"
       >
         <div className="d-flex align-items-center justify-content-between">
           <Link

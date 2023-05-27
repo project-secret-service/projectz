@@ -27,7 +27,7 @@ export default function Home() {
 
     <SideBar title='dashboard'/>
 
-  <main id="main" className="main mt-0">
+  <main id="main" className="main mt-0 opac-90">
 
     <div className="pagetitle">
       <h1>Dashboard</h1>

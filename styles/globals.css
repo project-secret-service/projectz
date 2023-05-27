@@ -106,6 +106,15 @@ a {
   }
 }
 
+.opac-90 {
+  opacity: 90%;
+}
+
+.opac-80 {
+  opacity: 80%;
+}
+
+
 .c {
   height: 200vh;
   width: 960px;
@@ -150,4 +159,9 @@ a {
   100% {
     opacity: 1;
   }
+}
+
+
+#duty_details div{
+  margin: 0.5rem;
 }

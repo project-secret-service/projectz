@@ -94,7 +94,7 @@ export default function Home() {
         <Header />
         <SideBar />
 
-        <main id="main" className="col-lg-10 main">
+        <main id="main" className="col-lg-10 main opac-80">
           <div className="col-lg-10">
             <div className="card">
               <div className="card-body">

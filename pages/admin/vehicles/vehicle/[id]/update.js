@@ -66,7 +66,7 @@ export default function Home() {
         <Header />
         <SideBar />
         <form method="POST">
-          <main id="main" className="col-lg-11 main mt-0">
+          <main id="main" className="col-lg-11 main mt-0 opac-80">
             <Row className="col-lg-12">
               <Col lg="4" className="card m-2 p-5 text-center">
                 <hr />
