@@ -5,8 +5,11 @@ import Header from '../../components/Header'
 import SideBar from '../../components/Sidebar'
 import Scripts from '../../components/Scripts'
 import {useEffect, useState} from 'react'
+import Link from "next/link";
 import axios from 'axios'
 import Router from 'next/router'
+import { Button } from "react-bootstrap";
+import { Row } from 'react-bootstrap'
 
 async function GetDrivers() {
     const res = await axios({url: "http://localhost:3000/drivers/", method: "GET", withCredentials: true});
@@ -38,27 +41,22 @@ export default function Home() {
             }>
                 <Header/>
                 <SideBar/>
-
-                <main id="main" className=" col-lg-9 main">
-                    <h1>
-                        All Drivers
-                    </h1>
-                                <hr  style={{
-                                    color: '#000000',
-                                    backgroundColor: '#000000',
-                                    height: 2.5,
-                                    borderColor : '#000000'
-                                    }}/>
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
+                <main id="main" className=" col-lg-11 main mt-0">
+          <h1>All Drivers</h1>
+          <Row>
+            <div className="col-lg-8">
+              <div className="card opac-90">
+                <div className="card-body">
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
                                 <th scope="col">Sl No</th>
                                 <th scope="col">Driver Name</th>
                                 <th scope="col">License No</th>
                                 <th scope="col">Rank</th>
                                 <th scope="col">Start Date</th>
                                 <th scope="col">End Date</th>
-                                <th scope="col">Approved by MTO</th>
+                              
                             </tr>
                         </thead>
                         <tbody style={
@@ -74,7 +72,7 @@ export default function Home() {
                                             () => OpenLink(driver._id)
                                     }>
                                         <td>{
-                                            driver.sl_no
+                                            index+1
                                         }</td>
                                         <td>{
                                             driver.name
@@ -91,15 +89,27 @@ export default function Home() {
                                         <td>{
                                         driver.date_to
                                         }</td>
-                                        <td>{
-                                        driver.approval_mto
-                                        }</td>
+                                        
                                     </tr>
                                 )
                             })
                         } </tbody>
                     </table>
-                </main>
+                
+                    </div>
+            </div>
+                    </div>
+            <div
+              className="col-lg-3 card p-4 m-1 opac-80"
+              style={{ maxHeight: "20vh" }}
+            >
+              <Link href={"/admin/drivers/add"}>
+                <Button className="w-100 mb-1 btn-warning">Add Drivers</Button>
+              </Link>
+             
+            </div>
+          </Row>
+        </main>
 
             </main>
             <Scripts/>

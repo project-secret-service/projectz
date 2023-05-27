@@ -93,7 +93,7 @@ export default function Home() {
                               {duty.out_datetime &&
                                 dateFormat(duty.out_datetime, "dS mmmm, yyyy")}
                             </th>
-                            <td>{duty.vehicle_id.registration_no}</td>
+                            <td>{}</td>
                             <td>
                               {duty.out_datetime &&
                                 dateFormat(duty.out_datetime, " h:MM TT")}
