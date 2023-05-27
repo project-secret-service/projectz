@@ -144,13 +144,13 @@ export default function Home() {
               style={{ maxHeight: "20vh" }}
             >
               <Link href={"/admin/inventory/storage"}>
-                <Button className="w-100 mb-1">List Items</Button>
+                <Button className="w-100 mb-1 btn-success">List Items</Button>
               </Link>
               <Link href={"/admin/inventory/history"}>
-                <Button className="w-100 mb-1">History</Button>
+                <Button className="w-100 mb-1 btn-info">History</Button>
               </Link>
               <Link href={"/admin"}>
-                <Button className="w-100 mb-1">Back</Button>
+                <Button className="w-100 mb-1 btn-dark">Back</Button>
               </Link>
             </div>
           </Row>
