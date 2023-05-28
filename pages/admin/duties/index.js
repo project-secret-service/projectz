@@ -62,8 +62,8 @@ export default function Home() {
                   <table className="table table-hover">
                     <thead>
                       <tr>
+                        <th scope="col">Indent No</th>
                         <th scope="col">DATE</th>
-
                         <th scope="col">Vehicle No</th>
                         <th scope="col">OUT TIME</th>
                         <th scope="col">Mission Satus</th>
@@ -89,11 +89,14 @@ export default function Home() {
                             onClick={() => OpenLink(duty._id)}
                             style={{ backgroundColor: color }}
                           >
-                            <th scope="row">
+                            <th>{duty.indent_no}</th>
+                            <td scope="row">
                               {duty.out_datetime &&
                                 dateFormat(duty.out_datetime, "dS mmmm, yyyy")}
-                            </th>
-                            <td>{duty.vehicle&&duty.vehicle.registration_no}</td>
+                            </td>
+                            <td>
+                              {duty.vehicle && duty.vehicle.registration_no}
+                            </td>
                             <td>
                               {duty.out_datetime &&
                                 dateFormat(duty.out_datetime, " h:MM TT")}

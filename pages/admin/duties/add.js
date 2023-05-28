@@ -94,6 +94,7 @@ export default function Home() {
       mission_ended: event.target.completed.value,
       date: event.target.date.value,
       indent_no: event.target.indent_no.value,
+      driver: event.target.driver.value,
     };
 
     const res = await axios({
@@ -124,9 +125,7 @@ export default function Home() {
       method: "GET",
     });
     return res.data;
-    setDuty({ ...duty, indent_no: res.data + 1 });
   }
-  const [errors, setErrors] = useState({ vehicle_sl_no: "" });
 
   useEffect(() => {
     GetVehicles().then((data) => {
@@ -191,16 +190,16 @@ export default function Home() {
                           aria-label="Default select example"
                           onChange={setD}
                         >
-                          {vehicles.map((vehicle, index) => (
-                            <>
-                              {vehicle.available && (
+                          {vehicles.map((vehicle, index) => {
+                            if (vehicle.available) {
+                              return (
                                 <option key={index + 1} value={vehicle._id}>
                                   CRP - {vehicle.vehicle_crp_no}{" "}
                                   {vehicle.registration_no}
                                 </option>
-                              )}
-                            </>
-                          ))}
+                              );
+                            }
+                          })}
                         </select>
                       </div>
                     </div>
@@ -269,16 +268,15 @@ export default function Home() {
                           aria-label="Default select example"
                           onChange={setD}
                         >
-                          {drivers.map((driver, index) => (
-                            <>
-                              {driver.available && (
-                                <option key={index + 1} value={vehicle._id}>
-                                  CRP - {vehicle.vehicle_crp_no}{" "}
-                                  {vehicle.registration_no}
+                          {drivers.map((driver, index) => {
+                            if (driver.available === true) {
+                              return (
+                                <option key={index + 1} value={driver._id}>
+                                  {driver.license_no} - {driver.name}
                                 </option>
-                              )}
-                            </>
-                          ))}
+                              );
+                            }
+                          })}
                         </select>
                       </div>
                     </div>

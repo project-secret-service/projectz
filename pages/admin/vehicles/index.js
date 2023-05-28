@@ -98,7 +98,16 @@ export default function Home() {
                             <th scope="row">{vehicle.vehicle_crp_no} </th>
                             <td>{vehicle.name}</td>
                             <td>{vehicle.vehicle_type}</td>
-                            <td>{"Available"}</td>
+                            <td>
+                              {vehicle.available && (
+                                <span style={{ color: "green" }}>
+                                  Available
+                                </span>
+                              )}
+                              {!vehicle.available && (
+                                <span style={{ color: "red" }}>On Duty</span>
+                              )}
+                            </td>
                             {updateOption && (
                               <td>
                                 <Button className="btn-success">UPDATE</Button>
@@ -128,6 +137,9 @@ export default function Home() {
             <div className="col-lg-3 card p-5 m-1">
               <Link href={"/admin/vehicles/add"}>
                 <Button className="w-100 mb-1">Add Vehicle</Button>
+              </Link>
+              <Link href={"/admin/vehicles/available"}>
+                <Button className="w-100 mb-1">Vehicle Available</Button>
               </Link>
             </div>
           </div>
