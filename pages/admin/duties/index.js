@@ -132,6 +132,16 @@ export default function Home() {
               <Link href={"/admin/duties/update"}>
                 <Button className="w-100 mb-1 btn-dark">Update Duties</Button>
               </Link>
+              <Link href={"/admin/drivers/available"}>
+                <Button className="w-100 mb-1 btn-light">
+                  Available Drivers
+                </Button>
+              </Link>
+              <Link href={"/admin/vehicles/available"}>
+                <Button className="w-100 mb-1 btn-success">
+                  Available Vehicles
+                </Button>
+              </Link>
             </div>
           </Row>
         </main>
