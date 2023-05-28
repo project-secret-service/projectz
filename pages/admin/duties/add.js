@@ -17,7 +17,7 @@ import moment from "moment";
 
 async function GetVehicles() {
   const res = await axios({
-    url: "http://localhost:3000/vehicles/",
+    url: "http://localhost:3000/vehicles/available",
     method: "GET",
     withCredentials: true,
   });
@@ -97,6 +97,8 @@ export default function Home() {
       driver: event.target.driver.value,
     };
 
+    console.log(data);
+
     const res = await axios({
       url: "http://localhost:3000/duty_log/add",
       withCredentials: true,
@@ -131,13 +133,14 @@ export default function Home() {
     GetVehicles().then((data) => {
       setVehicles(data);
       GetLatestIndentNo().then((indent_no) => {
+        let v=data[0]?data[0]._id:"";
         setDuty({
           ...duty,
           indent_no: indent_no + 1,
-          vehicle: data[0]._id,
+          vehicle: data[0]?data[0]._id:"",
           date: moment().format("YYYY-MM-DD"),
           out_datetime: moment().format("YYYY-MM-DDTHH:mm"),
-          completed: false,
+          completed: "false",
         });
       });
     });
@@ -191,14 +194,12 @@ export default function Home() {
                           onChange={setD}
                         >
                           {vehicles.map((vehicle, index) => {
-                            if (vehicle.available) {
-                              return (
-                                <option key={index + 1} value={vehicle._id}>
-                                  CRP - {vehicle.vehicle_crp_no}{" "}
-                                  {vehicle.registration_no}
-                                </option>
-                              );
-                            }
+                            return (
+                              <option key={index + 1} value={vehicle._id}>
+                                CRP - {vehicle.vehicle_crp_no}{" "}
+                                {vehicle.registration_no}
+                              </option>
+                            );
                           })}
                         </select>
                       </div>

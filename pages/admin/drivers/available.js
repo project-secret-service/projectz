@@ -55,7 +55,6 @@ export default function Home() {
                   <table className="table table-hover">
                     <thead>
                       <tr>
-                        <th scope="col">Sl No</th>
                         <th scope="col">Name</th>
                         <th scope="col">License No</th>
                         <th scope="col">Rank</th>
@@ -70,8 +69,7 @@ export default function Home() {
                               key={index + 1}
                               onClick={() => OpenLink(driver._id)}
                             >
-                              <td>{index + 1}</td>
-                              <td>{driver.name}</td>
+                              <th>{driver.name}</th>
                               <td>{driver.license_no}</td>
                               <td>{driver.rank}</td>
                               <td style={{ color: "green" }}>Available</td>
@@ -89,7 +87,6 @@ export default function Home() {
                   <table className="table table-hover">
                     <thead>
                       <tr>
-                        <th scope="col">Sl No</th>
                         <th scope="col">Name</th>
                         <th scope="col">License No</th>
                         <th scope="col">Rank</th>
@@ -98,14 +95,13 @@ export default function Home() {
                     </thead>
                     <tbody style={{ cursor: "pointer" }}>
                       {drivers.map((driver, index) => {
-                        if (driver.available===false) {
+                        if (driver.available === false) {
                           return (
                             <tr
                               key={index + 1}
                               onClick={() => OpenLink(driver._id)}
                             >
-                              <td>{index + 1}</td>
-                              <td>{driver.name}</td>
+                              <th>{driver.name}</th>
                               <td>{driver.license_no}</td>
                               <td>{driver.rank}</td>
                               <td style={{ color: "red" }}>On Duty</td>

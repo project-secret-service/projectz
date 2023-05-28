@@ -50,10 +50,10 @@ export default function Home() {
                   <table className="table table-hover">
                     <thead>
                       <tr>
-                        <th scope="col">Sl No</th>
                         <th scope="col">Driver Name</th>
                         <th scope="col">License No</th>
                         <th scope="col">Rank</th>
+                        <th scope="col">Available</th>
                       </tr>
                     </thead>
                     <tbody style={{ cursor: "pointer" }}>
@@ -63,12 +63,15 @@ export default function Home() {
                             key={index + 1}
                             onClick={() => OpenLink(driver._id)}
                           >
-                            <td>{index + 1}</td>
-                            <td>{driver.name}</td>
+                            <th>{driver.name}</th>
                             <td>{driver.license_no}</td>
                             <td>{driver.rank}</td>
-                            <td>{driver.date_from}</td>
-                            <td>{driver.date_to}</td>
+                            {driver.available && (
+                              <td style={{ color: "green" }}>Available</td>
+                            )}
+                            {!driver.available && (
+                              <td style={{ color: "red" }}>On Duty</td>
+                            )}
                           </tr>
                         );
                       })}
@@ -83,6 +86,10 @@ export default function Home() {
             >
               <Link href={"/admin/drivers/add"}>
                 <Button className="w-100 mb-1 btn-warning">Add Drivers</Button>
+              </Link>
+
+              <Link href={"/admin/drivers/available"}>
+                <Button className="w-100 mb-1 btn-dark">Available Drivers</Button>
               </Link>
             </div>
           </Row>

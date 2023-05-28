@@ -135,11 +135,14 @@ export default function Home() {
               </table>
             </div>
             <div className="col-lg-3 card p-5 m-1">
-              <Link href={"/admin/vehicles/add"}>
+            <Link href={"/admin/vehicles/add"}>
                 <Button className="w-100 mb-1">Add Vehicle</Button>
               </Link>
+              <Link href={"/admin/duties/add"}>
+                <Button className="w-100 mb-1 btn-success">Add Duty</Button>
+              </Link>
               <Link href={"/admin/vehicles/available"}>
-                <Button className="w-100 mb-1">Vehicle Available</Button>
+                <Button className="w-100 mb-1 btn-dark">Vehicle Available</Button>
               </Link>
             </div>
           </div>

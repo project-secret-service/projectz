@@ -7,7 +7,7 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import ReactToPrint from "react-to-print";
 import dateFormat from "dateformat";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button, Modal } from "react-bootstrap";
 async function GetUserDetails(id) {
   const res = await axios({
     url: "http://localhost:3000/duty_log/" + id,
@@ -17,14 +17,79 @@ async function GetUserDetails(id) {
   return res.data;
 }
 
+const SignatureModal = ({ signAs, signTitle, showSign, setShowSign, duty }) => {
+  const [password, setPassword] = useState("");
+  const [wrongPass, setWrongPass] = useState("");
+  function SetP(e) {
+    setWrongPass("");
+    setPassword(e.target.value);
+  }
+  return (
+    <Modal
+      show={showSign}
+      onHide={() => setShowSign(false)}
+      dialogClassName="modal-90w"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>{signTitle}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="row mb-3">
+          <label htmlFor="inputText" className="col-sm-5 col-form-label">
+            Password :
+          </label>
+          <div className="col-sm-7">
+            <input
+              onChange={SetP}
+              type="password"
+              name="password"
+              className="form-control"
+            />
+          </div>
+        </div>
+        <div
+          className="row mb-3"
+          style={{ justifyContent: "center", color: "red" }}
+        >
+          {wrongPass}
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={() => setShowSign(false)}>
+          Close
+        </Button>{" "}
+        <Button
+          variant="primary"
+          onClick={async () => {
+            const res = await axios({
+              url: "http://localhost:3000/duty_log/sign/add/" + signAs,
+              withCredentials: true,
+              method: "POST",
+              data: {
+                dutyID: duty._id,
+                password: password,
+              },
+            });
+            if (res.data === "ok") {
+              window.location.reload();
+            } else {
+              setWrongPass("Wrong Password");
+            }
+          }}
+        >
+          Add Signature
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
 const Post = () => {
   const [duty, setDuty] = useState({});
-  const [signSDI, setSignSDI] = useState(false);
-
-  function showSignButtonSDI() {
-    setSignSDI(!signSDI);
-  }
-
+  const [signAs, setsignAs] = useState("");
+  const [signTitle, setSignTitle] = useState("");
+  const [showSign, setShowSign] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   useEffect(() => {
@@ -101,8 +166,17 @@ const Post = () => {
                           dateFormat(duty.date, " dS mmmm, yyyy - dddd")}
                       </b>
                     </p>
-                    <p style={{ textAlign: "right", cursor: "pointer" }}>
-                      <span>Signature and Designation of Indenter</span>
+                    <p style={{ textAlign: "right" }}>
+                      {duty.sign_indenter && (
+                        <>
+                          Digitally Signed By <br />
+                          <b>{duty.sign_indenter.name}, </b>
+                          <b>{duty.sign_indenter.designation}</b>
+                        </>
+                      )}
+                      {!duty.sign_indenter && (
+                        <span>Signature and Designation of Indenter</span>
+                      )}
                     </p>
                     <p
                       style={{ textAlign: "center", fontSize: "1.2rem" }}
@@ -126,7 +200,16 @@ const Post = () => {
                           dateFormat(duty.date, " dS mmmm, yyyy - dddd")}
                       </b>
                     </p>
-                    <p style={{ textAlign: "right" }}>Signature of M.T.O.</p>
+                    <p style={{ textAlign: "right" }}>
+                      {duty.sign_mto && (
+                        <>
+                          Digitally Signed By <br />
+                          <b>{duty.sign_mto.name}, </b>
+                          <b>{duty.sign_mto.designation}</b>
+                        </>
+                      )}
+                      {!duty.sign_mto && <span>Signature of M.T.O.</span>}
+                    </p>
                     <p>
                       Transport Indent No - <b>{duty.indent_no},</b> Dated :{" "}
                       <b>
@@ -159,7 +242,16 @@ const Post = () => {
                           dateFormat(duty.date, " dS mmmm, yyyy - dddd")}
                       </b>
                     </p>
-                    <p style={{ textAlign: "right" }}>Signature of MT I/C</p>
+                    <p style={{ textAlign: "right" }}>
+                      {duty.sign_mtic && (
+                        <>
+                          Digitally Signed By <br />
+                          <b>{duty.sign_mtic.name}, </b>
+                          <b>{duty.sign_mtic.designation}</b>
+                        </>
+                      )}
+                      {!duty.sign_mtic && <span>Signature of MT I/C</span>}
+                    </p>
                     {duty.mission_ended && (
                       <>
                         {" "}
@@ -184,7 +276,18 @@ const Post = () => {
                           and was dismissed at.......
                         </p>
                         <p style={{ textAlign: "right" }}>
-                          Signature of Indenting Office With Designation
+                          {duty.sign_indentingoffice && (
+                            <>
+                              Digitally Signed By <br />
+                              <b>{duty.sign_indentingoffice.name}, </b>
+                              <b>{duty.sign_indentingoffice.designation}</b>
+                            </>
+                          )}
+                          {!duty.sign_indentingoffice && (
+                            <span>
+                              Signature of Indenting Office With Designation
+                            </span>
+                          )}
                         </p>
                       </>
                     )}
@@ -200,18 +303,66 @@ const Post = () => {
                 content={() => componentRef.current}
               />
               <br />
-              <Button className="btn-success" onClick={()=>{
-                
-              }}>Sign as Indenter</Button>
 
-              <br />
-              <Button className="btn-success">Sign as MTO</Button>
+              {!duty.sign_indenter && (
+                <Button
+                  className="btn-success mb-1"
+                  onClick={() => {
+                    setsignAs("sign_indenter");
+                    setSignTitle("Sign as Indenter");
+                    setShowSign(true);
+                  }}
+                >
+                  Sign as Indenter
+                </Button>
+              )}
 
-              <br />
-              <Button className="btn-success">Sign as MT I/C</Button>
+              {!duty.sign_mto && (
+                <Button
+                  className="btn-success mb-1"
+                  onClick={() => {
+                    setsignAs("sign_mto");
+                    setSignTitle("Sign as MTO");
+                    setShowSign(true);
+                  }}
+                >
+                  Sign as MTO
+                </Button>
+              )}
 
-              <br/>
-              <Button className="btn-success">Sign as Intending Office</Button>
+              {!duty.sign_mtic && (
+                <Button
+                  className="btn-success mb-1"
+                  onClick={() => {
+                    setsignAs("sign_mtic");
+                    setSignTitle("Sign as MT I/C");
+                    setShowSign(true);
+                  }}
+                >
+                  Sign as MT I/C
+                </Button>
+              )}
+
+              {!duty.sign_indentingoffice && duty.mission_ended && (
+                <Button
+                  className="btn-success mb-1"
+                  onClick={() => {
+                    setsignAs("sign_indentingoffice");
+                    setSignTitle("Sign as Indenting Office");
+                    setShowSign(true);
+                  }}
+                >
+                  Sign as Intending Office
+                </Button>
+              )}
+
+              <SignatureModal
+                signTitle={signTitle}
+                signAs={signAs}
+                showSign={showSign}
+                setShowSign={setShowSign}
+                duty={duty}
+              />
             </div>
           </div>
         </main>
