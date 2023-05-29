@@ -73,7 +73,12 @@ const Post = () => {
                 <tbody style={{ cursor: "pointer" }}>
                   {oilbalances.map((oilbalance, index) => {
                     return (
-                      <tr key={index + 1}>
+                      <tr
+                        key={index + 1}
+                        onClick={() => {
+                          router.push("/admin/fuel/voucher/" + oilbalance._id);
+                        }}
+                      >
                         {oilbalance.recieved && (
                           <>
                             <th>{oilbalance.recieve_voucher_no}</th>
