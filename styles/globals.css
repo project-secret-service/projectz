@@ -172,3 +172,7 @@ a {
 td,th{
   vertical-align: middle;
 }
+
+#home-login-button:hover{
+  box-shadow: 2px 2px 4px 2px red;
+}

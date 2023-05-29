@@ -9,41 +9,39 @@ import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import Link from "next/link";
-import Router from "next/router";
-import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
-
-async function GetUsers() {
-  const res = await axios({
-    url: "http://localhost:3000/drivers/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
 
 export default function Home() {
   const [driver, setDrivers] = useState({});
-  useEffect(() => {
-    GetUsers().then((data) => {
-      setDrivers(data);
-    });
-  }, []);
+  const [imageSource, setImageSource] = useState("");
+
+  const handleInputChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        setImageSource(e.target.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  };
 
   async function addNewDriver(event) {
     event.preventDefault();
-    
+
+    console.log(event.target.profile_pic.files[0]);
     const res = await axios({
       url: "http://localhost:3000/drivers/add",
       withCredentials: true,
       method: "POST",
-      data: driver,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: {
+        ...driver,
+        profile_pic: event.target.profile_pic.files[0],
+      },
     });
-
-    if (res.data.status === 200) {
-     
-      Router.push("/admin/drivers/" + res.data.data._id);
-    }
+    console.log(res.data);
   }
 
   function setD({ target: { name, value } }) {
@@ -66,21 +64,41 @@ export default function Home() {
           <div className="row">
             <div className="card col-8 m-1">
               <div className="card-body">
-                {/* <div className={styless.container}>
-                                    <div className={styless.pictureContainer}>
-                                        <div className={styless.picture}>
-                                            <input type="file" id="image_input" accept="image/png , image/jpg" />
-                                            <div id="display_image"></div>
-                                        </div>
-                                        <h4>Choose Picture</h4>
-                                    </div>
-                                </div> */}
-
                 <form onSubmit={addNewDriver}>
                   <div className="row mb-3">
                     <label
+                      htmlFor="profileImage"
+                      className="col-md-4 col-lg-3 col-form-label"
+                    >
+                      <i className="bi bi-file-image"></i> Profile Image
+                    </label>
+                    <div className="col-sm-7">
+                      {imageSource && (
+                        <>
+                          <img
+                            src={imageSource}
+                            alt="Preview Image"
+                            width="30%"
+                          />
+                          <br />
+                          <br />
+                        </>
+                      )}
+                      <div>
+                        <input
+                          onChange={handleInputChange}
+                          name="profile_pic"
+                          type="file"
+                          id="image_input"
+                          accept="image/png , image/jpg"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row mb-3">
+                    <label
                       htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
+                      className="col-md-4 col-lg-3 col-form-label"
                     >
                       Name :
                     </label>
@@ -97,7 +115,7 @@ export default function Home() {
                   <div className="row mb-3">
                     <label
                       htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
+                      className="col-md-4 col-lg-3 col-form-label"
                     >
                       Rank:
                     </label>
@@ -114,7 +132,7 @@ export default function Home() {
                   <div className="row mb-3">
                     <label
                       htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
+                      className="col-md-4 col-lg-3 col-form-label"
                     >
                       License No:
                     </label>
@@ -131,11 +149,11 @@ export default function Home() {
                   <div className="row mb-3">
                     <label
                       htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
+                      className="col-md-4 col-lg-3 col-form-label"
                     >
                       Date From:
                     </label>
-                    <div className="col-sm-2">
+                    <div className="col-sm-7">
                       <input
                         onChange={setD}
                         type="date"
@@ -148,11 +166,11 @@ export default function Home() {
                   <div className="row mb-3">
                     <label
                       htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
+                      className="col-md-4 col-lg-3 col-form-label"
                     >
                       Date To:
                     </label>
-                    <div className="col-sm-2">
+                    <div className="col-sm-7">
                       <input
                         onChange={setD}
                         type="date"
@@ -166,10 +184,10 @@ export default function Home() {
                     <div className="col-sm-10">
                       <button
                         type="submit"
-                        className="btn btn-primary"
-                        style={{ float: "right" }}
+                        className="btn btn-success"
+                        style={{ float: "right", width: "50%" }}
                       >
-                        Add Driver
+                        + Add Driver
                       </button>
                     </div>
                   </div>

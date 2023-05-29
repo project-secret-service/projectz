@@ -66,12 +66,13 @@ export default function Home() {
       setNewFuel((newOil) => ({ ...newOil, vehicle: vehicles[0]._id }));
     } else {
       setShowVehicle(false);
-      setNewFuel((newOil) => ({ ...newOil, vehicle: "" }));
+      delete newOil.vehicle;
     }
   }
 
   async function allotFuel(event) {
     event.preventDefault();
+    console.log(newOil);
     const res = await axios({
       url: "http://localhost:3000/oilstockregister/allot",
       withCredentials: true,

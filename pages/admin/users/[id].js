@@ -72,6 +72,13 @@ const Post = () => {
                   <table className="table">
                     <tbody>
                       <tr>
+                        <th>
+                          USER DETAILS
+                          <br />
+                          <br />
+                        </th>
+                      </tr>
+                      <tr>
                         <td>
                           Registration No : <b>{user.registration_no}</b>
                         </td>

@@ -1,11 +1,10 @@
-import axios from 'axios';
-import Head from 'next/head';
-import styles from '@/styles/Home.module.css';
-import Router from 'next/router';
+import axios from "axios";
+import Head from "next/head";
+import styles from "@/styles/Home.module.css";
+import Router from "next/router";
 
 export default function Login() {
   async function UserLogin(event) {
-    
     event.preventDefault();
     let data = {
       username: event.target.username.value,
@@ -20,7 +19,7 @@ export default function Login() {
 
     if (res.status === 200) {
       Router.push("/admin/");
-    }else{
+    } else {
       alert("Wrong Username or Password");
     }
   }
@@ -89,7 +88,9 @@ export default function Login() {
                 </div>
               </div>
               <div style={{ marginTop: "2rem" }}>
-                <button className={styles.login_button} type='submit'>LOGIN</button>
+                <button className={styles.login_button} type="submit">
+                  LOGIN
+                </button>
               </div>
             </form>
           </div>

@@ -170,6 +170,12 @@ export default function SideBar(props) {
                 </Link>
               </li>
               <li>
+                <Link href="/admin/fuel/balance/log">
+                  <i className="bi bi-circle"></i>
+                  <span>Balance Log</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/admin/fuel/add">
                   <i className="bi bi-circle"></i>
                   <span>Add Fuel</span>

@@ -87,7 +87,6 @@ export default function Home() {
 
   useEffect(() => {
     GetUser().then((data) => {
-      
       setUser(data);
     });
   }, []);

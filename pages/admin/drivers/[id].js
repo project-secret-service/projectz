@@ -49,16 +49,32 @@ const Post = () => {
                       justifyItems: "center",
                     }}
                   >
-                    <img
-                      src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                      style={{ maxWidth: "20vw", maxHeight: "20vw" }}
-                      alt="Avatar"
-                    />
+                    {driver.profile_pic && (
+                      <img
+                        src={
+                          "http://localhost:3000/images/profilepic/" +
+                          driver.profile_pic
+                        }
+                        style={{ maxWidth: "14vw", maxHeight: "14vw" }}
+                        alt="Avatar"
+                      />
+                    )}
+                    {!driver.profile_pic && (
+                      <img
+                        src={"/assets/img/profile1.png"}
+                        style={{ maxWidth: "14vw", maxHeight: "14vw" }}
+                        alt="Avatar"
+                      />
+                    )}
                   </div>
                 </div>
                 <div className="col-8 p-5">
                   <table className="table">
                     <tbody>
+                      <th>
+                        DRIVER DETAILS <br />
+                        <br />
+                      </th>
                       <tr>
                         <td>
                           Name: <b>{driver.name}</b>
@@ -93,13 +109,13 @@ const Post = () => {
               className="col-lg-3 card p-4 m-1 opac-80"
               style={{ maxHeight: "20vh" }}
             >
-              <Link href={"/admin/users/add"}>
-                <Button className="w-100 mb-1 btn-warning">Add Users</Button>
+              <Link href={"/admin/drivers/add"}>
+                <Button className="w-100 mb-1 btn-warning">Add Drivers</Button>
               </Link>
 
-              {/* <Link href={"/admin/users/available"}>
-                <Button className="w-100 mb-1 btn-dark">Available Users</Button>
-              </Link> */}
+              <Link href={"/admin/drivers/"}>
+                <Button className="w-100 mb-1 btn-dark">List Drivers</Button>
+              </Link>
             </div>
           </Row>
         </main>
