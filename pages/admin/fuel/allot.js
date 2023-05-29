@@ -126,7 +126,7 @@ export default function Home() {
         <Header />
         <SideBar />
 
-        <main id="main" className="col-lg-10 main mt-0">
+        <main id="main" className="col-lg-10 main mt-0 opac-80">
           <h1>Allot Oil</h1>
           <div className="row">
             <div className="col-8 m-1 ">

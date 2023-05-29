@@ -57,7 +57,7 @@ const Post = () => {
       <Header />
       <SideBar />
       <main className={styles.main}>
-        <main id="main" className="col-11 mt-0 row">
+        <main id="main" className="col-11 mt-0 row opac-80">
           <h3 className="josefin-sans">{oil.type} Oil Balance Log</h3>
           <Row>
             <div className="col-8 m-1 card p-5">

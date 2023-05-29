@@ -168,3 +168,7 @@ a {
 .josefin-sans {
   font-family: "Josefin Sans", sans-serif;
 }
+
+td,th{
+  vertical-align: middle;
+}

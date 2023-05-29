@@ -5,10 +5,11 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import axios from "axios";
 import Router from "next/router";
-import Link from "next/link";
-import { Button, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 
 async function GetUsers() {
   const res = await axios({
@@ -24,6 +25,7 @@ export default function Home() {
   useEffect(() => {
     GetUsers().then((data) => {
       setUsers(data);
+      console.log(data);
     });
   }, []);
   function OpenLink(link) {
@@ -40,47 +42,75 @@ export default function Home() {
       <main className={styles.main}>
         <Header />
         <SideBar />
-
-        <main id="main" className="col-lg-11 main mt-0">
-          <Row className="p-1">
-            <h1>All Users</h1>
-          </Row>
-          <div className="col-lg-12 d-flex">
-            <div className="col-lg-8 card m-1 p-4">
-              <table className="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">Sl No.</th>
-                    <th scope="col">User Name</th>
-                    <th scope="col">Contact No</th>
-                    <th scope="col">Rank</th>
-                    <th scope="col">Available</th>
-                  </tr>
-                </thead>
-                <tbody style={{ cursor: "pointer" }}>
-                  {users.map((user, index) => {
-                    return (
-                      <tr key={index + 1} onClick={() => OpenLink(user._id)}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{user.name}</td>
-                        <td>{user.contact_no}</td>
-                        <td>{user.rank}</td>
-                        <td>{"Available"}</td>
+        <main id="main" className=" col-lg-11 main mt-0">
+          <h1>All Users</h1>
+          <Row>
+            <div className="col-lg-8">
+              <div className="card opac-90">
+                <div className="card-body">
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">User</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">License No</th>
+                        <th scope="col">Role</th>
                       </tr>
-                    );
-                  })}{" "}
-                </tbody>
-              </table>
+                    </thead>
+                    <tbody style={{ cursor: "pointer" }}>
+                      {users.map((user, index) => {
+                        return (
+                          <tr
+                            key={index + 1}
+                            onClick={() => OpenLink(user._id)}
+                          >
+                            <td>
+                              {user.profile_pic && (
+                                <img
+                                  src={
+                                    "http://localhost:3000/images/profilepic/" +
+                                    user.profile_pic
+                                  }
+                                  style={{
+                                    width: "4rem",
+                                  }}
+                                  alt="Avatar"
+                                />
+                              )}
+                              {!user.profile_pic && (
+                                <img
+                                  src={"/assets/img/profile1.png"}
+                                  style={{
+                                    width: "4rem",
+                                  }}
+                                  alt="Avatar"
+                                />
+                              )}
+                            </td>
+                            <th>{user.name}</th>
+                            <td>{user.registration_no}</td>
+                            <td>{user.role}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
             <div
-              className="col-lg-2 card p-3 m-1"
-              style={{ maxHeight: "10vh" }}
+              className="col-lg-3 card p-4 m-1 opac-80"
+              style={{ maxHeight: "20vh" }}
             >
               <Link href={"/admin/users/add"}>
-                <Button className="w-100 mb-1 btn btn-info">Add User</Button>
+                <Button className="w-100 mb-1 btn-warning">Add Users</Button>
               </Link>
+
+              {/* <Link href={"/admin/users/available"}>
+                <Button className="w-100 mb-1 btn-dark">Available Users</Button>
+              </Link> */}
             </div>
-          </div>
+          </Row>
         </main>
       </main>
       <Scripts />

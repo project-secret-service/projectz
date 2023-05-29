@@ -36,10 +36,10 @@ const Post = () => {
       <Header />
       <SideBar />
       <main className={styles.main}>
-        <main id="main" className="col-11 main mt-0 opac-80">
-          <h1 className="josefin-sans">Driver Details</h1>
+        <main id="main" className="col-10 main mt-0 opac-80">
+          <h1 className="josefin-sans">{driver.name}</h1>
           <Row>
-            <div className="card">
+            <div className="card col-8 m-1">
               <div className="row">
                 <div className="col-4">
                   <div
@@ -60,34 +60,46 @@ const Post = () => {
                   <table className="table">
                     <tbody>
                       <tr>
-                        <th scope="row">1.</th>
-                        <td>Name:</td>
-                        <td>{driver.name}</td>
+                        <td>
+                          Name: <b>{driver.name}</b>
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row">2.</th>
-                        <td>Rank:</td>
-                        <td>{driver.rank}</td>
+                        <td>
+                          Rank: <b>{driver.rank}</b>
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row">3.</th>
-                        <td>License No:</td>
-                        <td>{driver.license_no}</td>
+                        <td>
+                          License No: <b>{driver.license_no}</b>
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row">4.</th>
-                        <td>Date from:</td>
-                        <td>{driver.date_from}</td>
+                        <td>
+                          Date from: <b>{driver.date_from}</b>
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row">5.</th>
-                        <td>Date to:</td>
-                        <td>{driver.date_to}</td>
+                        <td>
+                          Date to: <b>{driver.date_to}</b>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
+            </div>
+            <div
+              className="col-lg-3 card p-4 m-1 opac-80"
+              style={{ maxHeight: "20vh" }}
+            >
+              <Link href={"/admin/users/add"}>
+                <Button className="w-100 mb-1 btn-warning">Add Users</Button>
+              </Link>
+
+              {/* <Link href={"/admin/users/available"}>
+                <Button className="w-100 mb-1 btn-dark">Available Users</Button>
+              </Link> */}
             </div>
           </Row>
         </main>

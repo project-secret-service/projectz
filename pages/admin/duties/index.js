@@ -124,7 +124,7 @@ export default function Home() {
             </div>
             <div
               className="col-lg-3 card p-4 m-1 opac-80"
-              style={{ maxHeight: "20vh" }}
+              style={{ maxHeight: "50vh" }}
             >
               <Link href={"/admin/duties/add"}>
                 <Button className="w-100 mb-1 btn-warning">Add Duties</Button>

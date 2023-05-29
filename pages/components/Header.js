@@ -1,8 +1,5 @@
 import Link from "next/link";
-import Script from "next/script";
-// import { useEffect } from "react";
 import axios from "axios";
-import Scripts from "./Scripts";
 import { useEffect, useState } from "react";
 
 async function GetUser() {
@@ -39,8 +36,8 @@ export default function Header({ parentCallback }) {
             style={{ textDecoration: "none" }}
           >
             <img src="/assets/img/logo.png" alt="" />
-            <span className="d-none d-lg-block">
-              <span style={{ color: "red" }}>FLEET</span> MS
+            <span className="d-none d-lg-block josefin-sans">
+              <span style={{ color: "red" }}>FLEET</span>MS
             </span>
           </Link>
           <i

@@ -32,6 +32,7 @@
     "reactjs-popup": "^2.0.5",
     "sass": "^1.60.0",
     "scss": "^0.2.4",
+    "sharp": "^0.32.1",
     "socket.io-client": "^4.6.1"
   }
 }

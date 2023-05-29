@@ -25,18 +25,6 @@ async function GetUser() {
 
 var v;
 
-const notify = () =>
-  toast.success(" Saved Changes!", {
-    position: "bottom-center",
-    autoClose: 2500,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
-  });
-
 <li className="nav-item">
   <button
     className="nav-link"
@@ -48,14 +36,32 @@ const notify = () =>
 </li>;
 export default function Home() {
   const [user, setUser] = useState([]);
-  const [updatedUser, setUpdatedUser] = useState({});
   const router = useRouter();
   const profile_pic = useRef(null);
   const profile_pic_edit = useRef(null);
+  const [newUserDetails, setNewUserDetails] = useState({});
+  const [imageSource, setImageSource] = useState("");
 
+  const handleInputChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        setImageSource(e.target.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  };
   function setProfile() {
     profile_pic.current.src = "/assets/img/profile1.png";
     profile_pic_edit.current.src = "/assets/img/profile1.png";
+  }
+
+  function setU({ target: { name, value } }) {
+    console.log(value);
+    setNewUserDetails({
+      ...newUserDetails,
+      [name]: value,
+    });
   }
 
   async function updateDetails(event) {
@@ -64,10 +70,11 @@ export default function Home() {
       name: event.target.name.value,
       role: event.target.company.value,
       rank: event.target.rank.value,
-      contact_no: event.target.phone.value,
-      email_id: event.target.email.value,
+      phone: event.target.phone.value,
+      email: event.target.email.value,
       photo: event.target.profile_pic.files[0],
     };
+    console.log(data);
     const res = await axios({
       url: "http://localhost:3000/users/update/" + v,
       method: "PUT",
@@ -77,11 +84,13 @@ export default function Home() {
       },
       data: data,
     });
-    window.location.reload();
+    console.log(res.data);
+    // router.reload();
   }
 
   useEffect(() => {
     GetUser().then((data) => {
+      console.log(data);
       setUser(data);
     });
   }, []);
@@ -116,10 +125,17 @@ export default function Home() {
                         alt="Profile"
                       />
                     )}
-                    <h1 className={vehicle_styles.vehicle_name}>{user.name}</h1>
-                    <h4>{user.role}</h4>
+                    <h1 className={vehicle_styles.vehicle_name}>
+                      {newUserDetails.name ? newUserDetails.name : user.name}
+                    </h1>
                     <h4>
-                      Rank -<b> {user.rank}</b>
+                      {newUserDetails.role ? newUserDetails.role : user.role}
+                    </h4>
+                    <h4>
+                      Rank -
+                      <b>
+                        {newUserDetails.rank ? newUserDetails.rank : user.rank}
+                      </b>
                     </h4>
                   </div>
                 </div>
@@ -164,6 +180,7 @@ export default function Home() {
                               : <b> {user.name}</b>
                             </div>
                           </div>
+                          <div id="image-preview"></div>
                           <div className="row mb-3">
                             <div className="col-lg-3 col-md-4 label ">
                               <i className="bi bi-person-lines-fill"></i>{" "}
@@ -195,7 +212,7 @@ export default function Home() {
                               <i className="bi bi-phone"></i> Phone
                             </div>
                             <div className="col-lg-9 col-md-8">
-                              : <b>{user.contact_no}</b>
+                              : <b>{user.phone}</b>
                             </div>
                           </div>
                           <div className="row mb-3">
@@ -203,7 +220,7 @@ export default function Home() {
                               <i className="bi bi-envelope-at"></i> Email
                             </div>
                             <div className="col-lg-9 col-md-8">
-                              : <b> {user.email_id}</b>
+                              : <b> {user.email}</b>
                             </div>
                           </div>
                         </div>
@@ -234,7 +251,7 @@ export default function Home() {
                               <i className="bi bi-file-image"></i> Profile Image
                             </label>
                             <div className="col-md-8 col-lg-9">
-                              {user.profile_pic && (
+                              {!imageSource && user.profile_pic && (
                                 <img
                                   src={
                                     "http://localhost:3000/images/profilepic/" +
@@ -247,11 +264,20 @@ export default function Home() {
                                 />
                               )}
 
+                              {imageSource && (
+                                <img
+                                  src={imageSource}
+                                  alt="Preview Image"
+                                  width="30%"
+                                />
+                              )}
+
                               <br />
                               <br />
 
                               <div>
                                 <input
+                                  onChange={handleInputChange}
                                   name="profile_pic"
                                   type="file"
                                   id="image_input"
@@ -271,6 +297,7 @@ export default function Home() {
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
+                                onChange={setU}
                                 name="name"
                                 type="text"
                                 className="form-control"
@@ -289,6 +316,7 @@ export default function Home() {
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
+                                onChange={setU}
                                 name="role"
                                 type="text"
                                 className="form-control"
@@ -309,6 +337,7 @@ export default function Home() {
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
+                                onChange={setU}
                                 name="rank"
                                 type="text"
                                 className="form-control"
@@ -328,12 +357,12 @@ export default function Home() {
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
+                                onChange={setU}
                                 name="phone"
-                                type="text"
+                                type="number"
                                 className="form-control"
-                                id="Phone"
-                                defaultValue={user.contact_no}
-                                placeholder="Enter your contact_No"
+                                defaultValue={user.phone}
+                                placeholder="Enter Your Contact No "
                               />
                             </div>
                           </div>
@@ -343,15 +372,16 @@ export default function Home() {
                               htmlFor="Email"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              <i className="bi bi-envelope-at"></i> Email
+                              <i className="bi bi-envelope-at"></i> Email | Username
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input
+                                onChange={setU}
                                 name="email"
                                 type="email"
                                 className="form-control"
                                 id="Email"
-                                defaultValue={user.email_id}
+                                defaultValue={user.email}
                                 placeholder="Enter your email id"
                               />
                             </div>
