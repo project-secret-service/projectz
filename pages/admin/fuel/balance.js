@@ -17,7 +17,6 @@ async function getOilBalance() {
     method: "GET",
     withCredentials: true,
   });
-  console.log(res.data);
   return res.data;
 }
 
@@ -30,7 +29,6 @@ export default function Home() {
   }, []);
 
   function OpenLink(link) {
-    console.log(link);
     Router.push("/admin/fuel/recieve/" + link);
   }
 

@@ -30,7 +30,6 @@ export default function Home() {
       method: "POST",
       withCredentials: true,
     });
-    console.log(res.data);
     Router.push('/admin/vehicles/');
     return res.data;
   }

@@ -20,7 +20,6 @@ async function GetDetails() {
 
 async function addNewDriver(event) {
   event.preventDefault();
-  console.log(event.target.driver);
   var data = {
     sl_no: event.target.sl_no.value,
     vehicle: event.target.vehicle.value,
@@ -43,7 +42,6 @@ async function addNewDriver(event) {
     method: "POST",
     data: data,
   });
-  console.log(res.data);
 }
 
 export default function Home() {
@@ -55,10 +53,7 @@ export default function Home() {
     });
   }, []);
 
-  function OpenLink(link) {
-    console.log(link);
-    Router.push("/admin/inspection/inspect" + link);
-  }
+  
 
   return (
     <>

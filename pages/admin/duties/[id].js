@@ -97,7 +97,7 @@ const Post = () => {
     const { id } = router.query;
     GetUserDetails(id).then((data) => {
       setDuty(data);
-      console.log(data);
+  
     });
   }, [router.isReady]);
   const componentRef = useRef();

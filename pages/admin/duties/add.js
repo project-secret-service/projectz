@@ -97,8 +97,6 @@ export default function Home() {
       driver: event.target.driver.value,
     };
 
-    console.log(data);
-
     const res = await axios({
       url: "http://localhost:3000/duty_log/add",
       withCredentials: true,
@@ -133,11 +131,11 @@ export default function Home() {
     GetVehicles().then((data) => {
       setVehicles(data);
       GetLatestIndentNo().then((indent_no) => {
-        let v=data[0]?data[0]._id:"";
+        let v = data[0] ? data[0]._id : "";
         setDuty({
           ...duty,
           indent_no: indent_no + 1,
-          vehicle: data[0]?data[0]._id:"",
+          vehicle: data[0] ? data[0]._id : "",
           date: moment().format("YYYY-MM-DD"),
           out_datetime: moment().format("YYYY-MM-DDTHH:mm"),
           completed: "false",

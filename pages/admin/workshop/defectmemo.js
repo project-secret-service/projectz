@@ -51,7 +51,6 @@ async function createDefectMemo(event) {
     remarks: event.target.remarks.value,
   };
 
-  console.log(data);
 
   const res = await axios({
     url: "http://localhost:3000/defectmemos/add",
@@ -60,7 +59,6 @@ async function createDefectMemo(event) {
 
     data: data,
   });
-  console.log(res.data);
 }
 
 export default function Home() {
@@ -71,7 +69,6 @@ export default function Home() {
     });
   }, []);
   function OpenLink(link) {
-    console.log(link);
     Router.push("/admin/workshop/" + link);
   }
   return (

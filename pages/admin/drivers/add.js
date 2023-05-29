@@ -32,7 +32,7 @@ export default function Home() {
 
   async function addNewDriver(event) {
     event.preventDefault();
-    console.log(driver);
+    
     const res = await axios({
       url: "http://localhost:3000/drivers/add",
       withCredentials: true,
@@ -41,7 +41,7 @@ export default function Home() {
     });
 
     if (res.data.status === 200) {
-      console.log(res.data);
+     
       Router.push("/admin/drivers/" + res.data.data._id);
     }
   }

@@ -56,7 +56,6 @@ export default function Home() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const l = arrayOfFields.length;
-    // console.log(l);
     let items = [];
     for (let i = 1; i <= l; i++) {
       let name = document.getElementsByName("name" + i)[0].value;
@@ -73,7 +72,6 @@ export default function Home() {
       };
       items.push(item);
     }
-    // console.log(items);
     setFields({ items: items });
     IssueItems(e, items);
   };
@@ -86,24 +84,15 @@ export default function Home() {
       station: event.target.station.value,
       items: items,
     };
-    console.log(data);
     const res = await axios({
       url: "http://localhost:3000/inventory/issue/add",
       method: "POST",
       withCredentials: true,
       data: data,
     });
-    console.log(res.data);
   };
 
   function checkId({ target: { name, value } }) {
-    // if (arrayOfItemIds.includes(value)) {
-    //   setError("Duplicate items are ordered please correct it");
-    // } else {
-    //   setArrayOfItemIds([...arrayOfItemIds, value]);
-    // }
-
-    // console.log(value);
     var ids = new Set();
     for (let i = 0; i < arrayOfFields.length; i++) {
       var id = document.getElementsByName("name" + (i + 1))[0].value;
@@ -117,12 +106,12 @@ export default function Home() {
   };
   const addFields = () => {
     setArrayOfFields([...arrayOfFields, 1]);
-    // console.log(arrayOfFields);
+  
   };
 
   const removeField = (index) => {
     const values = [...arrayOfFields];
-    // console.log(values);
+ 
     values.splice(index, 1);
     setArrayOfFields(values);
   };

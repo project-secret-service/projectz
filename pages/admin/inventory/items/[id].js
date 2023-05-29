@@ -23,7 +23,7 @@ const Post = () => {
     if(!router.isReady) return;
     const {id} = router.query
     GetItemDetails(id).then((data)=>{
-      console.log(data);
+  
       setItems(data);
     });
   }, [router.isReady]);

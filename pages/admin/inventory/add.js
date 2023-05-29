@@ -14,23 +14,18 @@ import { Button, Row, Col } from "react-bootstrap";
 
 async function addNewItem(event){
     event.preventDefault();
-    // console.log(event.target.item);
     var data={
         name:   event.target.name.value,
         quantity:   event.target.quantity.value,
         rate:   event.target.rate.value,
         description:    event.target.description.value,
     }
-
-   
-    console.log(data);
     const res=await axios({
         url: "http://localhost:3000/inventory/items/add",
         withCredentials:true,
         method:"POST",
         data:data
     });
-    console.log(res.data);
 }
   
 

@@ -20,7 +20,6 @@ async function GetIssueDetails(id) {
       method: "GET",
       withCredentials: true,
     });
-    console.log(res.data);
     return res.data;
   }
   
@@ -40,7 +39,7 @@ async function GetIssueDetails(id) {
       if (!router.isReady) return;
       const { id } = router.query;
       GetIssueDetails(id).then((data) => {
-        console.log(data);
+   
         setIssue(data);
         setItems(data.items);
         let total_cost = 0;

@@ -16,7 +16,6 @@ async function getOilBalance() {
     method: "GET",
     withCredentials: true,
   });
-  console.log(res.data);
   return res.data;
 }
 
@@ -82,7 +81,6 @@ export default function Home() {
     if (res.data.status == 200) {
       Router.push("/admin/fuel/balance");
     }
-    console.log(res.data);
   }
 
   useEffect(() => {

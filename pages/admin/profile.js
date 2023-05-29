@@ -57,7 +57,6 @@ export default function Home() {
   }
 
   function setU({ target: { name, value } }) {
-    console.log(value);
     setNewUserDetails({
       ...newUserDetails,
       [name]: value,
@@ -74,7 +73,6 @@ export default function Home() {
       email: event.target.email.value,
       photo: event.target.profile_pic.files[0],
     };
-    console.log(data);
     const res = await axios({
       url: "http://localhost:3000/users/update/" + v,
       method: "PUT",
@@ -84,13 +82,12 @@ export default function Home() {
       },
       data: data,
     });
-    console.log(res.data);
-    // router.reload();
+    router.reload();
   }
 
   useEffect(() => {
     GetUser().then((data) => {
-      console.log(data);
+      
       setUser(data);
     });
   }, []);
@@ -372,7 +369,8 @@ export default function Home() {
                               htmlFor="Email"
                               className="col-md-4 col-lg-3 col-form-label"
                             >
-                              <i className="bi bi-envelope-at"></i> Email | Username
+                              <i className="bi bi-envelope-at"></i> Email |
+                              Username
                             </label>
                             <div className="col-md-8 col-lg-9">
                               <input

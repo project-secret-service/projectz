@@ -22,7 +22,7 @@ export default function Home() {
       <main className={styles.main}>
    
     <Header parentCallback={(data)=>{
-      console.log(data)
+    
     }}/>
 
     <SideBar title='dashboard'/>

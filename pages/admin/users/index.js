@@ -25,11 +25,10 @@ export default function Home() {
   useEffect(() => {
     GetUsers().then((data) => {
       setUsers(data);
-      console.log(data);
     });
   }, []);
+
   function OpenLink(link) {
-    console.log(link);
     Router.push("/admin/users/" + link);
   }
   return (
@@ -58,7 +57,7 @@ export default function Home() {
                       </tr>
                     </thead>
                     <tbody style={{ cursor: "pointer" }}>
-                      {users.map((user, index) => {
+                      {users&&users.map((user, index) => {
                         return (
                           <tr
                             key={index + 1}

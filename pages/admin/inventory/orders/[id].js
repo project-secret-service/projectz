@@ -20,7 +20,6 @@ async function GetOrderDetails(id) {
     method: "GET",
     withCredentials: true,
   });
-  console.log(res.data);
   return res.data;
 }
 
@@ -40,7 +39,7 @@ export default function Home() {
     if (!router.isReady) return;
     const { id } = router.query;
     GetOrderDetails(id).then((data) => {
-      console.log(data);
+      
       setOrder(data);
       setItems(data.items);
       let total_cost = 0;

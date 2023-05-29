@@ -63,7 +63,7 @@ export default function Home() {
   
 
   function setO({ target: { name, value } }) {
-    console.log(issue);
+    
     setIssue({ ...issue, [name]: value });
   }
 
@@ -107,7 +107,7 @@ export default function Home() {
   };
 
   const handleSubmit = (e) => {
-    console.log(issue);
+    
     const l = arrayOfFields.length;
     let items = [];
     for (let i = 1; i <= l; i++) {
@@ -146,7 +146,6 @@ export default function Home() {
       station: "CRPF CAMP RANCHI",
       items: items,
     };
-    console.log(data);
     const res = await axios({
       url: "http://localhost:3000/inventory/issue/add",
       method: "POST",
@@ -154,7 +153,6 @@ export default function Home() {
       data: data,
     });
     if (res.data.status === 200) {
-      // console.log("HIii");
       Router.push("/admin/inventory/issues/" + res.data.issue_id);
     }
   }

@@ -15,7 +15,6 @@ async function GetUserDetails(id) {
     withCredentials: true,
     method: "GET",
   });
-  console.log(res.data);
   return res.data;
 }
 
@@ -116,9 +115,9 @@ const Post = () => {
                 <Button className="w-100 mb-1 btn-warning">Add Users</Button>
               </Link>
 
-              {/* <Link href={"/admin/users/available"}>
-                <Button className="w-100 mb-1 btn-dark">Available Users</Button>
-              </Link> */}
+              <Link href={"/admin/users/"}>
+                <Button className="w-100 mb-1 btn-dark">List Users</Button>
+              </Link>
             </div>
           </Row>
         </main>

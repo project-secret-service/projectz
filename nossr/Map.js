@@ -47,7 +47,7 @@ export default function Map() {
       socket.emit("join_map");
     });
     socket.on("location", (data) => {
-      console.log(data);
+   
       setCenter({
         lat: data.location.latitude,
         lng: data.location.longitude,

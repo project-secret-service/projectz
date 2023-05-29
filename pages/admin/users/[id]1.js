@@ -23,7 +23,7 @@ const Post = () => {
     if (!router.isReady) return;
     const { id } = router.query
     GetUserDetails(id).then((data) => {
-      console.log(data);
+    
       setUsers(data);
       console.data
     });

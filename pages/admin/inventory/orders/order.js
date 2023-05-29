@@ -64,7 +64,7 @@ export default function Home() {
   const [order, setOrder] = useState({});
 
   function setO({ target: { name, value } }) {
-    console.log(order);
+   
     setOrder({ ...order, [name]: value });
   }
 
@@ -108,7 +108,7 @@ export default function Home() {
   };
 
   const handleSubmit = (e) => {
-    console.log(order);
+
     const l = arrayOfFields.length;
     let items = [];
     for (let i = 1; i <= l; i++) {
@@ -146,7 +146,6 @@ export default function Home() {
       station: "CRPF CAMP RANCHI",
       items: items,
     };
-    console.log(data);
     const res = await axios({
       url: "http://localhost:3000/inventory/order/add",
       method: "POST",
@@ -154,7 +153,6 @@ export default function Home() {
       data: data,
     });
     if (res.data.status === 200) {
-      // console.log("HIii");
       Router.push("/admin/inventory/orders/" + res.data.order_id);
     }
   }

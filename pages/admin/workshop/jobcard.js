@@ -38,8 +38,6 @@ async function createJobCard(event) {
     crp_no:event.target.crp_no.value
   };
 
-  console.log(data);
-
   const res = await axios({
     url: "http://localhost:3000/job_card/add",
     withCredentials: true,
@@ -48,7 +46,6 @@ async function createJobCard(event) {
 
     data: data,
   });
-  console.log(res.data);
 }
 
 export default function Home() {
@@ -59,7 +56,6 @@ export default function Home() {
     });
   }, []);
   function OpenLink(link) {
-    console.log(link);
     Router.push('/admin/workshop/' + link);
   }
   return (

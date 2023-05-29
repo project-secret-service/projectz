@@ -19,7 +19,7 @@ async function GetuncompVehicles() {
     method: "GET",
     withCredentials: true,
   });
-  console.log(res.data);
+
   return res.data;
 }
 function sucessful() {
@@ -66,8 +66,6 @@ export default function Home() {
       meter_count: event.target.meter_count.value,
       mission_ended: true,
     };
-
-    console.log(data);
 
     const res = await axios({
       url: "http://localhost:3000/duty_log/update/" + duty._id,

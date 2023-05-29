@@ -40,7 +40,6 @@ const Post = () => {
     const { id } = router.query;
     GetOilDetails(id).then((data) => {
       setOil(data);
-      console.log(data);
     });
   }, [router.isReady]);
   const componentRef = useRef();

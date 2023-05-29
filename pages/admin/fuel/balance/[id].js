@@ -41,7 +41,6 @@ const Post = () => {
       setOilBalances(data);
     });
     getOil(id).then((data) => {
-      console.log(data);
       setOil(data);
     });
   }, [router.isReady]);

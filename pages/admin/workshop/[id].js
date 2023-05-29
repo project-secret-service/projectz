@@ -41,9 +41,8 @@ const Post = () => {
     if (!router.isReady) return;
     const { id } = router.query;
     GetMemoDetails(id).then((data) => {
-      console.log(data);
+     
       setMemos(data);
-      console.data;
     });
   }, [router.isReady]);
   const componentRef = useRef();

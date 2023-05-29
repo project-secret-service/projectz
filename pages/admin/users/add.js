@@ -9,23 +9,6 @@ import axios from "axios";
 import { Button, Row } from "react-bootstrap";
 import Link from "next/link";
 
-async function addUser(event) {
-  // event.preventDefault();
-  // console.log(event.target.profile_pic.files[0]);
-  // var data = {
-  //   user_registration_no: event.target.user_registration_no.value,
-  //   username: event.target.username.value,
-  //   password: event.target.password.value,
-  //   contact_no: event.target.contact_no.value,
-  //   email_id: event.target.email_id.value,
-  //   rank: event.target.rank.value,
-  //   photo: event.target.profile_pic.files[0],
-  // };
-  // const formData = new FormData(event.target);
-  // console.log(formData);
-  // console.log(res.data);
-}
-
 export default function Home() {
   const [imageSource, setImageSource] = useState("");
   const [newUserDetails, setNewUserDetails] = useState({});
@@ -76,7 +59,6 @@ export default function Home() {
 
   async function addUser(event) {
     event.preventDefault();
-    console.log(newUserDetails);
     const res = await axios({
       url: "http://localhost:3000/users/add",
       withCredentials: true,
@@ -110,7 +92,6 @@ export default function Home() {
         passwordRequired: res.data.message,
       });
     }
-    console.log(res.data);
   }
 
   const handleInputChange = (event) => {
@@ -319,9 +300,7 @@ export default function Home() {
 
             <div className="col-3 card p-4 m-1" style={{ maxHeight: "10vh" }}>
               <Link href={"/admin/users"}>
-                <Button className="w-100 mb-1 btn btn-dark">
-                  Users List
-                </Button>
+                <Button className="w-100 mb-1 btn btn-dark">Users List</Button>
               </Link>
             </div>
           </Row>

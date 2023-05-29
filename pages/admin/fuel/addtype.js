@@ -29,7 +29,6 @@ export default function Home() {
     if (res.data.status == 200) {
       router.push("/admin/fuel/balance");
     }
-    console.log(res.data);
   }
   return (
     <>

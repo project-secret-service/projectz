@@ -28,7 +28,7 @@ export default function Home() {
     });
   }, []);
   function OpenLink(link) {
-    console.log(link);
+    
     Router.push("/admin/drivers/" + link);
   }
   return (

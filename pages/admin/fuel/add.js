@@ -16,7 +16,6 @@ async function getOilBalance() {
     method: "GET",
     withCredentials: true,
   });
-  console.log(res.data);
   return res.data;
 }
 
@@ -40,7 +39,6 @@ export default function Home() {
 
   async function addFuel(event) {
     event.preventDefault();
-    console.log(newFuel);
     const res = await axios({
       url: "http://localhost:3000/oilstockregister/add",
       withCredentials: true,
@@ -50,7 +48,6 @@ export default function Home() {
     if (res.data.status == 200) {
       Router.push("/admin/fuel/balance");
     }
-    console.log(res.data);
   }
 
   useEffect(() => {

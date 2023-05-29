@@ -16,7 +16,6 @@ async function GetItems() {
     method: "GET",
     withCredentials: true,
   });
-  console.log(res);
   return res.data;
 }
 
@@ -30,7 +29,6 @@ export default function Home() {
   }, []);
 
   function OpenLink(link) {
-    console.log(link);
     Router.push("/admin/inventory/items/" + link);
   }
 

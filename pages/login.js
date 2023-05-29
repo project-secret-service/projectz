@@ -5,7 +5,7 @@ import Router from 'next/router';
 
 export default function Login() {
   async function UserLogin(event) {
-    console.log("HIII");
+    
     event.preventDefault();
     let data = {
       username: event.target.username.value,

@@ -38,8 +38,6 @@ async function createReceiveVoucher(event) {
         items: event.target.items.value
     };
 
-  console.log(data);
-
     const res = await axios({
         url: "http://localhost:3000/receivevoucher/add",
         withCredentials: true,
@@ -47,7 +45,6 @@ async function createReceiveVoucher(event) {
 
     data: data,
   });
-  console.log(res.data);
 }
 
 export default function Home() {
@@ -65,7 +62,6 @@ export default function Home() {
         });
     }, []);
     function OpenLink(link) {
-        console.log(link);
         Router.push('/admin/workshop/' + link);
     }
     return (
