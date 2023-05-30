@@ -44,7 +44,7 @@ export default function Home() {
         <SideBar />
 
         <main id="main" className="col-lg-10 main opac-80 mt-0">
-          <h1>Oil Balance Log</h1>
+          <h1>Oil Balance</h1>
           <Row>
             <div className="col-8 m-1 card p-5">
               <table className="table table-hover">
@@ -72,17 +72,31 @@ export default function Home() {
               </table>
             </div>
             <div className="col-3 m-1 card p-3">
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
+              <Link href={"/admin/fuel/balance/log"}>
+                <Button className="w-100 mb-1 btn-primary">
+                  Oil Balance Log
+                </Button>
+              </Link>
               <Link href={"/admin/fuel/add"}>
                 <Button className="w-100 mb-1 btn-warning">
                   Update Balance
                 </Button>
               </Link>
+
               <Link href={"/admin/fuel/allot"}>
-                <Button className="w-100 mb-1 btn-dark">Allot Oil</Button>
+                <Button className="w-100 mb-1 btn-success">Allot Oil</Button>
               </Link>
 
               <Link href={"/admin/fuel/addtype"}>
-                <Button className="w-100 mb-1 btn-success">Add Oil Type</Button>
+                <Button className="w-100 mb-1 btn-info">Add Oil Type</Button>
               </Link>
             </div>
           </Row>

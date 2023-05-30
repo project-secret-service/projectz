@@ -63,10 +63,11 @@ export default function Home() {
                     <thead>
                       <tr>
                         <th scope="col">Indent No</th>
-                        <th scope="col">DATE</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Vehicle name</th>
                         <th scope="col">Vehicle No</th>
-                        <th scope="col">OUT TIME</th>
-                        <th scope="col">Mission Satus</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Status</th>
                       </tr>
                     </thead>
                     <tbody style={{ cursor: "pointer" }}>
@@ -89,11 +90,12 @@ export default function Home() {
                             onClick={() => OpenLink(duty._id)}
                             style={{ backgroundColor: color }}
                           >
-                            <th>{duty.indent_no}</th>
+                            <th className="col-1">{duty.indent_no}</th>
                             <td scope="row">
                               {duty.out_datetime &&
                                 dateFormat(duty.out_datetime, "dS mmmm, yyyy")}
                             </td>
+                            <td>{duty.vehicle && duty.vehicle.name}</td>
                             <td>
                               {duty.vehicle && duty.vehicle.registration_no}
                             </td>
@@ -124,13 +126,22 @@ export default function Home() {
             </div>
             <div
               className="col-lg-3 card p-4 m-1 opac-80"
-              style={{ maxHeight: "50vh" }}
+              style={{ maxHeight: "50vh",opacity:"0.6" }}
             >
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
+
               <Link href={"/admin/duties/add"}>
-                <Button className="w-100 mb-1 btn-warning">Add Duties</Button>
+                <Button className="w-100 mb-1 btn-primary">Add Duties</Button>
               </Link>
               <Link href={"/admin/duties/update"}>
-                <Button className="w-100 mb-1 btn-dark">Update Duties</Button>
+                <Button className="w-100 mb-1 btn-warning">Update Duties</Button>
               </Link>
               <Link href={"/admin/drivers/available"}>
                 <Button className="w-100 mb-1 btn-light">

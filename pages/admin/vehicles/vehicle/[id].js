@@ -143,6 +143,7 @@ export default function Home() {
                           vehicle.front_view
                         }
                         alt="First slide"
+                        style={{maxHeight:"50vh"}}
                       />
                       <Carousel.Caption>
                         <h3>Front</h3>
@@ -158,6 +159,7 @@ export default function Home() {
                           vehicle.back_view
                         }
                         alt="First slide"
+                        style={{maxHeight:"50vh"}}
                       />
                       <Carousel.Caption>
                         <h3>Back</h3>

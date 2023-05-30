@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Router from "next/router";
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Header from "../../components/Header";
@@ -7,7 +8,8 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import ReactToPrint from "react-to-print";
 import dateFormat from "dateformat";
-import { Row, Col, Button, Modal } from "react-bootstrap";
+import { Row, Button, Modal } from "react-bootstrap";
+
 async function GetUserDetails(id) {
   const res = await axios({
     url: "http://localhost:3000/duty_log/" + id,
@@ -97,7 +99,6 @@ const Post = () => {
     const { id } = router.query;
     GetUserDetails(id).then((data) => {
       setDuty(data);
-  
     });
   }, [router.isReady]);
   const componentRef = useRef();
@@ -298,15 +299,25 @@ const Post = () => {
           </div>
           <div className="col-3">
             <div className="card p-3">
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
               <ReactToPrint
-                trigger={() => <button className="btn btn-dark">Print</button>}
+                trigger={() => (
+                  <button className="btn btn-primary">Print</button>
+                )}
                 content={() => componentRef.current}
               />
               <br />
 
               {!duty.sign_indenter && (
                 <Button
-                  className="btn-success mb-1"
+                  className="btn-light mb-1"
                   onClick={() => {
                     setsignAs("sign_indenter");
                     setSignTitle("Sign as Indenter");
@@ -319,7 +330,7 @@ const Post = () => {
 
               {!duty.sign_mto && (
                 <Button
-                  className="btn-success mb-1"
+                  className="btn-light mb-1"
                   onClick={() => {
                     setsignAs("sign_mto");
                     setSignTitle("Sign as MTO");
@@ -332,7 +343,7 @@ const Post = () => {
 
               {!duty.sign_mtic && (
                 <Button
-                  className="btn-success mb-1"
+                  className="btn-light mb-1"
                   onClick={() => {
                     setsignAs("sign_mtic");
                     setSignTitle("Sign as MT I/C");
@@ -345,7 +356,7 @@ const Post = () => {
 
               {!duty.sign_indentingoffice && duty.mission_ended && (
                 <Button
-                  className="btn-success mb-1"
+                  className="btn-light mb-1"
                   onClick={() => {
                     setsignAs("sign_indentingoffice");
                     setSignTitle("Sign as Indenting Office");

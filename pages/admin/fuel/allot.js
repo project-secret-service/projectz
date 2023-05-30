@@ -80,7 +80,6 @@ export default function Home() {
       data: newOil,
     });
     if (res.data.status == 200) {
-      console.log(data);
       Router.push("/admin/fuel/balance");
     }
   }
@@ -316,13 +315,21 @@ export default function Home() {
             </div>
 
             <div className="col-3 m-1 card p-3" style={{ maxHeight: "50vh" }}>
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
               <Link href={"/admin/fuel/add"}>
                 <Button className="w-100 mb-1 btn-warning">
                   Update Balance
                 </Button>
               </Link>
               <Link href={"/admin/fuel/balance"}>
-                <Button className="w-100 mb-1 btn-dark">Show Balance</Button>
+                <Button className="w-100 mb-1 btn-success">Show Balance</Button>
               </Link>
 
               <Link href={"/admin/fuel/addtype"}>

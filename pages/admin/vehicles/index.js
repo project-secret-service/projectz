@@ -113,14 +113,22 @@ export default function Home() {
               </table>
             </div>
             <div className="col-lg-3 card p-5 m-1">
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
               <Link href={"/admin/vehicles/add"}>
                 <Button className="w-100 mb-1">Add Vehicle</Button>
               </Link>
               <Link href={"/admin/duties/add"}>
-                <Button className="w-100 mb-1 btn-success">Add Duty</Button>
+                <Button className="w-100 mb-1 btn-warning">Add Duty</Button>
               </Link>
               <Link href={"/admin/vehicles/available"}>
-                <Button className="w-100 mb-1 btn-dark">
+                <Button className="w-100 mb-1 btn-success">
                   Vehicle Available
                 </Button>
               </Link>

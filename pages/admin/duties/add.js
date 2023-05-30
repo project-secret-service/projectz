@@ -168,7 +168,7 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        Indent No :
+                        <i class="bi bi-list-ol"></i> Indent No :
                       </label>
                       <div className="col-sm-7">
                         <input
@@ -182,7 +182,7 @@ export default function Home() {
                     </div>
                     <div className="row mb-3">
                       <label className="col-sm-5 col-form-label">
-                        Vehicle Number :
+                        <i class="bi bi-car-front"></i> Vehicle Number :
                       </label>
                       <div className="col-sm-7">
                         <select
@@ -208,7 +208,7 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        Date :
+                        <i class="bi bi-calendar2-check"></i> Date :
                       </label>
                       <div className="col-sm-7">
                         <input
@@ -226,7 +226,8 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        Out Date and Time :
+                        <i class="bi bi-box-arrow-right"></i> Out Date and Time
+                        :
                       </label>
                       <div className="col-sm-7">
                         <input
@@ -244,7 +245,7 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        Purpose :
+                        <i class="bi bi-list-task"></i> Purpose :
                       </label>
                       <div className="col-sm-7">
                         <input
@@ -258,7 +259,7 @@ export default function Home() {
 
                     <div className="row mb-3">
                       <label className="col-sm-5 col-form-label">
-                        Driver :
+                        <i class="bi bi-person-fill"></i> Driver :
                       </label>
                       <div className="col-sm-7">
                         <select
@@ -283,7 +284,7 @@ export default function Home() {
 
                     <div className="row mb-3">
                       <label className="col-sm-5 col-form-label">
-                        Completed :
+                        <i class="bi bi-check-circle"></i> Completed :
                       </label>
                       <div className="col-sm-7">
                         <select
@@ -304,7 +305,8 @@ export default function Home() {
                             htmlFor="inputText"
                             className="col-sm-5 col-form-label"
                           >
-                            In Date and Time :
+                            <i class="bi bi-box-arrow-in-right"></i> In Date and
+                            Time :
                           </label>
                           <div className="col-sm-7">
                             <input
@@ -322,7 +324,7 @@ export default function Home() {
                             htmlFor="inputText"
                             className="col-sm-5 col-form-label"
                           >
-                            Km Run :
+                            <i class="bi bi-distribute-horizontal"></i> Km Run :
                           </label>
                           <div className="col-sm-7">
                             <input
@@ -339,7 +341,7 @@ export default function Home() {
                             htmlFor="inputText"
                             className="col-sm-5 col-form-label"
                           >
-                            Meter Count:
+                            <i class="bi bi-app-indicator"></i> Meter Count:
                           </label>
                           <div className="col-sm-7">
                             <input
@@ -356,7 +358,7 @@ export default function Home() {
                             htmlFor="inputText"
                             className="col-sm-5 col-form-label"
                           >
-                            Fuel :
+                            <i class="bi bi-fuel-pump"></i> Fuel :
                           </label>
                           <div className="col-sm-7">
                             <input
@@ -378,7 +380,7 @@ export default function Home() {
                           className="btn btn-primary"
                           style={{ float: "right", width: "70%" }}
                         >
-                          Add New Duty
+                          + Add New Duty
                         </button>
                       </div>
                     </div>
@@ -388,8 +390,16 @@ export default function Home() {
             </div>
             <div
               className="col-lg-3 card p-4 m-1"
-              style={{ maxHeight: "10vh" }}
+              style={{ maxHeight: "40vh" }}
             >
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
               <Link href={"/admin/duties"}>
                 <Button className="w-100 mb-1">List Vehicles</Button>
               </Link>

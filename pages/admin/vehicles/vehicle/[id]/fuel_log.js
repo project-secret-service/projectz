@@ -73,7 +73,7 @@ export default function Home() {
           <h1>Fuel History</h1>
           <div className="row col-12">
             <div className="row">
-              <div className="col-8 m-1 card">
+              <div className="col-8 m-1 card p-5">
                 <table className="table">
                   <thead>
                     <tr>

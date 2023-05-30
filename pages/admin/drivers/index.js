@@ -110,9 +110,17 @@ export default function Home() {
               </div>
             </div>
             <div
-              className="col-lg-3 card p-4 m-1 opac-80"
+              className="col-lg-3 card p-3 m-1 opac-80"
               style={{ maxHeight: "20vh" }}
             >
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
               <Link href={"/admin/drivers/add"}>
                 <Button className="w-100 mb-1 btn-warning">Add Drivers</Button>
               </Link>

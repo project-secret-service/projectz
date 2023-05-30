@@ -35,14 +35,14 @@ export default function Header({ parentCallback }) {
             className="logo d-flex align-items-center"
             style={{ textDecoration: "none" }}
           >
-            <img
+            {/* <img
               style={{
                 WebkitFilter: "drop-shadow(1px 1px 1px #222)",
                 filter: "drop-shadow(1px 1px 5px #222)",
               }}
               src="/assets/img/logo.png"
               alt=""
-            />
+            /> */}
             <span className="d-none d-lg-block josefin-sans">
               <span
                 style={{
@@ -272,7 +272,11 @@ export default function Header({ parentCallback }) {
                       "http://localhost:3000/images/profilepic/" +
                       user.profile_pic
                     }
-                    width="100%"
+                    style={{
+                      borderRadius: "50%",
+                      width: "30px",
+                      height: "30px",
+                    }}
                     alt="Profile"
                   />
                 )}
@@ -282,6 +286,7 @@ export default function Header({ parentCallback }) {
                     src="/assets/img/profile1.png"
                     alt="Profile"
                     className="rounded-circle"
+                    style={{ borderRadius: "50%" }}
                   />
                 )}
 

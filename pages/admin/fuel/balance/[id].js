@@ -137,12 +137,20 @@ const Post = () => {
                 </h1>
               </div>
               <Link href={"/admin/fuel/add"}>
+                <Button
+                  onClick={() => {
+                    router.back();
+                  }}
+                  className="w-100 mb-1 btn-dark"
+                >
+                  BACK
+                </Button>
                 <Button className="w-100 mb-1 btn-warning">
                   Update Balance
                 </Button>
               </Link>
               <Link href={"/admin/fuel/allot"}>
-                <Button className="w-100 mb-1 btn-dark">Allot Fuel</Button>
+                <Button className="w-100 mb-1 btn-success">Allot Fuel</Button>
               </Link>
 
               <Link href={"/admin/fuel/addtype"}>

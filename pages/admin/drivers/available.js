@@ -172,8 +172,16 @@ export default function Home() {
               className="col-lg-3 card p-5 m-1 mt-5"
               style={{ maxHeight: "50vh" }}
             >
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
               <Link href={"/admin/drivers/add"}>
-                <Button className="w-100 mb-1">Add Driver</Button>
+                <Button className="w-100 mb-1 btn-warning">Add Driver</Button>
               </Link>
               <Link href={"/admin/drivers/"}>
                 <Button className="w-100 mb-1">All Drivers</Button>

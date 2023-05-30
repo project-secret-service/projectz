@@ -397,13 +397,21 @@ const Post = () => {
               </div>
             </div>
             <div className="col-3 m-1 card p-3">
-              <Button onClick={handlePrint} className="w-100 mb-1 btn-success">
+              <Button
+                onClick={() => {
+                  router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
+              <Button onClick={handlePrint} className="w-100 mb-3 btn-primary">
                 Print Voucher
               </Button>
 
               {!voucher.sign_mtic && (
                 <Button
-                  className="mb-1"
+                  className="mb-1 btn-light"
                   onClick={() => {
                     setsignAs("sign_mtic");
                     setSignTitle("Sign as MT Incharge");
@@ -415,7 +423,7 @@ const Post = () => {
               )}
               {!voucher.sign_polhavaldar && (
                 <Button
-                  className="btn-success mb-1"
+                  className="btn-light mb-1"
                   onClick={() => {
                     setsignAs("sign_polhavaldar");
                     setSignTitle("Sign as POL Havaldar");
@@ -433,15 +441,6 @@ const Post = () => {
                 setShowSign={setShowSign}
                 voucher={voucher}
               />
-
-              <Button
-                onClick={() => {
-                  router.back();
-                }}
-                className="w-100 mb-1 btn-dark"
-              >
-                BACK
-              </Button>
             </div>
           </Row>
         </main>

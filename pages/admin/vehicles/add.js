@@ -341,8 +341,16 @@ export default function Home() {
               className="col-lg-3 card p-4 m-1"
               style={{ maxHeight: "20vh" }}
             >
+              <Button
+                onClick={() => {
+                  router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
               <Link href={"/admin/vehicles"}>
-                <Button className="w-100 mb-1 btn-dark">List Vehicles</Button>
+                <Button className="w-100 mb-1 btn-success">List Vehicles</Button>
               </Link>
               <Link href={"/admin/vehicles/available"}>
                 <Button className="w-100 mb-1 btn-">Available Vehicles</Button>

@@ -46,7 +46,7 @@ export default function Home() {
           <h1 className="josefin-sans">Odometer History</h1>
           <div className="row col-12">
             <div className="row">
-              <div className="col-8 card m-1">
+              <div className="col-8 card m-1 p-5">
                 <table className="table">
                   <thead>
                     <tr>

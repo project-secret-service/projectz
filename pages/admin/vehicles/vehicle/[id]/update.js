@@ -28,10 +28,32 @@ export default function Home() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [images, setImages] = useState({
+    front_view: null,
+    back_view: null,
+    left_view: null,
+    right_view: null,
+    top_view: null,
+  });
 
   const setP = (event) => {
     const selectedFile = event.target.files[0];
     const name = event.target.name;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImages({
+        ...images,
+        [name]: reader.result,
+      });
+    };
+
+    console.log(images);
+
+    if (selectedFile) {
+      reader.readAsDataURL(selectedFile);
+    }
+
     setUpdatedVehicle({ ...updatedVehicle, [name]: selectedFile });
   };
 
@@ -40,6 +62,7 @@ export default function Home() {
   }
 
   async function updateVehicle() {
+    console.log(updatedVehicle);
     const res = await axios({
       url: "http://localhost:3000/vehicles/" + vehicle._id + "/update",
       method: "POST",
@@ -82,6 +105,14 @@ export default function Home() {
                       className="custom-file-input"
                       id="inputGroupFile01"
                     />
+                    <br />
+                    {images.front_view && (
+                      <img
+                        src={images.front_view}
+                        alt="Selected"
+                        style={{ maxWidth: "100%", maxHeight: "20vh" }}
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -98,6 +129,17 @@ export default function Home() {
                       className="custom-file-input"
                       id="inputGroupFile01"
                     />
+                    <br />
+                    {images.back_view && (
+                      <img
+                        src={images.back_view}
+                        alt="Selected"
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "20vh",
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -114,6 +156,17 @@ export default function Home() {
                       className="custom-file-input"
                       id="inputGroupFile01"
                     />
+                    <br />
+                    {images.left_view && (
+                      <img
+                        src={images.left_view}
+                        alt="Selected"
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "20vh",
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
                 <hr />
@@ -129,6 +182,17 @@ export default function Home() {
                       className="custom-file-input"
                       id="inputGroupFile01"
                     />
+                    <br />
+                    {images.right_view && (
+                      <img
+                        src={images.right_view}
+                        alt="Selected"
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "20vh",
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
                 <hr />
@@ -144,6 +208,17 @@ export default function Home() {
                       className="custom-file-input"
                       id="inputGroupFile01"
                     />
+                    <br />
+                    {images.top_view && (
+                      <img
+                        src={images.top_view}
+                        alt="Selected"
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "20vh",
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
                 <hr />
@@ -557,8 +632,11 @@ export default function Home() {
                 Do You want to Update the Vehicle with Following Details ?
                 <p>
                   {/* <li>This will generate a new Vehicle ID</li> */}
-                  {Object.entries(updatedVehicle).map
-                  (([key,value])=>(<li>{key}: {value}</li>))}
+                  {/* {Object.entries(updatedVehicle).map(([key, value]) => (
+                    <li>
+                      {key}: {value}
+                    </li>
+                  ))} */}
                 </p>
               </Modal.Body>
               <Modal.Footer>

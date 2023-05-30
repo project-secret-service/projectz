@@ -10,6 +10,7 @@ import { Button } from "react-bootstrap";
 import axios from "axios";
 import Link from "next/link";
 import "react-datalist-input/dist/styles.css";
+import Router from "next/router";
 
 export default function Home() {
   const [driver, setDrivers] = useState({});
@@ -195,6 +196,14 @@ export default function Home() {
               </div>
             </div>
             <div className="col-3 card m-1 p-5">
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
               <Link href={"/admin/drivers"}>
                 <Button className="w-100 mb-1">List Drivers</Button>
               </Link>

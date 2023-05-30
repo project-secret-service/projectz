@@ -4,7 +4,6 @@ import styles from "@/styles/Home.module.css";
 import Script from "next/script";
 import Header from "../components/Header";
 import SideBar from "../components/Sidebar";
-import Footer from "../components/Footer";
 
 import Scripts from "../components/Scripts";
 import { useEffect, useRef, useState } from "react";
@@ -282,7 +281,7 @@ export default function Home() {
                                   name="profile_pic"
                                   type="file"
                                   id="image_input"
-                                  accept="image/png , image/jpg"
+                                  accept="image/png , image/jpg, image/jpeg,image/webp"
                                 />
                                 <div id="display_image"></div>
                               </div>
