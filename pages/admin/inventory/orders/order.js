@@ -1,4 +1,3 @@
-import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Script from "next/script";
 import Header from "../../../components/Header";
@@ -8,10 +7,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Router from "next/router";
-import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
 import { Button, Row } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
@@ -55,7 +53,6 @@ export default function Home() {
 
   const [error, setError] = useState([]);
   const [sno, setsno] = useState(1);
-  const [arrayOfItemIds, setArrayOfItemIds] = useState([]);
   const [arrayOfFields, setArrayOfFields] = useState([1]);
   const [Items, setItems] = useState([]);
   const formRef = useRef(null);
@@ -64,7 +61,6 @@ export default function Home() {
   const [order, setOrder] = useState({});
 
   function setO({ target: { name, value } }) {
-   
     setOrder({ ...order, [name]: value });
   }
 
@@ -108,7 +104,6 @@ export default function Home() {
   };
 
   const handleSubmit = (e) => {
-
     const l = arrayOfFields.length;
     let items = [];
     for (let i = 1; i <= l; i++) {
@@ -153,7 +148,7 @@ export default function Home() {
       data: data,
     });
     if (res.data.status === 200) {
-      Router.push("/admin/inventory/orders/" + res.data.order_id);
+      Router.push("/admin/inventory/voucher/" + res.data.order_id);
     }
   }
 
@@ -232,16 +227,15 @@ export default function Home() {
         <Header />
         <SideBar />
 
-        <main id="main" className="col-lg-11 main mt-0">
+        <main id="main" className="col-lg-10 main mt-0 opac-80">
+          <h1>Order an Item</h1>
           <Row>
-            <div className="col-1"></div>
-            <div className="col-7">
+            <div className="col-8">
               <form ref={formRef}>
                 <div>
                   <div>
-                    <div className="card">
+                    <div className="card p-5">
                       <div className="card-body">
-                        <h1>Order an Item</h1>
                         <div className="row mb-3">
                           <label
                             htmlFor="inputText"
@@ -507,6 +501,14 @@ export default function Home() {
               </form>
             </div>
             <div className="col-3 card p-4" style={{ maxHeight: "30vh" }}>
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
               <Link href={"/admin/inventory/add"}>
                 <Button className="w-100 mb-1 btn-success">
                   Create new Item
@@ -517,9 +519,6 @@ export default function Home() {
               </Link>
               <Link href={"/admin/inventory/history"}>
                 <Button className="w-100 mb-1 btn-light">History</Button>
-              </Link>
-              <Link href={"/admin"}>
-                <Button className="w-100 mb-1 btn-dark">Back</Button>
               </Link>
             </div>
           </Row>

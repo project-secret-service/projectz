@@ -11,29 +11,23 @@ import "react-datalist-input/dist/styles.css";
 import Head from "next/head";
 import { Button, Row, Col } from "react-bootstrap";
 
-
-async function addNewItem(event){
-    event.preventDefault();
-    var data={
-        name:   event.target.name.value,
-        quantity:   event.target.quantity.value,
-        rate:   event.target.rate.value,
-        description:    event.target.description.value,
-    }
-    const res=await axios({
-        url: "http://localhost:3000/inventory/items/add",
-        withCredentials:true,
-        method:"POST",
-        data:data
-    });
+async function addNewItem(event) {
+  event.preventDefault();
+  var data = {
+    name: event.target.name.value,
+    quantity: event.target.quantity.value,
+    rate: event.target.rate.value,
+    description: event.target.description.value,
+  };
+  const res = await axios({
+    url: "http://localhost:3000/inventory/items/add",
+    withCredentials: true,
+    method: "POST",
+    data: data,
+  });
 }
-  
-
-
 
 export default function Home() {
-  
-
   return (
     <>
       <Head title="Add Items" />
@@ -41,13 +35,12 @@ export default function Home() {
         <Header />
         <SideBar />
 
-        <main id="main" className="col-lg-11 main mt-0">
+        <main id="main" className="col-lg-10 main mt-0">
+          <h1>Add New Item</h1>
           <Row>
-            <div className="col-lg-8">
+            <div className="col-lg-7">
               <div className="card">
                 <div className="card-body">
-                  <h1>Add New Item</h1>
-
                   <form onSubmit={addNewItem}>
                     <div className="row mb-3">
                       <label
@@ -115,21 +108,14 @@ export default function Home() {
                         />
                       </div>
                     </div>
-                    
-                   
 
-                    
                     <div className="row mb-3">
                       <div className="text-center">
-                        <button
-                          type="submit"
-                          className="btn btn-primary w-100"
-                        >
+                        <button type="submit" className="btn btn-success w-100">
                           Add Item
                         </button>
                       </div>
                     </div>
-
                   </form>
                 </div>
               </div>
@@ -138,14 +124,19 @@ export default function Home() {
               className="col-lg-3 card p-4 m-1"
               style={{ maxHeight: "20vh" }}
             >
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
               <Link href={"/admin/inventory/storage"}>
-                <Button className="w-100 mb-1 btn-success">List Items</Button>
+                <Button className="w-100 mb-1 btn-disabled">List Items</Button>
               </Link>
               <Link href={"/admin/inventory/history"}>
-                <Button className="w-100 mb-1 btn-info">History</Button>
-              </Link>
-              <Link href={"/admin"}>
-                <Button className="w-100 mb-1 btn-dark">Back</Button>
+                <Button className="w-100 mb-1 btn-warning">History</Button>
               </Link>
             </div>
           </Row>

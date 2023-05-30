@@ -1,4 +1,3 @@
-import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Script from "next/script";
 import Header from "../../components/Header";
@@ -7,13 +6,12 @@ import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import Router from "next/router";
-import DatalistInput from "react-datalist-input";
 import "react-datalist-input/dist/styles.css";
 import { Button, Row } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import dateFormat from "dateformat";
+import router from "next/router";
+import moment from "moment";
 
 async function GetOrders() {
   const res = await axios({
@@ -35,6 +33,14 @@ async function GetIssues() {
 
 export default function Home() {
   const [inventoryHistory, setInventoryHistory] = useState([]);
+  const [searchResults, setSearchResults] = useState(new Set());
+  const [searchResultList, setSearchResultList] = useState([]);
+  const [search, setSearch] = useState(false);
+
+  useEffect(() => {
+    setSearchResultList(Array.from(searchResults));
+  }, [searchResults]);
+
   async function MergeHistory() {
     const orders = await GetOrders();
     const issues = await GetIssues();
@@ -45,9 +51,46 @@ export default function Home() {
     mergedData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     setInventoryHistory(mergedData);
+    console.log(mergedData);
   }
+
+  function handleSearch(e) {
+    let search = e.target.value;
+    if (search === "") {
+      setSearch(false);
+      return;
+    } else {
+      setSearch(true);
+    }
+
+    let results = new Set();
+    inventoryHistory.forEach((data) => {
+      let date = dateFormat(data.date, "dS mmmm, yyyy - DDDD");
+      if (data.voucher_no.toLowerCase().includes(search.toLowerCase())) {
+        results.add(data);
+      }
+      if (data.date && date.toLowerCase().includes(search.toLowerCase())) {
+        results.add(data);
+      }
+      if (data.voucher_no.split("/")[0] === "RV") {
+        if ("recieve".includes(search.toLowerCase())) {
+          results.add(data);
+        }
+      }
+
+      if (data.voucher_no.split("/")[0] === "IV") {
+        if (search.toLowerCase() === "issue") {
+          results.add(data);
+        }
+      }
+    });
+    setSearchResults(results);
+    console.log(results);
+  }
+
   useEffect(() => {
     MergeHistory();
+    console.log(searchResults);
   }, []);
   return (
     <>
@@ -58,41 +101,93 @@ export default function Home() {
 
         <main id="main" className="col-lg-11 main mt-0 opac-80">
           <Row className="p-1">
-            <h1>History</h1>
+            <h1>Inventory History</h1>
           </Row>
           <div className="col-lg-12 d-flex">
             <div className="col-lg-8 card m-1 p-4">
               <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col"> S NO</th>
+                    <th scope="col">Voucher No</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Type of Voucher</th>
-                    <th scope="col">Voucher no</th>
+                    <th scope="col" style={{ textAlign: "center" }}>
+                      Type
+                    </th>
                   </tr>
                 </thead>
                 <tbody style={{ cursor: "pointer" }}>
-                  {inventoryHistory.map((data, index) => (
-                    <tr>
-                      <th scope="row">{index + 1}</th>
-                      <td>
-                        {data.date &&
-                          dateFormat(data.date, "dS mmmm, yyyy - dddd")}
-                      </td>
-                      <td>
-                        {data.voucher_no.split("/")[0] === "RV" && <>Recieve Voucher</>}
-                        {data.voucher_no.split("/")[0] === "IV" && <>Issue Voucher</>}
-                      </td>
-                      <td>{data.voucher_no}</td>
-                    </tr>
-                  ))}
+                  {!search &&
+                    inventoryHistory.map((data, index) => (
+                      <tr
+                        key={index}
+                        onClick={() => {
+                          router.push(`/admin/inventory/voucher/${data._id}`);
+                        }}
+                      >
+                        <th className="col-3">{data.voucher_no}</th>
+                        <td>
+                          {data.date &&
+                            dateFormat(data.date, "dS mmmm, yyyy - DDDD")}
+                        </td>
+                        <td style={{ textAlign: "center" }}>
+                          {data.voucher_no.split("/")[0] === "RV" && (
+                            <span style={{ color: "green" }}>RECIEVE</span>
+                          )}
+                          {data.voucher_no.split("/")[0] === "IV" && (
+                            <span style={{ color: "red" }}>ISSUE</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+
+                  {search &&
+                    searchResultList.map((data, index) => (
+                      <tr
+                        key={index}
+                        onClick={() => {
+                          router.push(`/admin/inventory/voucher/${data._id}`);
+                        }}
+                      >
+                        <th className="col-3">{data.voucher_no}</th>
+                        <td>
+                          {data.date &&
+                            dateFormat(data.date, "dS mmmm, yyyy - DDDD")}
+                        </td>
+                        <td style={{ textAlign: "center" }}>
+                          {data.voucher_no.split("/")[0] === "RV" && (
+                            <span style={{ color: "green" }}>RECIEVE</span>
+                          )}
+                          {data.voucher_no.split("/")[0] === "IV" && (
+                            <span style={{ color: "red" }}>ISSUE</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
             <div
               className="col-lg-3 card p-4 m-1"
-              style={{ maxHeight: "30vh" }}
+              style={{ maxHeight: "50vh" }}
             >
+              <div className="row p-3">
+                <input
+                  onChange={handleSearch}
+                  name="search"
+                  type="text"
+                  className="form-control"
+                  placeholder="Search"
+                ></input>
+              </div>
+              <Button
+                onClick={() => {
+                  router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
+
               <Link href={"/admin/inventory/add"}>
                 <Button className="w-100 mb-1 btn-success">
                   Create new Item
@@ -101,14 +196,11 @@ export default function Home() {
               <Link href={"/admin/inventory/storage"}>
                 <Button className="w-100 mb-1 btn-secondary">List Items</Button>
               </Link>
-              <Link href={"/admin/inventory/issue"}>
+              <Link href={"/admin/inventory/orders/order"}>
                 <Button className="w-100 mb-1 btn-light">Order an Item</Button>
               </Link>
               <Link href={"/admin/inventory/issues/issue"}>
                 <Button className="w-100 mb-1 btn-info">Issue an Item</Button>
-              </Link>
-              <Link href={"/admin"}>
-                <Button className="w-100 mb-1 btn-dark">Back</Button>
               </Link>
             </div>
           </div>

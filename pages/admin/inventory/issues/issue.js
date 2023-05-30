@@ -60,10 +60,8 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [voucher_no, setVoucherNo] = useState("");
   const [issue, setIssue] = useState({});
-  
 
   function setO({ target: { name, value } }) {
-    
     setIssue({ ...issue, [name]: value });
   }
 
@@ -107,7 +105,6 @@ export default function Home() {
   };
 
   const handleSubmit = (e) => {
-    
     const l = arrayOfFields.length;
     let items = [];
     for (let i = 1; i <= l; i++) {
@@ -126,8 +123,7 @@ export default function Home() {
       items.push(item);
     }
     setFields({ items: items });
-    IssueItems(e, items); 
-   
+    IssueItems(e, items);
   };
 
   const handleSubmitForm = (e) => {
@@ -153,7 +149,7 @@ export default function Home() {
       data: data,
     });
     if (res.data.status === 200) {
-      Router.push("/admin/inventory/issues/" + res.data.issue_id);
+      Router.push("/admin/inventory/voucher/" + res.data.issue_id);
     }
   }
 
@@ -185,9 +181,9 @@ export default function Home() {
       setError("");
     } else {
       setError("Contains Duplicate Items");
-    } 
+    }
   }
-  
+
   const addFields = () => {
     setArrayOfFields([...arrayOfFields, 1]);
   };
@@ -233,16 +229,15 @@ export default function Home() {
         <Header />
         <SideBar />
 
-        <main id="main" className="col-lg-11 main mt-0">
+        <main id="main" className="col-lg-10 main mt-0 opac-80">
           <Row>
-          <div className="col-1"></div>
+            <h1>Issue an Item</h1>
             <div className="col-7">
               <form ref={formRef}>
                 <div>
                   <div>
                     <div className="card">
                       <div className="card-body">
-                        <h1>Issue an Item</h1>
                         <div className="row mb-3">
                           <label
                             htmlFor="inputText"
@@ -508,6 +503,14 @@ export default function Home() {
               </form>
             </div>
             <div className="col-3 card p-4" style={{ maxHeight: "30vh" }}>
+              <Button
+                onClick={() => {
+                  Router.back();
+                }}
+                className="w-100 mb-1 btn-dark"
+              >
+                BACK
+              </Button>
               <Link href={"/admin/inventory/add"}>
                 <Button className="w-100 mb-1 btn-success">
                   Create new Item
@@ -518,9 +521,6 @@ export default function Home() {
               </Link>
               <Link href={"/admin/inventory/history"}>
                 <Button className="w-100 mb-1 btn-light">History</Button>
-              </Link>
-              <Link href={"/admin"}>
-                <Button className="w-100 mb-1 btn-dark">Back</Button>
               </Link>
             </div>
           </Row>
