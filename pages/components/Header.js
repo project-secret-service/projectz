@@ -35,9 +35,24 @@ export default function Header({ parentCallback }) {
             className="logo d-flex align-items-center"
             style={{ textDecoration: "none" }}
           >
-            <img src="/assets/img/logo.png" alt="" />
+            <img
+              style={{
+                WebkitFilter: "drop-shadow(1px 1px 1px #222)",
+                filter: "drop-shadow(1px 1px 5px #222)",
+              }}
+              src="/assets/img/logo.png"
+              alt=""
+            />
             <span className="d-none d-lg-block josefin-sans">
-              <span style={{ color: "red" }}>FLEET</span>MS
+              <span
+                style={{
+                  color: "red",
+                  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                FLEET
+              </span>
+              MS
             </span>
           </Link>
           <i
@@ -47,7 +62,7 @@ export default function Header({ parentCallback }) {
           ></i>
         </div>
 
-        <div className="search-bar">
+        <div className="search-bar" id="search_bar">
           <form
             className="search-form d-flex align-items-center"
             method="POST"
@@ -73,7 +88,7 @@ export default function Header({ parentCallback }) {
               </a>
             </li>
 
-            <li className="nav-item dropdown">
+            {/* <li className="nav-item dropdown">
               <a
                 className="nav-link nav-icon"
                 href="#"
@@ -151,9 +166,9 @@ export default function Header({ parentCallback }) {
                   <a href="#">Show all notifications</a>
                 </li>
               </ul>
-            </li>
+            </li> */}
 
-            <li className="nav-item dropdown">
+            {/* <li className="nav-item dropdown">
               <a
                 className="nav-link nav-icon"
                 href="#"
@@ -243,7 +258,7 @@ export default function Header({ parentCallback }) {
                   <a href="#">Show all messages</a>
                 </li>
               </ul>
-            </li>
+            </li> */}
 
             <li className="nav-item dropdown pe-3">
               <a
@@ -324,10 +339,19 @@ export default function Header({ parentCallback }) {
                   <hr className="dropdown-divider" />
                 </li>
 
-                <li>
+                <li style={{ cursor: "pointer" }}>
                   <a
                     className="dropdown-item d-flex align-items-center"
-                    href="/login"
+                    onClick={async () => {
+                      const res = await axios({
+                        method: "post",
+                        url: "http://localhost:3000/logout",
+                        withCredentials: true,
+                      });
+                      if (res.data.status === 200) {
+                        window.location.href = "/login";
+                      }
+                    }}
                   >
                     <i className="bi bi-box-arrow-right"></i>
                     <span>Sign Out</span>

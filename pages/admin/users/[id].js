@@ -55,14 +55,24 @@ const Post = () => {
                           "http://localhost:3000/images/profilepic/" +
                           user.profile_pic
                         }
-                        style={{ maxWidth: "15vw", maxHeight: "15vw" }}
+                        style={{
+                          maxWidth: "15vw",
+                          maxHeight: "15vw",
+                          WebkitFilter: "drop-shadow(1px 1px 1px #222)",
+                          filter: "drop-shadow(1px 1px 5px #222)",
+                        }}
                         alt="Avatar"
                       />
                     )}
                     {!user.profile_pic && (
                       <img
                         src={"/assets/img/profile1.png"}
-                        style={{ maxWidth: "15vw", maxHeight: "15vw" }}
+                        style={{
+                          maxWidth: "15vw",
+                          maxHeight: "15vw",
+                          WebkitFilter: "drop-shadow(1px 1px 1px #222)",
+                          filter: "drop-shadow(1px 1px 5px #222)",
+                        }}
                         alt="Avatar"
                       />
                     )}

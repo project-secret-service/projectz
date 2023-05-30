@@ -46,11 +46,10 @@ export default function Home() {
         <SideBar />
 
         <main id="main" className="col-lg-11 main mt-0 opac-80">
-          <Row className="p-1"></Row>
           <div className="col-lg-12 d-flex">
             <div className="col-lg-8 m-1">
               <div>
-                <h1>Available Vehicles</h1>
+                <h2>Available Vehicles</h2>
                 <div className="card p-3">
                   <table className="table table-hover">
                     <thead>
@@ -71,7 +70,9 @@ export default function Home() {
                               key={index + 1}
                               onClick={() => OpenLink(vehicle._id)}
                             >
-                              <th scope="row">{vehicle.vehicle_crp_no} </th>
+                              <th scope="row" className="col-1">
+                                {vehicle.vehicle_crp_no}{" "}
+                              </th>
                               <td>{vehicle.name}</td>
                               <td>{vehicle.vehicle_type}</td>
                               <td>
@@ -93,7 +94,7 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <h1>Vehicles On Duty</h1>
+                <h2>Vehicles On Duty</h2>
                 <div className="card p-3">
                   <table className="table table-hover">
                     <thead>
@@ -102,19 +103,19 @@ export default function Home() {
                         <th scope="col">Vehicle Name</th>
                         <th scope="col">Type</th>
                         <th scope="col">Available</th>
-                        {updateOption && <th scope="col">UPDATE</th>}
-                        {deleteOption && <th scope="col">DELETE</th>}
                       </tr>
                     </thead>
                     <tbody style={{ cursor: "pointer" }}>
                       {vehicles.map((vehicle, index) => {
-                        if (vehicle.available===false) {
+                        if (vehicle.available === false) {
                           return (
                             <tr
                               key={index + 1}
                               onClick={() => OpenLink(vehicle._id)}
                             >
-                              <th scope="row">{vehicle.vehicle_crp_no} </th>
+                              <th scope="row" className="col-1">
+                                {vehicle.vehicle_crp_no}{" "}
+                              </th>
                               <td>{vehicle.name}</td>
                               <td>{vehicle.vehicle_type}</td>
                               <td>
@@ -136,7 +137,10 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="col-lg-3 card p-5 m-1">
+            <div
+              className="col-lg-3 card p-5 mt-5"
+              style={{ maxHeight: "50vh" }}
+            >
               <Link href={"/admin/vehicles/add"}>
                 <Button className="w-100 mb-1">Add Vehicle</Button>
               </Link>

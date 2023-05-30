@@ -158,7 +158,7 @@ export default function Home() {
         <main id="main" className="col-lg-11 main mt-0 opac-80">
           <h3>Add New Duty</h3>
           <Row>
-            <div className="col-lg-8">
+            <div className="col-lg-8 m-1">
               <div className="card">
                 <div className="card-body">
                   <form onSubmit={addNewVehicle}>

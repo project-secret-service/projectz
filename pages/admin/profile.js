@@ -115,10 +115,15 @@ export default function Home() {
                           "http://localhost:3000/images/profilepic/" +
                           user.profile_pic
                         }
+                        style={{
+                          WebkitFilter: "drop-shadow(1px 1px 1px #222)",
+                          filter: "drop-shadow(1px 1px 5px #222)",
+                        }}
                         onError={setProfile}
                         ref={profile_pic}
                         width="100%"
                         alt="Profile"
+                        className="mb-3"
                       />
                     )}
                     <h1 className={vehicle_styles.vehicle_name}>

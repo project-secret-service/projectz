@@ -1,10 +1,6 @@
+import Router from "next/router";
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Link from "next/link";
-import { Button } from "react-bootstrap";
+import axios from "axios";
 
 export default function Home() {
   return (
@@ -44,7 +40,20 @@ export default function Home() {
             }}
           ></img>
           <br />
-          <Link href="/login">
+          <div
+            onClick={async () => {
+              const res = await axios({
+                method: "POST",
+                url: "http://localhost:3000/checklogin",
+                withCredentials: true,
+              });
+              if (res.data.status === 200) {
+                Router.push("/admin/");
+              } else {
+                Router.push("/login/");
+              }
+            }}
+          >
             <button
               id="home-login-button"
               className="mt-3 josefin-sans"
@@ -60,7 +69,7 @@ export default function Home() {
             >
               <span style={{ opacity: 1 }}>Login</span>
             </button>
-          </Link>
+          </div>
         </div>
       </div>
     </>

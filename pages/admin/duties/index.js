@@ -56,7 +56,7 @@ export default function Home() {
         <main id="main" className=" col-lg-11 main mt-0">
           <h1>All Duties</h1>
           <Row>
-            <div className="col-lg-8">
+            <div className="col-lg-8 m-1">
               <div className="card opac-90">
                 <div className="card-body">
                   <table className="table table-hover">

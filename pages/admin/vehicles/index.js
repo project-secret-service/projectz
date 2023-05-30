@@ -83,51 +83,29 @@ export default function Home() {
                   <tr>
                     <th scope="col">CRP No</th>
                     <th scope="col">Vehicle Name</th>
+                    <th scope="col">Reg No</th>
                     <th scope="col">Type</th>
                     <th scope="col">Available</th>
-                    {updateOption && <th scope="col">UPDATE</th>}
-                    {deleteOption && <th scope="col">DELETE</th>}
                   </tr>
                 </thead>
                 <tbody style={{ cursor: "pointer" }}>
                   {vehicles.map((vehicle, index) => {
                     return (
                       <tr key={index + 1} onClick={() => OpenLink(vehicle._id)}>
-                        {!deleteWarning && (
-                          <>
-                            <th scope="row">{vehicle.vehicle_crp_no} </th>
-                            <td>{vehicle.name}</td>
-                            <td>{vehicle.vehicle_type}</td>
-                            <td>
-                              {vehicle.available && (
-                                <span style={{ color: "green" }}>
-                                  Available
-                                </span>
-                              )}
-                              {!vehicle.available && (
-                                <span style={{ color: "red" }}>On Duty</span>
-                              )}
-                            </td>
-                            {updateOption && (
-                              <td>
-                                <Button className="btn-success">UPDATE</Button>
-                              </td>
-                            )}
-                            {deleteOption && (
-                              <td>
-                                <Button
-                                  className="btn-danger"
-                                  onClick={deleteVehicleWarning}
-                                >
-                                  DELETE
-                                </Button>
-                              </td>
-                            )}
-                          </>
-                        )}
-                        {deleteWarning && (
-                          <>Are you sure want to Delete {vehicle.name}</>
-                        )}
+                        <th scope="row" className="col-1">
+                          {vehicle.vehicle_crp_no}{" "}
+                        </th>
+                        <td>{vehicle.name}</td>
+                        <td>{vehicle.registration_no}</td>
+                        <td>{vehicle.vehicle_type}</td>
+                        <td>
+                          {vehicle.available && (
+                            <span style={{ color: "green" }}>Available</span>
+                          )}
+                          {!vehicle.available && (
+                            <span style={{ color: "red" }}>On Duty</span>
+                          )}
+                        </td>
                       </tr>
                     );
                   })}
@@ -135,14 +113,16 @@ export default function Home() {
               </table>
             </div>
             <div className="col-lg-3 card p-5 m-1">
-            <Link href={"/admin/vehicles/add"}>
+              <Link href={"/admin/vehicles/add"}>
                 <Button className="w-100 mb-1">Add Vehicle</Button>
               </Link>
               <Link href={"/admin/duties/add"}>
                 <Button className="w-100 mb-1 btn-success">Add Duty</Button>
               </Link>
               <Link href={"/admin/vehicles/available"}>
-                <Button className="w-100 mb-1 btn-dark">Vehicle Available</Button>
+                <Button className="w-100 mb-1 btn-dark">
+                  Vehicle Available
+                </Button>
               </Link>
             </div>
           </div>

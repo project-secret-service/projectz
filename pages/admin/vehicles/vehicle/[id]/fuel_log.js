@@ -51,33 +51,6 @@ export default function Home() {
 
   const router = useRouter();
 
-  function handleFuelChange({ target: { name, value } }) {
-    if (parseFloat(value) > vehicle.fuel_capacity) {
-      setFuelLimitError(true);
-    } else {
-      setFuelLimitError(false);
-    }
-  }
-  async function updateFuel() {
-    let newFuel = document.getElementById("new_fuel").value;
-    const res = await axios({
-      url: "http://localhost:3000/vehicles/" + vehicle._id + "/fuel_update",
-      method: "POST",
-      withCredentials: true,
-      data: {
-        fuel: newFuel,
-      },
-    });
-    setFuel(parseFloat(newFuel), vehicle.fuel_capacity);
-    GetVehicle(vehicle._id).then((data) => {
-      setVehicle(data);
-      let fuel_log = data.fuel_log;
-      fuel_log.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setFuelLog(fuel_log);
-      setFuel(data.fuel, data.fuel_capacity);
-    });
-  }
-
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
@@ -96,11 +69,11 @@ export default function Home() {
       <main className={styles.main}>
         <Header />
         <SideBar />
-        <main id="main" className="main col-10">
+        <main id="main" className="main col-10 opac-80 mt-0">
+          <h1>Fuel History</h1>
           <div className="row col-12">
             <div className="row">
-              <div className="col">
-                <h1>Fuel History</h1>
+              <div className="col-8 m-1 card">
                 <table className="table">
                   <thead>
                     <tr>
@@ -117,7 +90,7 @@ export default function Home() {
                             {fuel.date &&
                               dateFormat(
                                 fuel.date,
-                                "dS mmmm, yyyy - dddd h:MM:ss TT"
+                                "dS mmmm, yyyy - DDDD h:MM TT"
                               )}
                           </th>
                           <td>{fuel.current_fuel} L</td>
@@ -132,7 +105,7 @@ export default function Home() {
                             {fuel.fuel_diff >= 0 && (
                               <>
                                 <span style={{ color: "green" }}>
-                                  {fuel.fuel_diff} L
+                                  +{fuel.fuel_diff} L
                                 </span>
                               </>
                             )}
@@ -143,51 +116,27 @@ export default function Home() {
                   </tbody>
                 </table>
               </div>
-              <div className="col" style={{ borderLeft: "1px solid black" }}>
-                <div className="row p-3">
+              <div className="col-3 card p-3 m-1" style={{ maxHeight: "80vh" }}>
+                <div className="row p-3 d-flex justify-content-center">
+                  <Button
+                    className="btn-primary w-100"
+                    onClick={() => {
+                      router.back();
+                    }}
+                  >
+                    BACK
+                  </Button>
                   <div
-                    className={`${vehicle_styles.fuel_box} col-4 p-2 m-1 fuel-box text-center`}
-                    style={{ height: "400px" }}
+                    className={`${vehicle_styles.fuel_box}  p-3 m-5 fuel-box text-center`}
+                    style={{ height: "50vh", width: "80%" }}
                   >
                     <div className={vehicle_styles.fuel_text}>
                       Fuel
-                      <p id="fuel_percentage">50%</p>
+                      <p id="fuel_percentage">0%</p>
                       <p id="fuel_details"></p>
                     </div>
                     <div className={vehicle_styles.fuel_empty}> </div>
                     <div className={vehicle_styles.fuel_percent}> </div>
-                  </div>
-                  <div className="mb-3 col-7 text-center">
-                    <div>
-                      <input
-                        onChange={(e) => {
-                          handleFuelChange(e);
-                        }}
-                        id="new_fuel"
-                        type="number"
-                        name="name"
-                        className="form-control"
-                      />
-                    </div>
-                    <br />
-                    <Button className="btn-success w-100" onClick={updateFuel}>
-                      UPDATE FUEL
-                    </Button>
-                    {fuelLimitError && (
-                      <div className="text-center" style={{ color: "red" }}>
-                        Fuel Limit : {vehicle.fuel_capacity} L
-                      </div>
-                    )}
-                    <br />
-                    <br/>
-                    <Link href={"/admin/vehicles/vehicle/" + vehicle._id}>
-                      <Button
-                        className="btn-primary w-100"
-                        onClick={updateFuel}
-                      >
-                        BACK TO VEHICLE
-                      </Button>
-                    </Link>
                   </div>
                 </div>
               </div>

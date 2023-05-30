@@ -55,14 +55,24 @@ const Post = () => {
                           "http://localhost:3000/images/profilepic/" +
                           driver.profile_pic
                         }
-                        style={{ maxWidth: "14vw", maxHeight: "14vw" }}
+                        style={{
+                          maxWidth: "14vw",
+                          maxHeight: "14vw",
+                          WebkitFilter: "drop-shadow(1px 1px 1px #222)",
+                          filter: "drop-shadow(1px 1px 5px #222)",
+                        }}
                         alt="Avatar"
                       />
                     )}
                     {!driver.profile_pic && (
                       <img
                         src={"/assets/img/profile1.png"}
-                        style={{ maxWidth: "14vw", maxHeight: "14vw" }}
+                        style={{
+                          maxWidth: "14vw",
+                          maxHeight: "14vw",
+                          WebkitFilter: "drop-shadow(1px 1px 1px #222)",
+                          filter: "drop-shadow(1px 1px 5px #222)",
+                        }}
                         alt="Avatar"
                       />
                     )}
@@ -109,6 +119,15 @@ const Post = () => {
               className="col-lg-3 card p-4 m-1 opac-80"
               style={{ maxHeight: "20vh" }}
             >
+              <Button
+                className="w-100 mb-1 btn-dark"
+                onClick={() => {
+                  router.back();
+                }}
+              >
+                BACK
+              </Button>
+
               <Link href={"/admin/drivers/add"}>
                 <Button className="w-100 mb-1 btn-warning">Add Drivers</Button>
               </Link>

@@ -80,6 +80,7 @@ export default function Home() {
       data: newOil,
     });
     if (res.data.status == 200) {
+      console.log(data);
       Router.push("/admin/fuel/balance");
     }
   }
@@ -302,10 +303,10 @@ export default function Home() {
                       <div className="col-sm-10">
                         <button
                           type="submit"
-                          className="btn btn-primary"
-                          style={{ float: "right" }}
+                          className="btn btn-success"
+                          style={{ float: "right", width: "80%" }}
                         >
-                          Allot Fuel
+                          + Allot Fuel
                         </button>
                       </div>
                     </div>

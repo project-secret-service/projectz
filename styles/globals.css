@@ -164,15 +164,24 @@ a {
   margin: 0.3rem;
 }
 
-
 .josefin-sans {
   font-family: "Josefin Sans", sans-serif;
 }
 
-td,th{
+td,
+th {
   vertical-align: middle;
 }
 
-#home-login-button:hover{
+#home-login-button:hover {
   box-shadow: 2px 2px 4px 2px red;
+}
+
+.login_main {
+  background: rgb(238, 174, 202);
+  background: radial-gradient(
+    circle,
+    rgba(238, 174, 202, 1) 12%,
+    rgba(139, 217, 240, 0.6278886554621849) 99%
+  );
 }

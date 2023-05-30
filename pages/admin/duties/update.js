@@ -61,7 +61,6 @@ export default function Home() {
     event.preventDefault();
     var data = {
       in_datetime: event.target.in_datetime.value,
-      km_run: event.target.km_run.value,
       fuel: event.target.fuel.value,
       meter_count: event.target.meter_count.value,
       mission_ended: true,
@@ -139,22 +138,6 @@ export default function Home() {
                         defaultValue={moment().format("YYYY-MM-DDTHH:mm")}
                         type="datetime-local"
                         name="in_datetime"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Km Run :
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="number"
-                        name="km_run"
                         className="form-control"
                       />
                     </div>

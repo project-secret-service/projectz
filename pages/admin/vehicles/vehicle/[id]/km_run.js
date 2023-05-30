@@ -7,10 +7,8 @@ import Scripts from "@/pages/components/Scripts";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Head from "@/pages/components/Head";
-import vehicle_styles from "@/styles/Vehicles.module.css";
 import { Button, Col, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
-import Link from "next/link";
 
 async function GetVehicle(id) {
   const res = await axios({
@@ -24,36 +22,8 @@ async function GetVehicle(id) {
 export default function Home() {
   const [vehicle, setVehicle] = useState({});
   const [odometerLog, setOdometerLog] = useState([]);
-  const [kmLimitError, setKmLimitError] = useState(false);
 
   const router = useRouter();
-  function handleKmChange({ target: { name, value } }) {
-    if (parseFloat(value) < vehicle.total_kilo_meter) {
-      setKmLimitError(true);
-    } else {
-      setKmLimitError(false);
-    }
-  }
-
-  async function updateKmRun() {
-    let newKM = document.getElementById("km_run").value;
-    if (newKM >= vehicle.total_kilo_meter) {
-      const res = await axios({
-        url: "http://localhost:3000/vehicles/" + vehicle._id + "/update_km_run",
-        method: "POST",
-        withCredentials: true,
-        data: {
-          km: newKM,
-        },
-      });
-    }
-    GetVehicle(vehicle._id).then((data) => {
-      setVehicle(data);
-      let odometer_log = data.odometer_log;
-      odometer_log.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setOdometerLog(odometer_log);
-    });
-  }
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -72,11 +42,11 @@ export default function Home() {
       <main className={styles.main}>
         <Header />
         <SideBar />
-        <main id="main" className="main col-10">
+        <main id="main" className="main col-10 mt-0 opac-80">
+          <h1 className="josefin-sans">Odometer History</h1>
           <div className="row col-12">
             <div className="row">
-              <div className="col">
-                <h1>Odometer History</h1>
+              <div className="col-8 card m-1">
                 <table className="table">
                   <thead>
                     <tr>
@@ -93,7 +63,7 @@ export default function Home() {
                             {km_run.date &&
                               dateFormat(
                                 km_run.date,
-                                "dS mmmm, yyyy - dddd h:MM:ss TT"
+                                "dS mmmm, yyyy - DDDD h:MM TT"
                               )}
                           </th>
                           <td>{km_run.km_run} km</td>
@@ -101,7 +71,7 @@ export default function Home() {
                             {km_run.km_diff >= 0 && (
                               <>
                                 <span style={{ color: "green" }}>
-                                  {km_run.km_diff} Km
+                                  +{km_run.km_diff} Km
                                 </span>
                               </>
                             )}
@@ -112,37 +82,15 @@ export default function Home() {
                   </tbody>
                 </table>
               </div>
-              <div className="col" style={{ borderLeft: "1px solid black" }}>
-                <div className="mb-3 col-7 text-center">
-                  <div>
-                    <input
-                      defaultValue={vehicle.total_kilo_meter}
-                      onChange={(e) => {
-                        handleKmChange(e);
-                      }}
-                      id="km_run"
-                      type="number"
-                      name="name"
-                      className="form-control text-center"
-                    />
-                  </div>
-                  <br />
-                  <Button className="btn-success w-100" onClick={updateKmRun}>
-                    UPDATE KM
-                  </Button>
-                  {kmLimitError && (
-                    <div className="text-center" style={{ color: "red" }}>
-                      Cannot Be Less Than : {vehicle.total_kilo_meter} Km
-                    </div>
-                  )}
-                  <br />
-                  <br />
-                  <Link href={"/admin/vehicles/vehicle/" + vehicle._id}>
-                    <Button className="btn-primary w-100">
-                      BACK TO VEHICLE
-                    </Button>
-                  </Link>
-                </div>
+              <div className="col-3 m-1 card p-3" style={{ maxHeight: "40vh" }}>
+                <Button
+                  className="btn-primary w-100"
+                  onClick={() => {
+                    router.back();
+                  }}
+                >
+                  BACK
+                </Button>
               </div>
             </div>
           </div>

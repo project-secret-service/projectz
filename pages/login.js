@@ -2,6 +2,7 @@ import axios from "axios";
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Router from "next/router";
+import { useEffect } from "react";
 
 export default function Login() {
   async function UserLogin(event) {
@@ -23,7 +24,19 @@ export default function Login() {
       alert("Wrong Username or Password");
     }
   }
-
+  useEffect(() => {
+    async function checkLogin() {
+      const res = await axios({
+        method: "POST",
+        url: "http://localhost:3000/checklogin",
+        withCredentials: true,
+      });
+      if (res.data.status === 200) {
+        Router.push("/admin/");
+      }
+    }
+    checkLogin();
+  });
   return (
     <>
       <Head>
@@ -37,9 +50,15 @@ export default function Login() {
           height: "100vh",
           width: "100vw",
         }}
+        className="opac-80"
       >
         <div className={styles.navbar}>
-          <span className={styles.navbar_title}>
+          <span
+            className={styles.navbar_title}
+            style={{
+              textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+            }}
+          >
             Fleet
             <span style={{ color: "red" }}>Management</span>
             System
@@ -49,12 +68,27 @@ export default function Login() {
           </span>
         </div>
 
-        <div className={styles.middle}>
-          <div className={styles.form}>
+        <div className={`${styles.middle} login_main`}>
+          <div
+            className={styles.form}
+            style={{ opacity: 1, backgroundColor: "white", opacity: 0.8 }}
+          >
             <form onSubmit={UserLogin}>
               <div className={styles.form_inputs}>
+                <div className="text-center">
+                  <h1
+                    className="josefin-sans"
+                    style={{
+                      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+                    }}
+                  >
+                    CRPF Login
+                  </h1>
+                  <hr />
+                  <br />
+                </div>
                 <div>
-                  <span className={styles.input_label}>Username</span>
+                  <span className={styles.input_label}>Email / Username</span>
                   <br></br>
                   <input
                     type="text"
@@ -76,18 +110,14 @@ export default function Login() {
                     style={{
                       float: "right",
                       color: "blue",
+                      marginTop: "1rem",
                     }}
                   >
                     <u>Forgot Password ?</u>
                   </span>
                 </div>
-
-                <div style={{ marginTop: "2rem" }}>
-                  <input type="checkbox" />
-                  Remember me
-                </div>
               </div>
-              <div style={{ marginTop: "2rem" }}>
+              <div style={{ marginTop: "4rem" }}>
                 <button className={styles.login_button} type="submit">
                   LOGIN
                 </button>
@@ -96,7 +126,14 @@ export default function Login() {
           </div>
         </div>
 
-        <div className={styles.footer}>Copyright 2023</div>
+        <div
+          className={`${styles.footer} opac-80`}
+          style={{
+            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          Copyright 2023
+        </div>
       </main>
     </>
   );
