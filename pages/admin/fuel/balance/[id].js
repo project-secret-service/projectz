@@ -9,6 +9,7 @@ import ReactToPrint from "react-to-print";
 import dateFormat from "dateformat";
 import { Row, Col, Button, Modal } from "react-bootstrap";
 import Link from "next/link";
+import Scripts from "@/pages/components/Scripts";
 
 async function getOilBalance(id) {
   const res = await axios({
@@ -32,8 +33,10 @@ const Post = () => {
   const router = useRouter();
   const [oilbalances, setOilBalances] = useState([]);
   const [oil, setOil] = useState({});
+  const searchFilterRef = useRef();
+  const [searchResultList, setSearchResultList] = useState([]);
+  const [search, setSearch] = useState(false);
 
-  const { id } = router.query;
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
@@ -44,6 +47,69 @@ const Post = () => {
       setOil(data);
     });
   }, [router.isReady]);
+
+  function handleSearchFilter({ target: { name, value } }) {
+    let searchFilter = value;
+    if (searchFilter != "issued" && searchFilter != "recieved") {
+      setSearch(false);
+      return;
+    }
+    setSearch(true);
+    console.log(searchFilter);
+    if (searchFilter == "issued") {
+      setSearchResultList(
+        oilbalances.filter((oilbalance) => oilbalance.issued)
+      );
+    }
+    if (searchFilter == "recieved") {
+      setSearchResultList(
+        oilbalances.filter((oilbalance) => oilbalance.recieved)
+      );
+    }
+  }
+
+  function handleSearch({ target: { name, value } }) {
+    let search = value;
+    let searchFilter = searchFilterRef.current.value;
+    if (search == "") {
+      setSearch(false);
+      return;
+    }
+    setSearch(true);
+    if (searchFilter == "voucher_no") {
+      setSearchResultList(
+        oilbalances.filter(
+          (oilbalance) =>
+            (oilbalance.recieve_voucher_no &&
+              oilbalance.recieve_voucher_no
+                .toLowerCase()
+                .includes(search.toLowerCase())) ||
+            (oilbalance.issue_voucher_no &&
+              oilbalance.issue_voucher_no
+                .toLowerCase()
+                .includes(search.toLowerCase()))
+        )
+      );
+    }
+    if (searchFilter == "type") {
+      setSearchResultList(
+        oilbalances.filter(
+          (oilbalance) =>
+            oilbalance.type.type &&
+            oilbalance.type.type.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
+    if (searchFilter == "date") {
+      setSearchResultList(
+        oilbalances.filter(
+          (oilbalance) =>
+            oilbalance.date &&
+            dateFormat(oilbalance.date, "dS mmmm, yyyy - dddd").includes(search)
+        )
+      );
+    }
+  }
 
   return (
     <>
@@ -71,59 +137,118 @@ const Post = () => {
                   </tr>
                 </thead>
                 <tbody style={{ cursor: "pointer" }}>
-                  {oilbalances.map((oilbalance, index) => {
-                    return (
-                      <tr
-                        key={index + 1}
-                        onClick={() => {
-                          router.push("/admin/fuel/voucher/" + oilbalance._id);
-                        }}
-                      >
-                        {oilbalance.recieved && (
-                          <>
-                            <th>{oilbalance.recieve_voucher_no}</th>
-                            <td>{oilbalance.current_balance}</td>
-                            <td>
-                              <span style={{ color: "green" }}>
-                                +{oilbalance.recieved_amount}
-                              </span>
-                            </td>
-                            <td>
-                              {oilbalance.date &&
-                                dateFormat(
-                                  oilbalance.date,
-                                  " dS mmmm, yyyy - dddd"
-                                )}
-                            </td>
-                            <td>
-                              <span style={{ color: "green" }}>RECIEVED</span>
-                            </td>
-                          </>
-                        )}
-                        {oilbalance.issued && (
-                          <>
-                            <th>{oilbalance.issue_voucher_no}</th>
-                            <td>{oilbalance.current_balance}</td>
-                            <td>
-                              <span style={{ color: "red" }}>
-                                - {oilbalance.issued_amount}
-                              </span>
-                            </td>
-                            <td>
-                              {oilbalance.date &&
-                                dateFormat(
-                                  oilbalance.date,
-                                  " dS mmmm, yyyy - dddd"
-                                )}
-                            </td>
-                            <td>
-                              <span style={{ color: "red" }}>ISSUED</span>
-                            </td>
-                          </>
-                        )}
-                      </tr>
-                    );
-                  })}
+                  {!search &&
+                    oilbalances.map((oilbalance, index) => {
+                      return (
+                        <tr
+                          key={index + 1}
+                          onClick={() => {
+                            router.push(
+                              "/admin/fuel/voucher/" + oilbalance._id
+                            );
+                          }}
+                        >
+                          {oilbalance.recieved && (
+                            <>
+                              <th>{oilbalance.recieve_voucher_no}</th>
+                              <td>{oilbalance.current_balance}</td>
+                              <td>
+                                <span style={{ color: "green" }}>
+                                  +{oilbalance.recieved_amount}
+                                </span>
+                              </td>
+                              <td>
+                                {oilbalance.date &&
+                                  dateFormat(
+                                    oilbalance.date,
+                                    " dS mmmm, yyyy - dddd"
+                                  )}
+                              </td>
+                              <td>
+                                <span style={{ color: "green" }}>RECIEVED</span>
+                              </td>
+                            </>
+                          )}
+                          {oilbalance.issued && (
+                            <>
+                              <th>{oilbalance.issue_voucher_no}</th>
+                              <td>{oilbalance.current_balance}</td>
+                              <td>
+                                <span style={{ color: "red" }}>
+                                  - {oilbalance.issued_amount}
+                                </span>
+                              </td>
+                              <td>
+                                {oilbalance.date &&
+                                  dateFormat(
+                                    oilbalance.date,
+                                    " dS mmmm, yyyy - dddd"
+                                  )}
+                              </td>
+                              <td>
+                                <span style={{ color: "red" }}>ISSUED</span>
+                              </td>
+                            </>
+                          )}
+                        </tr>
+                      );
+                    })}
+                  {search &&
+                    searchResultList.map((oilbalance, index) => {
+                      return (
+                        <tr
+                          key={index + 1}
+                          onClick={() => {
+                            router.push(
+                              "/admin/fuel/voucher/" + oilbalance._id
+                            );
+                          }}
+                        >
+                          {oilbalance.recieved && (
+                            <>
+                              <th>{oilbalance.recieve_voucher_no}</th>
+                              <td>{oilbalance.current_balance}</td>
+                              <td>
+                                <span style={{ color: "green" }}>
+                                  +{oilbalance.recieved_amount}
+                                </span>
+                              </td>
+                              <td>
+                                {oilbalance.date &&
+                                  dateFormat(
+                                    oilbalance.date,
+                                    " dS mmmm, yyyy - dddd"
+                                  )}
+                              </td>
+                              <td>
+                                <span style={{ color: "green" }}>RECIEVED</span>
+                              </td>
+                            </>
+                          )}
+                          {oilbalance.issued && (
+                            <>
+                              <th>{oilbalance.issue_voucher_no}</th>
+                              <td>{oilbalance.current_balance}</td>
+                              <td>
+                                <span style={{ color: "red" }}>
+                                  - {oilbalance.issued_amount}
+                                </span>
+                              </td>
+                              <td>
+                                {oilbalance.date &&
+                                  dateFormat(
+                                    oilbalance.date,
+                                    " dS mmmm, yyyy - dddd"
+                                  )}
+                              </td>
+                              <td>
+                                <span style={{ color: "red" }}>ISSUED</span>
+                              </td>
+                            </>
+                          )}
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
             </div>
@@ -136,6 +261,31 @@ const Post = () => {
                   </span>
                 </h1>
               </div>
+
+              <div className="row p-3">
+                <input
+                  onChange={handleSearch}
+                  name="search"
+                  type="text"
+                  className="form-control"
+                  placeholder="Search"
+                ></input>
+              </div>
+
+              <select
+                className="form-select text-center"
+                ref={searchFilterRef}
+                aria-label="Default select example"
+                onChange={handleSearchFilter}
+                defaultValue={"voucher"}
+              >
+                <option value="voucher_no">Voucher</option>
+                <option value="date">Date</option>
+                <option value="issued">Issued</option>
+                <option value="recieved">Recieved</option>
+              </select>
+
+              <hr></hr>
               <Link href={"/admin/fuel/add"}>
                 <Button
                   onClick={() => {
@@ -160,6 +310,7 @@ const Post = () => {
           </Row>
         </main>
       </main>
+      <Scripts />
     </>
   );
 };

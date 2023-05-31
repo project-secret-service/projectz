@@ -4,7 +4,7 @@ import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import axios from "axios";
 import Router from "next/router";
@@ -22,11 +22,54 @@ async function GetUsers() {
 
 export default function Home() {
   const [users, setUsers] = useState([]);
+  const searchFilterRef = useRef();
+  const [searchResultList, setSearchResultList] = useState([]);
+  const [search, setSearch] = useState(false);
+
   useEffect(() => {
     GetUsers().then((data) => {
       setUsers(data);
     });
   }, []);
+
+  function handleSearchFilter({ target: { name, value } }) {
+    let searchFilter = value;
+  }
+
+  function handleSearch({ target: { name, value } }) {
+    let search = value;
+    let searchFilter = searchFilterRef.current.value;
+    if (search == "") {
+      setSearch(false);
+      return;
+    }
+    setSearch(true);
+    if (searchFilter == "name") {
+      setSearchResultList(
+        users.filter(
+          (user) =>
+            user.name && user.name.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
+    if (searchFilter == "registration_no") {
+      setSearchResultList(
+        users.filter(
+          (user) =>
+            user.registration_no &&
+            user.registration_no.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
+    if (searchFilter == "role") {
+      setSearchResultList(
+        users.filter(
+          (user) =>
+            user.role && user.role.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
+  }
 
   function OpenLink(link) {
     Router.push("/admin/users/" + link);
@@ -52,46 +95,83 @@ export default function Home() {
                       <tr>
                         <th scope="col">User</th>
                         <th scope="col">Name</th>
-                        <th scope="col">License No</th>
+                        <th scope="col">Reg No</th>
                         <th scope="col">Role</th>
                       </tr>
                     </thead>
                     <tbody style={{ cursor: "pointer" }}>
-                      {users&&users.map((user, index) => {
-                        return (
-                          <tr
-                            key={index + 1}
-                            onClick={() => OpenLink(user._id)}
-                          >
-                            <td>
-                              {user.profile_pic && (
-                                <img
-                                  src={
-                                    "http://localhost:3000/images/profilepic/" +
-                                    user.profile_pic
-                                  }
-                                  style={{
-                                    width: "4rem",
-                                  }}
-                                  alt="Avatar"
-                                />
-                              )}
-                              {!user.profile_pic && (
-                                <img
-                                  src={"/assets/img/profile1.png"}
-                                  style={{
-                                    width: "4rem",
-                                  }}
-                                  alt="Avatar"
-                                />
-                              )}
-                            </td>
-                            <th>{user.name}</th>
-                            <td>{user.registration_no}</td>
-                            <td>{user.role}</td>
-                          </tr>
-                        );
-                      })}
+                      {!search &&
+                        users.map((user, index) => {
+                          return (
+                            <tr
+                              key={index + 1}
+                              onClick={() => OpenLink(user._id)}
+                            >
+                              <td>
+                                {user.profile_pic && (
+                                  <img
+                                    src={
+                                      "http://localhost:3000/images/profilepic/" +
+                                      user.profile_pic
+                                    }
+                                    style={{
+                                      width: "4rem",
+                                    }}
+                                    alt="Avatar"
+                                  />
+                                )}
+                                {!user.profile_pic && (
+                                  <img
+                                    src={"/assets/img/profile1.png"}
+                                    style={{
+                                      width: "4rem",
+                                    }}
+                                    alt="Avatar"
+                                  />
+                                )}
+                              </td>
+                              <th>{user.name}</th>
+                              <td>{user.registration_no}</td>
+                              <td>{user.role}</td>
+                            </tr>
+                          );
+                        })}
+                      {search &&
+                        searchResultList.map((user, index) => {
+                          return (
+                            <tr
+                              key={index + 1}
+                              onClick={() => OpenLink(user._id)}
+                            >
+                              <td>
+                                {user.profile_pic && (
+                                  <img
+                                    src={
+                                      "http://localhost:3000/images/profilepic/" +
+                                      user.profile_pic
+                                    }
+                                    style={{
+                                      width: "4rem",
+                                    }}
+                                    alt="Avatar"
+                                  />
+                                )}
+                                {!user.profile_pic && (
+                                  <img
+                                    src={"/assets/img/profile1.png"}
+                                    style={{
+                                      width: "4rem",
+                                    }}
+                                    alt="Avatar"
+                                  />
+                                )}
+                              </td>
+                              <th>{user.name}</th>
+                              <td>{user.registration_no}</td>
+                              <td>{user.role}</td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </div>
@@ -99,15 +179,35 @@ export default function Home() {
             </div>
             <div
               className="col-lg-3 card p-4 m-1 opac-80"
-              style={{ maxHeight: "20vh" }}
+              style={{ maxHeight: "50vh" }}
             >
+              <div className="row p-3">
+                <input
+                  onChange={handleSearch}
+                  name="search"
+                  type="text"
+                  className="form-control"
+                  placeholder="Search"
+                ></input>
+              </div>
+
+              <select
+                className="form-select text-center"
+                ref={searchFilterRef}
+                aria-label="Default select example"
+                onChange={handleSearchFilter}
+                defaultValue={"name"}
+              >
+                <option value="name">Name of User</option>
+                <option value="registration_no">Registration No</option>
+                <option value="role">Role</option>
+              </select>
+
+              <hr></hr>
+              
               <Link href={"/admin/users/add"}>
                 <Button className="w-100 mb-1 btn-warning">Add Users</Button>
               </Link>
-
-              {/* <Link href={"/admin/users/available"}>
-                <Button className="w-100 mb-1 btn-dark">Available Users</Button>
-              </Link> */}
             </div>
           </Row>
         </main>

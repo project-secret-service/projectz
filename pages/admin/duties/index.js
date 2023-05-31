@@ -4,7 +4,7 @@ import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Router from "next/router";
 import Link from "next/link";
@@ -34,14 +34,124 @@ function call() {
 
 export default function Home() {
   const [duties, setDuties] = useState([]);
+  const [searchResultList, setSearchResultList] = useState([]);
+  const [search, setSearch] = useState(false);
+
+  const searchFilterRef = useRef(null);
+
   useEffect(() => {
     GetDuties().then((data) => {
       setDuties(data);
     });
   }, []);
+
   function OpenLink(link) {
     Router.push("/admin/duties/" + link);
   }
+
+  function handleSearchFilter({ target: { name, value } }) {
+    if (
+      searchFilterRef.current.value !== "active" &&
+      searchFilterRef.current.value !== "completed"
+    ) {
+      setSearch(false);
+      return;
+    }
+    if (searchFilterRef.current.value === "active") {
+      setSearch(true);
+      let results = new Set();
+      duties.forEach((duty) => {
+        if (duty.mission_ended === false) {
+          results.add(duty);
+        }
+      });
+      setSearchResultList(Array.from(results));
+      return;
+    }
+
+    if (searchFilterRef.current.value === "completed") {
+      setSearch(true);
+      let results = new Set();
+      duties.forEach((duty) => {
+        if (duty.mission_ended === true) {
+          results.add(duty);
+        }
+      });
+
+      setSearchResultList(Array.from(results));
+      return;
+    }
+  }
+
+  function handleSearch({ target: { name, value } }) {
+    let search = value;
+    if (searchFilterRef.current.value === "active") {
+      setSearch(true);
+      let results = new Set();
+      duties.forEach((duty) => {
+        if (duty.mission_ended === false) {
+          results.add(duty);
+        }
+      });
+      setSearchResultList(Array.from(results));
+      return;
+    }
+    if (
+      search === "" &&
+      searchFilterRef.current.value != "active" &&
+      searchFilterRef.current.value != "completed"
+    ) {
+      setSearch(false);
+      return;
+    }
+    setSearch(true);
+    let results = new Set();
+    duties.forEach((duty) => {
+      let date = dateFormat(duty.date, "dS mmm, yyyy");
+
+      if (
+        searchFilterRef.current.value === "vehicle_name" &&
+        duty.vehicle.name.toLowerCase().includes(search.toLowerCase())
+      ) {
+        results.add(duty);
+      }
+      if (
+        searchFilterRef.current.value === "registration_no" &&
+        duty.vehicle.registration_no
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      ) {
+        results.add(duty);
+      }
+      if (
+        searchFilterRef.current.value === "indent_no" &&
+        duty.indent_no.toLowerCase().includes(search.toLowerCase())
+      ) {
+        results.add(duty);
+      }
+      if (
+        searchFilterRef.current.value === "date" &&
+        date.toLowerCase().includes(search.toLowerCase())
+      ) {
+        results.add(duty);
+      }
+      if (searchFilterRef.current.value === "active") {
+        if (duty.mission_ended === false) {
+          setSearch(true);
+          results.add(duty);
+        }
+      }
+
+      if (searchFilterRef.current.value === "completed") {
+        if (duty.mission_ended === true) {
+          results.add(duty);
+          setSearch(true);
+        }
+      }
+    });
+    setSearchResultList(Array.from(results));
+  }
+
   return (
     <>
       <Head>
@@ -71,54 +181,110 @@ export default function Home() {
                       </tr>
                     </thead>
                     <tbody style={{ cursor: "pointer" }}>
-                      {duties.map((duty, index) => {
-                        var vv = new Date(duty.date);
-                        var mission = duty.mission_ended;
-                        let color = "#D0F5BE";
-                        let textColor = "#0C134F";
-                        var v1;
-                        if (mission) {
-                          v1 = "Completed";
-                          color = "#FBFFDC";
-                          textColor = "green";
-                        } else {
-                          v1 = "Active";
-                        }
-                        return (
-                          <tr
-                            key={index + 1}
-                            onClick={() => OpenLink(duty._id)}
-                            style={{ backgroundColor: color }}
-                          >
-                            <th className="col-1">{duty.indent_no}</th>
-                            <td scope="row">
-                              {duty.out_datetime &&
-                                dateFormat(duty.out_datetime, "dS mmmm, yyyy")}
-                            </td>
-                            <td>{duty.vehicle && duty.vehicle.name}</td>
-                            <td>
-                              {duty.vehicle && duty.vehicle.registration_no}
-                            </td>
-                            <td>
-                              {duty.out_datetime &&
-                                dateFormat(duty.out_datetime, " h:MM TT")}
-                            </td>
+                      {!search &&
+                        duties.map((duty, index) => {
+                          var vv = new Date(duty.date);
+                          var mission = duty.mission_ended;
+                          let color = "#D0F5BE";
+                          let textColor = "#0C134F";
+                          var v1;
+                          if (mission) {
+                            v1 = "Completed";
+                            color = "#FBFFDC";
+                            textColor = "green";
+                          } else {
+                            v1 = "Active";
+                          }
+                          return (
+                            <tr
+                              key={index + 1}
+                              onClick={() => OpenLink(duty._id)}
+                              style={{ backgroundColor: color }}
+                            >
+                              <th className="col-1">{duty.indent_no}</th>
+                              <td scope="row">
+                                {duty.out_datetime &&
+                                  dateFormat(
+                                    duty.out_datetime,
+                                    "dS mmmm, yyyy"
+                                  )}
+                              </td>
+                              <td>{duty.vehicle && duty.vehicle.name}</td>
+                              <td>
+                                {duty.vehicle && duty.vehicle.registration_no}
+                              </td>
+                              <td>
+                                {duty.out_datetime &&
+                                  dateFormat(duty.out_datetime, " h:MM TT")}
+                              </td>
 
-                            <td style={{ color: textColor }}>
-                              {v1 === "Active" && (
-                                <>
-                                  <span className="blinking">Active</span>
-                                </>
-                              )}
-                              {v1 === "Completed" && (
-                                <>
-                                  <span>Completed</span>
-                                </>
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      })}
+                              <td style={{ color: textColor }}>
+                                {v1 === "Active" && (
+                                  <>
+                                    <span className="blinking">Active</span>
+                                  </>
+                                )}
+                                {v1 === "Completed" && (
+                                  <>
+                                    <span>Completed</span>
+                                  </>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      {search &&
+                        searchResultList.map((duty, index) => {
+                          var vv = new Date(duty.date);
+                          var mission = duty.mission_ended;
+                          let color = "#D0F5BE";
+                          let textColor = "#0C134F";
+                          var v1;
+                          if (mission) {
+                            v1 = "Completed";
+                            color = "#FBFFDC";
+                            textColor = "green";
+                          } else {
+                            v1 = "Active";
+                          }
+                          return (
+                            <tr
+                              key={index + 1}
+                              onClick={() => OpenLink(duty._id)}
+                              style={{ backgroundColor: color }}
+                            >
+                              <th className="col-1">{duty.indent_no}</th>
+                              <td scope="row">
+                                {duty.out_datetime &&
+                                  dateFormat(
+                                    duty.out_datetime,
+                                    "dS mmmm, yyyy"
+                                  )}
+                              </td>
+                              <td>{duty.vehicle && duty.vehicle.name}</td>
+                              <td>
+                                {duty.vehicle && duty.vehicle.registration_no}
+                              </td>
+                              <td>
+                                {duty.out_datetime &&
+                                  dateFormat(duty.out_datetime, " h:MM TT")}
+                              </td>
+
+                              <td style={{ color: textColor }}>
+                                {v1 === "Active" && (
+                                  <>
+                                    <span className="blinking">Active</span>
+                                  </>
+                                )}
+                                {v1 === "Completed" && (
+                                  <>
+                                    <span>Completed</span>
+                                  </>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                   </table>
                 </div>
@@ -126,8 +292,33 @@ export default function Home() {
             </div>
             <div
               className="col-lg-3 card p-4 m-1 opac-80"
-              style={{ maxHeight: "50vh",opacity:"0.6" }}
+              style={{ maxHeight: "50vh", opacity: "0.6" }}
             >
+              <div className="row p-3">
+                <input
+                  onChange={handleSearch}
+                  name="search"
+                  type="text"
+                  className="form-control"
+                  placeholder="Search"
+                ></input>
+              </div>
+
+              <select
+                className="form-select text-center"
+                ref={searchFilterRef}
+                aria-label="Default select example"
+                onChange={handleSearchFilter}
+                defaultValue={"vehicle_name"}
+              >
+                <option value="vehicle_name">Vehicle Name</option>
+                <option value="registration_no">Vehicle No</option>
+                <option value="date">Date</option>
+                <option value="indent_no">Indent No</option>
+                <option value="completed">Completed</option>
+                <option value="active">Active</option>
+              </select>
+              <hr></hr>
               <Button
                 onClick={() => {
                   Router.back();
@@ -141,7 +332,9 @@ export default function Home() {
                 <Button className="w-100 mb-1 btn-primary">Add Duties</Button>
               </Link>
               <Link href={"/admin/duties/update"}>
-                <Button className="w-100 mb-1 btn-warning">Update Duties</Button>
+                <Button className="w-100 mb-1 btn-warning">
+                  Update Duties
+                </Button>
               </Link>
               <Link href={"/admin/drivers/available"}>
                 <Button className="w-100 mb-1 btn-light">

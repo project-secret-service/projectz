@@ -11,7 +11,6 @@ import { Button, Row } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import dateFormat from "dateformat";
 import router from "next/router";
-import moment from "moment";
 
 async function GetOrders() {
   const res = await axios({
@@ -50,6 +49,14 @@ export default function Home() {
     mergedData.sort((a, b) => b.voucher_no.localeCompare(a.voucher_no));
     mergedData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
+    mergedData.forEach((data) => {
+      data.itemString = "";
+      data.items.forEach((item) => {
+        data.itemString += item.item.name + ", ";
+      });
+      data.itemString = data.itemString.slice(0, -2);
+    });
+
     setInventoryHistory(mergedData);
     console.log(mergedData);
   }
@@ -66,12 +73,17 @@ export default function Home() {
     let results = new Set();
     inventoryHistory.forEach((data) => {
       let date = dateFormat(data.date, "dS mmmm, yyyy - DDDD");
+
       if (data.voucher_no.toLowerCase().includes(search.toLowerCase())) {
         results.add(data);
       }
       if (data.date && date.toLowerCase().includes(search.toLowerCase())) {
         results.add(data);
       }
+      if (data.itemString.toLowerCase().includes(search.toLowerCase())) {
+        results.add(data);
+      }
+
       if (data.voucher_no.split("/")[0] === "RV") {
         if ("recieve".includes(search.toLowerCase())) {
           results.add(data);
@@ -110,6 +122,7 @@ export default function Home() {
                   <tr>
                     <th scope="col">Voucher No</th>
                     <th scope="col">Date</th>
+                    <th scope="col">Items</th>
                     <th scope="col" style={{ textAlign: "center" }}>
                       Type
                     </th>
@@ -129,6 +142,7 @@ export default function Home() {
                           {data.date &&
                             dateFormat(data.date, "dS mmmm, yyyy - DDDD")}
                         </td>
+                        <td>{data.itemString}</td>
                         <td style={{ textAlign: "center" }}>
                           {data.voucher_no.split("/")[0] === "RV" && (
                             <span style={{ color: "green" }}>RECIEVE</span>
@@ -153,6 +167,7 @@ export default function Home() {
                           {data.date &&
                             dateFormat(data.date, "dS mmmm, yyyy - DDDD")}
                         </td>
+                        <td>{data.itemString}</td>
                         <td style={{ textAlign: "center" }}>
                           {data.voucher_no.split("/")[0] === "RV" && (
                             <span style={{ color: "green" }}>RECIEVE</span>

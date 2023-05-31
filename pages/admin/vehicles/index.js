@@ -4,7 +4,7 @@ import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Router from "next/router";
@@ -21,9 +21,9 @@ async function GetVehicles() {
 
 export default function Home() {
   const [vehicles, setVehicles] = useState([]);
-  const [updateOption, setupdateOption] = useState(false);
-  const [deleteOption, setdeleteOption] = useState(false);
-  const [deleteWarning, setDeleteWaring] = useState(false);
+  const searchFilterRef = useRef();
+  const [searchResultList, setSearchResultList] = useState([]);
+  const [search, setSearch] = useState(false);
 
   useEffect(() => {
     GetVehicles().then((data) => {
@@ -32,32 +32,52 @@ export default function Home() {
     });
   }, []);
 
-  function deleteVehicleWarning() {
-    if (deleteWarning == true) {
-      setupdateOption(false);
-    } else {
-      setupdateOption(true);
-      setdeleteOption(false);
+  function handleSearchFilter({ target: { name, value } }) {
+    let searchFilter = value;
+    if (searchFilter != "available" && searchFilter != "unavailable") {
+      setSearch(false);
+      return;
+    }
+    setSearch(true);
+    if (searchFilter == "available") {
+      setSearchResultList(vehicles.filter((vehicle) => vehicle.available));
+    }
+    if (searchFilter == "unavailable") {
+      setSearchResultList(vehicles.filter((vehicle) => !vehicle.available));
     }
   }
 
-  function toggleUpdate() {
-    if (updateOption == true) {
-      setupdateOption(false);
-    } else {
-      setupdateOption(true);
-      setdeleteOption(false);
+  function handleSearch({ target: { name, value } }) {
+    let search = value;
+    let searchFilter = searchFilterRef.current.value;
+    if (search == "") {
+      setSearch(false);
+      return;
+    }
+    setSearch(true);
+    if (searchFilter == "name") {
+      setSearchResultList(
+        vehicles.filter((vehicle) =>
+          vehicle.name.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
+    if (searchFilter == "registration_no") {
+      setSearchResultList(
+        vehicles.filter((vehicle) =>
+          vehicle.registration_no.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
+    if (searchFilter == "vehicle_type") {
+      setSearchResultList(
+        vehicles.filter((vehicle) =>
+          vehicle.vehicle_type.toLowerCase().includes(search.toLowerCase())
+        )
+      );
     }
   }
 
-  function toggleDelete() {
-    if (deleteOption == true) {
-      setdeleteOption(false);
-    } else {
-      setdeleteOption(true);
-      setupdateOption(false);
-    }
-  }
   function OpenLink(link) {
     Router.push("/admin/vehicles/vehicle/" + link);
   }
@@ -89,30 +109,82 @@ export default function Home() {
                   </tr>
                 </thead>
                 <tbody style={{ cursor: "pointer" }}>
-                  {vehicles.map((vehicle, index) => {
-                    return (
-                      <tr key={index + 1} onClick={() => OpenLink(vehicle._id)}>
-                        <th scope="row" className="col-1">
-                          {vehicle.vehicle_crp_no}{" "}
-                        </th>
-                        <td>{vehicle.name}</td>
-                        <td>{vehicle.registration_no}</td>
-                        <td>{vehicle.vehicle_type}</td>
-                        <td>
-                          {vehicle.available && (
-                            <span style={{ color: "green" }}>Available</span>
-                          )}
-                          {!vehicle.available && (
-                            <span style={{ color: "red" }}>On Duty</span>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {!search &&
+                    vehicles.map((vehicle, index) => {
+                      return (
+                        <tr
+                          key={index + 1}
+                          onClick={() => OpenLink(vehicle._id)}
+                        >
+                          <th scope="row" className="col-1">
+                            {vehicle.vehicle_crp_no}{" "}
+                          </th>
+                          <td>{vehicle.name}</td>
+                          <td>{vehicle.registration_no}</td>
+                          <td>{vehicle.vehicle_type}</td>
+                          <td>
+                            {vehicle.available && (
+                              <span style={{ color: "green" }}>Available</span>
+                            )}
+                            {!vehicle.available && (
+                              <span style={{ color: "red" }}>On Duty</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  {search &&
+                    searchResultList.map((vehicle, index) => {
+                      return (
+                        <tr
+                          key={index + 1}
+                          onClick={() => OpenLink(vehicle._id)}
+                        >
+                          <th scope="row" className="col-1">
+                            {vehicle.vehicle_crp_no}{" "}
+                          </th>
+                          <td>{vehicle.name}</td>
+                          <td>{vehicle.registration_no}</td>
+                          <td>{vehicle.vehicle_type}</td>
+                          <td>
+                            {vehicle.available && (
+                              <span style={{ color: "green" }}>Available</span>
+                            )}
+                            {!vehicle.available && (
+                              <span style={{ color: "red" }}>On Duty</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
             </div>
             <div className="col-lg-3 card p-5 m-1">
+              <div className="row p-3">
+                <input
+                  onChange={handleSearch}
+                  name="search"
+                  type="text"
+                  className="form-control"
+                  placeholder="Search"
+                ></input>
+              </div>
+
+              <select
+                className="form-select text-center"
+                ref={searchFilterRef}
+                aria-label="Default select example"
+                onChange={handleSearchFilter}
+                defaultValue={"name"}
+              >
+                <option value="name">Vehicle Name</option>
+                <option value="registration_no">Registration No</option>
+                <option value="vehicle_type">Type</option>
+                <option value="available">Available</option>
+                <option value="unavailable">On Duty</option>
+              </select>
+              <hr></hr>
               <Button
                 onClick={() => {
                   Router.back();
