@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Router from "next/router";
-import DatalistInput from "react-datalist-input";
-import "react-datalist-input/dist/styles.css";
+
+
 import { Button, Row } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

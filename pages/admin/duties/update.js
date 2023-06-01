@@ -7,8 +7,8 @@ import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Router, { useRouter } from "next/router";
-import DatalistInput from "react-datalist-input";
-import "react-datalist-input/dist/styles.css";
+
+
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

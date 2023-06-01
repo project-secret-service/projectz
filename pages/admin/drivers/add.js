@@ -5,11 +5,11 @@ import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import Link from "next/link";
-import "react-datalist-input/dist/styles.css";
+
 import Router from "next/router";
 
 export default function Home() {

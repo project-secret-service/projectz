@@ -8,7 +8,7 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Router from "next/router";
-import "react-datalist-input/dist/styles.css";
+
 import { Button, Row } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import { useReactToPrint } from "react-to-print";

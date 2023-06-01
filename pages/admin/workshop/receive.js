@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Router from "next/router";
 import dateFormat from "dateformat";
-import DatalistInput from "react-datalist-input";
-import "react-datalist-input/dist/styles.css";
+
+
 import { Button, Row } from 'react-bootstrap';
 import Link from "next/link";
 

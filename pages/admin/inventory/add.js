@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Router from "next/router";
 import Link from "next/link";
-import "react-datalist-input/dist/styles.css";
+
 import Head from "next/head";
 import { Button, Row, Col } from "react-bootstrap";
 

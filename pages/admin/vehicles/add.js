@@ -6,7 +6,7 @@ import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Link from "next/link";
-import "react-datalist-input/dist/styles.css";
+
 import Head from "next/head";
 import { Button, Row, Modal } from "react-bootstrap";
 import { useRouter } from "next/router";

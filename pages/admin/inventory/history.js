@@ -3,10 +3,9 @@ import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Link from "next/link";
-import "react-datalist-input/dist/styles.css";
 import { Button, Row } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import dateFormat from "dateformat";
@@ -32,13 +31,9 @@ async function GetIssues() {
 
 export default function Home() {
   const [inventoryHistory, setInventoryHistory] = useState([]);
-  const [searchResults, setSearchResults] = useState(new Set());
+  const searchFilterRef = useRef();
   const [searchResultList, setSearchResultList] = useState([]);
   const [search, setSearch] = useState(false);
-
-  useEffect(() => {
-    setSearchResultList(Array.from(searchResults));
-  }, [searchResults]);
 
   async function MergeHistory() {
     const orders = await GetOrders();
@@ -58,55 +53,69 @@ export default function Home() {
     });
 
     setInventoryHistory(mergedData);
-    console.log(mergedData);
   }
 
-  function handleSearch(e) {
-    let search = e.target.value;
+  function handleSearchFilter({ target: { name, value } }) {
+    let searchFilter = searchFilterRef.current.value;
+    if (searchFilter != "recieve" && searchFilter != "issue") {
+      setSearch(false);
+      return;
+    }
+    setSearch(true);
+    if (searchFilter == "recieve") {
+      setSearchResultList(
+        inventoryHistory.filter(
+          (data) => data.voucher_no.split("/")[0] === "RV"
+        )
+      );
+    }
+    if (searchFilter == "issue") {
+      setSearchResultList(
+        inventoryHistory.filter(
+          (data) => data.voucher_no.split("/")[0] === "IV"
+        )
+      );
+    }
+  }
+  function handleSearch({ target: { name, value } }) {
+    let search = value;
+    let searchFilter = searchFilterRef.current.value;
     if (search === "") {
       setSearch(false);
       return;
-    } else {
-      setSearch(true);
     }
-
-    let results = new Set();
-    inventoryHistory.forEach((data) => {
-      let date = dateFormat(data.date, "dS mmmm, yyyy - DDDD");
-
-      if (data.voucher_no.toLowerCase().includes(search.toLowerCase())) {
-        results.add(data);
-      }
-      if (data.date && date.toLowerCase().includes(search.toLowerCase())) {
-        results.add(data);
-      }
-      if (data.itemString.toLowerCase().includes(search.toLowerCase())) {
-        results.add(data);
-      }
-
-      if (data.voucher_no.split("/")[0] === "RV") {
-        if ("recieve".includes(search.toLowerCase())) {
-          results.add(data);
-        }
-      }
-
-      if (data.voucher_no.split("/")[0] === "IV") {
-        if (search.toLowerCase() === "issue") {
-          results.add(data);
-        }
-      }
-    });
-    setSearchResults(results);
-    console.log(results);
+    setSearch(true);
+    if (searchFilter == "voucher_no") {
+      setSearchResultList(
+        inventoryHistory.filter((data) =>
+          data.voucher_no.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
+    if (searchFilter == "date") {
+      setSearchResultList(
+        inventoryHistory.filter((data) =>
+          dateFormat(data.date, "dS mmmm, yyyy - DDDD")
+            .toLowerCase()
+            .includes(search.toLowerCase())
+        )
+      );
+    }
+    if (searchFilter == "items") {
+      setSearchResultList(
+        inventoryHistory.filter((data) =>
+          data.itemString.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
   }
 
   useEffect(() => {
     MergeHistory();
-    console.log(searchResults);
   }, []);
+
   return (
     <>
-      <title>History</title>
       <main className={styles.main}>
         <Header />
         <SideBar />
@@ -194,6 +203,21 @@ export default function Home() {
                   placeholder="Search"
                 ></input>
               </div>
+
+              <select
+                className="form-select text-center"
+                ref={searchFilterRef}
+                aria-label="Default select example"
+                onChange={handleSearchFilter}
+                defaultValue={"name"}
+              >
+                <option value="voucher_no">Voucher No</option>
+                <option value="date">Date</option>
+                <option value="items">Items</option>
+                <option value="recieve">Recieve</option>
+                <option value="issue">Issue</option>
+              </select>
+              <hr></hr>
               <Button
                 onClick={() => {
                   router.back();

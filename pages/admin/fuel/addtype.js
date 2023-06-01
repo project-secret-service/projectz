@@ -6,7 +6,7 @@ import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "react-datalist-input/dist/styles.css";
+
 import { Button, Row } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import Link from "next/link";
