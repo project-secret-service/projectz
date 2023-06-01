@@ -12,6 +12,7 @@ import Router, { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import vehicle_styles from "@/styles/Vehicles.module.css";
+import { Button } from "react-bootstrap";
 // const inter = Inter({subsets: ['latin']})
 async function GetUser() {
   const res = await axios({
@@ -40,6 +41,7 @@ export default function Home() {
   const profile_pic_edit = useRef(null);
   const [newUserDetails, setNewUserDetails] = useState({});
   const [imageSource, setImageSource] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -64,6 +66,7 @@ export default function Home() {
 
   async function updateDetails(event) {
     event.preventDefault();
+    setLoading(true);
     var data = {
       name: event.target.name.value,
       role: event.target.company.value,
@@ -387,11 +390,33 @@ export default function Home() {
                               />
                             </div>
                           </div>
-
+                          <hr />
                           <div className="text-center">
-                            <button type="submit" className="btn btn-primary">
-                              Save Changes
-                            </button>
+                            {!loading && (
+                              <Button
+                                variant="primary"
+                                type="submit"
+                                className="w-50"
+                              >
+                                Update Profile
+                              </Button>
+                            )}
+                            {loading && (
+                              <>
+                                <button
+                                  class="btn btn-primary"
+                                  type="button"
+                                  disabled
+                                >
+                                  <span
+                                    class="spinner-border spinner-border-sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                  ></span>
+                                  Updating...
+                                </button>
+                              </>
+                            )}
                           </div>
                         </form>
                       </div>

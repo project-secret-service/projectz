@@ -10,6 +10,7 @@ export default function Scripts() {
             <Script strategy="afterInteractive" src="/assets/vendor/simple-datatables/simple-datatables.js"></Script>
             <Script strategy="afterInteractive" src="/assets/vendor/tinymce/tinymce.min.js"></Script>
             <Script strategy="afterInteractive" src="/assets/vendor/php-email-form/validate.js"></Script>
+            <Script src="/assets/js/main.js"></Script>
         </>
     )
 }

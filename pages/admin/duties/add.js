@@ -1,114 +1,25 @@
-import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Link from "next/link";
-import Router, { useRouter } from "next/router";
-
-
+import Router from "next/router";
 import { Button, Row } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import moment from "moment";
-
-async function GetVehicles() {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/available",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function GetDrivers() {
-  const res = await axios({
-    url: "http://localhost:3000/drivers/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-function sucessful() {
-  toast.success("Sucessfully Added");
-  <ToastContainer
-    position="top-center"
-    autoClose={5000}
-    hideProgressBar={false}
-    newestOnTop={false}
-    closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
-    theme="light"
-  />;
-}
-function unsucessful() {
-  toast.error("Server Error");
-  <ToastContainer
-    position="top-center"
-    autoClose={5000}
-    hideProgressBar={false}
-    newestOnTop={false}
-    closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
-    theme="light"
-  />;
-}
+import {
+  GetVehiclesAvailable,
+  GetDriversAvailable,
+  addNewVehicle,
+  GetLatestIndentNo,
+} from "@/functions/axiosApis";
 
 export default function Home() {
   const [vehicles, setVehicles] = useState([]);
   const [drivers, setDrivers] = useState([]);
   const [duty, setDuty] = useState([]);
   const [showCompletedView, setShowCompletedView] = useState(false);
-  const router = useRouter();
-
-  async function addNewVehicle(event) {
-    event.preventDefault();
-    let data = {
-      ...duty,
-      out_datetime: moment(duty.out_datetime).format(
-        "YYYY-MM-DDTHH:mm:ss.SSSZ"
-      ),
-    };
-
-    if (event.target.completed.value == "true") {
-      data = {
-        ...data,
-        in_datetime: moment(duty.in_datetime).format(
-          "YYYY-MM-DDTHH:mm:ss.SSSZ"
-        ),
-      };
-    }
-
-    data = {
-      ...data,
-      mission_ended: event.target.completed.value,
-      date: event.target.date.value,
-      indent_no: event.target.indent_no.value,
-      driver: event.target.driver.value,
-    };
-
-    const res = await axios({
-      url: "http://localhost:3000/duty_log/add",
-      withCredentials: true,
-      method: "POST",
-      data: data,
-    });
-
-    if (res.status == 200) {
-      sucessful();
-      router.push("/admin/duties");
-    } else unsucessful();
-  }
 
   function setD({ target: { name, value } }) {
     setDuty({ ...duty, [name]: value });
@@ -118,17 +29,9 @@ export default function Home() {
     setDuty({ ...duty, [name]: value });
     setShowCompletedView(!showCompletedView);
   }
-  async function GetLatestIndentNo() {
-    const res = await axios({
-      url: "http://localhost:3000/duty_log/last_indent_no",
-      withCredentials: true,
-      method: "GET",
-    });
-    return res.data;
-  }
 
   useEffect(() => {
-    GetVehicles().then((data) => {
+    GetVehiclesAvailable().then((data) => {
       setVehicles(data);
       GetLatestIndentNo().then((indent_no) => {
         let v = data[0] ? data[0]._id : "";
@@ -142,7 +45,7 @@ export default function Home() {
         });
       });
     });
-    GetDrivers().then((data) => {
+    GetDriversAvailable().then((data) => {
       setDrivers(data);
     });
   }, []);
@@ -161,14 +64,17 @@ export default function Home() {
             <div className="col-lg-8 m-1">
               <div className="card">
                 <div className="card-body">
-                  <form onSubmit={addNewVehicle}>
-                    <ToastContainer />
+                  <form
+                    onSubmit={(e) => {
+                      addNewVehicle(e, duty);
+                    }}
+                  >
                     <div className="row mb-3">
                       <label
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        <i class="bi bi-list-ol"></i> Indent No :
+                        <i className="bi bi-list-ol"></i> Indent No :
                       </label>
                       <div className="col-sm-7">
                         <input
@@ -182,7 +88,7 @@ export default function Home() {
                     </div>
                     <div className="row mb-3">
                       <label className="col-sm-5 col-form-label">
-                        <i class="bi bi-car-front"></i> Vehicle Number :
+                        <i className="bi bi-car-front"></i> Vehicle Number :
                       </label>
                       <div className="col-sm-7">
                         <select
@@ -208,7 +114,7 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        <i class="bi bi-calendar2-check"></i> Date :
+                        <i className="bi bi-calendar2-check"></i> Date :
                       </label>
                       <div className="col-sm-7">
                         <input
@@ -226,8 +132,8 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        <i class="bi bi-box-arrow-right"></i> Out Date and Time
-                        :
+                        <i className="bi bi-box-arrow-right"></i> Out Date and
+                        Time :
                       </label>
                       <div className="col-sm-7">
                         <input
@@ -245,7 +151,7 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        <i class="bi bi-list-task"></i> Purpose :
+                        <i className="bi bi-list-task"></i> Purpose :
                       </label>
                       <div className="col-sm-7">
                         <input
@@ -259,7 +165,7 @@ export default function Home() {
 
                     <div className="row mb-3">
                       <label className="col-sm-5 col-form-label">
-                        <i class="bi bi-person-fill"></i> Driver :
+                        <i className="bi bi-person-fill"></i> Driver :
                       </label>
                       <div className="col-sm-7">
                         <select
@@ -268,15 +174,11 @@ export default function Home() {
                           aria-label="Default select example"
                           onChange={setD}
                         >
-                          {drivers.map((driver, index) => {
-                            if (driver.available === true) {
-                              return (
-                                <option key={index + 1} value={driver._id}>
-                                  {driver.license_no} - {driver.name}
-                                </option>
-                              );
-                            }
-                          })}
+                          {drivers.map((driver, index) => (
+                            <option key={index + 1} value={driver._id}>
+                              {driver.license_no} - {driver.name}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -284,7 +186,7 @@ export default function Home() {
 
                     <div className="row mb-3">
                       <label className="col-sm-5 col-form-label">
-                        <i class="bi bi-check-circle"></i> Completed :
+                        <i className="bi bi-check-circle"></i> Completed :
                       </label>
                       <div className="col-sm-7">
                         <select
@@ -305,8 +207,8 @@ export default function Home() {
                             htmlFor="inputText"
                             className="col-sm-5 col-form-label"
                           >
-                            <i class="bi bi-box-arrow-in-right"></i> In Date and
-                            Time :
+                            <i className="bi bi-box-arrow-in-right"></i> In Date
+                            and Time :
                           </label>
                           <div className="col-sm-7">
                             <input
@@ -324,7 +226,8 @@ export default function Home() {
                             htmlFor="inputText"
                             className="col-sm-5 col-form-label"
                           >
-                            <i class="bi bi-distribute-horizontal"></i> Km Run :
+                            <i className="bi bi-distribute-horizontal"></i> Km
+                            Run :
                           </label>
                           <div className="col-sm-7">
                             <input
@@ -341,7 +244,7 @@ export default function Home() {
                             htmlFor="inputText"
                             className="col-sm-5 col-form-label"
                           >
-                            <i class="bi bi-app-indicator"></i> Meter Count:
+                            <i className="bi bi-app-indicator"></i> Meter Count:
                           </label>
                           <div className="col-sm-7">
                             <input
@@ -358,7 +261,7 @@ export default function Home() {
                             htmlFor="inputText"
                             className="col-sm-5 col-form-label"
                           >
-                            <i class="bi bi-fuel-pump"></i> Fuel :
+                            <i className="bi bi-fuel-pump"></i> Fuel :
                           </label>
                           <div className="col-sm-7">
                             <input

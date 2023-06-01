@@ -7,7 +7,6 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import dateFormat from "dateformat";
 import { Row, Col, Button, Modal } from "react-bootstrap";
-import Link from "next/link";
 import Scripts from "@/pages/components/Scripts";
 import { useReactToPrint } from "react-to-print";
 
@@ -62,7 +61,6 @@ const SignatureModal = ({
         <Button
           variant="primary"
           onClick={async () => {
-            console.log(signAs);
             const res = await axios({
               url: "http://localhost:3000/oilstockregister/sign/add/" + signAs,
               withCredentials: true,
@@ -72,7 +70,6 @@ const SignatureModal = ({
                 password: password,
               },
             });
-            console.log(res.data);
             if (res.data.status === 200) {
               window.location.reload();
             } else {
@@ -111,10 +108,8 @@ const Post = () => {
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
-    console.log(id);
     getOilBalance(id).then((data) => {
       setVoucher(data);
-      console.log(data);
     });
   }, [router.isReady]);
 

@@ -1,40 +1,11 @@
-import axios from "axios";
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import Router from "next/router";
 import { useEffect } from "react";
+import { checkLogin, UserLogin } from "@/functions/axiosApis";
 
 export default function Login() {
-  async function UserLogin(event) {
-    event.preventDefault();
-    let data = {
-      username: event.target.username.value,
-      password: event.target.password.value,
-    };
-    const res = await axios({
-      method: "POST",
-      url: "http://localhost:3000/login",
-      data: data,
-      withCredentials: true,
-    });
 
-    if (res.status === 200) {
-      Router.push("/admin/");
-    } else {
-      alert("Wrong Username or Password");
-    }
-  }
   useEffect(() => {
-    async function checkLogin() {
-      const res = await axios({
-        method: "POST",
-        url: "http://localhost:3000/checklogin",
-        withCredentials: true,
-      });
-      if (res.data.status === 200) {
-        Router.push("/admin/");
-      }
-    }
     checkLogin();
   });
   return (
@@ -73,7 +44,9 @@ export default function Login() {
             className={styles.form}
             style={{ opacity: 1, backgroundColor: "white", opacity: 0.8 }}
           >
-            <form onSubmit={UserLogin}>
+            <form
+              onSubmit={UserLogin}
+            >
               <div className={styles.form_inputs}>
                 <div className="text-center">
                   <h1

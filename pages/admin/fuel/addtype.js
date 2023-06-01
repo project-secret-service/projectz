@@ -39,7 +39,7 @@ export default function Home() {
         <SideBar />
 
         <main id="main" className="col-lg-10 main mt-0 opac-80">
-          <div class="d-flex">
+          <div className="d-flex">
             <div className="col-12">
               <h1>Add Oil Type</h1>
               <Row>

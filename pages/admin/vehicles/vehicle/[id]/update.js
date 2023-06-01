@@ -28,6 +28,8 @@ export default function Home() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [loading, setLoading] = useState(false);
+
   const [images, setImages] = useState({
     front_view: null,
     back_view: null,
@@ -62,7 +64,7 @@ export default function Home() {
   }
 
   async function updateVehicle() {
-    console.log(updatedVehicle);
+    setLoading(true);
     const res = await axios({
       url: "http://localhost:3000/vehicles/" + vehicle._id + "/update",
       method: "POST",
@@ -72,7 +74,9 @@ export default function Home() {
       },
       data: updatedVehicle,
     });
-    router.push("/admin/vehicles/vehicle/" + vehicle._id);
+    if (res.data.status == 200) {
+      window.location.reload();
+    }
   }
 
   useEffect(() => {
@@ -82,6 +86,7 @@ export default function Home() {
       setVehicle(data);
     });
   }, [router.isReady]);
+
   return (
     <>
       <Head title="Vehicles List" />
@@ -113,6 +118,16 @@ export default function Home() {
                         style={{ maxWidth: "100%", maxHeight: "20vh" }}
                       />
                     )}
+                    {!images.front_view && vehicle.front_view && (
+                      <img
+                        src={
+                          "http://localhost:3000/images/vehicle_images/" +
+                          vehicle.front_view
+                        }
+                        alt="Selected"
+                        style={{ maxWidth: "100%", maxHeight: "20vh" }}
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -138,6 +153,16 @@ export default function Home() {
                           maxWidth: "100%",
                           maxHeight: "20vh",
                         }}
+                      />
+                    )}
+                    {!images.back_view && vehicle.back_view && (
+                      <img
+                        src={
+                          "http://localhost:3000/images/vehicle_images/" +
+                          vehicle.back_view
+                        }
+                        alt="Selected"
+                        style={{ maxWidth: "100%", maxHeight: "20vh" }}
                       />
                     )}
                   </div>
@@ -167,6 +192,16 @@ export default function Home() {
                         }}
                       />
                     )}
+                    {!images.left_view && vehicle.left_view && (
+                      <img
+                        src={
+                          "http://localhost:3000/images/vehicle_images/" +
+                          vehicle.left_view
+                        }
+                        alt="Selected"
+                        style={{ maxWidth: "100%", maxHeight: "20vh" }}
+                      />
+                    )}
                   </div>
                 </div>
                 <hr />
@@ -193,6 +228,16 @@ export default function Home() {
                         }}
                       />
                     )}
+                    {!images.right_view && vehicle.right_view && (
+                      <img
+                        src={
+                          "http://localhost:3000/images/vehicle_images/" +
+                          vehicle.right_view
+                        }
+                        alt="Selected"
+                        style={{ maxWidth: "100%", maxHeight: "20vh" }}
+                      />
+                    )}
                   </div>
                 </div>
                 <hr />
@@ -217,6 +262,16 @@ export default function Home() {
                           maxWidth: "100%",
                           maxHeight: "20vh",
                         }}
+                      />
+                    )}
+                    {!images.top_view && vehicle.top_view && (
+                      <img
+                        src={
+                          "http://localhost:3000/images/vehicle_images/" +
+                          vehicle.top_view
+                        }
+                        alt="Selected"
+                        style={{ maxWidth: "100%", maxHeight: "20vh" }}
                       />
                     )}
                   </div>
@@ -629,23 +684,30 @@ export default function Home() {
                 <Modal.Title>Update Vehicle : {vehicle.name}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                Do You want to Update the Vehicle with Following Details ?
-                <p>
-                  {/* <li>This will generate a new Vehicle ID</li> */}
-                  {/* {Object.entries(updatedVehicle).map(([key, value]) => (
-                    <li>
-                      {key}: {value}
-                    </li>
-                  ))} */}
-                </p>
+                Do You want to Update the Vehicle with entered Details ?
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={updateVehicle}>
-                  Add New Vehicle
-                </Button>
+
+                {!loading && (
+                  <Button variant="primary" onClick={updateVehicle}>
+                    Update Vehicle
+                  </Button>
+                )}
+                {loading && (
+                  <>
+                    <button class="btn btn-primary" type="button" disabled>
+                      <span
+                        class="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Updating...
+                    </button>
+                  </>
+                )}
               </Modal.Footer>
             </Modal>
           </main>

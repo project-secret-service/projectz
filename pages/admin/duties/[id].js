@@ -19,7 +19,14 @@ async function GetUserDetails(id) {
   return res.data;
 }
 
-const SignatureModal = ({ signAs, signTitle, showSign, setShowSign, duty }) => {
+const SignatureModal = ({
+  signAs,
+  signTitle,
+  showSign,
+  setShowSign,
+  duty,
+  setDuty,
+}) => {
   const [password, setPassword] = useState("");
   const [wrongPass, setWrongPass] = useState("");
   function SetP(e) {
@@ -74,7 +81,10 @@ const SignatureModal = ({ signAs, signTitle, showSign, setShowSign, duty }) => {
               },
             });
             if (res.data === "ok") {
-              window.location.reload();
+              GetUserDetails(duty._id).then((data) => {
+                setDuty(data);
+              });
+              setShowSign(false);
             } else {
               setWrongPass("Wrong Password");
             }
@@ -115,7 +125,7 @@ const Post = () => {
       <main className={styles.main}>
         <main id="main" className="col-11 mt-0 row">
           <div className="col-9 opac-80">
-            <div id="printableArea" ref={componentRef} className="p-5 card">
+            <div id="printableArea" className="p-5 card">
               <div
                 style={{
                   fontSize: "1.5rem",
@@ -297,6 +307,193 @@ const Post = () => {
               )}
             </div>
           </div>
+          <div style={{ display: "none" }}>
+            <div className="col-12 card" ref={componentRef}>
+              <div id="printableArea" className="p-5">
+                <div
+                  style={{
+                    fontSize: "1.5rem",
+                    marginTop: "1rem",
+                    marginLeft: 10,
+                    marginRight: 10,
+                  }}
+                >
+                  <span className="josefin-sans">
+                    Central Reserve Police Force Vehicle Indent and Order
+                  </span>
+                  <hr
+                    style={{
+                      color: "#000000",
+                      backgroundColor: "#000000",
+                      height: 2.5,
+                    }}
+                  />
+                </div>
+                {duty.vehicle && (
+                  <div className="p-1" id="duty_details">
+                    <Row>
+                      <p>
+                        <b>{duty.vehicle.vehicle_type}</b> on
+                        Payment/Regimental/ Govt. duty at
+                        <b>
+                          {duty.out_datetime &&
+                            dateFormat(duty.out_datetime, " hh:MM TT ")}
+                        </b>
+                        hrs on
+                        <b>
+                          {duty.out_datetime &&
+                            dateFormat(
+                              duty.out_datetime,
+                              " dS mmmm, yyyy - dddd"
+                            )}
+                        </b>
+                      </p>{" "}
+                      <p>
+                        For the purpose of <b>{duty.purpose}</b>
+                      </p>
+                      <p>
+                        The vehicle should report at
+                        <br /> Place : <b>CTC (IT & T)</b>
+                        <br />
+                        Date :
+                        <b>
+                          {duty.date &&
+                            dateFormat(duty.date, " dS mmmm, yyyy - dddd")}
+                        </b>
+                      </p>
+                      <p style={{ textAlign: "right" }}>
+                        {duty.sign_indenter && (
+                          <>
+                            Digitally Signed By <br />
+                            <b>{duty.sign_indenter.name}, </b>
+                            <b>{duty.sign_indenter.designation}</b>
+                          </>
+                        )}
+                        {!duty.sign_indenter && (
+                          <span>Signature and Designation of Indenter</span>
+                        )}
+                      </p>
+                      <p
+                        style={{ textAlign: "center", fontSize: "1.2rem" }}
+                        className="josefin-sans"
+                      >
+                        ORDER
+                      </p>
+                      <p>
+                        Detailed CRPF Vehicle No :{" "}
+                        <b>{duty.vehicle.registration_no}, </b>
+                        <b>{duty.vehicle.name}, </b>
+                        <b>CRP - ({duty.vehicle.vehicle_crp_no})</b> for Above
+                        Purpose
+                      </p>
+                      <p>
+                        Place : <b>CTC (IT & T)</b>
+                        <br />
+                        Date :
+                        <b>
+                          {duty.date &&
+                            dateFormat(duty.date, " dS mmmm, yyyy - dddd")}
+                        </b>
+                      </p>
+                      <p style={{ textAlign: "right" }}>
+                        {duty.sign_mto && (
+                          <>
+                            Digitally Signed By <br />
+                            <b>{duty.sign_mto.name}, </b>
+                            <b>{duty.sign_mto.designation}</b>
+                          </>
+                        )}
+                        {!duty.sign_mto && <span>Signature of M.T.O.</span>}
+                      </p>
+                      <p>
+                        Transport Indent No - <b>{duty.indent_no},</b> Dated :{" "}
+                        <b>
+                          {" "}
+                          {duty.date &&
+                            dateFormat(duty.date, " dS mmmm, yyyy - dddd")}
+                          {", "}
+                        </b>
+                        CRPF Vehicle No : <b>{duty.vehicle.registration_no}</b>
+                        {", "}
+                        Detailed on{" "}
+                        <b>
+                          {duty.date &&
+                            dateFormat(duty.date, " dS mmmm, yyyy - dddd")}{" "}
+                        </b>
+                        at{" "}
+                        <b>
+                          {duty.date && dateFormat(duty.date, " hh:MM TT")}{" "}
+                        </b>
+                        Driver's name{" "}
+                        <b>
+                          {duty.driver.name} ( {duty.driver.license_no} )
+                        </b>{" "}
+                        Nature of duty......
+                      </p>
+                      <p>
+                        Place : <b>CTC (IT & T)</b>
+                        <br />
+                        Date :
+                        <b>
+                          {duty.date &&
+                            dateFormat(duty.date, " dS mmmm, yyyy - dddd")}
+                        </b>
+                      </p>
+                      <p style={{ textAlign: "right" }}>
+                        {duty.sign_mtic && (
+                          <>
+                            Digitally Signed By <br />
+                            <b>{duty.sign_mtic.name}, </b>
+                            <b>{duty.sign_mtic.designation}</b>
+                          </>
+                        )}
+                        {!duty.sign_mtic && <span>Signature of MT I/C</span>}
+                      </p>
+                      {duty.mission_ended && (
+                        <>
+                          {" "}
+                          <p>
+                            The vehicle mentioned above arived at{" "}
+                            <b>
+                              {duty.in_datetime &&
+                                dateFormat(duty.in_datetime, "hh:MM TT")}{" "}
+                            </b>
+                            hrs on{" "}
+                            <b>
+                              {duty.in_datetime &&
+                                dateFormat(
+                                  duty.in_datetime,
+                                  "dS mmmm, yyyy - dddd"
+                                )}
+                            </b>{" "}
+                            <br />
+                            Total Kms Run: <b>{duty.km_run} km</b> ,
+                            <br />
+                            Damage if any...... ,<br />
+                            and was dismissed at.......
+                          </p>
+                          <p style={{ textAlign: "right" }}>
+                            {duty.sign_indentingoffice && (
+                              <>
+                                Digitally Signed By <br />
+                                <b>{duty.sign_indentingoffice.name}, </b>
+                                <b>{duty.sign_indentingoffice.designation}</b>
+                              </>
+                            )}
+                            {!duty.sign_indentingoffice && (
+                              <span>
+                                Signature of Indenting Office With Designation
+                              </span>
+                            )}
+                          </p>
+                        </>
+                      )}
+                    </Row>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
           <div className="col-3">
             <div className="card p-3">
               <Button
@@ -373,6 +570,7 @@ const Post = () => {
                 showSign={showSign}
                 setShowSign={setShowSign}
                 duty={duty}
+                setDuty={setDuty}
               />
             </div>
           </div>

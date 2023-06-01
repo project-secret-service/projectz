@@ -5,49 +5,23 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import Router from "next/router";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
-
-async function GetDuties() {
-  const res = await axios({
-    url: "http://localhost:3000/duty_log/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-function call() {
-  <th scope="row">
-    <i
-      className="bi bi-truck"
-      style={{
-        color: "red",
-        fontSize: "1rem",
-      }}
-    ></i>
-  </th>;
-}
+import { GetDutiesDesc, OpenDuty } from "@/functions/axiosApis";
 
 export default function Home() {
   const [duties, setDuties] = useState([]);
   const [searchResultList, setSearchResultList] = useState([]);
   const [search, setSearch] = useState(false);
-
   const searchFilterRef = useRef(null);
 
   useEffect(() => {
-    GetDuties().then((data) => {
+    GetDutiesDesc().then((data) => {
       setDuties(data);
     });
   }, []);
-
-  function OpenLink(link) {
-    Router.push("/admin/duties/" + link);
-  }
 
   function handleSearchFilter({ target: { name, value } }) {
     if (
@@ -198,7 +172,7 @@ export default function Home() {
                           return (
                             <tr
                               key={index + 1}
-                              onClick={() => OpenLink(duty._id)}
+                              onClick={() => OpenDuty(duty._id)}
                               style={{ backgroundColor: color }}
                             >
                               <th className="col-1">{duty.indent_no}</th>
@@ -344,6 +318,11 @@ export default function Home() {
               <Link href={"/admin/vehicles/available"}>
                 <Button className="w-100 mb-1 btn-success">
                   Available Vehicles
+                </Button>
+              </Link>
+              <Link href={"/admin/duties/print"}>
+                <Button className="w-100 mb-1 btn-danger">
+                  Print
                 </Button>
               </Link>
             </div>
