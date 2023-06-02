@@ -17,7 +17,6 @@ export default function Home() {
     let data = await GetOnDutyVehicles();
     setOnDutyVehicles(data);
     setDuty(data[0]);
-    console.log(data[0]);
   }
 
   async function changeDuty({ target: { name, value } }) {
@@ -25,7 +24,6 @@ export default function Home() {
       return thisDuty._id == value;
     });
     setDuty(newDuty);
-    console.log(newDuty);
   }
   useEffect(() => {
     SetAllDetails();

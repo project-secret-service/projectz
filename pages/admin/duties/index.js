@@ -24,7 +24,6 @@ export default function Home() {
   });
 
   function NextPage() {
-    console.log(page.current, page.total_pages);
     if (page.current > page.total_pages - 1) {
       return;
     }
@@ -59,7 +58,6 @@ export default function Home() {
   useEffect(() => {
     GetDutiesDesc().then((data) => {
       setDuties(data);
-      console.log(data);
       setPage({
         current: 1,
         first_element: 0,
@@ -68,7 +66,6 @@ export default function Home() {
         size: page.size,
       });
     });
-    console.log(page.size);
   }, []);
 
   function handleSearchFilter({ target: { name, value } }) {
@@ -77,6 +74,13 @@ export default function Home() {
       searchFilterRef.current.value !== "completed"
     ) {
       setSearch(false);
+      setPage({
+        current: 1,
+        first_element: 0,
+        last_element: page.size,
+        total_pages: Math.ceil(duties.length / page.size),
+        size: page.size,
+      });
       return;
     }
     if (searchFilterRef.current.value === "active") {
@@ -138,6 +142,13 @@ export default function Home() {
       searchFilterRef.current.value != "completed"
     ) {
       setSearch(false);
+      setPage({
+        current: 1,
+        first_element: 0,
+        last_element: page.size,
+        total_pages: Math.ceil(duties.length / page.size),
+        size: page.size,
+      });
       return;
     }
     setSearch(true);

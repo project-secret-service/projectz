@@ -29,7 +29,6 @@ export default function Home() {
 
   function setVehicle({ target: { name, value } }) {
     setDuty({ ...duty, [name]: value });
-    console.log(value);
     let vehicle = vehicles.find((thisVehicle) => {
       return thisVehicle._id == value;
     });
@@ -264,6 +263,7 @@ export default function Home() {
                             <input
                               defaultValue={selectedVehicle.fuel}
                               max={selectedVehicle.fuel_capacity}
+                              min={0}
                               onChange={setD}
                               type="number"
                               name="fuel"
