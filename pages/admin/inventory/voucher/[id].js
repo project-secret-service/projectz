@@ -11,19 +11,31 @@ import Link from "next/link";
 import Scripts from "@/pages/components/Scripts";
 import { useReactToPrint } from "react-to-print";
 
+async function getVoucher(id) {
+  const res = await axios({
+    url: "http://localhost:3000/inventory/voucher/" + id,
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}
+
 const SignatureModal = ({
   signAs,
   signTitle,
   showSign,
   setShowSign,
   voucher,
+  setVoucher,
 }) => {
   const [password, setPassword] = useState("");
   const [wrongPass, setWrongPass] = useState("");
+
   function SetP(e) {
     setWrongPass("");
     setPassword(e.target.value);
   }
+
   return (
     <Modal
       show={showSign}
@@ -64,7 +76,7 @@ const SignatureModal = ({
           onClick={async () => {
             console.log(signAs);
             const res = await axios({
-              url: "http://localhost:3000/oilstockregister/sign/add/" + signAs,
+              url: "http://localhost:3000/inventory/sign/add/" + signAs,
               withCredentials: true,
               method: "POST",
               data: {
@@ -72,9 +84,11 @@ const SignatureModal = ({
                 password: password,
               },
             });
-            console.log(res.data);
             if (res.data.status === 200) {
-              window.location.reload();
+              getVoucher(voucher._id).then((data) => {
+                setVoucher(data);
+              });
+              setShowSign(false);
             } else {
               setWrongPass("Wrong Password");
             }
@@ -87,15 +101,6 @@ const SignatureModal = ({
   );
 };
 
-async function getVoucher(id) {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/voucher/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
 const Post = () => {
   const router = useRouter();
   const [voucher, setVoucher] = useState({});
@@ -104,12 +109,13 @@ const Post = () => {
   const [signAs, setsignAs] = useState("");
   const [signTitle, setSignTitle] = useState("");
   const [showSign, setShowSign] = useState(false);
+
   const printRef = useRef();
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
   });
-  const { id } = router.query;
+
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
@@ -396,6 +402,7 @@ const Post = () => {
                 showSign={showSign}
                 setShowSign={setShowSign}
                 voucher={voucher}
+                setVoucher={setVoucher}
               />
             </div>
           </Row>

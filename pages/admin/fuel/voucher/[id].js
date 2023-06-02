@@ -10,12 +10,22 @@ import { Row, Col, Button, Modal } from "react-bootstrap";
 import Scripts from "@/pages/components/Scripts";
 import { useReactToPrint } from "react-to-print";
 
+async function getOilBalance(id) {
+  const res = await axios({
+    url: "http://localhost:3000/oilstockregister/voucher/" + id,
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}
+
 const SignatureModal = ({
   signAs,
   signTitle,
   showSign,
   setShowSign,
   voucher,
+  setVoucher,
 }) => {
   const [password, setPassword] = useState("");
   const [wrongPass, setWrongPass] = useState("");
@@ -71,7 +81,10 @@ const SignatureModal = ({
               },
             });
             if (res.data.status === 200) {
-              window.location.reload();
+              getOilBalance(voucher._id).then((data) => {
+                setVoucher(data);
+              });
+              setShowSign(false);
             } else {
               setWrongPass("Wrong Password");
             }
@@ -83,15 +96,6 @@ const SignatureModal = ({
     </Modal>
   );
 };
-
-async function getOilBalance(id) {
-  const res = await axios({
-    url: "http://localhost:3000/oilstockregister/voucher/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
 
 const Post = () => {
   const router = useRouter();
@@ -435,6 +439,7 @@ const Post = () => {
                 showSign={showSign}
                 setShowSign={setShowSign}
                 voucher={voucher}
+                setVoucher={setVoucher}
               />
             </div>
           </Row>
