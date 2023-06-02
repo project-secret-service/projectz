@@ -1,58 +1,10 @@
 import axios from "axios";
 import Router from "next/router";
 import moment from "moment";
+import { AXIOS_BASE_URL } from "../constants";
 
-export const BASE_URL = "http://localhost:3000/";
+axios.defaults.baseURL = AXIOS_BASE_URL;
 
-axios.defaults.baseURL = BASE_URL;
-
-//*Landing Page
-export async function checkIfLoggedIn() {
-  const res = await axios({
-    method: "POST",
-    url: "/checklogin",
-    withCredentials: true,
-  });
-  if (res.data.status === 200) {
-    Router.push("/admin/");
-  } else {
-    Router.push("/login");
-  }
-}
-
-//*Login Page
-export async function checkLogin() {
-  const res = await axios({
-    method: "POST",
-    url: "/checklogin",
-    withCredentials: true,
-  });
-  if (res.data.status === 200) {
-    Router.push("/admin/");
-  }
-}
-
-export async function UserLogin(event) {
-  event.preventDefault();
-  let data = {
-    username: event.target.username.value,
-    password: event.target.password.value,
-  };
-  const res = await axios({
-    method: "POST",
-    url: "/login",
-    data: data,
-    withCredentials: true,
-  });
-
-  if (res.status === 200) {
-    Router.push("/admin/");
-  } else {
-    alert("Wrong Username or Password");
-  }
-}
-
-//*Duties
 export async function GetDutiesDesc() {
   const res = await axios({
     url: "/duty_log/desc",
@@ -75,25 +27,7 @@ export function OpenDuty(link) {
   Router.push("/admin/duties/" + link);
 }
 
-export async function GetVehiclesAvailable() {
-  const res = await axios({
-    url: "/vehicles/available",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-export async function GetDriversAvailable(duty) {
-  const res = await axios({
-    url: "drivers/available",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-export async function addNewVehicle(event, duty) {
+export async function addNewVehicleOnDuty(event, duty) {
   event.preventDefault();
   let data = {
     ...duty,

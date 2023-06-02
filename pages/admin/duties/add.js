@@ -8,15 +8,17 @@ import Link from "next/link";
 import Router from "next/router";
 import { Button, Row } from "react-bootstrap";
 import moment from "moment";
+
 import {
-  GetVehiclesAvailable,
-  GetDriversAvailable,
-  addNewVehicle,
   GetLatestIndentNo,
-} from "@/functions/axiosApis";
+  addNewVehicleOnDuty,
+} from "@/functions/apiHandlers/duties";
+import { GetVehiclesAvailable } from "@/functions/apiHandlers/vehicles";
+import { GetDriversAvailable } from "@/functions/apiHandlers/drivers";
 
 export default function Home() {
   const [vehicles, setVehicles] = useState([]);
+  const [selectedVehicle, setSelectedVehicle] = useState({});
   const [drivers, setDrivers] = useState([]);
   const [duty, setDuty] = useState([]);
   const [showCompletedView, setShowCompletedView] = useState(false);
@@ -25,29 +27,40 @@ export default function Home() {
     setDuty({ ...duty, [name]: value });
   }
 
+  function setVehicle({ target: { name, value } }) {
+    setDuty({ ...duty, [name]: value });
+    console.log(value);
+    let vehicle = vehicles.find((thisVehicle) => {
+      return thisVehicle._id == value;
+    });
+    setSelectedVehicle(vehicle);
+  }
+
   function setCompleteView({ target: { name, value } }) {
     setDuty({ ...duty, [name]: value });
     setShowCompletedView(!showCompletedView);
   }
 
+  async function setInputData() {
+    let data = await GetVehiclesAvailable();
+    setVehicles(data);
+    let latest_indent_no = await GetLatestIndentNo();
+    let v = data[0] ? data[0]._id : "";
+    setDuty({
+      ...duty,
+      indent_no: latest_indent_no + 1,
+      vehicle: data[0] ? data[0]._id : "",
+      date: moment().format("YYYY-MM-DD"),
+      out_datetime: moment().format("YYYY-MM-DDTHH:mm"),
+      completed: "false",
+    });
+    let data2 = await GetDriversAvailable();
+    setDrivers(data2);
+    setSelectedVehicle(data[0]);
+  }
+
   useEffect(() => {
-    GetVehiclesAvailable().then((data) => {
-      setVehicles(data);
-      GetLatestIndentNo().then((indent_no) => {
-        let v = data[0] ? data[0]._id : "";
-        setDuty({
-          ...duty,
-          indent_no: indent_no + 1,
-          vehicle: data[0] ? data[0]._id : "",
-          date: moment().format("YYYY-MM-DD"),
-          out_datetime: moment().format("YYYY-MM-DDTHH:mm"),
-          completed: "false",
-        });
-      });
-    });
-    GetDriversAvailable().then((data) => {
-      setDrivers(data);
-    });
+    setInputData();
   }, []);
 
   return (
@@ -66,7 +79,7 @@ export default function Home() {
                 <div className="card-body">
                   <form
                     onSubmit={(e) => {
-                      addNewVehicle(e, duty);
+                      addNewVehicleOnDuty(e, duty);
                     }}
                   >
                     <div className="row mb-3">
@@ -95,7 +108,7 @@ export default function Home() {
                           name="vehicle"
                           className="form-select"
                           aria-label="Default select example"
-                          onChange={setD}
+                          onChange={setVehicle}
                         >
                           {vehicles.map((vehicle, index) => {
                             return (
@@ -226,29 +239,13 @@ export default function Home() {
                             htmlFor="inputText"
                             className="col-sm-5 col-form-label"
                           >
-                            <i className="bi bi-distribute-horizontal"></i> Km
-                            Run :
-                          </label>
-                          <div className="col-sm-7">
-                            <input
-                              onChange={setD}
-                              type="number"
-                              name="km_run"
-                              className="form-control"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="row mb-3">
-                          <label
-                            htmlFor="inputText"
-                            className="col-sm-5 col-form-label"
-                          >
                             <i className="bi bi-app-indicator"></i> Meter Count:
                           </label>
                           <div className="col-sm-7">
                             <input
                               onChange={setD}
+                              defaultValue={selectedVehicle.total_kilo_meter}
+                              min={selectedVehicle.total_kilo_meter}
                               type="number"
                               name="meter_count"
                               className="form-control"
@@ -265,6 +262,8 @@ export default function Home() {
                           </label>
                           <div className="col-sm-7">
                             <input
+                              defaultValue={selectedVehicle.fuel}
+                              max={selectedVehicle.fuel_capacity}
                               onChange={setD}
                               type="number"
                               name="fuel"

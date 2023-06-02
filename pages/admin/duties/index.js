@@ -9,18 +9,66 @@ import Router from "next/router";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
-import { GetDutiesDesc, OpenDuty } from "@/functions/axiosApis";
+import { GetDutiesDesc, OpenDuty } from "@/functions/apiHandlers/duties";
 
 export default function Home() {
   const [duties, setDuties] = useState([]);
   const [searchResultList, setSearchResultList] = useState([]);
   const [search, setSearch] = useState(false);
   const searchFilterRef = useRef(null);
+  const [page, setPage] = useState({
+    current: 1,
+    first_element: 0,
+    last_element: 0,
+    size: 10,
+  });
+
+  function NextPage() {
+    console.log(page.current, page.total_pages);
+    if (page.current > page.total_pages - 1) {
+      return;
+    }
+    let newPage = page.current + 1;
+    let newFirstElement = page.last_element;
+    let newLastElement = page.last_element + page.size;
+    setPage({
+      current: newPage,
+      first_element: newFirstElement,
+      last_element: newLastElement,
+      total_pages: page.total_pages,
+      size: page.size,
+    });
+  }
+
+  function PreviousPage() {
+    if (page.current === 1) {
+      return;
+    }
+    let newPage = page.current - 1;
+    let newFirstElement = page.first_element - page.size;
+    let newLastElement = page.first_element;
+    setPage({
+      current: newPage,
+      first_element: newFirstElement,
+      last_element: newLastElement,
+      total_pages: page.total_pages,
+      size: page.size,
+    });
+  }
 
   useEffect(() => {
     GetDutiesDesc().then((data) => {
       setDuties(data);
+      console.log(data);
+      setPage({
+        current: 1,
+        first_element: 0,
+        last_element: page.size,
+        total_pages: Math.ceil(data.length / page.size),
+        size: page.size,
+      });
     });
+    console.log(page.size);
   }, []);
 
   function handleSearchFilter({ target: { name, value } }) {
@@ -40,6 +88,13 @@ export default function Home() {
         }
       });
       setSearchResultList(Array.from(results));
+      setPage({
+        current: 1,
+        first_element: 0,
+        last_element: page.size,
+        total_pages: Math.ceil(Array.from(results).length / page.size),
+        size: page.size,
+      });
       return;
     }
 
@@ -53,6 +108,13 @@ export default function Home() {
       });
 
       setSearchResultList(Array.from(results));
+      setPage({
+        current: 1,
+        first_element: 0,
+        last_element: page.size,
+        total_pages: Math.ceil(Array.from(results).length / page.size),
+        size: page.size,
+      });
       return;
     }
   }
@@ -124,6 +186,13 @@ export default function Home() {
       }
     });
     setSearchResultList(Array.from(results));
+    setPage({
+      current: 1,
+      first_element: 0,
+      last_element: page.size,
+      total_pages: Math.ceil(Array.from(results).length / page.size),
+      size: page.size,
+    });
   }
 
   return (
@@ -138,7 +207,50 @@ export default function Home() {
         <SideBar />
 
         <main id="main" className=" col-lg-11 main mt-0">
-          <h1>All Duties</h1>
+          <div className="d-flex justify-content-between">
+            <h1>All Duties</h1>
+
+            <div className="d-flex" style={{ display: "inline" }}>
+              <div style={{ marginRight: "10px" }}>
+                <div className="input-group mb-3">
+                  <div
+                    className="input-group-prepend"
+                    style={{ cursor: "pointer" }}
+                    onClick={PreviousPage}
+                  >
+                    <span className="input-group-text" id="basic-addon1">
+                      Previous
+                    </span>
+                  </div>
+                  <input
+                    defaultValue={page.current}
+                    type="number"
+                    className="form-control"
+                    placeholder="Page No"
+                    aria-describedby="basic-addon1"
+                    style={{ maxWidth: "50px" }}
+                    disabled
+                  />
+                  <input
+                    type="text"
+                    defaultValue={"of " + page.total_pages && page.total_pages}
+                    className="form-control"
+                    style={{ maxWidth: "80px" }}
+                    disabled
+                  />
+                  <div
+                    className="input-group-prepend"
+                    style={{ cursor: "pointer" }}
+                    onClick={NextPage}
+                  >
+                    <span className="input-group-text" id="basic-addon1">
+                      Next
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <Row>
             <div className="col-lg-8 m-1">
               <div className="card opac-90">
@@ -156,109 +268,113 @@ export default function Home() {
                     </thead>
                     <tbody style={{ cursor: "pointer" }}>
                       {!search &&
-                        duties.map((duty, index) => {
-                          var vv = new Date(duty.date);
-                          var mission = duty.mission_ended;
-                          let color = "#D0F5BE";
-                          let textColor = "#0C134F";
-                          var v1;
-                          if (mission) {
-                            v1 = "Completed";
-                            color = "#FBFFDC";
-                            textColor = "green";
-                          } else {
-                            v1 = "Active";
-                          }
-                          return (
-                            <tr
-                              key={index + 1}
-                              onClick={() => OpenDuty(duty._id)}
-                              style={{ backgroundColor: color }}
-                            >
-                              <th className="col-1">{duty.indent_no}</th>
-                              <td scope="row">
-                                {duty.out_datetime &&
-                                  dateFormat(
-                                    duty.out_datetime,
-                                    "dS mmmm, yyyy"
-                                  )}
-                              </td>
-                              <td>{duty.vehicle && duty.vehicle.name}</td>
-                              <td>
-                                {duty.vehicle && duty.vehicle.registration_no}
-                              </td>
-                              <td>
-                                {duty.out_datetime &&
-                                  dateFormat(duty.out_datetime, " h:MM TT")}
-                              </td>
+                        duties
+                          .slice(page.first_element, page.last_element)
+                          .map((duty, index) => {
+                            var vv = new Date(duty.date);
+                            var mission = duty.mission_ended;
+                            let color = "#D0F5BE";
+                            let textColor = "#0C134F";
+                            var v1;
+                            if (mission) {
+                              v1 = "Completed";
+                              color = "#FBFFDC";
+                              textColor = "green";
+                            } else {
+                              v1 = "Active";
+                            }
+                            return (
+                              <tr
+                                key={index + 1}
+                                onClick={() => OpenDuty(duty._id)}
+                                style={{ backgroundColor: color }}
+                              >
+                                <th className="col-1">{duty.indent_no}</th>
+                                <td scope="row">
+                                  {duty.out_datetime &&
+                                    dateFormat(
+                                      duty.out_datetime,
+                                      "dS mmmm, yyyy"
+                                    )}
+                                </td>
+                                <td>{duty.vehicle && duty.vehicle.name}</td>
+                                <td>
+                                  {duty.vehicle && duty.vehicle.registration_no}
+                                </td>
+                                <td>
+                                  {duty.out_datetime &&
+                                    dateFormat(duty.out_datetime, " h:MM TT")}
+                                </td>
 
-                              <td style={{ color: textColor }}>
-                                {v1 === "Active" && (
-                                  <>
-                                    <span className="blinking">Active</span>
-                                  </>
-                                )}
-                                {v1 === "Completed" && (
-                                  <>
-                                    <span>Completed</span>
-                                  </>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })}
+                                <td style={{ color: textColor }}>
+                                  {v1 === "Active" && (
+                                    <>
+                                      <span className="blinking">Active</span>
+                                    </>
+                                  )}
+                                  {v1 === "Completed" && (
+                                    <>
+                                      <span>Completed</span>
+                                    </>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
                       {search &&
-                        searchResultList.map((duty, index) => {
-                          var vv = new Date(duty.date);
-                          var mission = duty.mission_ended;
-                          let color = "#D0F5BE";
-                          let textColor = "#0C134F";
-                          var v1;
-                          if (mission) {
-                            v1 = "Completed";
-                            color = "#FBFFDC";
-                            textColor = "green";
-                          } else {
-                            v1 = "Active";
-                          }
-                          return (
-                            <tr
-                              key={index + 1}
-                              onClick={() => OpenLink(duty._id)}
-                              style={{ backgroundColor: color }}
-                            >
-                              <th className="col-1">{duty.indent_no}</th>
-                              <td scope="row">
-                                {duty.out_datetime &&
-                                  dateFormat(
-                                    duty.out_datetime,
-                                    "dS mmmm, yyyy"
-                                  )}
-                              </td>
-                              <td>{duty.vehicle && duty.vehicle.name}</td>
-                              <td>
-                                {duty.vehicle && duty.vehicle.registration_no}
-                              </td>
-                              <td>
-                                {duty.out_datetime &&
-                                  dateFormat(duty.out_datetime, " h:MM TT")}
-                              </td>
+                        searchResultList
+                          .slice(page.first_element, page.last_element)
+                          .map((duty, index) => {
+                            var vv = new Date(duty.date);
+                            var mission = duty.mission_ended;
+                            let color = "#D0F5BE";
+                            let textColor = "#0C134F";
+                            var v1;
+                            if (mission) {
+                              v1 = "Completed";
+                              color = "#FBFFDC";
+                              textColor = "green";
+                            } else {
+                              v1 = "Active";
+                            }
+                            return (
+                              <tr
+                                key={index + 1}
+                                onClick={() => OpenLink(duty._id)}
+                                style={{ backgroundColor: color }}
+                              >
+                                <th className="col-1">{duty.indent_no}</th>
+                                <td scope="row">
+                                  {duty.out_datetime &&
+                                    dateFormat(
+                                      duty.out_datetime,
+                                      "dS mmmm, yyyy"
+                                    )}
+                                </td>
+                                <td>{duty.vehicle && duty.vehicle.name}</td>
+                                <td>
+                                  {duty.vehicle && duty.vehicle.registration_no}
+                                </td>
+                                <td>
+                                  {duty.out_datetime &&
+                                    dateFormat(duty.out_datetime, " h:MM TT")}
+                                </td>
 
-                              <td style={{ color: textColor }}>
-                                {v1 === "Active" && (
-                                  <>
-                                    <span className="blinking">Active</span>
-                                  </>
-                                )}
-                                {v1 === "Completed" && (
-                                  <>
-                                    <span>Completed</span>
-                                  </>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })}
+                                <td style={{ color: textColor }}>
+                                  {v1 === "Active" && (
+                                    <>
+                                      <span className="blinking">Active</span>
+                                    </>
+                                  )}
+                                  {v1 === "Completed" && (
+                                    <>
+                                      <span>Completed</span>
+                                    </>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
                     </tbody>
                   </table>
                 </div>
@@ -321,9 +437,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href={"/admin/duties/print"}>
-                <Button className="w-100 mb-1 btn-danger">
-                  Print
-                </Button>
+                <Button className="w-100 mb-1 btn-danger">Print</Button>
               </Link>
             </div>
           </Row>

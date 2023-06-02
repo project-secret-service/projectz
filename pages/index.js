@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { checkIfLoggedIn } from "@/functions/axiosApis";
+import { checkIfLoggedIn } from "@/functions/loginAPI";
 
 export default function Home() {
   return (

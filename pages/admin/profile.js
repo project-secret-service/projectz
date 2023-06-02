@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Script from "next/script";
 import Header from "../components/Header";
@@ -7,23 +6,14 @@ import SideBar from "../components/Sidebar";
 
 import Scripts from "../components/Scripts";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import Router, { useRouter } from "next/router";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
 import vehicle_styles from "@/styles/Vehicles.module.css";
 import { Button } from "react-bootstrap";
-// const inter = Inter({subsets: ['latin']})
-async function GetUser() {
-  const res = await axios({
-    url: "http://localhost:3000/users/get_user_details",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
 
-var v;
+import {
+  GetProfile,
+  updateProfileDetails,
+} from "@/functions/apiHandlers/profile";
 
 <li className="nav-item">
   <button
@@ -34,6 +24,7 @@ var v;
     Change Password
   </button>
 </li>;
+
 export default function Home() {
   const [user, setUser] = useState([]);
   const router = useRouter();
@@ -52,6 +43,7 @@ export default function Home() {
       reader.readAsDataURL(event.target.files[0]);
     }
   };
+
   function setProfile() {
     profile_pic.current.src = "/assets/img/profile1.png";
     profile_pic_edit.current.src = "/assets/img/profile1.png";
@@ -64,35 +56,11 @@ export default function Home() {
     });
   }
 
-  async function updateDetails(event) {
-    event.preventDefault();
-    setLoading(true);
-    var data = {
-      name: event.target.name.value,
-      role: event.target.company.value,
-      rank: event.target.rank.value,
-      phone: event.target.phone.value,
-      email: event.target.email.value,
-      photo: event.target.profile_pic.files[0],
-    };
-    const res = await axios({
-      url: "http://localhost:3000/users/update/" + v,
-      method: "PUT",
-      withCredentials: true,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: data,
-    });
-    router.reload();
-  }
-
   useEffect(() => {
-    GetUser().then((data) => {
+    GetProfile().then((data) => {
       setUser(data);
     });
   }, []);
-  v = user._id;
 
   return (
     <>
@@ -233,19 +201,11 @@ export default function Home() {
                         className="tab-pane fade profile-edit pt-3"
                         id="profile-edit"
                       >
-                        <form onSubmit={updateDetails}>
-                          <ToastContainer
-                            position="bottom-center"
-                            autoClose={2500}
-                            hideProgressBar={false}
-                            newestOnTop={false}
-                            closeOnClick
-                            rtl={false}
-                            pauseOnFocusLoss
-                            draggable
-                            pauseOnHover
-                            theme="light"
-                          />
+                        <form
+                          onSubmit={(e) => {
+                            updateProfileDetails(e, setLoading, user);
+                          }}
+                        >
                           <div className="row mb-3">
                             <label
                               htmlFor="profileImage"

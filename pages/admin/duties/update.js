@@ -4,17 +4,31 @@ import { useEffect, useState } from "react";
 import styles from "@/styles/Home.module.css";
 import Scripts from "@/pages/components/Scripts";
 import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
-import { UpdateDutyDetails, GetOnDutyVehicles } from "@/functions/axiosApis";
+import {
+  UpdateDutyDetails,
+  GetOnDutyVehicles,
+} from "@/functions/apiHandlers/duties";
 
 export default function Home() {
   const [onDutyVehicles, setOnDutyVehicles] = useState([]);
   const [duty, setDuty] = useState({});
 
-  useEffect(() => {
-    GetOnDutyVehicles().then((data) => {
-      setOnDutyVehicles(data);
-      setDuty(data[0]);
+  async function SetAllDetails() {
+    let data = await GetOnDutyVehicles();
+    setOnDutyVehicles(data);
+    setDuty(data[0]);
+    console.log(data[0]);
+  }
+
+  async function changeDuty({ target: { name, value } }) {
+    let newDuty = onDutyVehicles.find((thisDuty) => {
+      return thisDuty._id == value;
     });
+    setDuty(newDuty);
+    console.log(newDuty);
+  }
+  useEffect(() => {
+    SetAllDetails();
   }, []);
 
   return (
@@ -41,6 +55,7 @@ export default function Home() {
                         name="vehicle_no"
                         className="form-select"
                         aria-label="Default select example"
+                        onChange={changeDuty}
                       >
                         {onDutyVehicles.map((uncompvehicle, index) => (
                           <option key={index} value={uncompvehicle._id}>
@@ -79,6 +94,10 @@ export default function Home() {
                     </label>
                     <div className="col-sm-7">
                       <input
+                        defaultValue={
+                          duty.vehicle && duty.vehicle.total_kilo_meter
+                        }
+                        min={duty.vehicle && duty.vehicle.total_kilo_meter}
                         type="number"
                         name="meter_count"
                         className="form-control"
@@ -95,6 +114,9 @@ export default function Home() {
                     </label>
                     <div className="col-sm-7">
                       <input
+                        defaultValue={duty.vehicle && duty.vehicle.fuel}
+                        max={duty.vehicle && duty.vehicle.fuel_capacity}
+                        min={0}
                         type="number"
                         name="fuel"
                         className="form-control"

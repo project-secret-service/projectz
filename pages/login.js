@@ -1,10 +1,9 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import { useEffect } from "react";
-import { checkLogin, UserLogin } from "@/functions/axiosApis";
+import { checkLogin, UserLogin } from "@/functions/loginAPI";
 
 export default function Login() {
-
   useEffect(() => {
     checkLogin();
   });
@@ -44,9 +43,7 @@ export default function Login() {
             className={styles.form}
             style={{ opacity: 1, backgroundColor: "white", opacity: 0.8 }}
           >
-            <form
-              onSubmit={UserLogin}
-            >
+            <form onSubmit={UserLogin}>
               <div className={styles.form_inputs}>
                 <div className="text-center">
                   <h1

@@ -7,7 +7,7 @@ import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import { Button, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
-import { GetDuties, OpenDuty } from "@/functions/axiosApis";
+import { GetDuties, OpenDuty } from "@/functions/apiHandlers/duties";
 import Router from "next/router";
 import { useReactToPrint } from "react-to-print";
 import axios from "axios";
