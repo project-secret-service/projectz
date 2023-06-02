@@ -282,11 +282,21 @@ export default function Home() {
               >
                 BACK
               </Button>
+              <hr />
               <Link href={"/admin/vehicles/add"}>
-                <Button className="w-100 mb-1 btn-success">Add Vehicle</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  <i className="bi bi-plus-circle"></i> Add Vehicle
+                </Button>
               </Link>
               <Link href={"/admin/vehicles/"}>
-                <Button className="w-100 mb-1">All Vehicles</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  <i className="bi bi-list-task"></i> List Vehicles
+                </Button>
+              </Link>
+              <Link href={"/admin/duties/add"}>
+                <Button className="w-100 mb-1 btn-light">
+                  <i className="bi bi-pencil-square"></i> Add Duty
+                </Button>
               </Link>
             </div>
           </div>

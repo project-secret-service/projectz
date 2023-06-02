@@ -43,11 +43,15 @@ export default function Header({ parentCallback }) {
               src="/assets/img/logo.png"
               alt=""
             /> */}
-            <span className="d-none d-lg-block josefin-sans">
+            <span
+              className="d-none d-lg-block josefin-sans"
+              style={{
+                textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+              }}
+            >
               <span
                 style={{
                   color: "red",
-                  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
                 }}
               >
                 FLEET
@@ -276,6 +280,8 @@ export default function Header({ parentCallback }) {
                       borderRadius: "50%",
                       width: "30px",
                       height: "30px",
+                      WebkitFilter: "drop-shadow(1px 1px 1px #222)",
+                      filter: "drop-shadow(1px 1px 5px #222)",
                     }}
                     alt="Profile"
                   />
@@ -286,11 +292,21 @@ export default function Header({ parentCallback }) {
                     src="/assets/img/profile1.png"
                     alt="Profile"
                     className="rounded-circle"
-                    style={{ borderRadius: "50%" }}
+                    style={{
+                      borderRadius: "50%",
+                      WebkitFilter: "drop-shadow(1px 1px 1px #222)",
+                      filter: "drop-shadow(1px 1px 5px #222)",
+                    }}
                   />
                 )}
 
-                <span className="d-none d-md-block dropdown-toggle ps-2">
+                <span
+                  className="d-none d-md-block dropdown-toggle ps-2"
+                  style={{
+                    textShadow: "0.5px 0.5px 0.5px #222",
+                    fontSize: "1.1rem",
+                  }}
+                >
                   {user.name}
                 </span>
               </a>

@@ -36,7 +36,7 @@ const Post = () => {
       <Header />
       <SideBar />
       <main className={styles.main}>
-        <main id="main" className="col-10 main mt-0 opac-80">
+        <main id="main" className="col-11 main mt-0 opac-80">
           <h1 className="josefin-sans">{driver.name}</h1>
           <Row>
             <div className="card col-8 m-1">
@@ -117,7 +117,7 @@ const Post = () => {
             </div>
             <div
               className="col-lg-3 card p-4 m-1 opac-80"
-              style={{ maxHeight: "20vh" }}
+              style={{ maxHeight: "40vh" }}
             >
               <Button
                 className="w-100 mb-1 btn-dark"
@@ -127,13 +127,17 @@ const Post = () => {
               >
                 BACK
               </Button>
-
+              <hr />
               <Link href={"/admin/drivers/add"}>
-                <Button className="w-100 mb-1 btn-warning">Add Drivers</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  <i className="bi bi-plus-circle"> </i>Add Drivers
+                </Button>
               </Link>
 
               <Link href={"/admin/drivers/"}>
-                <Button className="w-100 mb-1 btn-dark">List Drivers</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  <i className="bi bi-list-task"></i> List Drivers
+                </Button>
               </Link>
             </div>
           </Row>

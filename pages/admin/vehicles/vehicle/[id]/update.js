@@ -698,9 +698,9 @@ export default function Home() {
                 )}
                 {loading && (
                   <>
-                    <button class="btn btn-primary" type="button" disabled>
+                    <button className="btn btn-primary" type="button" disabled>
                       <span
-                        class="spinner-border spinner-border-sm"
+                        className="spinner-border spinner-border-sm"
                         role="status"
                         aria-hidden="true"
                       ></span>

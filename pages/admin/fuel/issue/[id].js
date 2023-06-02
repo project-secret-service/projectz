@@ -106,7 +106,7 @@ const Post = () => {
                 />
               </div>
 
-              <table class="table">
+              <table className="table">
                 {
                   <tbody>
                     <tr>
@@ -153,7 +153,7 @@ const Post = () => {
                 }
               </table>
             </div>
-            <div class="col d-flex justify-content-center">
+            <div className="col d-flex justify-content-center">
               <div
                 className="col-lg-3 card p-4 m-1 "
                 style={{ maxHeight: "10vh" }}

@@ -15,6 +15,7 @@ import {
 } from "@/functions/apiHandlers/duties";
 import { GetVehiclesAvailable } from "@/functions/apiHandlers/vehicles";
 import { GetDriversAvailable } from "@/functions/apiHandlers/drivers";
+import { DutiesRightSideMenu } from "@/pages/components/admin/duties";
 
 export default function Home() {
   const [vehicles, setVehicles] = useState([]);
@@ -292,19 +293,9 @@ export default function Home() {
             </div>
             <div
               className="col-lg-3 card p-4 m-1"
-              style={{ maxHeight: "40vh" }}
+              style={{ maxHeight: "80vh" }}
             >
-              <Button
-                onClick={() => {
-                  Router.back();
-                }}
-                className="w-100 mb-1 btn-dark"
-              >
-                BACK
-              </Button>
-              <Link href={"/admin/duties"}>
-                <Button className="w-100 mb-1">List Vehicles</Button>
-              </Link>
+              <DutiesRightSideMenu disable={"add_duties"} />
             </div>
           </Row>
         </main>

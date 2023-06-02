@@ -88,7 +88,7 @@ const Post = () => {
               />
             </div>
 
-            <table class="table">
+            <table className="table">
               {
                 <tbody>
                   <tr>

@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
 import { GetDutiesDesc, OpenDuty } from "@/functions/apiHandlers/duties";
+import { DutiesRightSideMenu } from "@/pages/components/admin/duties";
 
 export default function Home() {
   const [duties, setDuties] = useState([]);
@@ -154,7 +155,7 @@ export default function Home() {
     setSearch(true);
     let results = new Set();
     duties.forEach((duty) => {
-      let date = dateFormat(duty.date, "dS mmm, yyyy");
+      let date = dateFormat(duty.date, "dS mmmm, yyyy");
 
       if (
         searchFilterRef.current.value === "vehicle_name" &&
@@ -180,6 +181,7 @@ export default function Home() {
         searchFilterRef.current.value === "date" &&
         date.toLowerCase().includes(search.toLowerCase())
       ) {
+        console.log(date);
         results.add(duty);
       }
       if (searchFilterRef.current.value === "active") {
@@ -194,6 +196,13 @@ export default function Home() {
           results.add(duty);
           setSearch(true);
         }
+      }
+      if (
+        searchFilterRef.current.value === "purpose" &&
+        duty.purpose.toLowerCase().includes(search.toLowerCase())
+      ) {
+        console.log(duty.purpose);
+        results.add(duty);
       }
     });
     setSearchResultList(Array.from(results));
@@ -242,13 +251,26 @@ export default function Home() {
                     style={{ maxWidth: "50px" }}
                     disabled
                   />
-                  <input
-                    type="text"
-                    defaultValue={"of " + page.total_pages && page.total_pages}
-                    className="form-control"
-                    style={{ maxWidth: "80px" }}
-                    disabled
-                  />
+
+                  {page.total_pages > 1 && (
+                    <input
+                      type="text"
+                      // defaultValue={"of " + page.total_pages && page.total_pages}
+                      placeholder={"of " + page.total_pages + " Pages"}
+                      className="form-control"
+                      style={{ maxWidth: "7rem" }}
+                      disabled
+                    />
+                  )}
+                  {page.total_pages <= 1 && (
+                    <input
+                      type="text"
+                      placeholder={"of " + page.total_pages + " Page"}
+                      className="form-control"
+                      style={{ maxWidth: "7rem" }}
+                      disabled
+                    />
+                  )}
                   <div
                     className="input-group-prepend"
                     style={{ cursor: "pointer" }}
@@ -269,12 +291,25 @@ export default function Home() {
                   <table className="table table-hover">
                     <thead>
                       <tr>
-                        <th scope="col">Indent No</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Vehicle name</th>
-                        <th scope="col">Vehicle No</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Status</th>
+                        <th scope="col" className="col-2">
+                          Date
+                        </th>
+                        <th scope="col" className="col-4">
+                          Duty
+                        </th>
+                        <th scope="col" className="col-3">
+                          Vehicle
+                        </th>
+                        <th scope="col" className="col-1">
+                          KM
+                        </th>
+                        <th scope="col">Bill No</th>
+                        <th scope="col" className="text-center">
+                          Status
+                        </th>
+                        <th scope="col" className="text-center">
+                          SignBy <br />
+                        </th>
                       </tr>
                     </thead>
                     <tbody style={{ cursor: "pointer" }}>
@@ -282,51 +317,67 @@ export default function Home() {
                         duties
                           .slice(page.first_element, page.last_element)
                           .map((duty, index) => {
-                            var vv = new Date(duty.date);
-                            var mission = duty.mission_ended;
-                            let color = "#D0F5BE";
-                            let textColor = "#0C134F";
-                            var v1;
-                            if (mission) {
-                              v1 = "Completed";
-                              color = "#FBFFDC";
-                              textColor = "green";
-                            } else {
-                              v1 = "Active";
-                            }
                             return (
                               <tr
                                 key={index + 1}
                                 onClick={() => OpenDuty(duty._id)}
-                                style={{ backgroundColor: color }}
                               >
-                                <th className="col-1">{duty.indent_no}</th>
-                                <td scope="row">
-                                  {duty.out_datetime &&
-                                    dateFormat(
-                                      duty.out_datetime,
-                                      "dS mmmm, yyyy"
-                                    )}
+                                <td className="col-1">
+                                  <b>
+                                    {duty.out_datetime &&
+                                      dateFormat(
+                                        duty.out_datetime,
+                                        "dS mmmm, yyyy"
+                                      )}
+                                  </b>
                                 </td>
-                                <td>{duty.vehicle && duty.vehicle.name}</td>
-                                <td>
-                                  {duty.vehicle && duty.vehicle.registration_no}
-                                </td>
-                                <td>
-                                  {duty.out_datetime &&
-                                    dateFormat(duty.out_datetime, " h:MM TT")}
+                                <td className="col-3">
+                                  {duty.purpose && duty.purpose}
                                 </td>
 
-                                <td style={{ color: textColor }}>
-                                  {v1 === "Active" && (
+                                <td>
+                                  CRP -(
+                                  {duty.vehicle && duty.vehicle.vehicle_crp_no}
+                                  ), {duty.vehicle && duty.vehicle.name},{" "}
+                                  {duty.vehicle && duty.vehicle.registration_no}
+                                </td>
+                                <td>{duty.km_run && duty.km_run} km</td>
+                                <td>1455</td>
+                                <td
+                                  style={{
+                                    textAlign: "center",
+                                  }}
+                                >
+                                  {!duty.mission_ended && (
                                     <>
-                                      <span className="blinking">Active</span>
+                                      <span
+                                        className="blinking"
+                                        style={{ color: "red" }}
+                                      >
+                                        <i className="bi bi-car-front-fill"></i>
+                                      </span>
                                     </>
                                   )}
-                                  {v1 === "Completed" && (
+                                  {duty.mission_ended && (
                                     <>
-                                      <span>Completed</span>
+                                      <span style={{ color: "green" }}>
+                                        <i className="bi bi-check-circle-fill"></i>
+                                      </span>
                                     </>
+                                  )}
+                                </td>
+
+                                <td className="text-center">
+                                  {duty.sign_indenter && (
+                                    <span style={{ color: "darkmagenta" }}>
+                                      INT
+                                    </span>
+                                  )}
+                                  {duty.sign_mtic && (
+                                    <span style={{ color: "blue" }}> MTIC</span>
+                                  )}
+                                  {duty.sign_mto && (
+                                    <span style={{ color: "green" }}> MTO</span>
                                   )}
                                 </td>
                               </tr>
@@ -336,51 +387,67 @@ export default function Home() {
                         searchResultList
                           .slice(page.first_element, page.last_element)
                           .map((duty, index) => {
-                            var vv = new Date(duty.date);
-                            var mission = duty.mission_ended;
-                            let color = "#D0F5BE";
-                            let textColor = "#0C134F";
-                            var v1;
-                            if (mission) {
-                              v1 = "Completed";
-                              color = "#FBFFDC";
-                              textColor = "green";
-                            } else {
-                              v1 = "Active";
-                            }
                             return (
                               <tr
                                 key={index + 1}
-                                onClick={() => OpenLink(duty._id)}
-                                style={{ backgroundColor: color }}
+                                onClick={() => OpenDuty(duty._id)}
                               >
-                                <th className="col-1">{duty.indent_no}</th>
-                                <td scope="row">
-                                  {duty.out_datetime &&
-                                    dateFormat(
-                                      duty.out_datetime,
-                                      "dS mmmm, yyyy"
-                                    )}
+                                <td className="col-1">
+                                  <b>
+                                    {duty.out_datetime &&
+                                      dateFormat(
+                                        duty.out_datetime,
+                                        "dS mmmm, yyyy"
+                                      )}
+                                  </b>
                                 </td>
-                                <td>{duty.vehicle && duty.vehicle.name}</td>
-                                <td>
-                                  {duty.vehicle && duty.vehicle.registration_no}
-                                </td>
-                                <td>
-                                  {duty.out_datetime &&
-                                    dateFormat(duty.out_datetime, " h:MM TT")}
+                                <td className="col-3">
+                                  {duty.purpose && duty.purpose}
                                 </td>
 
-                                <td style={{ color: textColor }}>
-                                  {v1 === "Active" && (
+                                <td>
+                                  CRP -(
+                                  {duty.vehicle && duty.vehicle.vehicle_crp_no}
+                                  ), {duty.vehicle && duty.vehicle.name},{" "}
+                                  {duty.vehicle && duty.vehicle.registration_no}
+                                </td>
+                                <td>{duty.km_run && duty.km_run} km</td>
+                                <td>1455</td>
+                                <td
+                                  style={{
+                                    textAlign: "center",
+                                  }}
+                                >
+                                  {!duty.mission_ended && (
                                     <>
-                                      <span className="blinking">Active</span>
+                                      <span
+                                        className="blinking"
+                                        style={{ color: "red" }}
+                                      >
+                                        <i className="bi bi-car-front-fill"></i>
+                                      </span>
                                     </>
                                   )}
-                                  {v1 === "Completed" && (
+                                  {duty.mission_ended && (
                                     <>
-                                      <span>Completed</span>
+                                      <span style={{ color: "green" }}>
+                                        <i className="bi bi-check-circle-fill"></i>
+                                      </span>
                                     </>
+                                  )}
+                                </td>
+
+                                <td className="text-center">
+                                  {duty.sign_indenter && (
+                                    <span style={{ color: "darkmagenta" }}>
+                                      INT
+                                    </span>
+                                  )}
+                                  {duty.sign_mtic && (
+                                    <span style={{ color: "blue" }}> MTIC</span>
+                                  )}
+                                  {duty.sign_mto && (
+                                    <span style={{ color: "green" }}> MTO</span>
                                   )}
                                 </td>
                               </tr>
@@ -393,7 +460,7 @@ export default function Home() {
             </div>
             <div
               className="col-lg-3 card p-4 m-1 opac-80"
-              style={{ maxHeight: "50vh", opacity: "0.6" }}
+              style={{ maxHeight: "70vh" }}
             >
               <div className="row p-3">
                 <input
@@ -410,8 +477,9 @@ export default function Home() {
                 ref={searchFilterRef}
                 aria-label="Default select example"
                 onChange={handleSearchFilter}
-                defaultValue={"vehicle_name"}
+                defaultValue={"purpose"}
               >
+                <option value="purpose">Duty</option>
                 <option value="vehicle_name">Vehicle Name</option>
                 <option value="registration_no">Vehicle No</option>
                 <option value="date">Date</option>
@@ -420,36 +488,7 @@ export default function Home() {
                 <option value="active">Active</option>
               </select>
               <hr></hr>
-              <Button
-                onClick={() => {
-                  Router.back();
-                }}
-                className="w-100 mb-1 btn-dark"
-              >
-                BACK
-              </Button>
-
-              <Link href={"/admin/duties/add"}>
-                <Button className="w-100 mb-1 btn-primary">Add Duties</Button>
-              </Link>
-              <Link href={"/admin/duties/update"}>
-                <Button className="w-100 mb-1 btn-warning">
-                  Update Duties
-                </Button>
-              </Link>
-              <Link href={"/admin/drivers/available"}>
-                <Button className="w-100 mb-1 btn-light">
-                  Available Drivers
-                </Button>
-              </Link>
-              <Link href={"/admin/vehicles/available"}>
-                <Button className="w-100 mb-1 btn-success">
-                  Available Vehicles
-                </Button>
-              </Link>
-              <Link href={"/admin/duties/print"}>
-                <Button className="w-100 mb-1 btn-danger">Print</Button>
-              </Link>
+              <DutiesRightSideMenu disable={"all_duties"}/>
             </div>
           </Row>
         </main>

@@ -29,7 +29,7 @@ export default function Home() {
   }, []);
 
   function OpenLink(link) {
-    Router.push("/admin/inventory/items/" + link);
+    Router.push("/admin/inventory/item/" + link+"/history");
   }
 
   return (
@@ -77,7 +77,6 @@ export default function Home() {
               </table>
             </div>
             <div className="col-lg-3 card p-5 m-1">
-              
               <Button
                 onClick={() => {
                   Router.back();

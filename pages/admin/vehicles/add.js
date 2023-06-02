@@ -129,12 +129,11 @@ export default function Home() {
         <SideBar />
 
         <main id="main" className="col-lg-11 main mt-0 opac-80">
+          <h1>Add New Vehicle</h1>
           <Row>
             <div className="col-lg-8">
               <div className="card">
                 <div className="card-body">
-                  <h1>Add New Vehicle</h1>
-
                   <form>
                     <div className="row mb-3">
                       <label
@@ -339,7 +338,7 @@ export default function Home() {
             </div>
             <div
               className="col-lg-3 card p-4 m-1"
-              style={{ maxHeight: "20vh" }}
+              style={{ maxHeight: "50vh" }}
             >
               <Button
                 onClick={() => {
@@ -349,11 +348,21 @@ export default function Home() {
               >
                 BACK
               </Button>
-              <Link href={"/admin/vehicles"}>
-                <Button className="w-100 mb-1 btn-success">List Vehicles</Button>
+              <hr />
+              <Link href={"/admin/vehicles/"}>
+                <Button className="w-100 mb-1 btn-light">
+                  <i className="bi bi-list-task"></i> List Vehicles
+                </Button>
+              </Link>
+              <Link href={"/admin/duties/add"}>
+                <Button className="w-100 mb-1 btn-light">
+                  <i className="bi bi-pencil-square"></i> Add Duty
+                </Button>
               </Link>
               <Link href={"/admin/vehicles/available"}>
-                <Button className="w-100 mb-1 btn-">Available Vehicles</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  <i className="bi bi-truck-front"></i> Vehicle Available
+                </Button>
               </Link>
             </div>
           </Row>

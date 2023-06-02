@@ -337,11 +337,17 @@ export default function Home() {
               >
                 BACK
               </Button>
+              <hr />
               <Link href={"/admin/drivers/add"}>
-                <Button className="w-100 mb-1 btn-warning">Add Driver</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  <i className="bi bi-plus-circle"> </i>Add Drivers
+                </Button>
               </Link>
+
               <Link href={"/admin/drivers/"}>
-                <Button className="w-100 mb-1">All Drivers</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  <i className="bi bi-list-task"></i> All Drivers
+                </Button>
               </Link>
             </div>
           </div>

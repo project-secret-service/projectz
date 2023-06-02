@@ -14,6 +14,15 @@ export async function GetDutiesDesc() {
   return res.data;
 }
 
+export async function ActiveDuty(id) {
+  const res = await axios({
+    url: "/duty_log/active/" + id,
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}
+
 export async function GetDuties() {
   const res = await axios({
     url: "/duty_log/",

@@ -506,10 +506,22 @@ const Post = () => {
               </Button>
               <ReactToPrint
                 trigger={() => (
-                  <button className="btn btn-primary">Print</button>
+                  <button className="btn btn-primary mb-1">Print</button>
                 )}
                 content={() => componentRef.current}
               />
+              {!duty.mission_ended && (
+                <>
+                  <Button
+                    className="btn-success mb-1"
+                    onClick={() => {
+                      Router.push("/admin/duties/" + duty._id + "/update");
+                    }}
+                  >
+                    Update Duty
+                  </Button>
+                </>
+              )}
               <br />
 
               {!duty.sign_indenter && (

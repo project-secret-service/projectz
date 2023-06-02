@@ -1,46 +1,39 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import Link from "next/link";
+
 import styles from "@/styles/Home.module.css";
 import Scripts from "@/pages/components/Scripts";
 import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
-import {
-  UpdateDutyDetails,
-  GetOnDutyVehicles,
-} from "@/functions/apiHandlers/duties";
-import Router from "next/router";
-import { DutiesRightSideMenu } from "@/pages/components/admin/duties";
+import { useRouter } from "next/router";
+
+import { UpdateDutyDetails, ActiveDuty } from "@/functions/apiHandlers/duties";
 
 export default function Home() {
-  const [onDutyVehicles, setOnDutyVehicles] = useState([]);
   const [duty, setDuty] = useState({});
+  const router = useRouter();
 
-  async function SetAllDetails() {
-    let data = await GetOnDutyVehicles();
-    setOnDutyVehicles(data);
-    setDuty(data[0]);
+  async function SetAllDetails(id) {
+    let data = await ActiveDuty(id);
+    setDuty(data);
+    console.log(data);
   }
 
-  async function changeDuty({ target: { name, value } }) {
-    let newDuty = onDutyVehicles.find((thisDuty) => {
-      return thisDuty._id == value;
-    });
-    setDuty(newDuty);
-  }
   useEffect(() => {
-    SetAllDetails();
-  }, []);
+    if (!router.isReady) return;
+    const { id } = router.query;
+    SetAllDetails(id);
+  }, [router.isReady]);
 
   return (
     <>
       <main className={styles.main}>
         <HeadAndSideBar title={"Update Duty"} />
-        <main id="main" className="col-lg-11 main opac-80 row">
-          <h1>Update Duty</h1>
-          <div className="col-lg-8">
+        <main id="main" className="col-lg-10 main opac-80">
+          <div className="col-lg-10">
             <div className="card">
               <div className="card-body">
+                <h1>Update Duty</h1>
+
                 <form
                   onSubmit={(e) => {
                     UpdateDutyDetails(e, duty);
@@ -51,32 +44,13 @@ export default function Home() {
                       Vehicle Number :
                     </label>
                     <div className="col-sm-7">
-                      <select
-                        name="vehicle_no"
-                        className="form-select"
-                        aria-label="Default select example"
-                        onChange={changeDuty}
-                      >
-                        {onDutyVehicles.map((uncompvehicle, index) => (
-                          <option key={index} value={uncompvehicle._id}>
-                            {"CRP-" + uncompvehicle.vehicle.vehicle_crp_no}{" "}
-                            {uncompvehicle.vehicle.registration_no} {" : "}
-                            {uncompvehicle.vehicle.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="row mb-3">
-                    <label
-                      htmlFor="inputText"
-                      className="col-sm-5 col-form-label"
-                    >
-                      Purpose :
-                    </label>
-                    <div className="col-sm-7">
-                      <b>{duty.purpose}</b>
+                      <b>
+                        CRP-(
+                        {duty.vehicle && duty.vehicle.vehicle_crp_no}){", "}
+                        {duty.vehicle && duty.vehicle.registration_no}
+                        {", "}
+                        {duty.vehicle && duty.vehicle.name}
+                      </b>
                     </div>
                   </div>
 
@@ -150,9 +124,6 @@ export default function Home() {
                 </form>
               </div>
             </div>
-          </div>
-          <div className="col-3 card p-3">
-            <DutiesRightSideMenu disable={"update_duties"} />
           </div>
         </main>
       </main>
