@@ -63,3 +63,9 @@ export function DutiesRightSideMenu({ disable }) {
     </>
   );
 }
+
+export default function Duties(){
+  return(
+    <></>
+  );
+}

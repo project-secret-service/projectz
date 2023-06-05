@@ -1,8 +1,7 @@
 import styles from "@/styles/Home.module.css";
 import Script from "next/script";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
-import Scripts from "../../components/Scripts";
+import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
+import Scripts from "@/pages/components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Link from "next/link";
@@ -117,8 +116,7 @@ export default function Home() {
   return (
     <>
       <main className={styles.main}>
-        <Header />
-        <SideBar />
+        <HeadAndSideBar title={"Item"} />
 
         <main id="main" className="col-lg-11 main mt-0 opac-80">
           <Row className="p-1">
