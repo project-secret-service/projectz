@@ -206,7 +206,7 @@ export default function SideBar(props) {
               className="nav-content collapse "
               data-bs-parent="#sidebar-nav"
             >
-              <li>
+              {/* <li>
                 <Link href="/admin/workshop/receive">
                   <i className="bi bi-circle"></i>
                   <span>Recieve Voucher</span>
@@ -217,7 +217,7 @@ export default function SideBar(props) {
                   <i className="bi bi-circle"></i>
                   <span>Issue Voucher</span>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/admin/workshop/defectmemos/">
                   <i className="bi bi-circle"></i>
@@ -232,7 +232,7 @@ export default function SideBar(props) {
               </li>
             </ul>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <a
               className="nav-link collapsed"
               data-bs-target="#inspection-nav"
@@ -261,7 +261,7 @@ export default function SideBar(props) {
                 </Link>
               </li>
             </ul>
-          </li>
+          </li> */}
           <li className="nav-item">
             <a
               className="nav-link collapsed"
