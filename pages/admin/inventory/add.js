@@ -25,6 +25,8 @@ async function addNewItem(event) {
     method: "POST",
     data: data,
   });
+
+  Router.push("/admin/inventory/storage");
 }
 
 export default function Home() {
