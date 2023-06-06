@@ -219,13 +219,13 @@ export default function SideBar(props) {
                 </Link>
               </li>
               <li>
-                <Link href="/admin/workshop/defectmemo">
+                <Link href="/admin/workshop/defectmemos/">
                   <i className="bi bi-circle"></i>
                   <span>Defect Memo</span>
                 </Link>
               </li>
               <li>
-                <Link href="/admin/workshop/jobcard">
+                <Link href="/admin/workshop/jobcards/">
                   <i className="bi bi-circle"></i>
                   <span>Job Card</span>
                 </Link>

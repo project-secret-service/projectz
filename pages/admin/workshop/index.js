@@ -40,38 +40,7 @@ const Post = () => {
       <SideBar />
       <main className={styles.main}>
         <main id="main" className="main col-10 mt-0 opac-90">
-          <Row>
-            <div className="card col-8 m-1">Hello</div>
-            <div className="card col-3 m-1 p-3">
-              <Button
-                className="mb-1"
-                variant="dark"
-                onClick={() => {
-                  router.back();
-                }}
-              >
-                BACK
-              </Button>
-              <Button
-                className="mb-1"
-                variant="success"
-                onClick={() => {
-                  router.push("/admin/workshop/defectmemos/add");
-                }}
-              >
-                Add Memo
-              </Button>
-              <Button
-                className="mb-1"
-                variant="primary"
-                onClick={() => {
-                  router.push("/admin/workshop/defect_memos/");
-                }}
-              >
-                Defect Memos
-              </Button>
-            </div>
-          </Row>
+          Hello Bhai
         </main>
       </main>
     </>
