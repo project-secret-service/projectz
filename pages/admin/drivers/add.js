@@ -91,7 +91,7 @@ export default function Home() {
                           name="profile_pic"
                           type="file"
                           id="image_input"
-                          accept="image/png , image/jpg"
+                          accept="image/png,image/jpg,image/jpeg"
                         />
                       </div>
                     </div>

@@ -31,7 +31,7 @@ export default function Header({ parentCallback }) {
       >
         <div className="d-flex align-items-center justify-content-between">
           <Link
-            href="/admin/"
+            href="/admin/duties/"
             className="logo d-flex align-items-center"
             style={{ textDecoration: "none" }}
           >

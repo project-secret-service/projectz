@@ -12,7 +12,7 @@ export async function checkIfLoggedIn() {
     withCredentials: true,
   });
   if (res.data.status === 200) {
-    Router.push("/admin/");
+    Router.push("/admin/duties/");
   } else {
     Router.push("/login");
   }
@@ -26,7 +26,7 @@ export async function checkLogin() {
     withCredentials: true,
   });
   if (res.data.status === 200) {
-    Router.push("/admin/");
+    Router.push("/admin/duties/");
   }
 }
 
@@ -44,9 +44,8 @@ export async function UserLogin(event) {
   });
 
   if (res.status === 200) {
-    Router.push("/admin/");
+    Router.push("/admin/duties/");
   } else {
     alert("Wrong Username or Password");
   }
 }
-
