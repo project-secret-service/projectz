@@ -42,7 +42,7 @@ export default function Home() {
         profile_pic: event.target.profile_pic.files[0],
       },
     });
-    console.log(res.data);
+    Router.push("/admin/drivers");
   }
 
   function setD({ target: { name, value } }) {

@@ -76,7 +76,7 @@ export default function Home() {
                       Purpose :
                     </label>
                     <div className="col-sm-7">
-                      <b>{duty.purpose}</b>
+                      <b>{duty && duty.purpose}</b>
                     </div>
                   </div>
 
@@ -107,9 +107,11 @@ export default function Home() {
                     <div className="col-sm-7">
                       <input
                         defaultValue={
-                          duty.vehicle && duty.vehicle.total_kilo_meter
+                          duty && duty.vehicle && duty.vehicle.total_kilo_meter
                         }
-                        min={duty.vehicle && duty.vehicle.total_kilo_meter}
+                        min={
+                          duty && duty.vehicle && duty.vehicle.total_kilo_meter
+                        }
                         type="number"
                         name="meter_count"
                         className="form-control"
@@ -126,8 +128,8 @@ export default function Home() {
                     </label>
                     <div className="col-sm-7">
                       <input
-                        defaultValue={duty.vehicle && duty.vehicle.fuel}
-                        max={duty.vehicle && duty.vehicle.fuel_capacity}
+                        defaultValue={duty && duty.vehicle && duty.vehicle.fuel}
+                        max={duty && duty.vehicle && duty.vehicle.fuel_capacity}
                         min={0}
                         type="number"
                         name="fuel"
