@@ -29,7 +29,7 @@ export default function Home() {
   }, []);
 
   function OpenLink(link) {
-    Router.push("/admin/inventory/item/" + link+"/history");
+    Router.push("/admin/inventory/item/" + link + "/history");
   }
 
   return (
@@ -66,9 +66,12 @@ export default function Home() {
                           <th scope="row">{index + 1} </th>
                           <td>{item.name}</td>
                           <td>{item.quantity}</td>
-                          <td>{item.rate}</td>
-                          <td>{item.amount}</td>
-                          <td>{"Availaible"}</td>
+                          <td>Rs. {item.rate}</td>
+                          <td>Rs. {item.quantity * item.rate}</td>
+                          <td>
+                            {item.quantity != 0 && <>Available</>}
+                            {item.quantity === 0 && "Unavailable"}
+                          </td>
                         </>
                       </tr>
                     );
