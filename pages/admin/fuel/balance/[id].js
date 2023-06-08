@@ -10,24 +10,8 @@ import dateFormat from "dateformat";
 import { Row, Col, Button, Modal } from "react-bootstrap";
 import Link from "next/link";
 import Scripts from "@/pages/components/Scripts";
+import { getOilBalanceLog, getOil } from "@/functions/apiHandlers/fuel";
 
-async function getOilBalance(id) {
-  const res = await axios({
-    url: "http://localhost:3000/oilstockregister/oil/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function getOil(id) {
-  const res = await axios({
-    url: "http://localhost:3000/oilbalance/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
 
 const Post = () => {
   const router = useRouter();
@@ -40,7 +24,7 @@ const Post = () => {
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
-    getOilBalance(id).then((data) => {
+    getOilBalanceLog(id).then((data) => {
       setOilBalances(data);
     });
     getOil(id).then((data) => {

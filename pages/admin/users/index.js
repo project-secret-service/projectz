@@ -10,15 +10,7 @@ import axios from "axios";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
 import { Row } from "react-bootstrap";
-
-async function GetUsers() {
-  const res = await axios({
-    url: "http://localhost:3000/users/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetUsers } from "@/functions/apiHandlers/users";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
@@ -204,7 +196,7 @@ export default function Home() {
               </select>
 
               <hr></hr>
-              
+
               <Link href={"/admin/users/add"}>
                 <Button className="w-100 mb-1 btn-warning">Add Users</Button>
               </Link>

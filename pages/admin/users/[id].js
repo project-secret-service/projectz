@@ -8,15 +8,7 @@ import { Button, Row } from "react-bootstrap";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Scripts from "@/pages/components/Scripts";
-
-async function GetUserDetails(id) {
-  const res = await axios({
-    url: "http://localhost:3000/users/" + id,
-    withCredentials: true,
-    method: "GET",
-  });
-  return res.data;
-}
+import { GetUserDetails } from "@/functions/apiHandlers/users";
 
 const Post = () => {
   const [user, setUsers] = useState({});

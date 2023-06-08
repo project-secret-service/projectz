@@ -11,25 +11,11 @@ import { Button, Row } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
+import { addOilType } from "@/functions/apiHandlers/fuel";
+
 
 export default function Home() {
   const router = useRouter();
-  async function addOilType(event) {
-    event.preventDefault();
-    const data = {
-      type: event.target.type.value,
-    };
-
-    const res = await axios({
-      url: "http://localhost:3000/oilbalance/add_oil_type",
-      withCredentials: true,
-      method: "POST",
-      data: data,
-    });
-    if (res.data.status == 200) {
-      router.push("/admin/fuel/balance");
-    }
-  }
   return (
     <>
       <title>Add Fuel</title>

@@ -9,15 +9,8 @@ import dateFormat from "dateformat";
 import { Row, Col, Button, Modal } from "react-bootstrap";
 import Link from "next/link";
 import Scripts from "@/pages/components/Scripts";
+import { getAllOilBalance } from "@/functions/apiHandlers/fuel";
 
-async function getOilBalance() {
-  const res = await axios({
-    url: "http://localhost:3000/oilstockregister/log",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
 const Post = () => {
   const router = useRouter();
   const [oilbalances, setOilBalance] = useState([]);
@@ -26,7 +19,7 @@ const Post = () => {
   const [search, setSearch] = useState(false);
 
   useEffect(() => {
-    getOilBalance().then((data) => {
+    getAllOilBalance().then((data) => {
       setOilBalance(data);
       console.log(data);
     });

@@ -9,24 +9,10 @@ import moment from "moment";
 import Router from "next/router";
 import Link from "next/link";
 import { Button } from "react-bootstrap";
-
-async function getOilBalance() {
-  const res = await axios({
-    url: "http://localhost:3000/oilbalance/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function getLastEntry() {
-  const res = await axios({
-    url: "http://localhost:3000/oilstockregister/last1",
-    withCredentials: true,
-    method: "GET",
-  });
-  return res.data;
-}
+import {
+  getOilBalance,
+  getLastVoucherEntry,
+} from "@/functions/apiHandlers/fuel";
 
 export default function Home() {
   const [oils, setOils] = useState([]);
@@ -52,7 +38,7 @@ export default function Home() {
 
   useEffect(() => {
     getOilBalance().then((data) => {
-      getLastEntry().then((lastRV) => {
+      getLastVoucherEntry().then((lastRV) => {
         setOils(data);
         setVoucherNo(
           "RV/POL/" +

@@ -4,10 +4,11 @@ import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { Button, Row } from "react-bootstrap";
 import Link from "next/link";
+import { AddNewUser } from "@/functions/apiHandlers/users";
+import Router from "next/router";
 
 export default function Home() {
   const [imageSource, setImageSource] = useState("");
@@ -59,15 +60,7 @@ export default function Home() {
 
   async function addUser(event) {
     event.preventDefault();
-    const res = await axios({
-      url: "http://localhost:3000/users/add",
-      withCredentials: true,
-      method: "POST",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: newUserDetails,
-    });
+    const res = await AddNewUser(newUserDetails);
     if (res.data.status == 409) {
       setError({
         ...error,
@@ -91,6 +84,9 @@ export default function Home() {
         ...error,
         passwordRequired: res.data.message,
       });
+    }
+    if (res.data.status == 200) {
+      Router.push("/admin/users");
     }
   }
 
@@ -164,7 +160,7 @@ export default function Home() {
                         name="registration_no"
                         type="text"
                         className="form-control"
-                        placeholder="Enter your contact_No"
+                        placeholder="Enter Registration Number"
                       />
                     </div>
                   </div>
@@ -235,7 +231,7 @@ export default function Home() {
                       <input
                         onChange={setU}
                         name="phone"
-                        type="text"
+                        type="number"
                         className="form-control"
                         placeholder="Enter your contact_No"
                       />

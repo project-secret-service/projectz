@@ -9,15 +9,7 @@ import dateFormat from "dateformat";
 import { Row, Col, Button, Modal } from "react-bootstrap";
 import Scripts from "@/pages/components/Scripts";
 import { useReactToPrint } from "react-to-print";
-
-async function getOilBalance(id) {
-  const res = await axios({
-    url: "http://localhost:3000/oilstockregister/voucher/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { getVoucher } from "@/functions/apiHandlers/fuel";
 
 const SignatureModal = ({
   signAs,
@@ -112,7 +104,7 @@ const Post = () => {
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
-    getOilBalance(id).then((data) => {
+    getVoucher(id).then((data) => {
       setVoucher(data);
     });
   }, [router.isReady]);

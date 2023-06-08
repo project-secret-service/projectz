@@ -9,33 +9,13 @@ import moment from "moment";
 import Router from "next/router";
 import Link from "next/link";
 import { Button } from "react-bootstrap";
-
-async function getOilBalance() {
-  const res = await axios({
-    url: "http://localhost:3000/oilbalance/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function GetVehicles() {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function getLastEntry() {
-  const res = await axios({
-    url: "http://localhost:3000/oilstockregister/last1",
-    withCredentials: true,
-    method: "GET",
-  });
-  return res.data;
-}
+import {
+  getOilBalance,
+  allotFuel,
+  getLastVoucherEntry,
+} from "@/functions/apiHandlers/fuel";
+import { GetVehicles } from "@/functions/apiHandlers/vehicles";
+// import { getLastVoucherEntry } from "@/functions/apiHandlers/fuel";
 
 export default function Home() {
   const [oils, setOils] = useState([]);
@@ -70,23 +50,9 @@ export default function Home() {
     }
   }
 
-  async function allotFuel(event) {
-    event.preventDefault();
-    console.log(newOil);
-    const res = await axios({
-      url: "http://localhost:3000/oilstockregister/allot",
-      withCredentials: true,
-      method: "POST",
-      data: newOil,
-    });
-    if (res.data.status == 200) {
-      Router.push("/admin/fuel/balance");
-    }
-  }
-
   useEffect(() => {
     getOilBalance().then((fetchedOils) => {
-      getLastEntry().then((lastV) => {
+      getLastVoucherEntry().then((lastV) => {
         GetVehicles().then((fetchedVehicles) => {
           setVehicles(fetchedVehicles);
           setOils(fetchedOils);
@@ -131,7 +97,11 @@ export default function Home() {
             <div className="col-8 m-1 ">
               <div className="card p-3">
                 <div className="card-body">
-                  <form onSubmit={allotFuel}>
+                  <form
+                    onSubmit={(event) => {
+                      allotFuel(event, newOil);
+                    }}
+                  >
                     <div className="row mb-3">
                       <label
                         htmlFor="inputText"

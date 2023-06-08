@@ -10,15 +10,7 @@ import Router from "next/router";
 import dateFormat from "dateformat";
 import { Row, Button } from "react-bootstrap";
 import Link from "next/link";
-
-async function getOilBalance() {
-  const res = await axios({
-    url: "http://localhost:3000/oilbalance/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { getOilBalance } from "@/functions/apiHandlers/fuel";
 
 export default function Home() {
   const [oilbalances, setOilBalances] = useState([]);
