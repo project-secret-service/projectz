@@ -4,8 +4,6 @@ import Script from "next/script";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
-import { useEffect, useState } from "react";
-import axios from "axios";
 
 import { Button, Row } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";

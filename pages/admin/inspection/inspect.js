@@ -7,16 +7,7 @@ import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
 import { Row, Button } from "react-bootstrap";
 import Router from "next/router";
-import axios from "axios";
-
-async function GetVehicles() {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/",
-    method: "get",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetVehicles } from "@/functions/apiHandlers/vehicles";
 
 function NewChild() {
   return (
@@ -733,36 +724,37 @@ export default function Home() {
                       </div>
                     </div>
                     <div>
-                      {Object.entries(inspection.transmission)
-                      .map(([part, inspect], index) => {
-                        let i = 0;
-                        if (inspect.problem) {
-                          return (
-                            <div className="row mb-3" key={index}>
-                              <label
-                                htmlFor="inputText"
-                                className="col-sm-5 col-form-label"
-                              >
-                                {inspect.label}
-                              </label>
-                              <div className="col-sm-7">
-                                <input
-                                  defaultValue={""}
-                                  type="text"
-                                  name="maintaining_unit"
-                                  className="form-control"
-                                  placeholder={
-                                    "Enter " +
-                                    inspect.label.split(".")[1] +
-                                    " Problem"
-                                  }
-                                />
+                      {Object.entries(inspection.transmission).map(
+                        ([part, inspect], index) => {
+                          let i = 0;
+                          if (inspect.problem) {
+                            return (
+                              <div className="row mb-3" key={index}>
+                                <label
+                                  htmlFor="inputText"
+                                  className="col-sm-5 col-form-label"
+                                >
+                                  {inspect.label}
+                                </label>
+                                <div className="col-sm-7">
+                                  <input
+                                    defaultValue={""}
+                                    type="text"
+                                    name="maintaining_unit"
+                                    className="form-control"
+                                    placeholder={
+                                      "Enter " +
+                                      inspect.label.split(".")[1] +
+                                      " Problem"
+                                    }
+                                  />
+                                </div>
                               </div>
-                            </div>
-                          );
+                            );
+                          }
+                          return null; // Return null for non-problem entries
                         }
-                        return null; // Return null for non-problem entries
-                      })}
+                      )}
                     </div>
                     <hr />
                     <div id="inspection_electrical_section">

@@ -3,13 +3,12 @@ import styles from "@/styles/Home.module.css";
 import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
 import Scripts from "@/pages/components/Scripts";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import Router from "next/router";
 import { Button, Row } from "react-bootstrap";
-import Link from "next/link";
 import dateFormat from "dateformat";
-import { GetMemos } from "@/functions/apiHandlers/workshop";
+import { GetMemos, AddMemo } from "@/functions/apiHandlers/workshop";
 import { GetVehicles } from "@/functions/apiHandlers/vehicles";
+import { GetParts } from "@/functions/apiHandlers/workshop";
 
 export default function Home() {
   const [memos, setMemos] = useState([]);
@@ -156,35 +155,8 @@ export default function Home() {
     displayDefect ? setDisplayDefect(false) : setDisplayDefect(true);
   }
 
-  async function GetParts() {
-    const res = await axios({
-      url: "http://localhost:3000/inventory/items/",
-      method: "GET",
-      withCredentials: true,
-    });
-    return res.data;
-  }
-
   function showJobWorkFields() {
     displayJobWork ? setDisplayJobWork(false) : setDisplayJobWork(true);
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    var data = {
-      ...memo,
-      parts: selectedParts,
-      defects: defects,
-      job_works: jobWorks,
-    };
-    console.log(data);
-    const res = await axios({
-      url: "http://localhost:3000/defectmemos/add",
-      method: "POST",
-      data: data,
-      withCredentials: true,
-    });
-    console.log(res);
   }
 
   useEffect(() => {
@@ -226,7 +198,11 @@ export default function Home() {
             <div className="col-lg-8">
               <div className="card p-3">
                 <div className="card-body">
-                  <form onSubmit={handleSubmit}>
+                  <form
+                    onSubmit={(event) => {
+                      AddMemo(event, memo, selectedParts, defects, jobWorks);
+                    }}
+                  >
                     <div className="row mb-3">
                       <label htmlFor="inputText" className="col-sm-3">
                         Date :

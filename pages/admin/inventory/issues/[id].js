@@ -3,9 +3,7 @@ import styles from "@/styles/Home.module.css";
 import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
 import Scripts from "../../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import Link from "next/link";
-import Router from "next/router";
 
 import { Button, Row } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";

@@ -5,18 +5,8 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Router from "next/router";
-import dateFormat from "dateformat";
-
-async function GetInspectionHistory() {
-  const res = await axios({
-    url: "http://localhost:3000/inspection/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetInspectionHistory } from "@/functions/apiHandlers/workshop";
 
 export default function Home() {
   const [inspection, setInspectionHistory] = useState([]);
@@ -58,9 +48,7 @@ export default function Home() {
                 <th scope="col">Remarks</th>
               </tr>
             </thead>
-            <tbody style={{ cursor: "pointer" }}>
-             
-            </tbody>
+            <tbody style={{ cursor: "pointer" }}></tbody>
           </table>
         </main>
       </main>

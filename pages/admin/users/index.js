@@ -6,7 +6,6 @@ import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import axios from "axios";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
 import { Row } from "react-bootstrap";

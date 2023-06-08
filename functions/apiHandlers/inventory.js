@@ -85,3 +85,63 @@ export async function GetItems() {
   });
   return res.data;
 }
+
+export async function AddIssue(data) {
+  const res = await axios({
+    url: "http://localhost:3000/inventory/issue/add",
+    method: "POST",
+    withCredentials: true,
+    data: data,
+  });
+  return res;
+}
+
+export async function LastIssue() {
+  const res = await axios({
+    url: "http://localhost:3000/inventory/issue",
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}
+
+export async function AddOrder() {
+  const res = await axios({
+    url: "http://localhost:3000/inventory/order/add",
+    method: "POST",
+    withCredentials: true,
+    data: data,
+  });
+  return res;
+}
+
+export async function LastOrder() {
+  const res = await axios({
+    url: "http://localhost:3000/inventory/order",
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}
+
+export async function getVoucher(id) {
+  const res = await axios({
+    url: "http://localhost:3000/inventory/voucher/" + id,
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}
+
+export async function AddSignToInventoryVoucher(signAs, id, password) {
+  const res = await axios({
+    url: "http://localhost:3000/inventory/sign/add/" + signAs,
+    withCredentials: true,
+    method: "POST",
+    data: {
+      voucherID: id,
+      password: password,
+    },
+  });
+  return res;
+}

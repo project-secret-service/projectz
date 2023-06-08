@@ -40,3 +40,51 @@ export async function GetMemos() {
   });
   return res.data;
 }
+
+export async function GetInspectionHistory() {
+  const res = await axios({
+    url: "http://localhost:3000/inspection/",
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}
+
+export async function AddSignToDefectMemo(signAs, id, password) {
+  const res = await axios({
+    url: "http://localhost:3000/defectmemos/sign/add/" + signAs,
+    withCredentials: true,
+    method: "POST",
+    data: {
+      memoID: id,
+      password: password,
+    },
+  });
+  return res;
+}
+
+export async function GetParts() {
+  const res = await axios({
+    url: "http://localhost:3000/inventory/items/",
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}
+
+export async function AddMemo(event, memo, selectedParts, defects, jobWorks) {
+  event.preventDefault();
+  var data = {
+    ...memo,
+    parts: selectedParts,
+    defects: defects,
+    job_works: jobWorks,
+  };
+  const res = await axios({
+    url: "http://localhost:3000/defectmemos/add",
+    method: "POST",
+    data: data,
+    withCredentials: true,
+  });
+  Router.push("/defectmemos");
+}

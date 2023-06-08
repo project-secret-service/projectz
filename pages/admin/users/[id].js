@@ -5,7 +5,6 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import Scripts from "@/pages/components/Scripts";
 import { GetUserDetails } from "@/functions/apiHandlers/users";

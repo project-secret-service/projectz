@@ -3,7 +3,6 @@ import Script from "next/script";
 import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
 import Scripts from "@/pages/components/Scripts";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";

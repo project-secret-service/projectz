@@ -4,7 +4,6 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import moment from "moment";
 import Router from "next/router";
 import Link from "next/link";

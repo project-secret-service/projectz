@@ -45,7 +45,11 @@ export default function Home() {
           <div className="row">
             <div className="card col-8 m-1">
               <div className="card-body">
-                <form onSubmit={addNewDriver}>
+                <form
+                  onSubmit={(event) => {
+                    addNewDriver(event, driver);
+                  }}
+                >
                   <div className="row mb-3">
                     <label
                       htmlFor="profileImage"

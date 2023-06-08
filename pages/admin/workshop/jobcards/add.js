@@ -4,11 +4,9 @@ import Script from "next/script";
 import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
 import Scripts from "@/pages/components/Scripts";
 import { useRef, useEffect, useState } from "react";
-import axios from "axios";
 import Router from "next/router";
 import { Button, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
-import { GetCards } from "@/functions/apiHandlers/workshop";
 import { GetVehicles } from "@/functions/apiHandlers/vehicles";
 import { GetParts } from "@/functions/apiHandlers/workshop";
 

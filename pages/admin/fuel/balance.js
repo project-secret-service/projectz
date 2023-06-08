@@ -5,7 +5,6 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Router from "next/router";
 import dateFormat from "dateformat";
 import { Row, Button } from "react-bootstrap";

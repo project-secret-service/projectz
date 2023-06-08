@@ -3,8 +3,7 @@ import styles from "@/styles/Home.module.css";
 import Script from "next/script";
 import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
 import Scripts from "@/pages/components/Scripts";
-import { useEffect, useState, useRef, memo } from "react";
-import axios from "axios";
+import { useEffect, useState, useRef } from "react";
 import Router from "next/router";
 import { Button, Row, Modal } from "react-bootstrap";
 import dateFormat from "dateformat";
@@ -64,15 +63,7 @@ const SignatureModal = ({
         <Button
           variant="primary"
           onClick={async () => {
-            const res = await axios({
-              url: "http://localhost:3000/defectmemos/sign/add/" + signAs,
-              withCredentials: true,
-              method: "POST",
-              data: {
-                memoID: memo._id,
-                password: password,
-              },
-            });
+            const res = await AddSignToDefectMemo(signAs, memo._id, password);
             if (res.data.status === 200) {
               GetMemoDetails(memo._id).then((data) => {
                 setMemo(data);

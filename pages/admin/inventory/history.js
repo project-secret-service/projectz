@@ -4,7 +4,6 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";

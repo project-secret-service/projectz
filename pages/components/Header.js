@@ -1,15 +1,6 @@
 import Link from "next/link";
-import axios from "axios";
 import { useEffect, useState } from "react";
-
-async function GetUser() {
-  const res = await axios({
-    url: "http://localhost:3000/users/get_user_details",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetUser, LogOut } from "@/functions/loginAPI";
 
 export default function Header({ parentCallback }) {
   const [user, setUser] = useState([]);
@@ -363,16 +354,7 @@ export default function Header({ parentCallback }) {
                 <li style={{ cursor: "pointer" }}>
                   <a
                     className="dropdown-item d-flex align-items-center"
-                    onClick={async () => {
-                      const res = await axios({
-                        method: "post",
-                        url: "http://localhost:3000/logout",
-                        withCredentials: true,
-                      });
-                      if (res.data.status === 200) {
-                        window.location.href = "/login";
-                      }
-                    }}
+                    onClick={LogOut}
                   >
                     <i className="bi bi-box-arrow-right"></i>
                     <span>Sign Out</span>

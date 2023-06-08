@@ -4,7 +4,6 @@ import Header from "../../../components/Header";
 import SideBar from "../../../components/Sidebar";
 import Scripts from "../../../components/Scripts";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Link from "next/link";
 import Router from "next/router";
 
@@ -15,7 +14,12 @@ import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import moment from "moment";
 import { Modal } from "react-bootstrap";
-import { GetOrders } from "@/functions/apiHandlers/inventory";
+import {
+  GetOrders,
+  GetItemDetails,
+  AddOrder,
+  LastOrder,
+} from "@/functions/apiHandlers/inventory";
 
 export default function Home() {
   const componentRef = useRef();
@@ -132,24 +136,10 @@ export default function Home() {
       station: "CRPF CAMP RANCHI",
       items: items,
     };
-    const res = await axios({
-      url: "http://localhost:3000/inventory/order/add",
-      method: "POST",
-      withCredentials: true,
-      data: data,
-    });
+    const res = await AddOrder(data);
     if (res.data.status === 200) {
       Router.push("/admin/inventory/voucher/" + res.data.order_id);
     }
-  }
-
-  async function GetItemDetails(id) {
-    const res = await axios({
-      url: "http://localhost:3000/inventory/items/" + id,
-      method: "GET",
-      withCredentials: true,
-    });
-    return res.data;
   }
 
   function checkId({ target: { name, value } }) {
@@ -198,16 +188,6 @@ export default function Home() {
   const print = () => {
     window.print();
   };
-
-  async function LastOrder() {
-    const res = await axios({
-      url: "http://localhost:3000/inventory/order",
-      method: "GET",
-      withCredentials: true,
-    });
-
-    return res.data;
-  }
 
   const station = "CRPF CAMP RANCHI";
 

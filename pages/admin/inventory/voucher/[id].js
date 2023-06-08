@@ -3,22 +3,15 @@ import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Header from "@/pages/components/Header";
 import SideBar from "@/pages/components/Sidebar";
-import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import dateFormat from "dateformat";
 import { Row, Col, Button, Modal } from "react-bootstrap";
-import Link from "next/link";
 import Scripts from "@/pages/components/Scripts";
 import { useReactToPrint } from "react-to-print";
-
-async function getVoucher(id) {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/voucher/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import {
+  getVoucher,
+  AddSignToInventoryVoucher,
+} from "@/functions/apiHandlers/inventory";
 
 const SignatureModal = ({
   signAs,
@@ -74,16 +67,11 @@ const SignatureModal = ({
         <Button
           variant="primary"
           onClick={async () => {
-            console.log(signAs);
-            const res = await axios({
-              url: "http://localhost:3000/inventory/sign/add/" + signAs,
-              withCredentials: true,
-              method: "POST",
-              data: {
-                voucherID: voucher._id,
-                password: password,
-              },
-            });
+            const res = await AddSignToInventoryVoucher(
+              signAs,
+              voucher._id,
+              password
+            );
             if (res.data.status === 200) {
               getVoucher(voucher._id).then((data) => {
                 setVoucher(data);

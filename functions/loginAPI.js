@@ -49,3 +49,23 @@ export async function UserLogin(event) {
     alert("Wrong Username or Password");
   }
 }
+
+export async function GetUser() {
+  const res = await axios({
+    url: "http://localhost:3000/users/get_user_details",
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}
+
+export async function LogOut() {
+  const res = await axios({
+    method: "post",
+    url: "http://localhost:3000/logout",
+    withCredentials: true,
+  });
+  if (res.data.status === 200) {
+    window.location.href = "/login";
+  }
+}

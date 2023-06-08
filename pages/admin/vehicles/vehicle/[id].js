@@ -6,7 +6,6 @@ import Header from "../../../components/Header";
 import SideBar from "../../../components/Sidebar";
 import Scripts from "../../../components/Scripts";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Head from "@/pages/components/Head";
 import vehicle_styles from "@/styles/Vehicles.module.css";
 import { Button, Col, Row, Carousel } from "react-bootstrap";
@@ -86,35 +85,6 @@ export default function Home() {
     });
   }, [router.isReady]);
 
-  async function updateKmRun() {
-    let newKM = document.getElementById("km_run").value;
-    if (newKM > vehicle.total_kilo_meter) {
-      const res = await axios({
-        url: "http://localhost:3000/vehicles/" + vehicle._id + "/update_km_run",
-        method: "POST",
-        withCredentials: true,
-        data: {
-          km: newKM,
-        },
-      });
-      setKms(newKM);
-      setKmRun(false);
-    }
-  }
-
-  async function updateFuel() {
-    let newFuel = document.getElementById("new_fuel").value;
-    const res = await axios({
-      url: "http://localhost:3000/vehicles/" + vehicle._id + "/fuel_update",
-      method: "POST",
-      withCredentials: true,
-      data: {
-        fuel: newFuel,
-      },
-    });
-    setFuel(parseFloat(newFuel), vehicle.fuel_capacity);
-    setfuelInput(false);
-  }
   return (
     <>
       <Head title="Vehicles List" />

@@ -88,3 +88,29 @@ export async function allotFuel(event, newOil) {
     Router.push("/admin/fuel/balance");
   }
 }
+
+export async function addFuel(event, newFuel) {
+  event.preventDefault();
+  const res = await axios({
+    url: "http://localhost:3000/oilstockregister/add",
+    withCredentials: true,
+    method: "POST",
+    data: newFuel,
+  });
+  if (res.data.status == 200) {
+    Router.push("/admin/fuel/balance");
+  }
+}
+
+export async function AddSignToVoucher(signAs, id, password) {
+  const res = await axios({
+    url: "http://localhost:3000/oilstockregister/sign/add/" + signAs,
+    withCredentials: true,
+    method: "POST",
+    data: {
+      voucherID: id,
+      password: password,
+    },
+  });
+  return res;
+}

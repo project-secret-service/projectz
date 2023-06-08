@@ -179,7 +179,6 @@ export default function Home() {
         searchFilterRef.current.value === "date" &&
         date.toLowerCase().includes(search.toLowerCase())
       ) {
-        console.log(date);
         results.add(duty);
       }
       if (searchFilterRef.current.value === "active") {
@@ -199,7 +198,6 @@ export default function Home() {
         searchFilterRef.current.value === "purpose" &&
         duty.purpose.toLowerCase().includes(search.toLowerCase())
       ) {
-        console.log(duty.purpose);
         results.add(duty);
       }
     });

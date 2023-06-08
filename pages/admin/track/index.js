@@ -5,7 +5,6 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import dynamic from "next/dynamic";
 
@@ -13,14 +12,7 @@ const MapWithNoSSR = dynamic(() => import("../../../nossr/Map"), {
   ssr: false,
 });
 
-async function GetUser() {
-  const res = await axios({
-    url: "http://localhost:3000/users/get_user_details",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetUser } from "@/functions/loginAPI";
 
 export default function Home() {
   const [user, setUser] = useState([]);

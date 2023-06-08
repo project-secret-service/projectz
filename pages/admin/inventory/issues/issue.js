@@ -5,10 +5,8 @@ import Header from "../../../components/Header";
 import SideBar from "../../../components/Sidebar";
 import Scripts from "../../../components/Scripts";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Link from "next/link";
 import Router from "next/router";
-
 import { Button, Row } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,7 +14,8 @@ import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import moment from "moment";
 import { Modal } from "react-bootstrap";
-import { GetIssues } from "@/functions/apiHandlers/inventory";
+import { GetIssues, GetItemDetails } from "@/functions/apiHandlers/inventory";
+import { AddIssue, LastIssue } from "@/functions/apiHandlers/inventory";
 
 export default function Home() {
   const componentRef = useRef();
@@ -117,13 +116,6 @@ export default function Home() {
     IssueItems(e, items);
   };
 
-  const handleSubmitForm = (e) => {
-    e.preventDefault();
-    if (formRef.current) {
-      formRef.current.submit();
-    }
-  };
-
   async function IssueItems(event, items) {
     event.preventDefault();
     var data = {
@@ -133,24 +125,10 @@ export default function Home() {
       station: "CRPF CAMP RANCHI",
       items: items,
     };
-    const res = await axios({
-      url: "http://localhost:3000/inventory/issue/add",
-      method: "POST",
-      withCredentials: true,
-      data: data,
-    });
+    const res = await AddIssue(data);
     if (res.data.status === 200) {
       Router.push("/admin/inventory/voucher/" + res.data.issue_id);
     }
-  }
-
-  async function GetItemDetails(id) {
-    const res = await axios({
-      url: "http://localhost:3000/inventory/items/" + id,
-      method: "GET",
-      withCredentials: true,
-    });
-    return res.data;
   }
 
   function checkId({ target: { name, value } }) {
@@ -200,16 +178,6 @@ export default function Home() {
   const print = () => {
     window.print();
   };
-
-  async function LastIssue() {
-    const res = await axios({
-      url: "http://localhost:3000/inventory/issue",
-      method: "GET",
-      withCredentials: true,
-    });
-
-    return res.data;
-  }
 
   const station = "CRPF CAMP RANCHI";
 

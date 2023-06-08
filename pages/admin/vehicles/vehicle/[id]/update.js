@@ -5,7 +5,6 @@ import Header from "@/pages/components/Header";
 import SideBar from "@/pages/components/Sidebar";
 import Scripts from "@/pages/components/Scripts";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Head from "@/pages/components/Head";
 import vehicle_styles from "@/styles/Vehicles.module.css";
 import { Button, Col, Row, Modal } from "react-bootstrap";

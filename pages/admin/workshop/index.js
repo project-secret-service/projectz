@@ -3,7 +3,6 @@ import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
-import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { GetMemoDetails } from "@/functions/apiHandlers/workshop";
 

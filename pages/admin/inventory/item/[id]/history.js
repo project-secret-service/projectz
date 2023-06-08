@@ -4,7 +4,6 @@ import Header from "@/pages/components/Header";
 import SideBar from "@/pages/components/Sidebar";
 import Scripts from "@/pages/components/Scripts";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
 import dateFormat from "dateformat";

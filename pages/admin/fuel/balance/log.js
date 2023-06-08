@@ -3,7 +3,6 @@ import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Header from "@/pages/components/Header";
 import SideBar from "@/pages/components/Sidebar";
-import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import dateFormat from "dateformat";
 import { Row, Col, Button, Modal } from "react-bootstrap";

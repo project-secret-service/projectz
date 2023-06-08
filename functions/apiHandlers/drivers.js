@@ -22,10 +22,8 @@ export async function GetDriverDetails(id) {
   return res.data;
 }
 
-export async function addNewDriver(event) {
+export async function addNewDriver(event,driver) {
   event.preventDefault();
-
-  console.log(event.target.profile_pic.files[0]);
   const res = await axios({
     url: "http://localhost:3000/drivers/add",
     withCredentials: true,

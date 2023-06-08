@@ -4,14 +4,13 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import moment from "moment";
-import Router from "next/router";
 import Link from "next/link";
 import { Button } from "react-bootstrap";
 import {
   getOilBalance,
   getLastVoucherEntry,
+  addFuel,
 } from "@/functions/apiHandlers/fuel";
 
 export default function Home() {
@@ -21,19 +20,6 @@ export default function Home() {
 
   function setFuel({ target: { name, value } }) {
     setNewFuel((newFuel) => ({ ...newFuel, [name]: value }));
-  }
-
-  async function addFuel(event) {
-    event.preventDefault();
-    const res = await axios({
-      url: "http://localhost:3000/oilstockregister/add",
-      withCredentials: true,
-      method: "POST",
-      data: newFuel,
-    });
-    if (res.data.status == 200) {
-      Router.push("/admin/fuel/balance");
-    }
   }
 
   useEffect(() => {
@@ -77,7 +63,11 @@ export default function Home() {
             <div className="col-8 m-1">
               <div className="card p-3">
                 <div className="card-body">
-                  <form onSubmit={addFuel}>
+                  <form
+                    onSubmit={() => {
+                      addFuel(event, newFuel);
+                    }}
+                  >
                     <div className="row mb-3">
                       <label
                         htmlFor="inputText"
