@@ -108,3 +108,22 @@ export async function UpdateDutyDetails(event, duty) {
     Router.push("/admin/duties");
   }
 }
+
+export async function GetDutiesFromDates(from, to) {
+  const res = await axios({
+    method: "get",
+    url: `http://localhost:3000/duty_log/duties/${from}/${to}`,
+    withCredentials: true,
+  });
+  return res.data;
+}
+
+
+export async function GetDutyDetails(id) {
+  const res = await axios({
+    url: "http://localhost:3000/duty_log/" + id,
+    withCredentials: true,
+    method: "GET",
+  });
+  return res.data;
+}

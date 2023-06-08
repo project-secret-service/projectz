@@ -5,9 +5,7 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
-import Router from "next/router";
-import Link from "next/link";
-import { Button, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import dateFormat from "dateformat";
 import { GetDutiesDesc, OpenDuty } from "@/functions/apiHandlers/duties";
 import { DutiesRightSideMenu } from "@/pages/components/admin/duties";
@@ -488,7 +486,7 @@ export default function Home() {
                 <option value="active">Active</option>
               </select>
               <hr></hr>
-              <DutiesRightSideMenu disable={"all_duties"}/>
+              <DutiesRightSideMenu disable={"all_duties"} />
             </div>
           </Row>
         </main>

@@ -9,12 +9,17 @@ import { useEffect, useState, useRef } from "react";
 import ReactToPrint from "react-to-print";
 import dateFormat from "dateformat";
 import { Row, Button, Modal } from "react-bootstrap";
+import { GetDutyDetails } from "@/functions/apiHandlers/duties";
 
-async function GetUserDetails(id) {
+async function AddDutySign(id, password, signAs) {
   const res = await axios({
-    url: "http://localhost:3000/duty_log/" + id,
+    url: "http://localhost:3000/duty_log/sign/add/" + signAs,
     withCredentials: true,
-    method: "GET",
+    method: "POST",
+    data: {
+      dutyID: id,
+      password: password,
+    },
   });
   return res.data;
 }
@@ -70,24 +75,17 @@ const SignatureModal = ({
         </Button>{" "}
         <Button
           variant="primary"
-          onClick={async () => {
-            const res = await axios({
-              url: "http://localhost:3000/duty_log/sign/add/" + signAs,
-              withCredentials: true,
-              method: "POST",
-              data: {
-                dutyID: duty._id,
-                password: password,
-              },
+          onClick={() => {
+            AddDutySign(duty._id, password, signAs).then((data) => {
+              if (data === "ok") {
+                GetDutyDetails(duty._id).then((data) => {
+                  setDuty(data);
+                });
+                setShowSign(false);
+              } else {
+                setWrongPass("Wrong Password");
+              }
             });
-            if (res.data === "ok") {
-              GetUserDetails(duty._id).then((data) => {
-                setDuty(data);
-              });
-              setShowSign(false);
-            } else {
-              setWrongPass("Wrong Password");
-            }
           }}
         >
           Add Signature
@@ -107,7 +105,7 @@ const Post = () => {
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
-    GetUserDetails(id).then((data) => {
+    GetDutyDetails(id).then((data) => {
       setDuty(data);
     });
   }, [router.isReady]);

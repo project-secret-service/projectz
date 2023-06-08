@@ -7,10 +7,13 @@ import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import { Button, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
-import { GetDuties, OpenDuty } from "@/functions/apiHandlers/duties";
+import {
+  GetDuties,
+  OpenDuty,
+  GetDutiesFromDates,
+} from "@/functions/apiHandlers/duties";
 import Router from "next/router";
 import { useReactToPrint } from "react-to-print";
-import axios from "axios";
 
 export default function Home() {
   const [duties, setDuties] = useState([]);
@@ -19,15 +22,6 @@ export default function Home() {
   const printList = useRef(null);
   const dateFrom = useRef(null);
   const dateTo = useRef(null);
-
-  async function GetDutiesFromDates(from, to) {
-    const res = await axios({
-      method: "get",
-      url: `http://localhost:3000/duty_log/duties/${from}/${to}`,
-      withCredentials: true,
-    });
-    return res.data;
-  }
 
   const handleDateChange = (e) => {
     var from = dateFrom.current.value;

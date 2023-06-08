@@ -1,74 +1,52 @@
-"use client";
+import React from "react";
+import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { useState, useEffect } from "react";
-import {
-  MapContainer,
-  Marker,
-  TileLayer,
-  useMap,
-  useMapEvents,
-} from "react-leaflet";
-import L from "leaflet";
-import { createControlComponent } from "@react-leaflet/core";
-import "leaflet-routing-machine";
-import { io } from "socket.io-client";
 
-export function ChangeView({ coords }) {
-  const map = useMap();
-  map.flyTo(coords, map.getZoom(40));
-  return null;
-}
-
-export default function Map() {
-  const [geoData, setGeoData] = useState({
-    lat: 23.324412854675057,
-    lng: 85.27060490366891,
-  });
-  const [users, setUsers] = useState([]);
-  const [center, setCenter] = useState({
-    lat: 23.324412854675057,
-    lng: 85.27060490366891,
-  });
+const MapComponent = () => {
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setGeoData({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-        setCenter({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-      });
-    }
-    const socket = io("http://localhost:3000", { transports: ["websocket"] });
-    socket.on("connect", () => {
-      socket.emit("join_map");
-    });
-    socket.on("location", (data) => {
-   
-      setCenter({
-        lat: data.location.latitude,
-        lng: data.location.longitude,
-      });
-      setGeoData({
-        lat: data.location.latitude,
-        lng: data.location.longitude,
-      });
-    });
+    // Get user's current location
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation([latitude, longitude]);
+        console.log(latitude, longitude);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }, []);
+
+  const FlyToUserLocation = () => {
+    const map = useMap();
+    useEffect(() => {
+      if (userLocation) {
+        map.flyTo(userLocation, 14, {
+          duration: 2,
+        });
+      }
+    }, [userLocation, map]);
+
+    return null;
+  };
 
   return (
     <MapContainer
-      center={center}
-      zoom={20}
-      style={{ height: "80vh", width: "100wv" }}
-      scrollWheelZoom={true}
+      center={userLocation || [17.2504, 80.4819]}
+      zoom={11.2}
+      style={{ height: "80vh", width: "100%" }}
     >
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {/* <Marker position={center} /> */}
-      <ChangeView coords={geoData} />
+      <TileLayer url="http://localhost:8080/styles/osm-bright/{z}/{x}/{y}.png" />
+
+      {userLocation && (
+        <Marker position={userLocation}>
+          <FlyToUserLocation />
+        </Marker>
+      )}
     </MapContainer>
   );
-}
+};
+
+export default MapComponent;

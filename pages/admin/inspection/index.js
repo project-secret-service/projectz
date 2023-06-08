@@ -59,21 +59,7 @@ export default function Home() {
               </tr>
             </thead>
             <tbody style={{ cursor: "pointer" }}>
-              {inspection.map((data, index) => {
-                return (
-                  <tr key={index + 1} onClick={() => OpenLink(data._id)}>
-                    <td>{index+1}</td>
-                    <td>{data.vehicle && data.vehicle.registration_no}</td>
-                    <td>
-                      {dateFormat(
-                        data.date,
-                        "dS mmmm, yyyy - dddd"
-                      )}
-                    </td>
-                    <td>{data.inspection_remarks}</td>
-                  </tr>
-                );
-              })}{" "}
+             
             </tbody>
           </table>
         </main>

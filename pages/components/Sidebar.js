@@ -232,7 +232,7 @@ export default function SideBar(props) {
               </li>
             </ul>
           </li>
-          {/* <li className="nav-item">
+          <li className="nav-item">
             <a
               className="nav-link collapsed"
               data-bs-target="#inspection-nav"
@@ -261,7 +261,7 @@ export default function SideBar(props) {
                 </Link>
               </li>
             </ul>
-          </li> */}
+          </li>
           <li className="nav-item">
             <a
               className="nav-link collapsed"
@@ -311,7 +311,7 @@ export default function SideBar(props) {
             </ul>
           </li>
 
-          {/* <li className="nav-item">
+          <li className="nav-item">
             <Link
               className="nav-link collapsed"
               id="profile-sidebar"
@@ -320,7 +320,7 @@ export default function SideBar(props) {
               <i className="bi bi-compass"></i>
               <span>Track Vehicles</span>
             </Link>
-          </li> */}
+          </li>
 
           <li className="nav-item">
             <Link
