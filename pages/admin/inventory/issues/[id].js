@@ -11,15 +11,7 @@ import { Button, Row } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import { useReactToPrint } from "react-to-print";
 import { useRouter } from "next/router";
-
-async function GetIssueDetails(id) {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/issue/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetIssueDetails } from "@/functions/apiHandlers/inventory";
 
 export default function Home() {
   const componentRef = useRef();
@@ -49,7 +41,7 @@ export default function Home() {
 
   return (
     <>
-      <HeadAndSideBar title={"Issue Voucher Details"}/>
+      <HeadAndSideBar title={"Issue Voucher Details"} />
       <main className={styles.main}>
         <Row className="col-9">
           <div className="col-10">

@@ -14,14 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useReactToPrint } from "react-to-print";
 import { useRouter } from "next/router";
 
-async function GetOrderDetails(id) {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/order/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetOrderDetails } from "@/functions/apiHandlers/inventory";
 
 export default function Home() {
   const componentRef = useRef();
@@ -39,7 +32,6 @@ export default function Home() {
     if (!router.isReady) return;
     const { id } = router.query;
     GetOrderDetails(id).then((data) => {
-      
       setOrder(data);
       setItems(data.items);
       let total_cost = 0;

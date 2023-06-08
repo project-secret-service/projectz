@@ -5,28 +5,11 @@ import Scripts from "@/pages/components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Router from "next/router";
-
 import { Button, Row } from "react-bootstrap";
 import Link from "next/link";
 import dateFormat from "dateformat";
-
-async function GetMemos() {
-  const res = await axios({
-    url: "http://localhost:3000/defectmemos/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function GetVehicles() {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetMemos } from "@/functions/apiHandlers/workshop";
+import { GetVehicles } from "@/functions/apiHandlers/vehicles";
 
 export default function Home() {
   const [memos, setMemos] = useState([]);

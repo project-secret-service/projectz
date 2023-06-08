@@ -6,37 +6,11 @@ import Scripts from "@/pages/components/Scripts";
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import Router from "next/router";
-
 import { Button, Row } from "react-bootstrap";
-import Link from "next/link";
 import dateFormat from "dateformat";
-
-async function GetCards() {
-  const res = await axios({
-    url: "http://localhost:3000/job_card/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function GetVehicles() {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function GetParts() {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/items/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetCards } from "@/functions/apiHandlers/workshop";
+import { GetVehicles } from "@/functions/apiHandlers/vehicles";
+import { GetParts } from "@/functions/apiHandlers/workshop";
 
 export default function Home() {
   const [card, setCard] = useState({});

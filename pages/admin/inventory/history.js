@@ -10,24 +10,7 @@ import { Button, Row } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
 import dateFormat from "dateformat";
 import router from "next/router";
-
-async function GetOrders() {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/all_orders",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function GetIssues() {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/all_issues",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetOrders, GetIssues } from "@/functions/apiHandlers/inventory";
 
 export default function Home() {
   const [inventoryHistory, setInventoryHistory] = useState([]);

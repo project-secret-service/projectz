@@ -9,25 +9,10 @@ import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
 import { useRouter } from "next/router";
-
-async function GetItemHistory(id) {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/item_history/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  console.log(res.data);
-  return res.data;
-}
-
-async function GetItemDetails(id) {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/items/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import {
+  GetItemHistory,
+  GetItemDetails,
+} from "@/functions/apiHandlers/inventory";
 
 export default function Home() {
   const [inventoryHistory, setInventoryHistory] = useState([]);

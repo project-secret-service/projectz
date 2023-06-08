@@ -11,24 +11,7 @@ import Link from "next/link";
 import Head from "next/head";
 import { Button, Row, Col } from "react-bootstrap";
 
-async function addNewItem(event) {
-  event.preventDefault();
-  var data = {
-    name: event.target.name.value,
-    quantity: event.target.quantity.value,
-    rate: event.target.rate.value,
-    description: event.target.description.value,
-  };
-  const res = await axios({
-    url: "http://localhost:3000/inventory/items/add",
-    withCredentials: true,
-    method: "POST",
-    data: data,
-  });
-
-  Router.push("/admin/inventory/storage");
-}
-
+import {addNewItem} from "@/functions/apiHandlers/inventory";
 export default function Home() {
   return (
     <>

@@ -15,16 +15,7 @@ import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import moment from "moment";
 import { Modal } from "react-bootstrap";
-
-async function GetOrders() {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/items",
-    method: "GET",
-    withCredentials: true,
-  });
-
-  return res.data;
-}
+import { GetOrders } from "@/functions/apiHandlers/inventory";
 
 export default function Home() {
   const componentRef = useRef();

@@ -9,28 +9,10 @@ import Router from "next/router";
 import { Button, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
 import { useRouter } from "next/router";
-
-async function GetMemos() {
-  const res = await axios({
-    url: "http://localhost:3000/defectmemos/desc",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function GetVehicles() {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetMemos } from "@/functions/apiHandlers/workshop";
 
 export default function Home() {
   const [memos, setMemos] = useState([]);
-  const [memo, setMemo] = useState({});
   const router = useRouter();
 
   useEffect(() => {

@@ -10,24 +10,7 @@ import { Button, Row, Modal } from "react-bootstrap";
 import dateFormat from "dateformat";
 import { useRouter } from "next/router";
 import { useReactToPrint } from "react-to-print";
-
-async function GetMemo(id) {
-  const res = await axios({
-    url: "http://localhost:3000/defectmemos/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
-async function GetUserDetails(id) {
-  const res = await axios({
-    url: "http://localhost:3000/defectmemos/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetMemoDetails } from "@/functions/apiHandlers/workshop";
 
 const SignatureModal = ({
   signAs,
@@ -91,7 +74,7 @@ const SignatureModal = ({
               },
             });
             if (res.data.status === 200) {
-              GetUserDetails(memo._id).then((data) => {
+              GetMemoDetails(memo._id).then((data) => {
                 setMemo(data);
               });
               setShowSign(false);
@@ -132,7 +115,7 @@ export default function Home() {
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
-    GetMemo(id).then((data) => {
+    GetMemoDetails(id).then((data) => {
       setMemo(data);
       setDefects(data.defects);
       setJobWorks(data.job_works);

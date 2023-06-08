@@ -9,15 +9,7 @@ import axios from "axios";
 import Link from "next/link";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
-
-async function GetItems() {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/items",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetItems } from "@/functions/apiHandlers/inventory";
 
 export default function Home() {
   const [items, setItems] = useState([]);

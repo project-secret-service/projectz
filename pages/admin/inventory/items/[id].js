@@ -4,15 +4,7 @@ import styles from "@/styles/Home.module.css";
 import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-async function GetItemDetails(id) {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/items/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetItemDetails } from "@/functions/apiHandlers/inventory";
 
 const Post = () => {
   const [items, setItems] = useState({});
@@ -28,7 +20,7 @@ const Post = () => {
 
   return (
     <>
-      <HeadAndSideBar title={"Item"+items.name}/>
+      <HeadAndSideBar title={"Item" + items.name} />
       <main className={styles.main}>
         <div
           style={{

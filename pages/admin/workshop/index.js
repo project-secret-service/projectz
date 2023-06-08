@@ -5,16 +5,7 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
-import { Row, Button } from "react-bootstrap";
-
-async function GetMemoDetails(id) {
-  const res = await axios({
-    url: "http://localhost:3000/defectmemos/" + id,
-    withCredentials: true,
-    method: "GET",
-  });
-  return res.data;
-}
+import { GetMemoDetails } from "@/functions/apiHandlers/workshop";
 
 const Post = () => {
   const [memo, setMemos] = useState({});

@@ -9,7 +9,6 @@ import axios from "axios";
 import Link from "next/link";
 import Router from "next/router";
 
-
 import { Button, Row } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,15 +16,7 @@ import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import moment from "moment";
 import { Modal } from "react-bootstrap";
-
-async function GetIssues() {
-  const res = await axios({
-    url: "http://localhost:3000/inventory/items",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetIssues } from "@/functions/apiHandlers/inventory";
 
 export default function Home() {
   const componentRef = useRef();
