@@ -7,7 +7,7 @@ axios.defaults.baseURL = AXIOS_BASE_URL;
 
 export async function GetUserDetails(id) {
   const res = await axios({
-    url: "http://localhost:3000/users/" + id,
+    url: "/users/" + id,
     withCredentials: true,
     method: "GET",
   });
@@ -16,7 +16,7 @@ export async function GetUserDetails(id) {
 
 export async function AddNewUser(newUserDetails) {
   const res = await axios({
-    url: "http://localhost:3000/users/add",
+    url: "/users/add",
     withCredentials: true,
     method: "POST",
     headers: {
@@ -29,7 +29,7 @@ export async function AddNewUser(newUserDetails) {
 
 export async function GetUsers() {
   const res = await axios({
-    url: "http://localhost:3000/users/",
+    url: "/users/",
     method: "GET",
     withCredentials: true,
   });

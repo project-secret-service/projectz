@@ -7,7 +7,7 @@ axios.defaults.baseURL = AXIOS_BASE_URL;
 
 export async function GetMemoDetails(id) {
   const res = await axios({
-    url: "http://localhost:3000/defectmemos/" + id,
+    url: "/defectmemos/" + id,
     withCredentials: true,
     method: "GET",
   });
@@ -16,7 +16,7 @@ export async function GetMemoDetails(id) {
 
 export async function GetCards() {
   const res = await axios({
-    url: "http://localhost:3000/job_card/",
+    url: "/job_card/",
     method: "GET",
     withCredentials: true,
   });
@@ -25,7 +25,7 @@ export async function GetCards() {
 
 export async function GetParts() {
   const res = await axios({
-    url: "http://localhost:3000/inventory/items/",
+    url: "/inventory/items/",
     method: "GET",
     withCredentials: true,
   });
@@ -34,7 +34,7 @@ export async function GetParts() {
 
 export async function GetMemos() {
   const res = await axios({
-    url: "http://localhost:3000/defectmemos/desc",
+    url: "/defectmemos/desc",
     method: "GET",
     withCredentials: true,
   });
@@ -43,7 +43,7 @@ export async function GetMemos() {
 
 export async function GetInspectionHistory() {
   const res = await axios({
-    url: "http://localhost:3000/inspection/",
+    url: "/inspection/",
     method: "GET",
     withCredentials: true,
   });
@@ -52,7 +52,7 @@ export async function GetInspectionHistory() {
 
 export async function AddSignToDefectMemo(signAs, id, password) {
   const res = await axios({
-    url: "http://localhost:3000/defectmemos/sign/add/" + signAs,
+    url: "/defectmemos/sign/add/" + signAs,
     withCredentials: true,
     method: "POST",
     data: {
@@ -65,7 +65,7 @@ export async function AddSignToDefectMemo(signAs, id, password) {
 
 export async function GetParts() {
   const res = await axios({
-    url: "http://localhost:3000/inventory/items/",
+    url: "/inventory/items/",
     method: "GET",
     withCredentials: true,
   });
@@ -81,7 +81,7 @@ export async function AddMemo(event, memo, selectedParts, defects, jobWorks) {
     job_works: jobWorks,
   };
   const res = await axios({
-    url: "http://localhost:3000/defectmemos/add",
+    url: "/defectmemos/add",
     method: "POST",
     data: data,
     withCredentials: true,

@@ -24,7 +24,7 @@ export async function GetVehicleFuel(vehicleID) {
 
 export async function GetVehicles() {
   const res = await axios({
-    url: "http://localhost:3000/vehicles/",
+    url: "/vehicles/",
     method: "GET",
     withCredentials: true,
   });
@@ -33,7 +33,7 @@ export async function GetVehicles() {
 
 export async function CheckCrpNoinDB(crp_no) {
   var res = await axios({
-    url: "http://localhost:3000/vehicles/crp_no",
+    url: "/vehicles/crp_no",
     withCredentials: true,
     method: "POST",
     data: {
@@ -45,7 +45,7 @@ export async function CheckCrpNoinDB(crp_no) {
 
 export async function handleVehicleSubmit(vehicle) {
   const res = await axios({
-    url: "http://localhost:3000/vehicles/add",
+    url: "/vehicles/add",
     withCredentials: true,
     method: "POST",
     data: vehicle,
@@ -57,7 +57,7 @@ export async function handleVehicleSubmit(vehicle) {
 
 export async function GetVehicle(id) {
   const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id,
+    url: "/vehicles/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -66,7 +66,7 @@ export async function GetVehicle(id) {
 
 export async function updateVehicle(updatedVehicle, id) {
   const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id + "/update",
+    url: "/vehicles/" + id + "/update",
     method: "POST",
     withCredentials: true,
     headers: {
@@ -81,7 +81,7 @@ export async function updateVehicle(updatedVehicle, id) {
 
 export async function deleteVehicle(id) {
   const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id + "/delete",
+    url: "/vehicles/" + id + "/delete",
     method: "POST",
     withCredentials: true,
   });

@@ -52,7 +52,7 @@ export async function UserLogin(event) {
 
 export async function GetUser() {
   const res = await axios({
-    url: "http://localhost:3000/users/get_user_details",
+    url: "/users/get_user_details",
     method: "GET",
     withCredentials: true,
   });
@@ -62,7 +62,7 @@ export async function GetUser() {
 export async function LogOut() {
   const res = await axios({
     method: "post",
-    url: "http://localhost:3000/logout",
+    url: "/logout",
     withCredentials: true,
   });
   if (res.data.status === 200) {

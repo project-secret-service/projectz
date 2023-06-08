@@ -7,7 +7,7 @@ axios.defaults.baseURL = AXIOS_BASE_URL;
 
 export async function getOilBalance() {
   const res = await axios({
-    url: "http://localhost:3000/oilbalance/",
+    url: "/oilbalance/",
     method: "GET",
     withCredentials: true,
   });
@@ -16,7 +16,7 @@ export async function getOilBalance() {
 
 export async function getOilBalanceLog(id) {
   const res = await axios({
-    url: "http://localhost:3000/oilstockregister/oil/" + id,
+    url: "/oilstockregister/oil/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -25,7 +25,7 @@ export async function getOilBalanceLog(id) {
 
 export async function getOil(id) {
   const res = await axios({
-    url: "http://localhost:3000/oilbalance/" + id,
+    url: "/oilbalance/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -34,7 +34,7 @@ export async function getOil(id) {
 
 export async function getAllOilBalance() {
   const res = await axios({
-    url: "http://localhost:3000/oilstockregister/log",
+    url: "/oilstockregister/log",
     method: "GET",
     withCredentials: true,
   });
@@ -43,7 +43,7 @@ export async function getAllOilBalance() {
 
 export async function getVoucher(id) {
   const res = await axios({
-    url: "http://localhost:3000/oilstockregister/voucher/" + id,
+    url: "/oilstockregister/voucher/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -52,7 +52,7 @@ export async function getVoucher(id) {
 
 export async function getLastVoucherEntry() {
   const res = await axios({
-    url: "http://localhost:3000/oilstockregister/last1",
+    url: "/oilstockregister/last1",
     withCredentials: true,
     method: "GET",
   });
@@ -66,7 +66,7 @@ export async function addOilType(event) {
   };
 
   const res = await axios({
-    url: "http://localhost:3000/oilbalance/add_oil_type",
+    url: "/oilbalance/add_oil_type",
     withCredentials: true,
     method: "POST",
     data: data,
@@ -79,7 +79,7 @@ export async function addOilType(event) {
 export async function allotFuel(event, newOil) {
   event.preventDefault();
   const res = await axios({
-    url: "http://localhost:3000/oilstockregister/allot",
+    url: "/oilstockregister/allot",
     withCredentials: true,
     method: "POST",
     data: newOil,
@@ -92,7 +92,7 @@ export async function allotFuel(event, newOil) {
 export async function addFuel(event, newFuel) {
   event.preventDefault();
   const res = await axios({
-    url: "http://localhost:3000/oilstockregister/add",
+    url: "/oilstockregister/add",
     withCredentials: true,
     method: "POST",
     data: newFuel,
@@ -104,7 +104,7 @@ export async function addFuel(event, newFuel) {
 
 export async function AddSignToVoucher(signAs, id, password) {
   const res = await axios({
-    url: "http://localhost:3000/oilstockregister/sign/add/" + signAs,
+    url: "/oilstockregister/sign/add/" + signAs,
     withCredentials: true,
     method: "POST",
     data: {

@@ -7,7 +7,7 @@ axios.defaults.baseURL = AXIOS_BASE_URL;
 
 export async function GetIssueDetails(id) {
   const res = await axios({
-    url: "http://localhost:3000/inventory/issue/" + id,
+    url: "/inventory/issue/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -16,7 +16,7 @@ export async function GetIssueDetails(id) {
 
 export async function GetIssues() {
   const res = await axios({
-    url: "http://localhost:3000/inventory/items",
+    url: "/inventory/items",
     method: "GET",
     withCredentials: true,
   });
@@ -25,7 +25,7 @@ export async function GetIssues() {
 
 export async function GetItemHistory(id) {
   const res = await axios({
-    url: "http://localhost:3000/inventory/item_history/" + id,
+    url: "/inventory/item_history/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -34,7 +34,7 @@ export async function GetItemHistory(id) {
 
 export async function GetItemDetails(id) {
   const res = await axios({
-    url: "http://localhost:3000/inventory/items/" + id,
+    url: "/inventory/items/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -43,7 +43,7 @@ export async function GetItemDetails(id) {
 
 export async function GetOrderDetails(id) {
   const res = await axios({
-    url: "http://localhost:3000/inventory/order/" + id,
+    url: "/inventory/order/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -52,7 +52,7 @@ export async function GetOrderDetails(id) {
 
 export async function GetOrders() {
   const res = await axios({
-    url: "http://localhost:3000/inventory/items",
+    url: "/inventory/items",
     method: "GET",
     withCredentials: true,
   });
@@ -68,7 +68,7 @@ export async function addNewItem(event) {
     description: event.target.description.value,
   };
   const res = await axios({
-    url: "http://localhost:3000/inventory/items/add",
+    url: "/inventory/items/add",
     withCredentials: true,
     method: "POST",
     data: data,
@@ -79,7 +79,7 @@ export async function addNewItem(event) {
 
 export async function GetItems() {
   const res = await axios({
-    url: "http://localhost:3000/inventory/items",
+    url: "/inventory/items",
     method: "GET",
     withCredentials: true,
   });
@@ -88,7 +88,7 @@ export async function GetItems() {
 
 export async function AddIssue(data) {
   const res = await axios({
-    url: "http://localhost:3000/inventory/issue/add",
+    url: "/inventory/issue/add",
     method: "POST",
     withCredentials: true,
     data: data,
@@ -98,7 +98,7 @@ export async function AddIssue(data) {
 
 export async function LastIssue() {
   const res = await axios({
-    url: "http://localhost:3000/inventory/issue",
+    url: "/inventory/issue",
     method: "GET",
     withCredentials: true,
   });
@@ -107,7 +107,7 @@ export async function LastIssue() {
 
 export async function AddOrder() {
   const res = await axios({
-    url: "http://localhost:3000/inventory/order/add",
+    url: "/inventory/order/add",
     method: "POST",
     withCredentials: true,
     data: data,
@@ -117,7 +117,7 @@ export async function AddOrder() {
 
 export async function LastOrder() {
   const res = await axios({
-    url: "http://localhost:3000/inventory/order",
+    url: "/inventory/order",
     method: "GET",
     withCredentials: true,
   });
@@ -126,7 +126,7 @@ export async function LastOrder() {
 
 export async function getVoucher(id) {
   const res = await axios({
-    url: "http://localhost:3000/inventory/voucher/" + id,
+    url: "/inventory/voucher/" + id,
     method: "GET",
     withCredentials: true,
   });
@@ -135,7 +135,7 @@ export async function getVoucher(id) {
 
 export async function AddSignToInventoryVoucher(signAs, id, password) {
   const res = await axios({
-    url: "http://localhost:3000/inventory/sign/add/" + signAs,
+    url: "/inventory/sign/add/" + signAs,
     withCredentials: true,
     method: "POST",
     data: {
