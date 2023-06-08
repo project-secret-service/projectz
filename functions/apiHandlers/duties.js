@@ -118,12 +118,24 @@ export async function GetDutiesFromDates(from, to) {
   return res.data;
 }
 
-
 export async function GetDutyDetails(id) {
   const res = await axios({
     url: "http://localhost:3000/duty_log/" + id,
     withCredentials: true,
     method: "GET",
+  });
+  return res.data;
+}
+
+export async function AddDutySign(id, password, signAs) {
+  const res = await axios({
+    url: "http://localhost:3000/duty_log/sign/add/" + signAs,
+    withCredentials: true,
+    method: "POST",
+    data: {
+      dutyID: id,
+      password: password,
+    },
   });
   return res.data;
 }

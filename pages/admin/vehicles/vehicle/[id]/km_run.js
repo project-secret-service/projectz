@@ -9,15 +9,7 @@ import axios from "axios";
 import Head from "@/pages/components/Head";
 import { Button, Col, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
-
-async function GetVehicle(id) {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetVehicle } from "@/functions/apiHandlers/vehicles";
 
 export default function Home() {
   const [vehicle, setVehicle] = useState({});

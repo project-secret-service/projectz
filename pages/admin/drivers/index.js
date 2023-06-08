@@ -6,19 +6,10 @@ import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import axios from "axios";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
 import { Row } from "react-bootstrap";
-
-async function GetDrivers() {
-  const res = await axios({
-    url: "http://localhost:3000/drivers/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetDrivers } from "@/functions/apiHandlers/drivers";
 
 export default function Home() {
   const [drivers, setDrivers] = useState([]);

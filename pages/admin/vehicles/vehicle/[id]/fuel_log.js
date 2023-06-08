@@ -10,7 +10,7 @@ import Head from "@/pages/components/Head";
 import vehicle_styles from "@/styles/Vehicles.module.css";
 import { Button, Col, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
-import Link from "next/link";
+import { GetVehicle } from "@/functions/apiHandlers/vehicles";
 
 function setFuel(fuel, fuelCapacity) {
   if (fuel <= fuelCapacity) {
@@ -33,15 +33,6 @@ function setFuel(fuel, fuelCapacity) {
       )[0].children[2].style.backgroundColor = "#80ff00";
     }
   }
-}
-
-async function GetVehicle(id) {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
 }
 
 export default function Home() {

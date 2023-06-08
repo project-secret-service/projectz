@@ -4,24 +4,14 @@ import styles from "@/styles/Home.module.css";
 import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Link from "next/link";
-import { Button, Row } from "react-bootstrap";
-import axios from "axios";
+import { Button, Col, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import Scripts from "@/pages/components/Scripts";
-
-async function GetDriverDetails(id) {
-  const res = await axios({
-    url: "http://localhost:3000/drivers/" + id,
-    withCredentials: true,
-    method: "GET",
-  });
-  return res.data;
-}
+import { GetDriverDetails } from "@/functions/apiHandlers/drivers";
 
 const Post = () => {
   const [driver, setDrivers] = useState({});
   const router = useRouter();
-  const { id } = router.query;
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
@@ -79,39 +69,47 @@ const Post = () => {
                   </div>
                 </div>
                 <div className="col-8 p-5">
-                  <table className="table">
-                    <tbody>
-                      <th>
-                        DRIVER DETAILS <br />
-                        <br />
-                      </th>
-                      <tr>
-                        <td>
-                          Name: <b>{driver.name}</b>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Rank: <b>{driver.rank}</b>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          License No: <b>{driver.license_no}</b>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Date from: <b>{driver.date_from}</b>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Date to: <b>{driver.date_to}</b>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <Row>
+                    <Col>
+                      <p>DRIVER DETAILS</p>
+                      <br />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <p>
+                        Name: <b>{driver.name}</b>
+                      </p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <p>
+                        Rank: <b>{driver.rank}</b>
+                      </p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <p>
+                        License No: <b>{driver.license_no}</b>
+                      </p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <p>
+                        Date from: <b>{driver.date_from}</b>
+                      </p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <p>
+                        Date to: <b>{driver.date_to}</b>
+                      </p>
+                    </Col>
+                  </Row>
                 </div>
               </div>
             </div>

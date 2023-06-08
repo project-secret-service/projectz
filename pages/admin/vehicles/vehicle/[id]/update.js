@@ -11,15 +11,7 @@ import vehicle_styles from "@/styles/Vehicles.module.css";
 import { Button, Col, Row, Modal } from "react-bootstrap";
 import dateFormat from "dateformat";
 import Link from "next/link";
-
-async function GetVehicle(id) {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetVehicle, updateVehicle } from "@/functions/apiHandlers/vehicles";
 
 export default function Home() {
   const [vehicle, setVehicle] = useState({});
@@ -61,22 +53,6 @@ export default function Home() {
 
   function setV({ target: { name, value } }) {
     setUpdatedVehicle({ ...updatedVehicle, [name]: value });
-  }
-
-  async function updateVehicle() {
-    setLoading(true);
-    const res = await axios({
-      url: "http://localhost:3000/vehicles/" + vehicle._id + "/update",
-      method: "POST",
-      withCredentials: true,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: updatedVehicle,
-    });
-    if (res.data.status == 200) {
-      window.location.reload();
-    }
   }
 
   useEffect(() => {
@@ -692,7 +668,13 @@ export default function Home() {
                 </Button>
 
                 {!loading && (
-                  <Button variant="primary" onClick={updateVehicle}>
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      setLoading(true);
+                      updateVehicle(updatedVehicle, vehicle._id);
+                    }}
+                  >
                     Update Vehicle
                   </Button>
                 )}

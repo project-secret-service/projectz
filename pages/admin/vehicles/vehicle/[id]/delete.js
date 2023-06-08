@@ -10,33 +10,11 @@ import Head from "@/pages/components/Head";
 import vehicle_styles from "@/styles/Vehicles.module.css";
 import { Button, Col, Row } from "react-bootstrap";
 import Router from "next/router";
-
-async function GetVehicle(id) {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetVehicle, deleteVehicle } from "@/functions/apiHandlers/vehicles";
 
 export default function Home() {
   const [vehicle, setVehicle] = useState({});
   const router = useRouter();
-
-  async function deleteVehicle() {
-    const res = await axios({
-      url: "http://localhost:3000/vehicles/" + vehicle._id + "/delete",
-      method: "POST",
-      withCredentials: true,
-    });
-    Router.push('/admin/vehicles/');
-    return res.data;
-  }
-
-  function openLink() {
-    Router.push("/admin/vehicles/" + vehicle._id);
-  }
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -77,10 +55,20 @@ export default function Home() {
               <b>REG NO : {vehicle.registration_no}</b>
               <br></br>
               <div>
-                <Button className="btn-success m-1" onClick={deleteVehicle}>
+                <Button
+                  className="btn-success m-1"
+                  onClick={() => {
+                    deleteVehicle(vehicle._id);
+                  }}
+                >
                   YES
                 </Button>
-                <Button className="btn-danger m-1" onClick={openLink}>
+                <Button
+                  className="btn-danger m-1"
+                  onClick={() => {
+                    Router.back();
+                  }}
+                >
                   NO
                 </Button>
               </div>

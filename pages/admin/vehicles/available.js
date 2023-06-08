@@ -5,19 +5,10 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import Link from "next/link";
 import Router from "next/router";
 import { Button, Row } from "react-bootstrap";
-
-async function GetVehicles() {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetVehicles } from "@/functions/apiHandlers/vehicles";
 
 export default function Home() {
   const [vehicles, setVehicles] = useState([]);

@@ -12,3 +12,40 @@ export async function GetDriversAvailable() {
   });
   return res.data;
 }
+
+export async function GetDriverDetails(id) {
+  const res = await axios({
+    url: "http://localhost:3000/drivers/" + id,
+    withCredentials: true,
+    method: "GET",
+  });
+  return res.data;
+}
+
+export async function addNewDriver(event) {
+  event.preventDefault();
+
+  console.log(event.target.profile_pic.files[0]);
+  const res = await axios({
+    url: "http://localhost:3000/drivers/add",
+    withCredentials: true,
+    method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    data: {
+      ...driver,
+      profile_pic: event.target.profile_pic.files[0],
+    },
+  });
+  Router.push("/admin/drivers");
+}
+
+export async function GetDrivers() {
+  const res = await axios({
+    url: "http://localhost:3000/drivers/",
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}

@@ -4,25 +4,16 @@ import Header from "../../components/Header";
 import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import Link from "next/link";
-
 import Head from "next/head";
 import { Button, Row, Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 
-async function CheckCrpNoinDB(crp_no) {
-  var res = await axios({
-    url: "http://localhost:3000/vehicles/crp_no",
-    withCredentials: true,
-    method: "POST",
-    data: {
-      crp_no: parseInt(crp_no),
-    },
-  });
-  return res.data;
-}
+import {
+  CheckCrpNoinDB,
+  handleVehicleSubmit,
+} from "@/functions/apiHandlers/vehicles";
 
 export default function Home() {
   const vehicle_crp_no_input = useRef(null);
@@ -75,18 +66,6 @@ export default function Home() {
 
   function setV({ target: { name, value } }) {
     setVehicle({ ...vehicle, [name]: value });
-  }
-
-  async function handleSubmit() {
-    const res = await axios({
-      url: "http://localhost:3000/vehicles/add",
-      withCredentials: true,
-      method: "POST",
-      data: vehicle,
-    });
-    if (res.status == 200) {
-      router.push("/admin/vehicles/vehicle/" + res.data.vehicle_id);
-    }
   }
 
   function CheckCrpNo() {
@@ -315,7 +294,12 @@ export default function Home() {
                         <Button variant="secondary" onClick={handleClose}>
                           Close
                         </Button>
-                        <Button variant="primary" onClick={handleSubmit}>
+                        <Button
+                          variant="primary"
+                          onClick={() => {
+                            handleVehicleSubmit(vehicle);
+                          }}
+                        >
                           Add New Vehicle
                         </Button>
                       </Modal.Footer>

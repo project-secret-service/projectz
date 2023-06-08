@@ -13,15 +13,7 @@ import { Button, Col, Row, Carousel } from "react-bootstrap";
 import dateFormat from "dateformat";
 import indianNumberFormat from "indian-number-format";
 import Link from "next/link";
-
-async function GetVehicle(id) {
-  const res = await axios({
-    url: "http://localhost:3000/vehicles/" + id,
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
+import { GetVehicle } from "@/functions/apiHandlers/vehicles";
 
 function setFuel(fuel, fuelCapacity) {
   if (fuel <= fuelCapacity) {
@@ -143,7 +135,7 @@ export default function Home() {
                           vehicle.front_view
                         }
                         alt="First slide"
-                        style={{maxHeight:"50vh"}}
+                        style={{ maxHeight: "50vh" }}
                       />
                       <Carousel.Caption>
                         <h3>Front</h3>
@@ -159,7 +151,7 @@ export default function Home() {
                           vehicle.back_view
                         }
                         alt="First slide"
-                        style={{maxHeight:"50vh"}}
+                        style={{ maxHeight: "50vh" }}
                       />
                       <Carousel.Caption>
                         <h3>Back</h3>

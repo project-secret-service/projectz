@@ -7,9 +7,8 @@ import SideBar from "../../components/Sidebar";
 import Scripts from "../../components/Scripts";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import axios from "axios";
 import Link from "next/link";
-
+import { addNewDriver } from "@/functions/apiHandlers/drivers";
 import Router from "next/router";
 
 export default function Home() {
@@ -25,25 +24,6 @@ export default function Home() {
       reader.readAsDataURL(event.target.files[0]);
     }
   };
-
-  async function addNewDriver(event) {
-    event.preventDefault();
-
-    console.log(event.target.profile_pic.files[0]);
-    const res = await axios({
-      url: "http://localhost:3000/drivers/add",
-      withCredentials: true,
-      method: "POST",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: {
-        ...driver,
-        profile_pic: event.target.profile_pic.files[0],
-      },
-    });
-    Router.push("/admin/drivers");
-  }
 
   function setD({ target: { name, value } }) {
     setDrivers((prev) => ({ ...prev, [name]: value }));

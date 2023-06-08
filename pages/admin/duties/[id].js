@@ -9,20 +9,7 @@ import { useEffect, useState, useRef } from "react";
 import ReactToPrint from "react-to-print";
 import dateFormat from "dateformat";
 import { Row, Button, Modal } from "react-bootstrap";
-import { GetDutyDetails } from "@/functions/apiHandlers/duties";
-
-async function AddDutySign(id, password, signAs) {
-  const res = await axios({
-    url: "http://localhost:3000/duty_log/sign/add/" + signAs,
-    withCredentials: true,
-    method: "POST",
-    data: {
-      dutyID: id,
-      password: password,
-    },
-  });
-  return res.data;
-}
+import { GetDutyDetails, AddDutySign } from "@/functions/apiHandlers/duties";
 
 const SignatureModal = ({
   signAs,
