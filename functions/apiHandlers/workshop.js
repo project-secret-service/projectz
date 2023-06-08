@@ -63,15 +63,6 @@ export async function AddSignToDefectMemo(signAs, id, password) {
   return res;
 }
 
-export async function GetParts() {
-  const res = await axios({
-    url: "/inventory/items/",
-    method: "GET",
-    withCredentials: true,
-  });
-  return res.data;
-}
-
 export async function AddMemo(event, memo, selectedParts, defects, jobWorks) {
   event.preventDefault();
   var data = {
