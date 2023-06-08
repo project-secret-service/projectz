@@ -8,6 +8,7 @@ import { Button, Col, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import Scripts from "@/pages/components/Scripts";
 import { GetDriverDetails } from "@/functions/apiHandlers/drivers";
+import { AXIOS_BASE_URL } from "@/functions/constants";
 
 const Post = () => {
   const [driver, setDrivers] = useState({});
@@ -42,7 +43,7 @@ const Post = () => {
                     {driver.profile_pic && (
                       <img
                         src={
-                          "http://localhost:3000/images/profilepic/" +
+                          `${AXIOS_BASE_URL}/images/profilepic/` +
                           driver.profile_pic
                         }
                         style={{

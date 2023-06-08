@@ -10,6 +10,7 @@ import Router from "next/router";
 import { Button } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import { GetDrivers } from "@/functions/apiHandlers/drivers";
+import { AXIOS_BASE_URL } from "@/functions/constants";
 
 export default function Home() {
   const [drivers, setDrivers] = useState([]);
@@ -108,7 +109,7 @@ export default function Home() {
                                 {driver.profile_pic && (
                                   <img
                                     src={
-                                      "http://localhost:3000/images/profilepic/" +
+                                      `${AXIOS_BASE_URL}/images/profilepic/` +
                                       driver.profile_pic
                                     }
                                     style={{
@@ -156,7 +157,7 @@ export default function Home() {
                                 {driver.profile_pic && (
                                   <img
                                     src={
-                                      "http://localhost:3000/images/profilepic/" +
+                                      `${AXIOS_BASE_URL}/images/profilepic/` +
                                       driver.profile_pic
                                     }
                                     style={{

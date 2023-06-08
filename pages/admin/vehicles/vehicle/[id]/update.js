@@ -11,6 +11,7 @@ import { Button, Col, Row, Modal } from "react-bootstrap";
 import dateFormat from "dateformat";
 import Link from "next/link";
 import { GetVehicle, updateVehicle } from "@/functions/apiHandlers/vehicles";
+import { AXIOS_BASE_URL } from "@/functions/constants";
 
 export default function Home() {
   const [vehicle, setVehicle] = useState({});
@@ -96,7 +97,7 @@ export default function Home() {
                     {!images.front_view && vehicle.front_view && (
                       <img
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          `${AXIOS_BASE_URL}/images/vehicle_images/` +
                           vehicle.front_view
                         }
                         alt="Selected"
@@ -133,7 +134,7 @@ export default function Home() {
                     {!images.back_view && vehicle.back_view && (
                       <img
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          `${AXIOS_BASE_URL}/images/vehicle_images/` +
                           vehicle.back_view
                         }
                         alt="Selected"
@@ -170,7 +171,7 @@ export default function Home() {
                     {!images.left_view && vehicle.left_view && (
                       <img
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          `${AXIOS_BASE_URL}/images/vehicle_images/` +
                           vehicle.left_view
                         }
                         alt="Selected"
@@ -206,7 +207,7 @@ export default function Home() {
                     {!images.right_view && vehicle.right_view && (
                       <img
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          `${AXIOS_BASE_URL}/images/vehicle_images/` +
                           vehicle.right_view
                         }
                         alt="Selected"
@@ -242,7 +243,7 @@ export default function Home() {
                     {!images.top_view && vehicle.top_view && (
                       <img
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          `${AXIOS_BASE_URL}/images/vehicle_images/` +
                           vehicle.top_view
                         }
                         alt="Selected"

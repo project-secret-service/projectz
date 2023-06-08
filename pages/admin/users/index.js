@@ -10,6 +10,7 @@ import Router from "next/router";
 import { Button } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import { GetUsers } from "@/functions/apiHandlers/users";
+import { AXIOS_BASE_URL } from "@/functions/constants";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
@@ -102,7 +103,7 @@ export default function Home() {
                                 {user.profile_pic && (
                                   <img
                                     src={
-                                      "http://localhost:3000/images/profilepic/" +
+                                      `${AXIOS_BASE_URL}/images/profilepic/` +
                                       user.profile_pic
                                     }
                                     style={{
@@ -138,7 +139,7 @@ export default function Home() {
                                 {user.profile_pic && (
                                   <img
                                     src={
-                                      "http://localhost:3000/images/profilepic/" +
+                                      `${AXIOS_BASE_URL}/images/profilepic/` +
                                       user.profile_pic
                                     }
                                     style={{

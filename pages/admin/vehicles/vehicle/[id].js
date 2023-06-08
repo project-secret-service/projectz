@@ -13,6 +13,7 @@ import dateFormat from "dateformat";
 import indianNumberFormat from "indian-number-format";
 import Link from "next/link";
 import { GetVehicle } from "@/functions/apiHandlers/vehicles";
+import { AXIOS_BASE_URL } from "@/functions/constants";
 
 function setFuel(fuel, fuelCapacity) {
   if (fuel <= fuelCapacity) {
@@ -101,7 +102,7 @@ export default function Home() {
                       <img
                         className="d-block w-100"
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          `${AXIOS_BASE_URL}/images/vehicle_images/` +
                           vehicle.front_view
                         }
                         alt="First slide"
@@ -117,7 +118,7 @@ export default function Home() {
                       <img
                         className="d-block w-100"
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          `${AXIOS_BASE_URL}/images/vehicle_images/` +
                           vehicle.back_view
                         }
                         alt="First slide"
@@ -133,7 +134,7 @@ export default function Home() {
                       <img
                         className="d-block w-100"
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          `${AXIOS_BASE_URL}/images/vehicle_images/` +
                           vehicle.top_view
                         }
                         alt="First slide"
@@ -148,7 +149,7 @@ export default function Home() {
                       <img
                         className="d-block w-100"
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          `${AXIOS_BASE_URL}/images/vehicle_images/` +
                           vehicle.left_view
                         }
                         alt="First slide"
@@ -163,7 +164,7 @@ export default function Home() {
                       <img
                         className="d-block w-100"
                         src={
-                          "http://localhost:3000/images/vehicle_images/" +
+                          `${AXIOS_BASE_URL}/images/vehicle_images/` +
                           vehicle.right_view
                         }
                         alt="First slide"

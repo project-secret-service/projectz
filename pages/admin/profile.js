@@ -3,7 +3,7 @@ import styles from "@/styles/Home.module.css";
 import Script from "next/script";
 import Header from "../components/Header";
 import SideBar from "../components/Sidebar";
-
+import { AXIOS_BASE_URL } from "@/functions/constants";
 import Scripts from "../components/Scripts";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
@@ -82,7 +82,7 @@ export default function Home() {
                     {user.profile_pic && (
                       <img
                         src={
-                          "http://localhost:3000/images/profilepic/" +
+                          `${AXIOS_BASE_URL}/images/profilepic/` +
                           user.profile_pic
                         }
                         style={{
@@ -217,7 +217,7 @@ export default function Home() {
                               {!imageSource && user.profile_pic && (
                                 <img
                                   src={
-                                    "http://localhost:3000/images/profilepic/" +
+                                    `${AXIOS_BASE_URL}/images/profilepic/` +
                                     user.profile_pic
                                   }
                                   onError={setProfile}

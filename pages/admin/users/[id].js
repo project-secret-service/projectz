@@ -8,6 +8,7 @@ import { Button, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import Scripts from "@/pages/components/Scripts";
 import { GetUserDetails } from "@/functions/apiHandlers/users";
+import { AXIOS_BASE_URL } from "@/functions/constants";
 
 const Post = () => {
   const [user, setUsers] = useState({});
@@ -43,7 +44,7 @@ const Post = () => {
                     {user.profile_pic && (
                       <img
                         src={
-                          "http://localhost:3000/images/profilepic/" +
+                          `${AXIOS_BASE_URL}/images/profilepic/` +
                           user.profile_pic
                         }
                         style={{

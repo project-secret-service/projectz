@@ -2,11 +2,11 @@ import axios from "axios";
 import Router from "next/router";
 import { AXIOS_BASE_URL } from "../constants";
 
-axios.defaults.baseURL = AXIOS_BASE_URL + "/users/";
+axios.defaults.baseURL = AXIOS_BASE_URL;
 
 export async function GetProfile() {
   const res = await axios({
-    url: "/get_user_details",
+    url: "/users/get_user_details",
     method: "GET",
     withCredentials: true,
   });

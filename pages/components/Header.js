@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { GetUser, LogOut } from "@/functions/loginAPI";
+import { AXIOS_BASE_URL } from "@/functions/constants";
 
 export default function Header({ parentCallback }) {
   const [user, setUser] = useState([]);
@@ -264,8 +265,7 @@ export default function Header({ parentCallback }) {
                 {user.profile_pic && (
                   <img
                     src={
-                      "http://localhost:3000/images/profilepic/" +
-                      user.profile_pic
+                      `${AXIOS_BASE_URL}/images/profilepic/` + user.profile_pic
                     }
                     style={{
                       borderRadius: "50%",
