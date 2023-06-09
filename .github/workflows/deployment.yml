@@ -15,8 +15,6 @@ jobs:
           key: ${{ secrets.VPS_PASSWORD }}
           script: |
             cd /home/${{ secrets.VPS_USERNAME }}/projects/fms/projectz
-            eval $(ssh-agent)
-            echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
             git pull
             npm install
             npm run build
