@@ -199,7 +199,7 @@ export default function Home() {
         <SideBar />
 
         <main id="main" className="col-lg-10 main mt-0 opac-80">
-          <h1>Order an Item</h1>
+          <h1 className="josefin-sans">Order an Item</h1>
           <Row>
             <div className="col-8">
               <form ref={formRef}>
