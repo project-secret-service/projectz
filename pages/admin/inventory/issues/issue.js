@@ -190,7 +190,7 @@ export default function Home() {
 
         <main id="main" className="col-lg-10 main mt-0 opac-80">
           <Row>
-            <h1>Issue an Item</h1>
+            <h1>Issue Items</h1>
             <div className="col-7">
               <form ref={formRef}>
                 <div>
