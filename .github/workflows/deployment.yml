@@ -12,7 +12,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_PASSWORD }}
+          password: ${{ secrets.VPS_PASSWORD }}
           script: |
             cd /home/${{ secrets.VPS_USERNAME }}/projects/fms/projectz
             git pull
