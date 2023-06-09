@@ -193,13 +193,13 @@ export default function Home() {
 
   return (
     <>
-      <title>Order an Item</title>
+      <title>Order Items</title>
       <main className={styles.main}>
         <Header />
         <SideBar />
 
         <main id="main" className="col-lg-10 main mt-0 opac-80">
-          <h1 className="josefin-sans">Order an Item</h1>
+          <h1 className="josefin-sans">Order Items</h1>
           <Row>
             <div className="col-8">
               <form ref={formRef}>
