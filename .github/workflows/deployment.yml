@@ -1,0 +1,23 @@
+name: Deploying To Production
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Through SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            cd /home/${{ secrets.VPS_USERNAME }}/projects/fms/projectz
+            eval $(ssh-agent)
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
+            git pull
+            npm install
+            npm run build
+            pm2 restart "fms-app"
