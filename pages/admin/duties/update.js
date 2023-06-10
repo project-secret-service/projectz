@@ -1,14 +1,11 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-import styles from "@/styles/Home.module.css";
-import Scripts from "@/pages/components/Scripts";
-import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
 import {
   UpdateDutyDetails,
   GetOnDutyVehicles,
 } from "@/functions/apiHandlers/duties";
-import Router from "next/router";
 import { DutiesRightSideMenu } from "@/pages/components/admin/duties";
+import AdminLayout from "@/pages/components/admin/AdminLayout";
 
 export default function Home() {
   const [onDutyVehicles, setOnDutyVehicles] = useState([]);
@@ -32,9 +29,8 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}>
-        <HeadAndSideBar title={"Update Duty"} />
-        <main id="main" className="col-lg-11 main opac-80 row">
+      <AdminLayout title={"Update Duty"}>
+        <main id="main" className="col-lg-11 main mt-0 opac-80 row">
           <h1>Update Duty</h1>
           <div className="col-lg-8">
             <div className="card">
@@ -155,8 +151,7 @@ export default function Home() {
             <DutiesRightSideMenu disable={"update_duties"} />
           </div>
         </main>
-      </main>
-      <Scripts />
+      </AdminLayout>
     </>
   );
 }

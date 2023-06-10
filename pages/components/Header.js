@@ -1,15 +1,11 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { GetUser, LogOut } from "@/functions/loginAPI";
+import { LogOut } from "@/functions/loginAPI";
 import { AXIOS_BASE_URL } from "@/functions/constants";
+import { useContext } from "react";
+import AuthContext from "@/functions/auth/AuthContext";
 
-export default function Header({ parentCallback }) {
-  const [user, setUser] = useState([]);
-  useEffect(() => {
-    GetUser().then((data) => {
-      setUser(data);
-    });
-  }, []);
+export default function Header({ user }) {
+  const { logout } = useContext(AuthContext);
 
   function ChangeSidebar() {
     document.body.classList.toggle("toggle-sidebar");
@@ -255,113 +251,123 @@ export default function Header({ parentCallback }) {
                 </li>
               </ul>
             </li> */}
-
-            <li className="nav-item dropdown pe-3">
-              <a
-                className="nav-link nav-profile d-flex align-items-center pe-0"
-                href="/"
-                data-bs-toggle="dropdown"
-              >
-                {user.profile_pic && (
-                  <img
-                    src={
-                      `${AXIOS_BASE_URL}/images/profilepic/` + user.profile_pic
-                    }
-                    style={{
-                      borderRadius: "50%",
-                      width: "30px",
-                      height: "30px",
-                      WebkitFilter: "drop-shadow(1px 1px 1px #222)",
-                      filter: "drop-shadow(1px 1px 5px #222)",
-                    }}
-                    alt="Profile"
-                  />
-                )}
-
-                {!user.profile_pic && (
-                  <img
-                    src="/assets/img/profile1.png"
-                    alt="Profile"
-                    className="rounded-circle"
-                    style={{
-                      borderRadius: "50%",
-                      WebkitFilter: "drop-shadow(1px 1px 1px #222)",
-                      filter: "drop-shadow(1px 1px 5px #222)",
-                    }}
-                  />
-                )}
-
-                <span
-                  className="d-none d-md-block dropdown-toggle ps-2"
-                  style={{
-                    textShadow: "0.5px 0.5px 0.5px #222",
-                    fontSize: "1.1rem",
-                  }}
-                >
-                  {user.name}
-                </span>
-              </a>
-
-              <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                <li className="dropdown-header">
-                  <h6>{user.username}</h6>
-                  <span>{user.role}</span>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-
-                <li>
-                  <Link
-                    className="dropdown-item d-flex align-items-center"
-                    href="/admin/profile"
-                  >
-                    <i className="bi bi-person"></i>
-                    <span>My Profile</span>
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-
-                <li>
-                  <Link
-                    className="dropdown-item d-flex align-items-center"
-                    href="/admin/profile"
-                  >
-                    <i className="bi bi-gear"></i>
-                    <span>Account Settings</span>
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-
-                <li>
-                  <Link
-                    href={"/admin/lawbook"}
-                    className="dropdown-item d-flex align-items-center"
-                  >
-                    <i className="bi bi-question-circle"></i>
-
-                    <span>Law Book</span>
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-
-                <li style={{ cursor: "pointer" }}>
+            {user && (
+              <>
+                <li className="nav-item dropdown pe-3">
                   <a
-                    className="dropdown-item d-flex align-items-center"
-                    onClick={LogOut}
+                    className="nav-link nav-profile d-flex align-items-center pe-0"
+                    href="/"
+                    data-bs-toggle="dropdown"
                   >
-                    <i className="bi bi-box-arrow-right"></i>
-                    <span>Sign Out</span>
+                    {user.profile_pic && (
+                      <img
+                        src={
+                          `${AXIOS_BASE_URL}/images/profilepic/` +
+                          user.profile_pic
+                        }
+                        style={{
+                          borderRadius: "50%",
+                          width: "30px",
+                          height: "30px",
+                          WebkitFilter: "drop-shadow(1px 1px 1px #222)",
+                          filter: "drop-shadow(1px 1px 5px #222)",
+                        }}
+                        alt="Profile"
+                      />
+                    )}
+
+                    {!user.profile_pic && (
+                      <img
+                        src="/assets/img/profile1.png"
+                        alt="Profile"
+                        className="rounded-circle"
+                        style={{
+                          borderRadius: "50%",
+                          WebkitFilter: "drop-shadow(1px 1px 1px #222)",
+                          filter: "drop-shadow(1px 1px 5px #222)",
+                        }}
+                      />
+                    )}
+
+                    <span
+                      className="d-none d-md-block dropdown-toggle ps-2"
+                      style={{
+                        textShadow: "0.5px 0.5px 0.5px #222",
+                        fontSize: "1.1rem",
+                      }}
+                    >
+                      {user.name}
+                    </span>
                   </a>
+
+                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li className="dropdown-header">
+                      <h6>{user.username}</h6>
+                      <span>{user.role}</span>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+
+                    <li>
+                      <Link
+                        className="dropdown-item d-flex align-items-center"
+                        href="/admin/profile"
+                      >
+                        <i className="bi bi-person"></i>
+                        <span>My Profile</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+
+                    <li>
+                      <Link
+                        className="dropdown-item d-flex align-items-center"
+                        href="/admin/profile"
+                      >
+                        <i className="bi bi-gear"></i>
+                        <span>Account Settings</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+
+                    <li>
+                      <Link
+                        href={"/admin/lawbook"}
+                        className="dropdown-item d-flex align-items-center"
+                      >
+                        <i className="bi bi-question-circle"></i>
+
+                        <span>Law Book</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+
+                    <li style={{ cursor: "pointer" }}>
+                      <a
+                        className="dropdown-item d-flex align-items-center"
+                        onClick={() => {
+                          LogOut().then((res) => {
+                            if (res === 200) {
+                              logout();
+                            }
+                          });
+                        }}
+                      >
+                        <i className="bi bi-box-arrow-right"></i>
+                        <span>Sign Out</span>
+                      </a>
+                    </li>
+                  </ul>
                 </li>
-              </ul>
-            </li>
+              </>
+            )}
           </ul>
         </nav>
       </header>

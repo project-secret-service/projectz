@@ -1,12 +1,8 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-
-import styles from "@/styles/Home.module.css";
-import Scripts from "@/pages/components/Scripts";
-import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
 import { useRouter } from "next/router";
-
 import { UpdateDutyDetails, ActiveDuty } from "@/functions/apiHandlers/duties";
+import AdminLayout from "@/pages/components/admin/AdminLayout";
 
 export default function Home() {
   const [duty, setDuty] = useState({});
@@ -15,7 +11,6 @@ export default function Home() {
   async function SetAllDetails(id) {
     let data = await ActiveDuty(id);
     setDuty(data);
-    console.log(data);
   }
 
   useEffect(() => {
@@ -26,8 +21,7 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}>
-        <HeadAndSideBar title={"Update Duty"} />
+      <AdminLayout title={"Update Duty"}>
         <main id="main" className="col-lg-10 main opac-80">
           <div className="col-lg-10">
             <div className="card">
@@ -126,8 +120,7 @@ export default function Home() {
             </div>
           </div>
         </main>
-      </main>
-      <Scripts />
+      </AdminLayout>
     </>
   );
 }

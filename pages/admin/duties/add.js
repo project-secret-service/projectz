@@ -1,8 +1,4 @@
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
-import Scripts from "../../components/Scripts";
+
 import { useEffect, useState } from "react";
 import { Button, Row } from "react-bootstrap";
 import moment from "moment";
@@ -14,6 +10,7 @@ import {
 import { GetVehiclesAvailable } from "@/functions/apiHandlers/vehicles";
 import { GetDriversAvailable } from "@/functions/apiHandlers/drivers";
 import { DutiesRightSideMenu } from "@/pages/components/admin/duties";
+import AdminLayout from "@/pages/components/admin/AdminLayout";
 
 export default function Home() {
   const [vehicles, setVehicles] = useState([]);
@@ -63,12 +60,7 @@ export default function Home() {
 
   return (
     <>
-      <title>Add Duty</title>
-
-      <main className={styles.main}>
-        <Header />
-        <SideBar />
-
+      <AdminLayout title="Add New Duty">
         <main id="main" className="col-lg-11 main mt-0 opac-80">
           <h3>Add New Duty</h3>
           <Row>
@@ -297,9 +289,7 @@ export default function Home() {
             </div>
           </Row>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

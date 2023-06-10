@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Scripts from "@/pages/components/Scripts";
 import { GetDriverDetails } from "@/functions/apiHandlers/drivers";
 import { AXIOS_BASE_URL } from "@/functions/constants";
+import AdminLayout from "@/pages/components/admin/AdminLayout";
 
 const Post = () => {
   const [driver, setDrivers] = useState({});
@@ -24,9 +25,7 @@ const Post = () => {
 
   return (
     <>
-      <Header />
-      <SideBar />
-      <main className={styles.main}>
+      <AdminLayout title="Driver Details">
         <main id="main" className="col-11 main mt-0 opac-80">
           <h1 className="josefin-sans">{driver.name}</h1>
           <Row>
@@ -141,8 +140,7 @@ const Post = () => {
             </div>
           </Row>
         </main>
-      </main>
-      <Scripts />
+      </AdminLayout>
     </>
   );
 };

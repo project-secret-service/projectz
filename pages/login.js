@@ -1,9 +1,13 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { checkLogin, UserLogin } from "@/functions/loginAPI";
+import AuthContext from "@/functions/auth/AuthContext";
+import Router from "next/router";
 
 export default function Login() {
+  const { login, setUser } = useContext(AuthContext);
+  const [loginSpinner, setLoginSpinner] = useState(false);
   useEffect(() => {
     checkLogin();
   });
@@ -43,7 +47,18 @@ export default function Login() {
             className={styles.form}
             style={{ opacity: 1, backgroundColor: "white", opacity: 0.8 }}
           >
-            <form onSubmit={UserLogin}>
+            <form
+              onSubmit={async () => {
+                let res = await UserLogin(event);
+                if (res.data.status === 200) {
+                  setLoginSpinner(true);
+                  console.log(res.data);
+                  setUser(res.data.user);
+                  login();
+                  Router.push("/admin/duties/");
+                }
+              }}
+            >
               <div className={styles.form_inputs}>
                 <div className="text-center">
                   <h1
@@ -88,9 +103,24 @@ export default function Login() {
                 </div>
               </div>
               <div style={{ marginTop: "4rem" }}>
-                <button className={styles.login_button} type="submit">
-                  LOGIN
-                </button>
+                {!loginSpinner ? (
+                  <button className={styles.login_button} type="submit">
+                    LOGIN
+                  </button>
+                ) : (
+                  <button
+                    className={styles.login_button}
+                    type="button"
+                    disabled
+                  >
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Loading...
+                  </button>
+                )}
               </div>
             </form>
           </div>

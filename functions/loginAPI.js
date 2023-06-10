@@ -1,6 +1,8 @@
 import axios from "axios";
 import Router from "next/router";
 import { AXIOS_BASE_URL } from "./constants";
+import { useContext } from "react";
+import AuthContext from "./auth/AuthContext";
 
 axios.defaults.baseURL = AXIOS_BASE_URL;
 
@@ -16,6 +18,15 @@ export async function checkIfLoggedIn() {
   } else {
     Router.push("/login");
   }
+}
+
+export async function checkLoggedIn() {
+  const res = await axios({
+    method: "POST",
+    url: "/checklogin",
+    withCredentials: true,
+  });
+  return res.data;
 }
 
 //*Login Page
@@ -42,11 +53,10 @@ export async function UserLogin(event) {
     data: data,
     withCredentials: true,
   });
-
-  if (res.status === 200) {
-    Router.push("/admin/duties/");
-  } else {
-    alert("Wrong Username or Password");
+  if (res.data === "INVALID CREDENTIALS") {
+    alert("Invalid Credentials");
+  } else if (res.status === 200) {
+    return res;
   }
 }
 
@@ -66,6 +76,6 @@ export async function LogOut() {
     withCredentials: true,
   });
   if (res.data.status === 200) {
-    window.location.href = "/login";
+    return res.data.status;
   }
 }

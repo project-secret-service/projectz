@@ -18,10 +18,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className={styles.main}>
-        <Header parentCallback={(data) => {}} />
-
+        <Header />
         <SideBar title="dashboard" />
-
         {/* <main id="main" className="main mt-0 opac-90">
           <div className="pagetitle">
             <h1>Dashboard</h1>

@@ -25,7 +25,7 @@ export async function updateProfileDetails(event, setLoading, user) {
     photo: event.target.profile_pic.files[0],
   };
   const res = await axios({
-    url: "update/" + user._id,
+    url: "/users/update/" + user._id,
     method: "PUT",
     withCredentials: true,
     headers: {
