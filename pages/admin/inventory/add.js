@@ -1,23 +1,13 @@
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
-import Scripts from "../../components/Scripts";
 import Router from "next/router";
 import Link from "next/link";
-
-import Head from "next/head";
 import { Button, Row, Col } from "react-bootstrap";
+import { addNewItem } from "@/functions/apiHandlers/inventory";
+import AdminLayout from "@/components/admin/AdminLayout";
 
-import {addNewItem} from "@/functions/apiHandlers/inventory";
 export default function Home() {
   return (
     <>
-      <Head title="Add Items" />
-      <main className={styles.main}>
-        <Header />
-        <SideBar />
-
+      <AdminLayout title={`Add New Item`}>
         <main id="main" className="col-lg-10 main mt-0">
           <h1>Add New Item</h1>
           <Row>
@@ -124,9 +114,7 @@ export default function Home() {
             </div>
           </Row>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

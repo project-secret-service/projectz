@@ -5,7 +5,7 @@ import ReactToPrint from "react-to-print";
 import dateFormat from "dateformat";
 import { Row, Button, Modal } from "react-bootstrap";
 import { GetDutyDetails, AddDutySign } from "@/functions/apiHandlers/duties";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 const SignatureModal = ({
   signAs,

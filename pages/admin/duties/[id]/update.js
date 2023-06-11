@@ -2,7 +2,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { UpdateDutyDetails, ActiveDuty } from "@/functions/apiHandlers/duties";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [duty, setDuty] = useState({});

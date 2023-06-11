@@ -1,8 +1,3 @@
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
-import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import Router from "next/router";
@@ -14,7 +9,7 @@ import {
   getLastVoucherEntry,
 } from "@/functions/apiHandlers/fuel";
 import { GetVehicles } from "@/functions/apiHandlers/vehicles";
-// import { getLastVoucherEntry } from "@/functions/apiHandlers/fuel";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [oils, setOils] = useState([]);
@@ -86,10 +81,7 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}>
-        <Header />
-        <SideBar />
-
+      <AdminLayout title="Allot Oil">
         <main id="main" className="col-lg-10 main mt-0 opac-80">
           <h1>Allot Oil</h1>
           <div className="row">
@@ -292,24 +284,33 @@ export default function Home() {
               >
                 BACK
               </Button>
+              <Link href={"/admin/fuel/balance/log"}>
+                <Button className="w-100 mb-1 btn-light">
+                  <i class="bi bi-list-task"></i> Oil Balance Log
+                </Button>
+              </Link>
+
               <Link href={"/admin/fuel/add"}>
-                <Button className="w-100 mb-1 btn-warning">
-                  Update Balance
+                <Button className="w-100 mb-1 btn-light">
+                  <i class="bi bi-pencil-square"></i> Update Balance
                 </Button>
               </Link>
               <Link href={"/admin/fuel/balance"}>
-                <Button className="w-100 mb-1 btn-success">Show Balance</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  {" "}
+                  <i class="bi bi-app"></i> Show Balance
+                </Button>
               </Link>
 
               <Link href={"/admin/fuel/addtype"}>
-                <Button className="w-100 mb-1 btn-primary">Add Oil Type</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  <i class="bi bi-alexa"></i> Add Oil Type
+                </Button>
               </Link>
             </div>
           </div>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

@@ -8,7 +8,7 @@ import {
   CheckCrpNoinDB,
   handleVehicleSubmit,
 } from "@/functions/apiHandlers/vehicles";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const vehicle_crp_no_input = useRef(null);

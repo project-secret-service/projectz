@@ -8,7 +8,9 @@ import {
 } from "@/functions/apiHandlers/duties";
 import Router from "next/router";
 import { useReactToPrint } from "react-to-print";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
+
+
 export default function Home() {
   const [duties, setDuties] = useState([]);
   const [ascending, setAscending] = useState(false);

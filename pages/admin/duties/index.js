@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { Row } from "react-bootstrap";
 import dateFormat from "dateformat";
 import { GetDutiesDesc, OpenDuty } from "@/functions/apiHandlers/duties";
-import { DutiesRightSideMenu } from "@/pages/components/admin/duties";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import { DutiesRightSideMenu } from "@/components/admin/duties";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 function Home() {
   const [duties, setDuties] = useState([]);

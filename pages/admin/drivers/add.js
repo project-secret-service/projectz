@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import Link from "next/link";
 import { addNewDriver } from "@/functions/apiHandlers/drivers";
 import Router from "next/router";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [driver, setDrivers] = useState({});

@@ -1,15 +1,10 @@
-import Head from "next/head";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
-import Scripts from "@/pages/components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import Router from "next/router";
 import { Button, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
 import { useRouter } from "next/router";
 import { GetMemos } from "@/functions/apiHandlers/workshop";
-
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [memos, setMemos] = useState([]);
@@ -26,8 +21,7 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}>
-        <HeadAndSideBar title={"Defect Memo"} />
+      <AdminLayout title={`Job Cards`}>
         <main id="main" className="col-lg-10 main mt-0 opac-80">
           <h1>Job Cards</h1>
           <Row>
@@ -90,9 +84,7 @@ export default function Home() {
             </div>
           </Row>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

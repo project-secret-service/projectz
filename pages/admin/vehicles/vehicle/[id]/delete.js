@@ -4,7 +4,7 @@ import vehicle_styles from "@/styles/Vehicles.module.css";
 import { Button, Col, Row } from "react-bootstrap";
 import Router from "next/router";
 import { GetVehicle, deleteVehicle } from "@/functions/apiHandlers/vehicles";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [vehicle, setVehicle] = useState({});

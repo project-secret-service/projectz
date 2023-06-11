@@ -1,8 +1,3 @@
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "../../../components/Header";
-import SideBar from "../../../components/Sidebar";
-import Scripts from "../../../components/Scripts";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Router from "next/router";
@@ -20,6 +15,7 @@ import {
   AddOrder,
   LastOrder,
 } from "@/functions/apiHandlers/inventory";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const componentRef = useRef();
@@ -193,11 +189,7 @@ export default function Home() {
 
   return (
     <>
-      <title>Order Items</title>
-      <main className={styles.main}>
-        <Header />
-        <SideBar />
-
+      <AdminLayout title={`Order Items`}>
         <main id="main" className="col-lg-10 main mt-0 opac-80">
           <h1 className="josefin-sans">Order Items</h1>
           <Row>
@@ -494,10 +486,7 @@ export default function Home() {
             </div>
           </Row>
         </main>
-      </main>
-
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

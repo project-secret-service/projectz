@@ -4,7 +4,7 @@ import vehicle_styles from "@/styles/Vehicles.module.css";
 import { Button } from "react-bootstrap";
 import dateFormat from "dateformat";
 import { GetVehicle } from "@/functions/apiHandlers/vehicles";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 function setFuel(fuel, fuelCapacity) {
   if (fuel <= fuelCapacity) {

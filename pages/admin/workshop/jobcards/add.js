@@ -1,14 +1,10 @@
-import Head from "next/head";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
-import Scripts from "@/pages/components/Scripts";
 import { useRef, useEffect, useState } from "react";
 import Router from "next/router";
 import { Button, Row } from "react-bootstrap";
 import dateFormat from "dateformat";
 import { GetVehicles } from "@/functions/apiHandlers/vehicles";
 import { GetParts } from "@/functions/apiHandlers/workshop";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [card, setCard] = useState({});
@@ -81,8 +77,7 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}>
-        <HeadAndSideBar title={"Add Job Card"} />
+      <AdminLayout title={`Create Job Card`}>
         <main id="main" className="col-lg-10 main mt-0">
           <h1>Create Job Card</h1>
           <Row>
@@ -303,9 +298,7 @@ export default function Home() {
             </div>
           </Row>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

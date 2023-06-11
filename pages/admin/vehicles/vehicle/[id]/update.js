@@ -6,7 +6,7 @@ import dateFormat from "dateformat";
 import Link from "next/link";
 import { GetVehicle, updateVehicle } from "@/functions/apiHandlers/vehicles";
 import { AXIOS_BASE_URL } from "@/functions/constants";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [vehicle, setVehicle] = useState({});

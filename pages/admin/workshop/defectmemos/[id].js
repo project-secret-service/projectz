@@ -1,8 +1,3 @@
-import Head from "next/head";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import HeadAndSideBar from "@/pages/components/admin/HeadAndSideBar";
-import Scripts from "@/pages/components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import Router from "next/router";
 import { Button, Row, Modal } from "react-bootstrap";
@@ -10,6 +5,7 @@ import dateFormat from "dateformat";
 import { useRouter } from "next/router";
 import { useReactToPrint } from "react-to-print";
 import { GetMemoDetails } from "@/functions/apiHandlers/workshop";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 const SignatureModal = ({
   signAs,
@@ -117,8 +113,7 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}>
-        <HeadAndSideBar title={"Defect Memo"} />
+      <AdminLayout title={`Defect Memo - ${memo._id}`}>
         <main id="main" className="col-lg-11 main mt-0 opac-80">
           <div className="d-flex justify-content-between">
             <h3>Defect Memo</h3>
@@ -639,9 +634,7 @@ export default function Home() {
             </div>
           </div>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

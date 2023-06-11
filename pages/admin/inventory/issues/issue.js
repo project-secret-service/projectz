@@ -1,14 +1,8 @@
-import Head from "next/head";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "../../../components/Header";
-import SideBar from "../../../components/Sidebar";
-import Scripts from "../../../components/Scripts";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Router from "next/router";
 import { Button, Row } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
@@ -16,6 +10,7 @@ import moment from "moment";
 import { Modal } from "react-bootstrap";
 import { GetIssues, GetItemDetails } from "@/functions/apiHandlers/inventory";
 import { AddIssue, LastIssue } from "@/functions/apiHandlers/inventory";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const componentRef = useRef();
@@ -183,11 +178,7 @@ export default function Home() {
 
   return (
     <>
-      <title>Issue Item</title>
-      <main className={styles.main}>
-        <Header />
-        <SideBar />
-
+      <AdminLayout title={`Issue Items`}>
         <main id="main" className="col-lg-10 main mt-0 opac-80">
           <Row>
             <h1>Issue Items</h1>
@@ -484,9 +475,7 @@ export default function Home() {
             </div>
           </Row>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

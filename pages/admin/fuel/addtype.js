@@ -1,33 +1,21 @@
-import Head from "next/head";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
-import Scripts from "../../components/Scripts";
-
 import { Button, Row } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import Link from "next/link";
 import Router, { useRouter } from "next/router";
 import { addOilType } from "@/functions/apiHandlers/fuel";
-
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const router = useRouter();
   return (
     <>
-      <title>Add Fuel</title>
-
-      <main className={styles.main}>
-        <Header />
-        <SideBar />
-
+      <AdminLayout title={`Add Oil Type`}>
         <main id="main" className="col-lg-10 main mt-0 opac-80">
           <div className="d-flex">
             <div className="col-12">
               <h1>Add Oil Type</h1>
               <Row>
-                <div className="card col-8 m-1">
+                <div className="card col-8 m-1 p-5">
                   <div className="card-body">
                     <form onSubmit={addOilType}>
                       <ToastContainer />
@@ -51,10 +39,10 @@ export default function Home() {
                         <div className="col-sm-10">
                           <button
                             type="submit"
-                            className="btn btn-primary"
+                            className="btn btn-success"
                             style={{ float: "right", width: "50%" }}
                           >
-                            Add Oil Type
+                            + Add Oil Type
                           </button>
                         </div>
                       </div>
@@ -62,18 +50,36 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="col-3 card m-1 p-3">
-                  <Link href={"/admin/fuel/add"}>
-                    <Button className="w-100 mb-1 btn-warning">
-                      Update Balance
+                  <Button
+                    className="w-100 mb-1 btn-dark"
+                    onClick={() => {
+                      Router.back();
+                    }}
+                  >
+                    BACK
+                  </Button>
+                  <hr />
+
+                  <Link href={"/admin/fuel/balance/log"}>
+                    <Button className="w-100 mb-1 btn-light">
+                      <i class="bi bi-list-task"></i> Oil Balance Log
                     </Button>
-                  </Link>
-                  <Link href={"/admin/fuel/allot"}>
-                    <Button className="w-100 mb-1 btn-dark">Allot Fuel</Button>
                   </Link>
 
                   <Link href={"/admin/fuel/balance"}>
-                    <Button className="w-100 mb-1 btn-primary">
-                      Show Balance
+                    <Button className="w-100 mb-1 btn-light">
+                      <i class="bi bi-box-seam"></i> Show Balance
+                    </Button>
+                  </Link>
+
+                  <Link href={"/admin/fuel/add"}>
+                    <Button className="w-100 mb-1 btn-light">
+                      <i class="bi bi-pencil-square"></i> Update Balance
+                    </Button>
+                  </Link>
+                  <Link href={"/admin/fuel/allot"}>
+                    <Button className="w-100 mb-1 btn-light">
+                      <i class="bi bi-fuel-pump-fill"></i> Allot Fuel
                     </Button>
                   </Link>
                 </div>
@@ -81,9 +87,7 @@ export default function Home() {
             </div>
           </div>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

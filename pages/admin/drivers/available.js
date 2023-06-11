@@ -1,16 +1,10 @@
-import Head from "next/head";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
-import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Router from "next/router";
 import { Button, Row } from "react-bootstrap";
 import { GetDrivers } from "@/functions/apiHandlers/drivers";
 import { AXIOS_BASE_URL } from "@/functions/constants";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [drivers, setDrivers] = useState([]);

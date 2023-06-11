@@ -1,15 +1,10 @@
 import { useRouter } from "next/router";
-import Head from "next/head";
-import styles from "@/styles/Home.module.css";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
 import Link from "next/link";
 import { Button, Col, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import Scripts from "@/pages/components/Scripts";
 import { GetDriverDetails } from "@/functions/apiHandlers/drivers";
 import { AXIOS_BASE_URL } from "@/functions/constants";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 const Post = () => {
   const [driver, setDrivers] = useState({});

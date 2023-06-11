@@ -4,8 +4,8 @@ import {
   UpdateDutyDetails,
   GetOnDutyVehicles,
 } from "@/functions/apiHandlers/duties";
-import { DutiesRightSideMenu } from "@/pages/components/admin/duties";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import { DutiesRightSideMenu } from "@/components/admin/duties";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [onDutyVehicles, setOnDutyVehicles] = useState([]);

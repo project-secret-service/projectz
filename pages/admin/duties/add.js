@@ -8,8 +8,8 @@ import {
 } from "@/functions/apiHandlers/duties";
 import { GetVehiclesAvailable } from "@/functions/apiHandlers/vehicles";
 import { GetDriversAvailable } from "@/functions/apiHandlers/drivers";
-import { DutiesRightSideMenu } from "@/pages/components/admin/duties";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import { DutiesRightSideMenu } from "@/components/admin/duties";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [vehicles, setVehicles] = useState([]);

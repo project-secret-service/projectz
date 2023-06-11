@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import dateFormat from "dateformat";
 import { GetVehicle } from "@/functions/apiHandlers/vehicles";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [vehicle, setVehicle] = useState({});

@@ -1,15 +1,9 @@
-import Head from "next/head";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
-import Scripts from "../../components/Scripts";
 import { useState } from "react";
 import { Button, Row } from "react-bootstrap";
 import Link from "next/link";
 import { AddNewUser } from "@/functions/apiHandlers/users";
 import Router from "next/router";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [imageSource, setImageSource] = useState("");

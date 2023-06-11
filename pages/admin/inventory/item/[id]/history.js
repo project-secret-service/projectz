@@ -1,8 +1,4 @@
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "@/pages/components/Header";
-import SideBar from "@/pages/components/Sidebar";
-import Scripts from "@/pages/components/Scripts";
+
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
@@ -12,6 +8,7 @@ import {
   GetItemHistory,
   GetItemDetails,
 } from "@/functions/apiHandlers/inventory";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [inventoryHistory, setInventoryHistory] = useState([]);
@@ -110,10 +107,7 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}>
-        <Header />
-        <SideBar />
-
+      <AdminLayout title={`Inventory History - ${item.name}`}>
         <main id="main" className="col-lg-11 main mt-0 opac-80">
           <Row className="p-1">
             <h1>Inventory History - {item.name}</h1>
@@ -258,9 +252,7 @@ export default function Home() {
             </div>
           </div>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

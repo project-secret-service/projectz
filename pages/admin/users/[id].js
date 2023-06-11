@@ -4,7 +4,7 @@ import { Button, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { GetUserDetails } from "@/functions/apiHandlers/users";
 import { AXIOS_BASE_URL } from "@/functions/constants";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 const Post = () => {
   const [user, setUsers] = useState({});

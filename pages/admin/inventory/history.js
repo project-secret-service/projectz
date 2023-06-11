@@ -1,8 +1,4 @@
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
-import Scripts from "../../components/Scripts";
+
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
@@ -10,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import dateFormat from "dateformat";
 import router from "next/router";
 import { GetOrders, GetIssues } from "@/functions/apiHandlers/inventory";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [inventoryHistory, setInventoryHistory] = useState([]);
@@ -98,10 +95,7 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}>
-        <Header />
-        <SideBar />
-
+      <AdminLayout title={`Inventory History`}>
         <main id="main" className="col-lg-11 main mt-0 opac-80">
           <Row className="p-1">
             <h1>Inventory History</h1>
@@ -226,9 +220,7 @@ export default function Home() {
             </div>
           </div>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import { GetDrivers } from "@/functions/apiHandlers/drivers";
 import { AXIOS_BASE_URL } from "@/functions/constants";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [drivers, setDrivers] = useState([]);

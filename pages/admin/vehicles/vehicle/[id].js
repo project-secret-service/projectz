@@ -7,7 +7,7 @@ import indianNumberFormat from "indian-number-format";
 import Link from "next/link";
 import { GetVehicle } from "@/functions/apiHandlers/vehicles";
 import { AXIOS_BASE_URL } from "@/functions/constants";
-import AdminLayout from "@/pages/components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 function setFuel(fuel, fuelCapacity) {
   if (fuel <= fuelCapacity) {

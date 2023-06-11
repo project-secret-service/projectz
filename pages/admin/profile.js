@@ -1,6 +1,4 @@
-import Script from "next/script";
 import { AXIOS_BASE_URL } from "@/functions/constants";
-import Scripts from "../components/Scripts";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import vehicle_styles from "@/styles/Vehicles.module.css";
@@ -12,7 +10,7 @@ import {
   updateProfileDetails,
 } from "@/functions/apiHandlers/profile";
 
-import AdminLayout from "../components/admin/AdminLayout";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [user, setUser] = useState([]);
@@ -108,12 +106,7 @@ export default function Home() {
                         </button>
                       </li>
 
-                      <li
-                        className="nav-item"
-                        onClick={() => {
-                          Router.push("/admin/edit_profile");
-                        }}
-                      >
+                      <li className="nav-item">
                         <button
                           className="nav-link"
                           data-bs-toggle="tab"
