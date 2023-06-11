@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <AdminLayout title="Dashboard">
-        {/* <main id="main" className="main mt-0 opac-90">
+        <main id="main" className="main mt-0 opac-90">
           <div className="pagetitle">
             <h1>Dashboard</h1>
           </div>
@@ -15,6 +15,7 @@ export default function Home() {
           <section className="section dashboard">
             <div className="row">
               <div className="col-lg-8">
+                
                 <div className="row">
                   <div className="col-xxl-4 col-md-6">
                     <div className="card info-card sales-card">
@@ -749,9 +750,7 @@ export default function Home() {
               </div>
             </div>
           </section>
-        </main> */}
-
-        {/* <Footer /> */}
+        </main>
       </AdminLayout>
     </>
   );

@@ -22,7 +22,7 @@ export default function SideBar(props) {
               id="profile-sidebar"
               href={"/admin/duties"}
             >
-              <i className="bi bi-person"></i>
+              <i className="bi bi-list-task"></i>
               <span>Duties</span>
             </Link>
           </li>
@@ -33,7 +33,7 @@ export default function SideBar(props) {
               id="profile-sidebar"
               href={"/admin/vehicles"}
             >
-              <i className="bi bi-person"></i>
+              <i className="bi bi-truck-front"></i>
               <span>Vehicles</span>
             </Link>
           </li>
@@ -44,7 +44,7 @@ export default function SideBar(props) {
               id="profile-sidebar"
               href={"/admin/workshop/"}
             >
-              <i className="bi bi-person"></i>
+              <i className="bi bi-tools"></i>
               <span>Workshop</span>
             </Link>
           </li>
@@ -55,7 +55,7 @@ export default function SideBar(props) {
               id="profile-sidebar"
               href={"/admin/inventory/"}
             >
-              <i className="bi bi-person"></i>
+              <i className="bi bi-box2-fill"></i>
               <span>Inventory</span>
             </Link>
           </li>
@@ -66,7 +66,7 @@ export default function SideBar(props) {
               id="profile-sidebar"
               href={"/admin/fuel/balance"}
             >
-              <i className="bi bi-person"></i>
+              <i className="bi bi-alexa"></i>
               <span>Oil</span>
             </Link>
           </li>
@@ -77,7 +77,7 @@ export default function SideBar(props) {
               id="profile-sidebar"
               href={"/admin/drivers"}
             >
-              <i className="bi bi-person"></i>
+              <i className="bi bi-person-vcard"></i>
               <span>Drivers</span>
             </Link>
           </li>
@@ -88,7 +88,7 @@ export default function SideBar(props) {
               id="profile-sidebar"
               href={"/admin/users"}
             >
-              <i className="bi bi-person"></i>
+              <i className="bi bi-person-lines-fill"></i>
               <span>Users</span>
             </Link>
           </li>
@@ -99,7 +99,7 @@ export default function SideBar(props) {
               id="profile-sidebar"
               href={"/admin/profile"}
             >
-              <i className="bi bi-person"></i>
+              <i className="bi bi-person-circle"></i>
               <span>Profile</span>
             </Link>
           </li>
