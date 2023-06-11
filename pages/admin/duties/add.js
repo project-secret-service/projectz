@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Button, Row } from "react-bootstrap";
 import moment from "moment";
@@ -38,7 +37,10 @@ export default function Home() {
 
   async function setInputData() {
     let data = await GetVehiclesAvailable();
-    setVehicles(data);
+    if (Array.isArray(data) && data.length != 0) {
+      setVehicles(data);
+    }
+
     let latest_indent_no = await GetLatestIndentNo();
     let v = data[0] ? data[0]._id : "";
     setDuty({
@@ -50,7 +52,7 @@ export default function Home() {
       completed: "false",
     });
     let data2 = await GetDriversAvailable();
-    setDrivers(data2);
+    if (Array.isArray(data2) && data2.length != 0) setDrivers(data2);
     setSelectedVehicle(data[0]);
   }
 
@@ -100,14 +102,15 @@ export default function Home() {
                           aria-label="Default select example"
                           onChange={setVehicle}
                         >
-                          {vehicles.map((vehicle, index) => {
-                            return (
-                              <option key={index + 1} value={vehicle._id}>
-                                CRP - {vehicle.vehicle_crp_no}{" "}
-                                {vehicle.registration_no}
-                              </option>
-                            );
-                          })}
+                          {vehicles &&
+                            vehicles.map((vehicle, index) => {
+                              return (
+                                <option key={index + 1} value={vehicle._id}>
+                                  CRP - {vehicle.vehicle_crp_no}{" "}
+                                  {vehicle.registration_no}
+                                </option>
+                              );
+                            })}
                         </select>
                       </div>
                     </div>

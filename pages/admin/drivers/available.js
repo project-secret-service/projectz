@@ -43,7 +43,6 @@ export default function Home() {
     }
     setSearch(true);
     let searchFilter = searchFilterRef.current.value;
-    console.log(searchFilter);
     if (searchFilter === "name") {
       let filteredDrivers = drivers.filter((driver) =>
         driver.name.toLowerCase().includes(search.toLowerCase())

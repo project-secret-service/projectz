@@ -31,7 +31,7 @@ export default function Home() {
 
   useEffect(() => {
     GetDuties().then((data) => {
-      setDuties(data);
+      if (Array.isArray(data) && data.length != 0) setDuties(data);
     });
   }, []);
 

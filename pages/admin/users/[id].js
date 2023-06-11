@@ -1,14 +1,10 @@
 import { useRouter } from "next/router";
-import Head from "next/head";
-import styles from "@/styles/Home.module.css";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import Scripts from "@/pages/components/Scripts";
 import { GetUserDetails } from "@/functions/apiHandlers/users";
 import { AXIOS_BASE_URL } from "@/functions/constants";
+import AdminLayout from "@/pages/components/admin/AdminLayout";
 
 const Post = () => {
   const [user, setUsers] = useState({});
@@ -19,15 +15,12 @@ const Post = () => {
     const { id } = router.query;
     GetUserDetails(id).then((data) => {
       setUsers(data);
-      console.data;
     });
   }, [router.isReady]);
 
   return (
     <>
-      <Header />
-      <SideBar />
-      <main className={styles.main}>
+      <AdminLayout>
         <main id="main" className="col-11 main mt-0 opac-80">
           <h1 className="josefin-sans">{user.name}</h1>
           <Row>
@@ -130,8 +123,7 @@ const Post = () => {
             </div>
           </Row>
         </main>
-      </main>
-      <Scripts />
+      </AdminLayout>
     </>
   );
 };

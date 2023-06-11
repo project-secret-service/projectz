@@ -1,15 +1,10 @@
 import { useRouter } from "next/router";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "@/pages/components/Header";
-import SideBar from "@/pages/components/Sidebar";
-import Scripts from "@/pages/components/Scripts";
 import { useEffect, useState } from "react";
-import Head from "@/pages/components/Head";
 import vehicle_styles from "@/styles/Vehicles.module.css";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import dateFormat from "dateformat";
 import { GetVehicle } from "@/functions/apiHandlers/vehicles";
+import AdminLayout from "@/pages/components/admin/AdminLayout";
 
 function setFuel(fuel, fuelCapacity) {
   if (fuel <= fuelCapacity) {
@@ -37,7 +32,6 @@ function setFuel(fuel, fuelCapacity) {
 export default function Home() {
   const [vehicle, setVehicle] = useState({});
   const [fuelLog, setFuelLog] = useState([]);
-  const [fuelLimitError, setFuelLimitError] = useState(false);
 
   const router = useRouter();
 
@@ -55,10 +49,7 @@ export default function Home() {
 
   return (
     <>
-      <Head title="Vehicles List" />
-      <main className={styles.main}>
-        <Header />
-        <SideBar />
+      <AdminLayout title={`Fuel Log`}>
         <main id="main" className="main col-10 opac-80 mt-0">
           <h1>Fuel History</h1>
           <div className="row col-12">
@@ -133,10 +124,7 @@ export default function Home() {
             </div>
           </div>
         </main>
-      </main>
-
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

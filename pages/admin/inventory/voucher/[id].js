@@ -115,7 +115,6 @@ const Post = () => {
         countTotal += item.amount;
       });
       setGrandTotal(countTotal);
-      console.log(data);
     });
   }, [router.isReady]);
 

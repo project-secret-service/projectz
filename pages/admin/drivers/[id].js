@@ -19,7 +19,6 @@ const Post = () => {
     const { id } = router.query;
     GetDriverDetails(id).then((data) => {
       setDrivers(data);
-      console.data;
     });
   }, [router.isReady]);
 

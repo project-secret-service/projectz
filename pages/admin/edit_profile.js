@@ -100,7 +100,7 @@ export default function Home() {
                     <ul className="nav nav-tabs nav-tabs-bordered">
                       <li className="nav-item">
                         <button
-                          className="nav-link active"
+                          className="nav-link"
                           data-bs-toggle="tab"
                           data-bs-target="#profile-overview"
                         >
@@ -115,7 +115,7 @@ export default function Home() {
                         }}
                       >
                         <button
-                          className="nav-link"
+                          className="nav-link active"
                           data-bs-toggle="tab"
                           data-bs-target="#profile-edit"
                         >

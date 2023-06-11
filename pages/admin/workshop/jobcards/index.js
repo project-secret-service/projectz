@@ -21,7 +21,6 @@ export default function Home() {
     const { id } = router.query;
     GetMemos().then((data) => {
       setMemos(data);
-      console.log(data);
     });
   }, [router.isReady]);
 
@@ -45,7 +44,6 @@ export default function Home() {
                   </thead>
                   <tbody>
                     {memos.map((memo, index) => {
-                      console.log(memo);
                       let no_of_defects = memo.defects?.length || 0;
                       let no_of_jobs = memo.job_works?.length || 0;
                       return (

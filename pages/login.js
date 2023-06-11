@@ -50,9 +50,8 @@ export default function Login() {
             <form
               onSubmit={async () => {
                 let res = await UserLogin(event);
-                if (res.data.status === 200) {
+                if (res && res.data && res.data.status === 200) {
                   setLoginSpinner(true);
-                  console.log(res.data);
                   setUser(res.data.user);
                   login();
                   Router.push("/admin/duties/");

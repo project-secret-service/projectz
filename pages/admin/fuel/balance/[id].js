@@ -38,7 +38,6 @@ const Post = () => {
       return;
     }
     setSearch(true);
-    console.log(searchFilter);
     if (searchFilter == "issued") {
       setSearchResultList(
         oilbalances.filter((oilbalance) => oilbalance.issued)

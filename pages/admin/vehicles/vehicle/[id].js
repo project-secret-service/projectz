@@ -1,12 +1,5 @@
 import { useRouter } from "next/router";
-import Image from "next/image";
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "../../../components/Header";
-import SideBar from "../../../components/Sidebar";
-import Scripts from "../../../components/Scripts";
 import { useEffect, useState } from "react";
-import Head from "@/pages/components/Head";
 import vehicle_styles from "@/styles/Vehicles.module.css";
 import { Button, Col, Row, Carousel } from "react-bootstrap";
 import dateFormat from "dateformat";
@@ -14,6 +7,7 @@ import indianNumberFormat from "indian-number-format";
 import Link from "next/link";
 import { GetVehicle } from "@/functions/apiHandlers/vehicles";
 import { AXIOS_BASE_URL } from "@/functions/constants";
+import AdminLayout from "@/pages/components/admin/AdminLayout";
 
 function setFuel(fuel, fuelCapacity) {
   if (fuel <= fuelCapacity) {
@@ -88,10 +82,7 @@ export default function Home() {
 
   return (
     <>
-      <Head title="Vehicles List" />
-      <main className={styles.main}>
-        <Header />
-        <SideBar />
+      <AdminLayout title={"Vehicle Details"}>
         <main id="main" className="col-lg-11 main mt-0 opac-80">
           <Row>
             <Col lg="4" className="card m-2 p-5 text-center">
@@ -585,9 +576,7 @@ export default function Home() {
             </Col>
           </Row>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

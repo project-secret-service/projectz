@@ -2,23 +2,20 @@ import HeadAndSideBar from "./HeadAndSideBar";
 import Scripts from "../Scripts";
 import styles from "@/styles/Home.module.css";
 import Script from "next/script";
-import { useContext, useEffect } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import AuthContext from "@/functions/auth/AuthContext";
 import Router from "next/router";
-import { LogOut } from "@/functions/loginAPI";
+import { LogOut, checkLoggedIn } from "@/functions/loginAPI";
+import { useRouter } from "next/router";
+import LoginError from "./LoginError";
 
 const AdminLayout = ({ children, title }) => {
-  const { isLoggedIn, user, logout } = useContext(AuthContext);
-  useEffect(() => {
-    console.log(user);
-    if (!isLoggedIn || user.role != "admin") {
-      logout();
-      LogOut();
-      Router.push("/login");
-    }
-  }, [isLoggedIn]);
+  const { isLoggedIn, user } = useContext(AuthContext);
+  const router = useRouter();
 
-  if (isLoggedIn && user.role === "admin") {
+  if (!isLoggedIn || user.role !== "admin") {
+    return <LoginError />;
+  } else {
     return (
       <>
         <main className={styles.main}>
@@ -29,8 +26,6 @@ const AdminLayout = ({ children, title }) => {
         <Script src="/assets/js/main.js"></Script>
       </>
     );
-  } else {
-    return null;
   }
 };
 

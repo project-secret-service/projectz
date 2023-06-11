@@ -11,8 +11,12 @@ const AuthContextProvider = ({ children }) => {
       if (res.status === 200) {
         setIsLoggedIn(true);
         setUser(res.user);
+      } else {
+        setIsLoggedIn(false);
+        setUser(null);
       }
     });
+    console.log(localStorage.getItem("user"));
   }, []);
 
   const login = () => {
@@ -24,7 +28,9 @@ const AuthContextProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, user, setUser }}>
+    <AuthContext.Provider
+      value={{ setIsLoggedIn, isLoggedIn, login, logout, user, setUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

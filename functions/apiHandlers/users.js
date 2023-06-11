@@ -11,7 +11,12 @@ export async function GetUserDetails(id) {
     withCredentials: true,
     method: "GET",
   });
-  return res.data;
+  if (res.data.status === 401) {
+    Router.push("/login");
+    return (res.data = {});
+  } else {
+    return res.data;
+  }
 }
 
 export async function AddNewUser(newUserDetails) {
@@ -33,5 +38,10 @@ export async function GetUsers() {
     method: "GET",
     withCredentials: true,
   });
-  return res.data;
+  if (res.data.status === 401) {
+    Router.push("/login");
+    return (res.data = []);
+  } else {
+    return res.data;
+  }
 }

@@ -3,6 +3,7 @@ import { LogOut } from "@/functions/loginAPI";
 import { AXIOS_BASE_URL } from "@/functions/constants";
 import { useContext } from "react";
 import AuthContext from "@/functions/auth/AuthContext";
+import Router from "next/router";
 
 export default function Header({ user }) {
   const { logout } = useContext(AuthContext);
@@ -356,6 +357,7 @@ export default function Header({ user }) {
                           LogOut().then((res) => {
                             if (res === 200) {
                               logout();
+                              Router.push("/login");
                             }
                           });
                         }}

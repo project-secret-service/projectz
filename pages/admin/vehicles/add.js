@@ -1,11 +1,5 @@
-import styles from "@/styles/Home.module.css";
-import Script from "next/script";
-import Header from "../../components/Header";
-import SideBar from "../../components/Sidebar";
-import Scripts from "../../components/Scripts";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import Head from "next/head";
 import { Button, Row, Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,6 +8,7 @@ import {
   CheckCrpNoinDB,
   handleVehicleSubmit,
 } from "@/functions/apiHandlers/vehicles";
+import AdminLayout from "@/pages/components/admin/AdminLayout";
 
 export default function Home() {
   const vehicle_crp_no_input = useRef(null);
@@ -102,11 +97,7 @@ export default function Home() {
 
   return (
     <>
-      <Head title="Add Vehicles" />
-      <main className={styles.main}>
-        <Header />
-        <SideBar />
-
+      <AdminLayout title={`Add New Vehicle`}>
         <main id="main" className="col-lg-11 main mt-0 opac-80">
           <h1>Add New Vehicle</h1>
           <Row>
@@ -351,9 +342,7 @@ export default function Home() {
             </div>
           </Row>
         </main>
-      </main>
-      <Scripts />
-      <Script src="/assets/js/main.js"></Script>
+      </AdminLayout>
     </>
   );
 }

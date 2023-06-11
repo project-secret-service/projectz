@@ -13,8 +13,10 @@ export default function Home() {
 
   async function SetAllDetails() {
     let data = await GetOnDutyVehicles();
-    setOnDutyVehicles(data);
-    setDuty(data[0]);
+    if (Array.isArray(data) && data.length != 0) {
+      setOnDutyVehicles(data);
+      setDuty(data[0]);
+    }
   }
 
   async function changeDuty({ target: { name, value } }) {

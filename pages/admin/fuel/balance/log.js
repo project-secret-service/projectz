@@ -20,7 +20,6 @@ const Post = () => {
   useEffect(() => {
     getAllOilBalance().then((data) => {
       setOilBalance(data);
-      console.log(data);
     });
   }, [router.isReady]);
 
@@ -31,7 +30,6 @@ const Post = () => {
       return;
     }
     setSearch(true);
-    console.log(searchFilter);
     if (searchFilter == "issued") {
       setSearchResultList(
         oilbalances.filter((oilbalance) => oilbalance.issued)

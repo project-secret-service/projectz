@@ -58,7 +58,6 @@ export default function Home() {
   function deleteTheInspection(section, value) {
     let temp = inspection[section];
     delete temp[value];
-    console.log(temp);
     setInspection({
       ...inspection,
       [section]: temp,
@@ -69,7 +68,6 @@ export default function Home() {
     let section = e.target.parentElement.parentElement.parentElement.id;
     let label = e.target.parentElement.innerText;
     if (e.target.checked) {
-      console.log("already exists");
       switch (section) {
         case "inspection_engine_section":
           deleteTheInspection("engine", e.target.value);
@@ -105,7 +103,6 @@ export default function Home() {
         SetTheInspection("transmission", label, e.target.value);
         break;
     }
-    console.log(inspection);
   }
 
   return (

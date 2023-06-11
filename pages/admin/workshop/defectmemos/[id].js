@@ -112,7 +112,6 @@ export default function Home() {
       setJobWorks(data.job_works);
       setSelectedParts(data.parts);
       setVehicle(data.vehicle);
-      console.log(data.vehicle);
     });
   }, [router.isReady]);
 

@@ -26,7 +26,6 @@ export default function Home() {
 
   async function createJobCard(event) {
     event.preventDefault();
-    console.log(parts);
   }
 
   function ShowPartsFields() {
@@ -49,7 +48,6 @@ export default function Home() {
     let foundPart = fetchedParts.find((p) => p._id == part.id);
     part.name = foundPart ? foundPart.name : "";
     part.balance = foundPart ? foundPart.quantity : "";
-    console.log(part);
     if (part.quantity > part.balance) {
       alert("Quantity is greater Than Balance");
       return;
@@ -72,7 +70,6 @@ export default function Home() {
     });
     GetParts().then((data) => {
       setFetchedParts(data);
-      console.log(data);
       setPart({
         ...part,
         id: data[0]._id,
