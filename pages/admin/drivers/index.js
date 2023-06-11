@@ -15,7 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     GetDrivers().then((data) => {
-      setDrivers(data);
+      if (Array.isArray(data) && data.length != 0) setDrivers(data);
     });
   }, []);
   function OpenLink(link) {

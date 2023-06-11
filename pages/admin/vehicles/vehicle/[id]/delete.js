@@ -14,7 +14,9 @@ export default function Home() {
     if (!router.isReady) return;
     const { id } = router.query;
     GetVehicle(id).then((data) => {
-      setVehicle(data);
+      if (data.status === 200) {
+        setVehicle(data.vehicle);
+      }
     });
   }, [router.isReady]);
   return (

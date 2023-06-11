@@ -10,6 +10,7 @@ export default function Home() {
 
   async function SetAllDetails(id) {
     let data = await ActiveDuty(id);
+    if (!data) return router.push("/admin/duties");
     setDuty(data);
   }
 

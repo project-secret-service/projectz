@@ -13,6 +13,7 @@ export default function Home() {
 
   useEffect(() => {
     GetVehicles().then((data) => {
+      if (!Array.isArray(data) || data.length == 0) return;
       data.sort((a, b) => a.vehicle_sl_no - b.vehicle_sl_no);
       setVehicles(data);
     });

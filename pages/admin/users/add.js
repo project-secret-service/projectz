@@ -134,7 +134,7 @@ export default function Home() {
                           onChange={handleInputChange}
                           name="profile_pic"
                           type="file"
-                          accept="image/png , image/jpg"
+                          accept="image/png,image/jpg,image/jpeg"
                         />
                       </div>
                     </div>

@@ -15,10 +15,13 @@ export default function Home() {
     if (!router.isReady) return;
     const { id } = router.query;
     GetVehicle(id).then((data) => {
-      setVehicle(data);
-      let odometer_log = data.odometer_log;
-      odometer_log.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setOdometerLog(odometer_log);
+      if (data.status === 200) {
+        let vehicle = data.vehicle;
+        setVehicle(vehicle);
+        let odometer_log = vehicle.odometer_log;
+        odometer_log.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setOdometerLog(odometer_log);
+      }
     });
   }, [router.isReady]);
 

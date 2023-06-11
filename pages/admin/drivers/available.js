@@ -65,8 +65,10 @@ export default function Home() {
 
   useEffect(() => {
     GetDrivers().then((data) => {
-      data.sort((a, b) => a.vehicle_sl_no - b.vehicle_sl_no);
-      setDrivers(data);
+      if (Array.isArray(data) && data.length != 0) {
+        data.sort((a, b) => a.vehicle_sl_no - b.vehicle_sl_no);
+        setDrivers(data);
+      }
     });
   }, []);
 

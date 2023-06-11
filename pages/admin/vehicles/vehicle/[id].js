@@ -43,28 +43,8 @@ function setKms(km) {
 }
 export default function Home() {
   const [vehicle, setVehicle] = useState({});
-  const [fuelInput, setfuelInput] = useState(false);
-  const [fuelLimitError, setFuelLimitError] = useState(false);
-  const [kmLimitError, setKmLimitError] = useState(false);
-  const [kmRun, setKmRun] = useState(false);
 
   const router = useRouter();
-
-  function handleFuelChange({ target: { name, value } }) {
-    if (parseFloat(value) > vehicle.fuel_capacity) {
-      setFuelLimitError(true);
-    } else {
-      setFuelLimitError(false);
-    }
-  }
-
-  function handleKmChange({ target: { name, value } }) {
-    if (parseFloat(value) < vehicle.total_kilo_meter) {
-      setKmLimitError(true);
-    } else {
-      setKmLimitError(false);
-    }
-  }
 
   function showFuelLog() {
     router.push("/admin/vehicles/vehicle/" + vehicle._id + "/fuel_log");
@@ -74,9 +54,12 @@ export default function Home() {
     if (!router.isReady) return;
     const { id } = router.query;
     GetVehicle(id).then((data) => {
-      setVehicle(data);
-      setKms(data.total_kilo_meter);
-      setFuel(data.fuel, data.fuel_capacity);
+      if (data.status === 200) {
+        let vehicle = data.vehicle;
+        setVehicle(vehicle);
+        setKms(vehicle.total_kilo_meter);
+        setFuel(vehicle.fuel, vehicle.fuel_capacity);
+      }
     });
   }, [router.isReady]);
 

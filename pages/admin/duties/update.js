@@ -10,12 +10,14 @@ import AdminLayout from "@/pages/components/admin/AdminLayout";
 export default function Home() {
   const [onDutyVehicles, setOnDutyVehicles] = useState([]);
   const [duty, setDuty] = useState({});
+  const [showSubmit, setShowSubmit] = useState(false);
 
   async function SetAllDetails() {
     let data = await GetOnDutyVehicles();
     if (Array.isArray(data) && data.length != 0) {
       setOnDutyVehicles(data);
       setDuty(data[0]);
+      setShowSubmit(true);
     }
   }
 
@@ -133,18 +135,19 @@ export default function Home() {
                       />
                     </div>
                   </div>
-
-                  <div className="row mb-3">
-                    <div className="col-sm-10">
-                      <button
-                        type="submit"
-                        className="btn btn-primary"
-                        style={{ float: "right" }}
-                      >
-                        Complete Duty / End Mission
-                      </button>
+                  {showSubmit && (
+                    <div className="row mb-3">
+                      <div className="col-sm-10">
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          style={{ float: "right" }}
+                        >
+                          Complete Duty / End Mission
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </form>
               </div>
             </div>

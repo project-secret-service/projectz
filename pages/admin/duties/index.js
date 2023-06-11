@@ -210,7 +210,7 @@ function Home() {
 
   return (
     <>
-      <AdminLayout>
+      <AdminLayout title={"All Duties"}>
         <main id="main" className=" col-lg-11 main mt-0">
           <div className="d-flex justify-content-between">
             <h1>All Duties</h1>

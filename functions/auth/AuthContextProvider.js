@@ -16,7 +16,7 @@ const AuthContextProvider = ({ children }) => {
         setUser(null);
       }
     });
-    console.log(localStorage.getItem("user"));
+    // console.log(localStorage.getItem("user"));
   }, []);
 
   const login = () => {

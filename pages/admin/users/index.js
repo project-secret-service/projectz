@@ -62,6 +62,14 @@ export default function Home() {
         )
       );
     }
+    if (searchFilter == "rank") {
+      setSearchResultList(
+        users.filter(
+          (user) =>
+            user.rank && user.rank.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
   }
 
   function OpenLink(link) {
@@ -69,7 +77,7 @@ export default function Home() {
   }
   return (
     <>
-      <AdminLayout title={"Users"}>
+      <AdminLayout title={"All Users"}>
         <main id="main" className=" col-lg-11 main mt-0">
           <h1>All Users</h1>
           <Row>
@@ -82,6 +90,7 @@ export default function Home() {
                         <th scope="col">User</th>
                         <th scope="col">Name</th>
                         <th scope="col">Reg No</th>
+                        <th scope="col">Job</th>
                         <th scope="col">Role</th>
                       </tr>
                     </thead>
@@ -118,6 +127,7 @@ export default function Home() {
                               </td>
                               <th>{user.name}</th>
                               <td>{user.registration_no}</td>
+                              <td>{user.rank}</td>
                               <td>{user.role}</td>
                             </tr>
                           );
@@ -154,6 +164,7 @@ export default function Home() {
                               </td>
                               <th>{user.name}</th>
                               <td>{user.registration_no}</td>
+                              <td>{user.rank}</td>
                               <td>{user.role}</td>
                             </tr>
                           );
@@ -186,6 +197,7 @@ export default function Home() {
               >
                 <option value="name">Name of User</option>
                 <option value="registration_no">Registration No</option>
+                <option value="rank">Rank</option>
                 <option value="role">Role</option>
               </select>
 

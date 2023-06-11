@@ -39,11 +39,14 @@ export default function Home() {
     if (!router.isReady) return;
     const { id } = router.query;
     GetVehicle(id).then((data) => {
-      setVehicle(data);
-      let fuel_log = data.fuel_log;
-      fuel_log.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setFuelLog(fuel_log);
-      setFuel(data.fuel, data.fuel_capacity);
+      if (data.status === 200) {
+        let vehicle = data.vehicle;
+        setVehicle(vehicle);
+        let fuel_log = vehicle.fuel_log;
+        fuel_log.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setFuelLog(fuel_log);
+        setFuel(vehicle.fuel, vehicle.fuel_capacity);
+      }
     });
   }, [router.isReady]);
 

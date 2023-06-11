@@ -20,7 +20,7 @@ const Post = () => {
 
   return (
     <>
-      <AdminLayout>
+      <AdminLayout title={"User Details"}>
         <main id="main" className="col-11 main mt-0 opac-80">
           <h1 className="josefin-sans">{user.name}</h1>
           <Row>
@@ -114,11 +114,15 @@ const Post = () => {
               style={{ maxHeight: "20vh" }}
             >
               <Link href={"/admin/users/add"}>
-                <Button className="w-100 mb-1 btn-warning">Add Users</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  <i class="bi bi-plus-lg"></i> Add Users
+                </Button>
               </Link>
 
               <Link href={"/admin/users/"}>
-                <Button className="w-100 mb-1 btn-dark">List Users</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  <i class="bi bi-list-task"></i> List Users
+                </Button>
               </Link>
             </div>
           </Row>
