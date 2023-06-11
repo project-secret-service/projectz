@@ -13,7 +13,7 @@ import {
 import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
   const router = useRouter();
   const profile_pic = useRef(null);
   const profile_pic_edit = useRef(null);

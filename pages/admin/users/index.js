@@ -199,7 +199,7 @@ export default function Home() {
 
               <Link href={"/admin/users/add"}>
                 <Button className="w-100 mb-1 btn-light">
-                  <i class="bi bi-plus-lg"></i> Add Users
+                  <i className="bi bi-plus-lg"></i> Add Users
                 </Button>
               </Link>
             </div>

@@ -259,29 +259,29 @@ const Post = () => {
 
               <Link href={"/admin/fuel/balance/log"}>
                 <Button className="w-100 mb-1 btn-light">
-                  <i class="bi bi-list-task"></i> Oil Balance Log
+                  <i className="bi bi-list-task"></i> Oil Balance Log
                 </Button>
               </Link>
 
               <Link href={"/admin/fuel/balance"}>
                 <Button className="w-100 mb-1 btn-light">
-                  <i class="bi bi-app"></i> Show Balance
+                  <i className="bi bi-app"></i> Show Balance
                 </Button>
               </Link>
               <Link href={"/admin/fuel/add"}>
                 <Button className="w-100 mb-1 btn-light">
-                  <i class="bi bi-pencil-square"></i> Update Balance
+                  <i className="bi bi-pencil-square"></i> Update Balance
                 </Button>
               </Link>
               <Link href={"/admin/fuel/allot"}>
                 <Button className="w-100 mb-1 btn-light">
-                  <i class="bi bi-fuel-pump-fill"></i> Allot Fuel
+                  <i className="bi bi-fuel-pump-fill"></i> Allot Fuel
                 </Button>
               </Link>
 
               <Link href={"/admin/fuel/addtype"}>
                 <Button className="w-100 mb-1 btn-light">
-                  <i class="bi bi-alexa"></i> Add Oil Type
+                  <i className="bi bi-alexa"></i> Add Oil Type
                 </Button>
               </Link>
             </div>

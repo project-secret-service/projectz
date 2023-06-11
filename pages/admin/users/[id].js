@@ -115,13 +115,13 @@ const Post = () => {
             >
               <Link href={"/admin/users/add"}>
                 <Button className="w-100 mb-1 btn-light">
-                  <i class="bi bi-plus-lg"></i> Add Users
+                  <i className="bi bi-plus-lg"></i> Add Users
                 </Button>
               </Link>
 
               <Link href={"/admin/users/"}>
                 <Button className="w-100 mb-1 btn-light">
-                  <i class="bi bi-list-task"></i> List Users
+                  <i className="bi bi-list-task"></i> List Users
                 </Button>
               </Link>
             </div>

@@ -284,7 +284,7 @@ export default function Home() {
             <div className="col-3 card p-4 m-1" style={{ maxHeight: "10vh" }}>
               <Link href={"/admin/users"}>
                 <Button className="w-100 mb-1 btn btn-light">
-                  <i class="bi bi-list-ul"></i> Users List
+                  <i className="bi bi-list-ul"></i> Users List
                 </Button>
               </Link>
             </div>
