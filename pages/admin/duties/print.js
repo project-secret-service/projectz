@@ -42,8 +42,6 @@ export default function Home() {
       <AdminLayout title="Duties">
         <main id="main" className=" col-lg-11 main mt-0 opac-80">
           <div className="d-flex justify-content-between">
-            <h1>All Duties</h1>
-
             <div className="d-flex" style={{ display: "inline" }}>
               <div style={{ marginRight: "10px" }}>
                 <div className="input-group mb-3">

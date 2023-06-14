@@ -24,7 +24,7 @@ const AdminLayout = ({ children, title }) => {
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         </Head>
-        <Header user={user} />
+        <Header user={user} title={title} />
         <SideBar />
         {children}
       </main>

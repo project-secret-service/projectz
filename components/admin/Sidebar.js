@@ -97,6 +97,17 @@ export default function SideBar(props) {
             <Link
               className="nav-link collapsed"
               id="profile-sidebar"
+              href={"/admin/community"}
+            >
+              <i className="bi bi-rss"></i>
+              <span>Community</span>
+            </Link>
+          </li>
+
+          <li className="nav-item">
+            <Link
+              className="nav-link collapsed"
+              id="profile-sidebar"
               href={"/admin/profile"}
             >
               <i className="bi bi-person-circle"></i>

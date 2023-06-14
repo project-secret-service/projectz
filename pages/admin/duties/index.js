@@ -93,7 +93,13 @@ function Home() {
   return (
     <>
       <AdminLayout title={"All Duties"}>
-        <main id="main" className=" col-lg-11 main mt-0">
+        <main
+          id="main"
+          className=" col-lg-11 main"
+          style={{
+            marginTop: "-2rem",
+          }}
+        >
           <div className="d-flex justify-content-between"></div>
           <Row>
             <div className="col-lg-8">

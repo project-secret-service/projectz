@@ -6,11 +6,18 @@ import AuthContext from "@/functions/auth/AuthContext";
 import Router from "next/router";
 
 export default function Login() {
-  const { login, setUser } = useContext(AuthContext);
+  const { login, setUser, setIsLoggedIn } = useContext(AuthContext);
   const [loginSpinner, setLoginSpinner] = useState(false);
   useEffect(() => {
-    checkLogin();
-  });
+    checkLogin().then((res) => {
+      // if (res.status === 200) {
+      //   setUser(res.user);
+      //   login();
+      //   console.log(res.status);
+      // }
+      console.log(res);
+    });
+  }, []);
   return (
     <>
       <Head>

@@ -63,8 +63,7 @@ export default function Home() {
   return (
     <>
       <AdminLayout title="Add New Duty">
-        <main id="main" className="col-lg-11 main mt-0 opac-80">
-          <h3>Add New Duty</h3>
+        <main id="main" className="col-lg-11 main mt-n2 opac-80">
           <Row>
             <div className="col-lg-8 m-1">
               <div className="card">

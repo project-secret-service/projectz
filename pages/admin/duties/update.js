@@ -34,8 +34,7 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={"Update Duty"}>
-        <main id="main" className="col-lg-11 main mt-0 opac-80 row">
-          <h1>Update Duty</h1>
+        <main id="main" className="col-lg-11 main mt-n2 opac-80 row">
           <div className="col-lg-8">
             <div className="card">
               <div className="card-body">

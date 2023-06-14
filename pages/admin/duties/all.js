@@ -211,9 +211,8 @@ function Home() {
   return (
     <>
       <AdminLayout title={"All Duties"}>
-        <main id="main" className=" col-lg-11 main mt-0">
+        <main id="main" className=" col-lg-11 main mt-n2">
           <div className="d-flex justify-content-between">
-            <h1>All Duties</h1>
             <div className="d-flex" style={{ display: "inline" }}>
               <div style={{ marginRight: "10px" }}>
                 <div className="input-group mb-3">

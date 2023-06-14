@@ -185,3 +185,12 @@ th {
     rgba(139, 217, 240, 0.6278886554621849) 99%
   );
 }
+
+#markdown_preview p img {
+  max-width: 100%;
+  height: auto;
+}
+
+.mt-n2{
+  margin-top: -2rem !important;
+}

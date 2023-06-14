@@ -72,10 +72,7 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={"All Vehicles"}>
-        <main id="main" className="col-lg-11 main mt-0 opac-80">
-          <Row className="p-1">
-            <h1>All Vehicles</h1>
-          </Row>
+        <main id="main" className="col-lg-11 main opac-80 mt-n2">
           <div className="col-lg-12 d-flex">
             <div className="col-lg-8 card m-1 p-4">
               <table className="table table-hover">

@@ -37,7 +37,10 @@ export async function checkLogin() {
     withCredentials: true,
   });
   if (res.data.status === 200) {
-    Router.push("/admin/duties/");
+    console.log(res.data);
+    return res.data;
+  }else{
+    Router.push("/login");
   }
 }
 

@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { LogOut } from "@/functions/loginAPI";
 import { AXIOS_BASE_URL } from "@/functions/constants";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "@/functions/auth/AuthContext";
 import Router from "next/router";
 
-export default function Header({ user }) {
+export default function Header({ user, title }) {
   const { logout } = useContext(AuthContext);
 
   function ChangeSidebar() {
@@ -53,24 +53,16 @@ export default function Header({ user }) {
             className="bi bi-list toggle-sidebar-btn"
             id="sidebar-toggle"
           ></i>
-        </div>
-
-        <div className="search-bar" id="search_bar">
-          <form
-            className="search-form d-flex align-items-center"
-            method="POST"
-            action="#"
+          <div
+            style={{
+              marginLeft: "2rem",
+              fontSize: "1.5rem",
+              marginTop: "0.5rem",
+            }}
+            className="josefin-sans"
           >
-            <input
-              type="text"
-              name="query"
-              placeholder="Search"
-              title="Enter search keyword"
-            />
-            <button type="submit" title="Search">
-              <i className="bi bi-search"></i>
-            </button>
-          </form>
+            {title}
+          </div>
         </div>
 
         <nav className="header-nav ms-auto">
@@ -252,6 +244,23 @@ export default function Header({ user }) {
                 </li>
               </ul>
             </li> */}
+            <div className="search-bar" id="search_bar">
+              <form
+                className="search-form d-flex align-items-center"
+                method="POST"
+                action="#"
+              >
+                <input
+                  type="text"
+                  name="query"
+                  placeholder="Search"
+                  title="Enter search keyword"
+                />
+                <button type="submit" title="Search">
+                  <i className="bi bi-search"></i>
+                </button>
+              </form>
+            </div>
             {user && (
               <>
                 <li className="nav-item dropdown pe-3">
