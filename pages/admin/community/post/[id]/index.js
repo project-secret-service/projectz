@@ -15,6 +15,7 @@ export default function Community() {
   const [comments, setComments] = useState([]);
   const router = useRouter();
   const commentRef = useRef(null);
+  const [color, setColor] = useState("black");
 
   async function commentOnPost() {
     const { id } = Router.query;
@@ -72,6 +73,26 @@ export default function Community() {
           (a, b) => new Date(b.date) - new Date(a.date)
         );
         setComments(sortedcomments);
+        switch (res.post.type) {
+          case "general":
+            setColor("black");
+            break;
+          case "bug":
+            setColor("red");
+            break;
+          case "issue":
+            setColor("orange");
+            break;
+          case "fixes":
+            setColor("green");
+            break;
+          case "feature":
+            setColor("blue");
+            break;
+          case "announcement":
+            setColor("purple");
+            break;
+        }
       }
     });
   }, [router.isReady]);
@@ -139,14 +160,12 @@ export default function Community() {
                 }}
               >
                 {post && (
-                  <div
-                    className="col-9 p-3"
-                  >
+                  <div className="col-9 p-3">
                     <div
-                      style={{ maxWidth: "100%", marginBottom: "5rem" }}
+                      style={{ maxWidth: "100%", marginBottom: "1rem" }}
                       id="markdown_preview"
                     >
-                      <div style={{ marginBottom: "2rem" }}>
+                      <div style={{ marginBottom: "0rem" }}>
                         <span
                           style={{ color: "#000056bd", fontSize: "1.5rem" }}
                         >
@@ -167,6 +186,21 @@ export default function Community() {
                         >
                           {dateFormat(post.date, "DDDD")}
                         </span>
+                      </div>
+                      <div>
+                        <div className="josefin-sans">
+                          <Button
+                            style={{
+                              backgroundColor: color,
+                              padding: "0rem 0.3rem",
+                              borderRadius: "0.5rem",
+                              border: "0px",
+                            }}
+                          >
+                            {post.type}
+                          </Button>{" "}
+                          {post.title}
+                        </div>
                       </div>
                       <ReactMarkdown
                         children={post.content}

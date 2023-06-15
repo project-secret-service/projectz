@@ -587,7 +587,7 @@ export default function Home() {
                     {!displayJobWork && (
                       <div className="mt-3" style={{ textAlign: "right" }}>
                         <Button variant="success" onClick={showJobWorkFields}>
-                          + Add Parts
+                          + Add Jobs
                         </Button>
                       </div>
                     )}

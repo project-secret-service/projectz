@@ -1,28 +1,82 @@
-import { useRouter } from "next/router";
-import styles from "@/styles/Home.module.css";
-import { useEffect, useState, useRef } from "react";
-import { GetMemoDetails } from "@/functions/apiHandlers/workshop";
 import AdminLayout from "@/components/admin/AdminLayout";
+import Router from "next/router";
+import { Button } from "react-bootstrap";
 
 const Post = () => {
-  const [memo, setMemos] = useState({});
-  const router = useRouter();
-  const { id } = router.query;
-  useEffect(() => {
-    if (!router.isReady) return;
-    const { id } = router.query;
-    GetMemoDetails(id).then((data) => {
-      setMemos(data);
-    });
-  }, [router.isReady]);
-  const componentRef = useRef();
   return (
     <>
-      <AdminLayout title={`Memo Details`}>
-        <main className={styles.main}>
-          <main id="main" className="main col-10 mt-0 opac-90">
-            Hello Bhai
-          </main>
+      <AdminLayout title={`Workshop Page`}>
+        <main
+          id="main"
+          className="main col-11 opac-90"
+          style={{
+            marginTop: "-2rem",
+          }}
+        >
+          <div className="row">
+            <div className="col-8 card p-3">
+              <div></div>
+            </div>
+            <div className="col-3 card p-3">
+              <Button
+                className="mb-1"
+                variant="dark"
+                onClick={() => {
+                  Router.back();
+                }}
+              >
+                BACK
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/defectmemos/");
+                }}
+              >
+                Defect Memos
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/defectmemos/add");
+                }}
+              >
+                Add Memos
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/jobcards");
+                }}
+              >
+                Job Cards
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/jobcards/add");
+                }}
+              >
+                Add Job Cards
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/inspections");
+                }}
+              >
+                Inspections
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/inspections/add");
+                }}
+              >
+                + Add Inspection
+              </Button>
+            </div>
+          </div>
         </main>
       </AdminLayout>
     </>

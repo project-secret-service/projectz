@@ -18,13 +18,20 @@ export default function Community() {
   const [disabled, setDisabled] = useState(false);
   const [title, setTitle] = useState("");
 
+  const [type, setType] = useState("general");
+
+  const handleChange = (event) => {
+    setDisabled(false);
+    setType(event.target.value);
+  };
+
   async function postToCommunity() {
     let imageUrls = data
       .match(/!\[.*?\]\([^)]+\)/g)
-      .map((match) => match.match(/\/([^/]+)\)$/)[1]);
+      ?.map((match) => match.match(/\/([^/]+)\)$/)[1]);
 
     let imageNames = [];
-    if (imageUrls.length != 0) {
+    if (imageUrls && imageUrls.length != 0) {
       imageNames = imageUrls.map((image) => {
         return image.split("_")[1];
       });
@@ -39,17 +46,27 @@ export default function Community() {
         images: imageNames,
       },
     });
-    // if (res.data.status === 200) {
     console.log(res.data);
-    // Router.push("/admin/community");
-    // }
+    if (res.data.status === 200) {
+      Router.push("/admin/community");
+    }
   }
+
+  const buttonData = [
+    { value: "general", label: "GENERAL" },
+    { value: "bug", label: "BUG" },
+    { value: "issue", label: "ISSUE" },
+    { value: "fixes", label: "FIXES" },
+    { value: "feature", label: "FEATURE" },
+    { value: "announcement", label: "ANNOUNCEMENT" },
+  ];
 
   function uploadImage() {
     setImageInput(!showImageInput);
   }
 
   async function saveChanges() {
+    console.log(type);
     const res = await axios({
       method: "post",
       url: "http://localhost:3000/community/posts/temp_post/save_changes",
@@ -58,6 +75,7 @@ export default function Community() {
         postid: postid,
         data: data,
         title: title,
+        type: type,
       },
     });
     if (res.data.status === 200) {
@@ -106,8 +124,10 @@ export default function Community() {
       setUser(res.user);
     });
     createNewTempPost().then((res) => {
+      console.log(res);
       if (res.content) {
-        console.log(res.title);
+        console.log(res);
+        setType(res.type);
         setTitle(res.title);
         setData(res.content);
       }
@@ -191,14 +211,27 @@ export default function Community() {
                     }}
                   ></input>
                 </div>
-                <div className="card mb-0 p-1">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Tags"
-                    style={{ border: "none" }}
-                  ></input>
+
+                <div
+                  className="btn-group btn-group-toggle w-100"
+                  data-toggle="buttons"
+                >
+                  {buttonData.map((button, index) => (
+                    <label className={`btn btn-secondary`} key={index}>
+                      <input
+                        type="radio"
+                        name="options"
+                        id={button.id}
+                        autoComplete="off"
+                        defaultValue={button.value}
+                        defaultChecked={type === button.value}
+                        onChange={handleChange}
+                      />{" "}
+                      {button.label}
+                    </label>
+                  ))}
                 </div>
+
                 <div className="card ">
                   <textarea
                     rows={2}

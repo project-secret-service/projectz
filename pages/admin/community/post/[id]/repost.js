@@ -1,5 +1,4 @@
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Button } from "react-bootstrap";
 import Router, { useRouter } from "next/router";
 import ReactMarkdown from "react-markdown";
 import { useEffect, useState } from "react";
@@ -7,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import { GetProfile } from "@/functions/apiHandlers/profile";
 import dateFormat from "dateformat";
 import axios from "axios";
+import { Button } from "react-bootstrap";
 
 export default function Community() {
   const [data, setData] = useState("");
@@ -19,14 +19,42 @@ export default function Community() {
   const router = useRouter();
   const [repostForID, setRepostForID] = useState(null);
   const [title, setTitle] = useState("");
+  const [type, setType] = useState("general");
+  const [post, setPost] = useState(null);
+  const [color, setColor] = useState("black");
+
+  const handleChange = (event) => {
+    setDisabled(false);
+    setType(event.target.value);
+    switch (event.target.value) {
+      case "general":
+        setColor("black");
+        break;
+      case "bug":
+        setColor("red");
+        break;
+      case "issue":
+        setColor("orange");
+        break;
+      case "fixes":
+        setColor("green");
+        break;
+      case "feature":
+        setColor("blue");
+        break;
+      case "announcement":
+        setColor("purple");
+        break;
+    }
+  };
 
   async function postToCommunity() {
     let imageUrls = data
       .match(/!\[.*?\]\([^)]+\)/g)
-      .map((match) => match.match(/\/([^/]+)\)$/)[1]);
+      ?.map((match) => match.match(/\/([^/]+)\)$/)[1]);
 
     let imageNames = [];
-    if (imageUrls.length != 0) {
+    if (imageUrls && imageUrls.length != 0) {
       imageNames = imageUrls.map((image) => {
         return image.split("_")[1];
       });
@@ -39,19 +67,29 @@ export default function Community() {
       data: {
         postid: postid,
         images: imageNames,
+        title: title,
+        type: type,
+        repostForID: repostForID,
       },
     });
-    // if (res.data.status === 200) {
-    console.log(res.data);
-    // Router.push("/admin/community");
-    // }
   }
+
+  const buttonData = [
+    { value: "general", label: "GENERAL" },
+    { value: "bug", label: "BUG" },
+    { value: "issue", label: "ISSUE" },
+    { value: "fixes", label: "FIXES" },
+    { value: "feature", label: "FEATURE" },
+    { value: "announcement", label: "ANNOUNCEMENT" },
+  ];
 
   function uploadImage() {
     setImageInput(!showImageInput);
   }
 
   async function saveChanges() {
+    console.log(title);
+    console.log(type);
     const res = await axios({
       method: "post",
       url: "http://localhost:3000/community/posts/temp_post/save_changes",
@@ -59,6 +97,9 @@ export default function Community() {
       data: {
         postid: postid,
         data: data,
+        title: title,
+        type: type,
+        repostForID: repostForID,
       },
     });
     if (res.data.status === 200) {
@@ -74,6 +115,16 @@ export default function Community() {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  //Get Post by ID
+  async function getPostByID(id) {
+    const res = await axios({
+      method: "get",
+      url: `http://localhost:3000/community/posts/post/${id}`,
+      withCredentials: true,
+    });
+    return res.data;
   }
 
   async function onImageChange(event) {
@@ -106,11 +157,17 @@ export default function Community() {
     if (!router.isReady) return;
     const { id } = router.query;
     setRepostForID(id);
+    getPostByID(id).then((res) => {
+      setPost(res.post);
+    });
     GetProfile().then((res) => {
       setUser(res.user);
     });
     createNewTempPost().then((res) => {
+      console.log(res);
       if (res.content) {
+        setTitle(res.title);
+        setType(res.type);
         setData(res.content);
       }
       const imgs = res.images.map((image) => {
@@ -186,20 +243,57 @@ export default function Community() {
                     </Button>
                   )}
                 </div>
-                <div className="card mb-0 mt-2 p-1">
-                  Repost For : {repostForID}
-                </div>
+                {post && (
+                  <div
+                    className="card mb-0 mt-2 p-3"
+                    style={{
+                      cursor: "pointer",
+                      backgroundColor: "#f2f2f2",
+                    }}
+                  >
+                    <div>
+                      {" "}
+                      Repost For : <b>{post && post.createdBy.name} : </b>{" "}
+                      {post && post.title}
+                      <span style={{ float: "right" }}>
+                        {dateFormat(post.date, "mmmm dS, yyyy")}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 <div className="card mb-0  p-1">
                   <input
                     type="text"
                     className="form-control"
                     placeholder="Title"
                     style={{ border: "none" }}
+                    defaultValue={title}
                     onChange={(e) => {
                       setTitle(e.target.value);
                       setDisabled(false);
                     }}
                   ></input>
+                </div>
+
+                <div
+                  className="btn-group btn-group-toggle w-100"
+                  data-toggle="buttons"
+                >
+                  {buttonData.map((button, index) => (
+                    <label className={`btn btn-secondary`} key={index}>
+                      <input
+                        type="radio"
+                        name="options"
+                        id={button.id}
+                        autoComplete="off"
+                        defaultValue={button.value}
+                        defaultChecked={type === button.value}
+                        onChange={handleChange}
+                      />{" "}
+                      {button.label}
+                    </label>
+                  ))}
                 </div>
                 <div className="card ">
                   <textarea
@@ -290,6 +384,21 @@ export default function Community() {
                       <span style={{ color: "green", float: "right" }}>
                         {dateFormat(new Date(), "DDDD")}
                       </span>
+                    </div>
+
+                    <div className="josefin-sans">
+                      {" "}
+                      <Button
+                        style={{
+                          backgroundColor: color,
+                          padding: "0rem 0.3rem",
+                          borderRadius: "0.5rem",
+                          border: "0px",
+                        }}
+                      >
+                        {type}
+                      </Button>{" "}
+                      {title}
                     </div>
                     <ReactMarkdown
                       children={data}

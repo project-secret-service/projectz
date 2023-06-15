@@ -21,8 +21,13 @@ export default function Home() {
   return (
     <>
       <AdminLayout title="Defect Memos">
-        <main id="main" className="col-lg-10 main mt-0 opac-80">
-          <h1>Defect Memos</h1>
+        <main
+          id="main"
+          className="col-lg-11 main  opac-80"
+          style={{
+            marginTop: "-2rem",
+          }}
+        >
           <Row>
             <div className="col-lg-8">
               <div className="card p-3">
@@ -75,12 +80,28 @@ export default function Home() {
                 BACK
               </Button>
               <Button
-                className="mb-1 btn-success"
+                className="mb-1 btn-light"
                 onClick={() => {
                   Router.push("/admin/workshop/defectmemos/add");
                 }}
               >
-                Add Memos
+                + Add Memos
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/jobcards");
+                }}
+              >
+                Job Cards
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/jobcards/add");
+                }}
+              >
+               + Add Job Cards
               </Button>
             </div>
           </Row>

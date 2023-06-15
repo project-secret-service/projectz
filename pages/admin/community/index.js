@@ -63,6 +63,7 @@ export default function Community() {
     GetUser().then((user) => {
       let userID = user.user._id;
       getPosts().then((res) => {
+        console.log(res);
         res.forEach((post) => {
           if (post.likes.includes(userID)) {
             post.liked = true;
@@ -104,84 +105,209 @@ export default function Community() {
                 }}
               >
                 {posts &&
-                  posts.map((post, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        marginBottom: "2rem",
-                        cursor: "pointer",
-                        border: "0px",
-                      }}
-                      className=" p-4"
-                    >
-                      <div style={{ marginBottom: "1rem" }}>
-                        <span
-                          style={{ color: "#000056bd", fontSize: "1.5rem" }}
-                        >
-                          {post.createdBy && post.createdBy.name}
-                        </span>
-                        ,{" "}
-                        <span
-                          style={{ color: "#884444b5", fontSize: "1.3rem" }}
-                        >
-                          {post.createdBy && post.createdBy.rank}
-                        </span>
-                        <span
+                  posts.map((post, index) => {
+                    let color;
+                    let repostColor;
+                    switch (post.type) {
+                      case "issue":
+                        color = "red";
+                        break;
+                      case "bug":
+                        color = "orange";
+                        break;
+                      case "feature":
+                        color = "blue";
+                        break;
+                      case "fixes":
+                        color = "green";
+                        break;
+                      default:
+                        color = "black";
+                    }
+                    if (post.repostFrom) {
+                      switch (post.repostFrom.type) {
+                        case "issue":
+                          repostColor = "red";
+                          break;
+                        case "bug":
+                          repostColor = "orange";
+                          break;
+                        case "feature":
+                          repostColor = "blue";
+                          break;
+                        case "fixes":
+                          repostColor = "green";
+                          break;
+                        default:
+                          repostColor = "black";
+                      }
+                    }
+                    return (
+                      <div
+                        key={index}
+                        style={{
+                          marginBottom: "2rem",
+                          cursor: "pointer",
+                          border: "0px",
+                        }}
+                        className=" p-4"
+                      >
+                        <div style={{}}>
+                          <span
+                            style={{ color: "#000056bd", fontSize: "1.5rem" }}
+                          >
+                            {post.createdBy && post.createdBy.name}
+                          </span>
+                          ,{" "}
+                          <span
+                            style={{ color: "#884444b5", fontSize: "1.3rem" }}
+                          >
+                            {post.createdBy && post.createdBy.rank}
+                          </span>
+                          <span
+                            style={{
+                              color: "green",
+                              float: "right",
+                              fontSize: "1.2rem",
+                            }}
+                          >
+                            {dateFormat(post.date, "DDDD")}
+                          </span>
+                        </div>
+                        <div
                           style={{
-                            color: "green",
-                            float: "right",
-                            fontSize: "1.2rem",
+                            maxHeight: "50vh",
+                            overflow: "hidden",
+                            marginBottom: "3rem",
+                          }}
+                          onClick={() => {
+                            Router.push("/admin/community/post/" + post._id);
                           }}
                         >
-                          {dateFormat(post.date, "DDDD")}
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          maxHeight: "50vh",
-                          overflow: "hidden",
-                          marginBottom: "1rem",
-                        }}
-                        onClick={() => {
-                          Router.push("/admin/community/post/" + post._id);
-                        }}
-                      >
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          children={post.content}
-                        />
-                      </div>
+                          <div className="josefin-sans">
+                            <Button
+                              style={{
+                                backgroundColor: color,
+                                padding: "0rem 0.3rem",
+                                borderRadius: "0.5rem",
+                                border: "0px",
+                              }}
+                            >
+                              {post.type}
+                            </Button>{" "}
+                            {post.title}
+                          </div>
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            children={post.content}
+                          />
+                          {post.repostFrom && (
+                            <div
+                              style={{
+                                maxWidth: "50%",
+                                border: "1px solid black",
+                                padding: "1rem",
+                                marginTop: "1rem",
+                              }}
+                            >
+                              {post.repostFrom.createdBy.name},{" "}
+                              {post.repostFrom.createdBy.rank}
+                              <span style={{ float: "right" }}>
+                                {dateFormat(
+                                  post.repostFrom.date,
+                                  "mmmm dS, yyyy"
+                                )}
+                              </span>
+                              <div className="josefin-sans">
+                                <Button
+                                  style={{
+                                    backgroundColor: repostColor,
+                                    padding: "0rem 0.3rem",
+                                    borderRadius: "0.5rem",
+                                    border: "0px",
+                                  }}
+                                >
+                                  {post.repostFrom.type}
+                                </Button>{" "}
+                                {post.repostFrom.title}
+                              </div>
+                              <ReactMarkdown
+                                remarkPlugins={[remarkGfm]}
+                                children={post.repostFrom.content}
+                              />
+                            </div>
+                          )}
+                        </div>
 
-                      <div
-                        className="row text-center"
-                        style={{
-                          borderTop: "1px solid #000056bd",
-                          borderBottom: "1px solid #000056bd",
-                        }}
-                      >
-                        {post.liked ? (
+                        <div
+                          className="row text-center"
+                          style={{
+                            borderTop: "1px solid #000056bd",
+                            borderBottom: "1px solid #000056bd",
+                          }}
+                        >
+                          {post.liked ? (
+                            <div
+                              className="col p-1"
+                              style={{
+                                backgroundColor: "white",
+                                color: "rgb(164 103 228)",
+                              }}
+                              onMouseEnter={(e) => {
+                                e.target.style.backgroundColor =
+                                  "rgb(164 103 228)";
+                                e.target.style.color = "white";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.target.style.backgroundColor = "white";
+                                e.target.style.color = "rgb(164 103 228)";
+                              }}
+                              onClick={(e) => {
+                                unlikePost(e, post._id);
+                              }}
+                            >
+                              <i className="bi bi-check2-circle"></i> Liked
+                            </div>
+                          ) : (
+                            <div
+                              className="col p-1"
+                              style={{
+                                backgroundColor: "white",
+                                color: "#470888",
+                              }}
+                              onMouseEnter={(e) => {
+                                e.target.style.backgroundColor = "#470888";
+                                e.target.style.color = "white";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.target.style.backgroundColor = "white";
+                                e.target.style.color = "#470888";
+                              }}
+                              onClick={(e) => {
+                                likePost(e, post._id);
+                              }}
+                            >
+                              <i className="bi bi-hand-thumbs-up-fill"></i> Like
+                            </div>
+                          )}
+
                           <div
                             className="col p-1"
                             style={{
                               backgroundColor: "white",
-                              color: "rgb(164 103 228)",
+                              color: "#470888",
                             }}
                             onMouseEnter={(e) => {
-                              e.target.style.backgroundColor =
-                                "rgb(164 103 228)";
+                              e.target.style.backgroundColor = "#470888";
                               e.target.style.color = "white";
                             }}
                             onMouseLeave={(e) => {
                               e.target.style.backgroundColor = "white";
-                              e.target.style.color = "rgb(164 103 228)";
-                            }}
-                            onClick={(e) => {
-                              unlikePost(e, post._id);
+                              e.target.style.color = "#470888";
                             }}
                           >
-                            <i className="bi bi-check2-circle"></i> Liked
+                            <i className="bi bi-chat-text-fill"></i> Comment
                           </div>
-                        ) : (
                           <div
                             className="col p-1"
                             style={{
@@ -197,78 +323,52 @@ export default function Community() {
                               e.target.style.color = "#470888";
                             }}
                             onClick={(e) => {
-                              likePost(e, post._id);
+                              Router.push(
+                                "/admin/community/post/" + post._id + "/repost"
+                              );
                             }}
                           >
-                            <i className="bi bi-hand-thumbs-up-fill"></i> Like
+                            <i className="bi bi-at"></i> Repost
                           </div>
-                        )}
-
-                        <div
-                          className="col p-1"
-                          style={{ backgroundColor: "white", color: "#470888" }}
-                          onMouseEnter={(e) => {
-                            e.target.style.backgroundColor = "#470888";
-                            e.target.style.color = "white";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.target.style.backgroundColor = "white";
-                            e.target.style.color = "#470888";
-                          }}
-                        >
-                          <i className="bi bi-chat-text-fill"></i> Comment
-                        </div>
-                        <div
-                          className="col p-1"
-                          style={{ backgroundColor: "white", color: "#470888" }}
-                          onMouseEnter={(e) => {
-                            e.target.style.backgroundColor = "#470888";
-                            e.target.style.color = "white";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.target.style.backgroundColor = "white";
-                            e.target.style.color = "#470888";
-                          }}
-                          onClick={(e) => {
-                            Router.push(
-                              "/admin/community/post/" + post._id + "/repost"
-                            );
-                          }}
-                        >
-                          <i className="bi bi-at"></i> Repost
-                        </div>
-                        <div
-                          className="col p-1"
-                          style={{ backgroundColor: "white", color: "#470888" }}
-                          onMouseEnter={(e) => {
-                            e.target.style.backgroundColor = "#470888";
-                            e.target.style.color = "white";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.target.style.backgroundColor = "white";
-                            e.target.style.color = "#470888";
-                          }}
-                        >
-                          <i className="bi bi-bookmark-check-fill"></i> Mark as
-                          Read
-                        </div>
-                        <div
-                          className="col p-1"
-                          style={{ backgroundColor: "white", color: "#470888" }}
-                          onMouseEnter={(e) => {
-                            e.target.style.backgroundColor = "#470888";
-                            e.target.style.color = "white";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.target.style.backgroundColor = "white";
-                            e.target.style.color = "#470888";
-                          }}
-                        >
-                          <i className="bi bi-save2"></i> Save
+                          <div
+                            className="col p-1"
+                            style={{
+                              backgroundColor: "white",
+                              color: "#470888",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.target.style.backgroundColor = "#470888";
+                              e.target.style.color = "white";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.backgroundColor = "white";
+                              e.target.style.color = "#470888";
+                            }}
+                          >
+                            <i className="bi bi-bookmark-check-fill"></i> Mark
+                            as Read
+                          </div>
+                          <div
+                            className="col p-1"
+                            style={{
+                              backgroundColor: "white",
+                              color: "#470888",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.target.style.backgroundColor = "#470888";
+                              e.target.style.color = "white";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.backgroundColor = "white";
+                              e.target.style.color = "#470888";
+                            }}
+                          >
+                            <i className="bi bi-save2"></i> Save
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
               </div>
 
               <br />
