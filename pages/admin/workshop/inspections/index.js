@@ -9,7 +9,6 @@ export default function Home() {
   const [inspectionsHistory, setInspectionsHistory] = useState([]);
   useEffect(() => {
     GetInspectionHistory().then((data) => {
-      console.log(data);
       setInspectionsHistory(data);
     });
   }, []);

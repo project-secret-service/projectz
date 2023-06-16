@@ -78,10 +78,15 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={`Create Job Card`}>
-        <main id="main" className="col-lg-10 main mt-0">
-          <h1>Create Job Card</h1>
+        <main
+          id="main"
+          className="col-lg-11 main opac-90"
+          style={{
+            marginTop: "-2rem",
+          }}
+        >
           <Row>
-            <div className="col-lg-7">
+            <div className="col-lg-8">
               <div className="card">
                 <div className="card-body">
                   <form onSubmit={createJobCard}>
@@ -146,9 +151,9 @@ export default function Home() {
                         <thead>
                           <tr>
                             <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                            <th scope="col">Part</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col" className="col-1 text-center">Delete</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -157,7 +162,7 @@ export default function Home() {
                               <th scope="row">{index + 1}</th>
                               <td>{part.name}</td>
                               <td>{part.quantity}</td>
-                              <td>
+                              <td className="col-1 text-center">
                                 <button
                                   className="btn btn-danger"
                                   onClick={() => {
@@ -165,7 +170,6 @@ export default function Home() {
                                       (p) => p.id != part.id
                                     );
                                     setParts(newParts);
-                                    //Delete from selectedPartIDs
                                     let newSelectedPartIDs = new Set(
                                       selectedPartIDs
                                     );

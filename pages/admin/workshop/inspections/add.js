@@ -38,7 +38,6 @@ export default function Home() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(inspection);
     const res = await axios({
       method: "post",
       url: `http://localhost:3000/inspection/add`,
@@ -114,9 +113,13 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={`Inspect Vehicle`}>
-        <main id="main" className="col-lg-10 main mt-0 opac-80">
-          <h1>Inspect Vehicle</h1>
-
+        <main
+          id="main"
+          className="col-lg-10 main opac-80"
+          style={{
+            marginTop: "-2rem",
+          }}
+        >
           <Row>
             <div className="col-lg-8 card p-3 m-1">
               <div>
@@ -239,7 +242,6 @@ export default function Home() {
                                     }
                                     onChange={(e) => {
                                       let temp = { ...inspection };
-                                      console.log(temp[section][part]);
                                       temp[section][part].description =
                                         e.target.value;
                                       setInspection(temp);

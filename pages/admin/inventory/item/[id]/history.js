@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
@@ -108,10 +107,13 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={`Inventory History - ${item.name}`}>
-        <main id="main" className="col-lg-11 main mt-0 opac-80">
-          <Row className="p-1">
-            <h1>Inventory History - {item.name}</h1>
-          </Row>
+        <main
+          id="main"
+          className="col-lg-11 main  opac-80"
+          style={{
+            marginTop: "-2rem",
+          }}
+        >
           <div className="col-lg-12 d-flex">
             <div className="col-lg-8 card m-1 p-4">
               <table className="table table-hover">

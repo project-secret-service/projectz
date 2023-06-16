@@ -21,8 +21,13 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={"Inventory"}>
-        <main id="main" className="col-10 main mt-0 opac-90">
-          <h1>All Items</h1>
+        <main
+          id="main"
+          className="col-11 main opac-90"
+          style={{
+            marginTop: "-2rem",
+          }}
+        >
           <div className="col-lg-12 d-flex">
             <div className="col-lg-8 card m-1 p-4">
               <table className="table table-hover">
@@ -57,7 +62,7 @@ export default function Home() {
                 </tbody>
               </table>
             </div>
-            <div className="col-lg-3 card p-5 m-1">
+            <div className="col-lg-3 card p-4 m-1">
               <Button
                 onClick={() => {
                   Router.back();
@@ -66,22 +71,20 @@ export default function Home() {
               >
                 BACK
               </Button>
-
-              <Link href={"/admin/inventory/add"}>
-                <Button className="w-100 mb-1 btn-success">
-                  Create New Item
-                </Button>
-              </Link>
-              <Link href={"/admin/inventory/orders/order"}>
-                <Button className="w-100 mb-1">Order Item</Button>
-              </Link>
-              <Link href={"/admin/inventory/issues/issue"}>
-                <Button className="w-100 mb-1 btn-warning">
-                  Issue an Item
-                </Button>
-              </Link>
+              <hr />
               <Link href={"/admin/inventory/history"}>
                 <Button className="w-100 mb-1 btn-light">History</Button>
+              </Link>
+              <Link href={"/admin/inventory/orders/order"}>
+                <Button className="w-100 mb-1 btn-light">Order Items</Button>
+              </Link>
+              <Link href={"/admin/inventory/issues/issue"}>
+                <Button className="w-100 mb-1 btn-light">Issue Items</Button>
+              </Link>
+              <Link href={"/admin/inventory/add"}>
+                <Button className="w-100 mb-1 btn-light">
+                  Create New Item
+                </Button>
               </Link>
             </div>
           </div>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Row, Button } from "react-bootstrap";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { GetVehicles } from "@/functions/apiHandlers/vehicles";
+import dateFormat from "dateformat";
 import AdminLayout from "@/components/admin/AdminLayout";
 import {
   chassisChecks,
@@ -12,131 +13,56 @@ import {
 } from "@/components/admin/inspection/checkBoxes";
 import axios from "axios";
 
-export default function Home() {
-  const [vehicles, setVehicles] = useState([]);
-  const [inspection, setInspection] = useState({
-    date: new Date().toISOString().slice(0, 10),
-    maintaining_unit: "M.T. WORKSHOP, CTC (T&IT) RANCHI",
-    vehicle: "",
-    engine: {},
-    chassis: {},
-    electrical: {},
-    lubrication: {},
-    transmission: {},
+async function GetInspection(id) {
+  const res = await axios({
+    method: "get",
+    url: `http://localhost:3000/inspection/${id}`,
+    withCredentials: true,
   });
+  return res.data;
+}
+
+export default function Home() {
+  const [inspection, setInspection] = useState({});
+  const router = useRouter();
 
   useEffect(() => {
-    GetVehicles().then((data) => {
-      setVehicles(data);
-      setInspection({ ...inspection, vehicle: data[0]._id });
+    if (!router.isReady) return;
+    const { id } = router.query;
+    GetInspection(id).then((data) => {
+      setInspection(data);
     });
-  }, []);
-
-  function handleInspectionInput(e) {
-    setInspection({ ...inspection, [e.target.name]: e.target.value });
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    console.log(inspection);
-    const res = await axios({
-      method: "post",
-      url: `http://localhost:3000/inspection/add`,
-      data: inspection,
-      withCredentials: true,
-    });
-    if (res.data.status === 200) Router.push("/admin/workshop/inspections");
-  }
-
-  function SetTheInspection(section, label, value) {
-    setInspection({
-      ...inspection,
-      [section]: {
-        ...inspection[section],
-        [value]: {
-          problem: true,
-          label: label,
-        },
-      },
-    });
-  }
-
-  function deleteTheInspection(section, value) {
-    let temp = inspection[section];
-    delete temp[value];
-    setInspection({
-      ...inspection,
-      [section]: temp,
-    });
-  }
-
-  function handleCheckBox(e) {
-    let section = e.target.parentElement.parentElement.parentElement.id;
-    let label = e.target.parentElement.innerText;
-    if (e.target.checked) {
-      switch (section) {
-        case "inspection_engine_section":
-          deleteTheInspection("engine", e.target.value);
-          break;
-        case "inspection_chassis_section":
-          deleteTheInspection("chassis", e.target.value);
-          break;
-        case "inspection_electrical_section":
-          deleteTheInspection("electrical", e.target.value);
-          break;
-        case "inspection_lubrication_section":
-          deleteTheInspection("lubrication", e.target.value);
-          break;
-        case "inspection_transmission_section":
-          deleteTheInspection("transmission", e.target.value);
-      }
-      return;
-    }
-    switch (section) {
-      case "inspection_engine_section":
-        SetTheInspection("engine", label, e.target.value);
-        break;
-      case "inspection_chassis_section":
-        SetTheInspection("chassis", label, e.target.value);
-        break;
-      case "inspection_electrical_section":
-        SetTheInspection("electrical", label, e.target.value);
-        break;
-      case "inspection_lubrication_section":
-        SetTheInspection("lubrication", label, e.target.value);
-        break;
-      case "inspection_transmission_section":
-        SetTheInspection("transmission", label, e.target.value);
-        break;
-    }
-  }
+  }, [router.isReady]);
 
   return (
     <>
       <AdminLayout title={`Inspect Vehicle`}>
-        <main id="main" className="col-lg-10 main mt-0 opac-80">
-          <h1>Inspect Vehicle</h1>
-
+        <main
+          id="main"
+          className="col-lg-10 main opac-80"
+          style={{
+            marginTop: "-2rem",
+          }}
+        >
           <Row>
             <div className="col-lg-8 card p-3 m-1">
               <div>
                 <div className="card-body">
-                  <form onSubmit={handleSubmit}>
+                  <form>
                     <div className="row mb-3">
                       <label
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        Date :
+                        {" "}
+                        <i class="bi bi-calendar-week"></i> Date
                       </label>
                       <div className="col-sm-7">
-                        <input
-                          defaultValue={new Date().toISOString().slice(0, 10)}
-                          type="date"
-                          name="date"
-                          className="form-control"
-                          onChange={handleInspectionInput}
-                        />
+                        :{" "}
+                        <b>
+                          {inspection.date &&
+                            dateFormat(inspection.date, "dS mmmm, yyyy")}
+                        </b>
                       </div>
                     </div>
 
@@ -145,39 +71,29 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        Maintaining Unit
+                        <i class="bi bi-house-gear-fill"></i> Maintaining Unit
                       </label>
                       <div className="col-sm-7">
-                        <input
-                          defaultValue={"M.T. WORKSHOP, CTC (T&IT) RANCHI"}
-                          type="text"
-                          name="maintaining_unit"
-                          className="form-control"
-                          onChange={handleInspectionInput}
-                        />
+                        : <b>{inspection.maintaining_unit}</b>
                       </div>
                     </div>
 
                     <div className="row mb-3">
                       <label className="col-sm-5 col-form-label">
-                        <i className="bi bi-car-front"></i> Vehicle Number :
+                        <i className="bi bi-car-front"></i> Vehicle Number
                       </label>
                       <div className="col-sm-7">
-                        <select
-                          name="vehicle"
-                          className="form-select"
-                          aria-label="Default select example"
-                          onChange={handleInspectionInput}
-                        >
-                          {vehicles?.map((vehicle, index) => {
-                            return (
-                              <option key={index + 1} value={vehicle._id}>
-                                CRP - {vehicle.vehicle_crp_no}{" "}
-                                {vehicle.registration_no} {vehicle.name}
-                              </option>
-                            );
-                          })}
-                        </select>
+                        :{" "}
+                        <b>
+                          {" "}
+                          {"CRP - ("}
+                          {inspection.vehicle &&
+                            inspection.vehicle.vehicle_crp_no}
+                          {") "}-{" "}
+                          {inspection.vehicle && inspection.vehicle.name} -{" "}
+                          {inspection.vehicle &&
+                            inspection.vehicle.registration_no}
+                        </b>
                       </div>
                     </div>
 
@@ -198,61 +114,65 @@ export default function Home() {
                             htmlFor={item.id}
                             style={{ display: "inline" }}
                           >
-                            {item.label}
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              value={item.value}
-                              id={item.id}
-                              onChange={handleCheckBox}
-                              defaultChecked={item.defaultChecked}
-                            />
+                            {!inspection.engine && (
+                              <>
+                                {item.label}{" "}
+                                <input
+                                  className="form-check-input"
+                                  type="checkbox"
+                                  value={item.value}
+                                  id={item.id}
+                                  defaultChecked={item.defaultChecked}
+                                  disabled
+                                />
+                              </>
+                            )}
+                            {inspection.engine &&
+                              !(item.value in inspection.engine) && (
+                                <>{item.label}</>
+                              )}
+                            {inspection.engine &&
+                              item.value in inspection.engine && (
+                                <span
+                                  style={{
+                                    color: "#9f0505db",
+                                  }}
+                                >
+                                  {item.label}
+                                </span>
+                              )}
+                            {inspection.engine &&
+                              !(item.value in inspection.engine) && (
+                                <>
+                                  <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value={item.value}
+                                    id={item.id}
+                                    defaultChecked={item.defaultChecked}
+                                    disabled
+                                  />
+                                </>
+                              )}
                           </label>
                         </div>
                       ))}
+                      <div>
+                        {inspection &&
+                          inspection.engine &&
+                          Object.entries(inspection.engine).map(
+                            ([key, value]) => (
+                              <div
+                                className="form-check"
+                                style={{ margin: "1rem" }}
+                              >
+                                {value.label} : <b> {value.description}</b>
+                              </div>
+                            )
+                          )}
+                      </div>
                     </div>
 
-                    <div>
-                      {Object.entries(inspection.engine).map(
-                        ([part, inspect], index) => {
-                          let i = 0;
-                          let section = "engine";
-                          if (inspect.problem) {
-                            return (
-                              <div className="row mb-3" key={index}>
-                                <label
-                                  htmlFor="inputText"
-                                  className="col-sm-5 col-form-label"
-                                >
-                                  {inspect.label}
-                                </label>
-                                <div className="col-sm-7">
-                                  <input
-                                    defaultValue={""}
-                                    type="text"
-                                    name={section + " " + part}
-                                    className="form-control"
-                                    placeholder={
-                                      "Enter " +
-                                      inspect.label.split(".")[1] +
-                                      " Problem"
-                                    }
-                                    onChange={(e) => {
-                                      let temp = { ...inspection };
-                                      console.log(temp[section][part]);
-                                      temp[section][part].description =
-                                        e.target.value;
-                                      setInspection(temp);
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            );
-                          }
-                          return null; // Return null for non-problem entries
-                        }
-                      )}
-                    </div>
                     <hr />
                     <div id="inspection_transmission_section">
                       TRANSMISSION ETC. :{" "}
@@ -270,57 +190,63 @@ export default function Home() {
                             htmlFor={item.id}
                             style={{ display: "inline" }}
                           >
-                            {item.label}
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              value={item.value}
-                              id={item.id}
-                              onChange={handleCheckBox}
-                              defaultChecked={item.defaultChecked}
-                            />
+                            {!inspection.transmission && (
+                              <>
+                                {item.label}{" "}
+                                <input
+                                  className="form-check-input"
+                                  type="checkbox"
+                                  value={item.value}
+                                  id={item.id}
+                                  defaultChecked={item.defaultChecked}
+                                  disabled
+                                />
+                              </>
+                            )}
+                            {inspection.transmission &&
+                              !(item.value in inspection.transmission) && (
+                                <>{item.label}</>
+                              )}
+                            {inspection.transmission &&
+                              item.value in inspection.transmission && (
+                                <span
+                                  style={{
+                                    color: "#9f0505db",
+                                  }}
+                                >
+                                  {item.label}
+                                </span>
+                              )}
+                            {inspection.transmission &&
+                              !(item.value in inspection.transmission) && (
+                                <>
+                                  <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value={item.value}
+                                    id={item.id}
+                                    defaultChecked={item.defaultChecked}
+                                    disabled
+                                  />
+                                </>
+                              )}
                           </label>
                         </div>
                       ))}
                       <div>
-                        {Object.entries(inspection.transmission).map(
-                          ([part, inspect], index) => {
-                            let i = 0;
-                            let section = "transmission";
-                            if (inspect.problem) {
-                              return (
-                                <div className="row mb-3" key={index}>
-                                  <label
-                                    htmlFor="inputText"
-                                    className="col-sm-5 col-form-label"
-                                  >
-                                    {inspect.label}
-                                  </label>
-                                  <div className="col-sm-7">
-                                    <input
-                                      defaultValue={""}
-                                      type="text"
-                                      name={section + " " + part}
-                                      className="form-control"
-                                      placeholder={
-                                        "Enter " +
-                                        inspect.label.split(".")[1] +
-                                        " Problem"
-                                      }
-                                      onChange={(e) => {
-                                        let temp = { ...inspection };
-                                        temp[section][part].description =
-                                          e.target.value;
-                                        setInspection(temp);
-                                      }}
-                                    />
-                                  </div>
+                        <div>
+                          {inspection.transmission &&
+                            Object.entries(inspection.transmission).map(
+                              ([key, value]) => (
+                                <div
+                                  className="form-check"
+                                  style={{ margin: "1rem" }}
+                                >
+                                  {value.label} : <b> {value.description}</b>
                                 </div>
-                              );
-                            }
-                            return null;
-                          }
-                        )}
+                              )
+                            )}
+                        </div>
                       </div>
                     </div>
 
@@ -341,62 +267,66 @@ export default function Home() {
                             htmlFor={item.id}
                             style={{ display: "inline" }}
                           >
-                            {item.label}
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              value={item.value}
-                              id={item.id}
-                              onChange={handleCheckBox}
-                              defaultChecked={item.defaultChecked}
-                            />
+                            {!inspection.electrical && (
+                              <>
+                                {item.label}{" "}
+                                <input
+                                  className="form-check-input"
+                                  type="checkbox"
+                                  value={item.value}
+                                  id={item.id}
+                                  defaultChecked={item.defaultChecked}
+                                  disabled
+                                />
+                              </>
+                            )}
+                            {inspection.electrical &&
+                              !(item.value in inspection.electrical) && (
+                                <>{item.label}</>
+                              )}
+                            {inspection.electrical &&
+                              item.value in inspection.electrical && (
+                                <span
+                                  style={{
+                                    color: "#9f0505db",
+                                  }}
+                                >
+                                  {item.label}
+                                </span>
+                              )}
+                            {inspection.electrical &&
+                              !(item.value in inspection.electrical) && (
+                                <>
+                                  <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value={item.value}
+                                    id={item.id}
+                                    defaultChecked={item.defaultChecked}
+                                    disabled
+                                  />
+                                </>
+                              )}
                           </label>
                         </div>
                       ))}
                       <div>
-                        {Object.entries(inspection.electrical).map(
-                          ([part, inspect], index) => {
-                            let i = 0;
-                            let section = "electrical";
-                            if (inspect.problem) {
-                              return (
-                                <div className="row mb-3" key={index}>
-                                  <label
-                                    htmlFor="inputText"
-                                    className="col-sm-5 col-form-label"
-                                  >
-                                    {inspect.label}
-                                  </label>
-                                  <div className="col-sm-7">
-                                    <input
-                                      defaultValue={""}
-                                      type="text"
-                                      name={section + " " + part}
-                                      className="form-control"
-                                      placeholder={
-                                        "Enter " +
-                                        inspect.label.split(".")[1] +
-                                        " Problem"
-                                      }
-                                      onChange={(e) => {
-                                        let temp = { ...inspection };
-                                        temp[section][part].description =
-                                          e.target.value;
-                                        setInspection(temp);
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                              );
-                            }
-                            return null;
-                          }
-                        )}
+                        {inspection.electrical &&
+                          Object.entries(inspection.electrical).map(
+                            ([key, value]) => (
+                              <div
+                                className="form-check"
+                                style={{ margin: "1rem" }}
+                              >
+                                {value.label} : <b> {value.description}</b>
+                              </div>
+                            )
+                          )}
                       </div>
                     </div>
                     <hr />
                     <div id="inspection_lubrication_section">
-                      LUBRICATION & CLEANLINESS-
+                      LUBRICATION & CLEANLINESS -{" "}
                       {lubricantsChecks.map((item) => (
                         <div
                           className="form-check"
@@ -411,57 +341,61 @@ export default function Home() {
                             htmlFor={item.id}
                             style={{ display: "inline" }}
                           >
-                            {item.label}
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              value={item.value}
-                              id={item.id}
-                              onChange={handleCheckBox}
-                              defaultChecked={item.defaultChecked}
-                            />
+                            {!inspection.lubrication && (
+                              <>
+                                {item.label}{" "}
+                                <input
+                                  className="form-check-input"
+                                  type="checkbox"
+                                  value={item.value}
+                                  id={item.id}
+                                  defaultChecked={item.defaultChecked}
+                                  disabled
+                                />
+                              </>
+                            )}
+                            {inspection.lubrication &&
+                              !(item.value in inspection.lubrication) && (
+                                <>{item.label}</>
+                              )}
+                            {inspection.lubrication &&
+                              item.value in inspection.lubrication && (
+                                <span
+                                  style={{
+                                    color: "#9f0505db",
+                                  }}
+                                >
+                                  {item.label}
+                                </span>
+                              )}
+                            {inspection.lubrication &&
+                              !(item.value in inspection.lubrication) && (
+                                <>
+                                  <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value={item.value}
+                                    id={item.id}
+                                    defaultChecked={item.defaultChecked}
+                                    disabled
+                                  />
+                                </>
+                              )}
                           </label>
                         </div>
                       ))}
                       <div>
-                        {Object.entries(inspection.lubrication).map(
-                          ([part, inspect], index) => {
-                            let i = 0;
-                            let section = "lubrication";
-                            if (inspect.problem) {
-                              return (
-                                <div className="row mb-3" key={index}>
-                                  <label
-                                    htmlFor="inputText"
-                                    className="col-sm-5 col-form-label"
-                                  >
-                                    {inspect.label}
-                                  </label>
-                                  <div className="col-sm-7">
-                                    <input
-                                      defaultValue={""}
-                                      type="text"
-                                      name={section + " " + part}
-                                      className="form-control"
-                                      placeholder={
-                                        "Enter " +
-                                        inspect.label.split(".")[1] +
-                                        " Problem"
-                                      }
-                                      onChange={(e) => {
-                                        let temp = { ...inspection };
-                                        temp[section][part].description =
-                                          e.target.value;
-                                        setInspection(temp);
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                              );
-                            }
-                            return null;
-                          }
-                        )}
+                        {inspection.lubrication &&
+                          Object.entries(inspection.lubrication).map(
+                            ([key, value]) => (
+                              <div
+                                className="form-check"
+                                style={{ margin: "1rem" }}
+                              >
+                                {value.label} : <b> {value.description}</b>
+                              </div>
+                            )
+                          )}
                       </div>
                     </div>
                     <hr />
@@ -481,57 +415,61 @@ export default function Home() {
                             htmlFor={item.id}
                             style={{ display: "inline" }}
                           >
-                            {item.label}
-                            <input
-                              className="form-check-input"
-                              type="checkbox"
-                              value={item.value}
-                              id={item.id}
-                              onChange={handleCheckBox}
-                              defaultChecked={item.defaultChecked}
-                            />
+                            {!inspection.chassis && (
+                              <>
+                                {item.label}{" "}
+                                <input
+                                  className="form-check-input"
+                                  type="checkbox"
+                                  value={item.value}
+                                  id={item.id}
+                                  defaultChecked={item.defaultChecked}
+                                  disabled
+                                />
+                              </>
+                            )}
+                            {inspection.chassis &&
+                              !(item.value in inspection.chassis) && (
+                                <>{item.label}</>
+                              )}
+                            {inspection.chassis &&
+                              item.value in inspection.chassis && (
+                                <span
+                                  style={{
+                                    color: "#9f0505db",
+                                  }}
+                                >
+                                  {item.label}
+                                </span>
+                              )}
+                            {inspection.chassis &&
+                              !(item.value in inspection.chassis) && (
+                                <>
+                                  <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    value={item.value}
+                                    id={item.id}
+                                    defaultChecked={item.defaultChecked}
+                                    disabled
+                                  />
+                                </>
+                              )}
                           </label>
                         </div>
                       ))}
                       <div>
-                        {Object.entries(inspection.chassis).map(
-                          ([part, inspect], index) => {
-                            let i = 0;
-                            let section = "chassis";
-                            if (inspect.problem) {
-                              return (
-                                <div className="row mb-3" key={index}>
-                                  <label
-                                    htmlFor="inputText"
-                                    className="col-sm-5 col-form-label"
-                                  >
-                                    {inspect.label}
-                                  </label>
-                                  <div className="col-sm-7">
-                                    <input
-                                      defaultValue={""}
-                                      type="text"
-                                      name={section + " " + part}
-                                      className="form-control"
-                                      placeholder={
-                                        "Enter " +
-                                        inspect.label.split(".")[1] +
-                                        " Problem"
-                                      }
-                                      onChange={(e) => {
-                                        let temp = { ...inspection };
-                                        temp[section][part].description =
-                                          e.target.value;
-                                        setInspection(temp);
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                              );
-                            }
-                            return null;
-                          }
-                        )}
+                        {inspection.chassis &&
+                          Object.entries(inspection.chassis).map(
+                            ([key, value]) => (
+                              <div
+                                className="form-check"
+                                style={{ margin: "1rem" }}
+                              >
+                                {value.label} : <b> {value.description}</b>
+                              </div>
+                            )
+                          )}
                       </div>
                     </div>
                     <hr />
@@ -540,15 +478,10 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        TOOLS & ACCESSORIES:
+                        Tools & Accessories:
                       </label>
                       <div className="col-sm-7">
-                        <input
-                          type="text"
-                          name="tools_accessories"
-                          className="form-control"
-                          onChange={handleInspectionInput}
-                        />
+                        : <b>{inspection.tools_accessories}</b>
                       </div>
                     </div>
 
@@ -557,15 +490,10 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        MARKS AND ACTION TAKEN BY M.TO/COY COMMANDER/OC/DETT:
+                        Marks and Action Taken by M.TO/Coy Commander/OC/Dett
                       </label>
                       <div className="col-sm-7">
-                        <input
-                          type="text"
-                          name="marks_and_actions"
-                          className="form-control"
-                          onChange={handleInspectionInput}
-                        />
+                        : <b>{inspection.marks_and_actions}</b>
                       </div>
                     </div>
 
@@ -574,15 +502,10 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        ROAD TEST:
+                        Road Test
                       </label>
                       <div className="col-sm-7">
-                        <input
-                          type="text"
-                          name="road_test"
-                          className="form-control"
-                          onChange={handleInspectionInput}
-                        />
+                        : <b>{inspection.road_test}</b>
                       </div>
                     </div>
 
@@ -591,15 +514,10 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        SPECIAL FITTINGS, EQUIPMENTS, ETC.:
+                        Special Fittings, Equipments, etc.
                       </label>
                       <div className="col-sm-7">
-                        <input
-                          type="text"
-                          name="special_fittings"
-                          className="form-control"
-                          onChange={handleInspectionInput}
-                        />
+                        : <b>{inspection.special_fittings}</b>
                       </div>
                     </div>
 
@@ -608,15 +526,10 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        VEHICLE RECORDS (LOG BOOK, INSPECTION REPORT, ETC)
+                        Vehicle Records (Log Book, Inspection Report, etc.)
                       </label>
                       <div className="col-sm-7">
-                        <input
-                          type="text"
-                          name="vehicle_records_updated"
-                          className="form-control"
-                          onChange={handleInspectionInput}
-                        />
+                        : <b>{inspection.vehicle_records}</b>
                       </div>
                     </div>
                     <div className="row mb-3">
@@ -624,27 +537,10 @@ export default function Home() {
                         htmlFor="inputText"
                         className="col-sm-5 col-form-label"
                       >
-                        INSPECTION REMARKS :
+                        Inspection Remarks
                       </label>
                       <div className="col-sm-7">
-                        <input
-                          type="text"
-                          name="inspection_remarks"
-                          className="form-control"
-                          onChange={handleInspectionInput}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <div className="col-sm-10">
-                        <button
-                          type="submit"
-                          className="btn btn-primary"
-                          style={{ float: "right" }}
-                        >
-                          Complete Inspection
-                        </button>
+                        : <b>{inspection.inspection_remarks}</b>
                       </div>
                     </div>
                   </form>

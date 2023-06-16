@@ -53,7 +53,7 @@ export default function SideBar(props) {
             <Link
               className="nav-link collapsed"
               id="profile-sidebar"
-              href={"/admin/inventory/"}
+              href={"/admin/inventory/storage"}
             >
               <i className="bi bi-box2-fill"></i>
               <span>Inventory</span>
