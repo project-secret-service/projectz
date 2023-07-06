@@ -39,5 +39,8 @@
     "scss": "^0.2.4",
     "sharp": "^0.32.1",
     "socket.io-client": "^4.6.1"
+  },
+  "overrides": {
+    "semver": "^7.5.3"
   }
 }
