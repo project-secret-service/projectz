@@ -12,108 +12,130 @@ import { GetVehicles } from "@/functions/apiHandlers/vehicles";
 import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
-  const [newOil, setNewOil] = useState({});
-  const [vehicles, setVehicles] = useState([]);
-  const [showVehicle, setShowVehicle] = useState(true);
-  const [vehicle, setVehicle] = useState({});
-  const [oil, setOil] = useState({});
   const [oils, setOils] = useState([]);
-  const [maxOilValue, setMaxOilValue] = useState(0);
+  const [theoil, setTheOil] = useState({});
+  const [voucherNo, setVoucherNo] = useState("");
+  const [newOil, setNewFuel] = useState({});
+  const [showVehicle, setShowVehicle] = useState(true);
+  const [vehicles, setVehicles] = useState([]);
+  const [maxOil, setMaxOil] = useState(0);
+  const [showFuel, setShowFuel] = useState(true);
+  const [vehicle, setVehicle] = useState({});
+  const [oilDetails, setOilDetails] = useState({
+    name: "",
+    balance: 0,
+  });
 
-  const oilAmountRef = useRef();
+  const [rate, setRate] = useState(0);
 
-  function setAmount({ target: { name, value } }) {
-    setNewOil({
+  const oilAmountRef = useRef(null);
+  const oilCostRef = useRef(null);
+
+  function setOil({ target: { name, value } }) {
+    setNewFuel((newOil) => ({
       ...newOil,
       [name]: value,
-      cost: value * oil.current_rate,
-      rate: oil.current_rate,
-      new_balance: oil.balance - value,
-    });
-    console.log(value);
-  }
-
-  function handleOilForChange({ target: { name, value } }) {
-    if (value == "vehicle_fuel") {
-      setOil(vehicle.fuel_type);
-      setShowVehicle(true);
-    } else if (value == "vehicle_maintenance") {
-      setOil(oils[0]);
-      setShowVehicle(true);
-      setVehicle(vehicles[0]);
-    } else {
-      delete newOil.vehicle;
-      setOil(oils[0]);
-      setShowVehicle(false);
-    }
-    setNewOil({ ...newOil, [name]: value, cost: 0, type: oils[0]._id });
+      cost: rate * oilAmountRef.current.value,
+      rate: rate,
+    }));
   }
 
   function handleVehicleChange({ target: { name, value } }) {
-    const foundVehicle = vehicles.find((vehicle) => vehicle._id === value);
-    setVehicle(foundVehicle);
-    setOil(foundVehicle.fuel_type);
-    console.log(foundVehicle.fuel_type.current_rate);
-    setNewOil({
-      ...newOil,
-      [name]: value,
-      rate: vehicle.fuel_type.current_rate,
-      cost: 0,
-      previous_balance: vehicle.fuel_type.balance,
-      new_balance: vehicle.fuel_type.balance - oilAmountRef.current.value,
+    setNewFuel((newOil) => ({ ...newOil, [name]: value }));
+    const foundElement = vehicles.find((vehicle) => vehicle._id === value);
+    setOilDetails({
+      name: foundElement.fuel_type.type,
+      balance: foundElement.fuel_type.balance,
     });
-    oilAmountRef.current.value = null;
-    if (newOil.for == "vehicle_maintenance") {
-      setOil(oils[0]);
+    setVehicle(foundElement);
+    if (foundElement.fuel_capacity < foundElement.fuel_type.balance) {
+      setMaxOil(foundElement.fuel_capacity);
+    } else {
+      setMaxOil(foundElement.fuel_type.balance);
     }
   }
 
-  function handleOilChange({ target: { name, value } }) {
-    const foundOil = oils.find((oil) => oil._id === value);
-    setOil(foundOil);
-    setNewOil({
-      ...newOil,
-      [name]: value,
-      rate: foundOil.current_rate,
-      cost: foundOil.current_rate * oilAmountRef.current.value,
-      previous_balance: foundOil.balance,
-      new_balance: foundOil.balance - oilAmountRef.current.value,
-    });
+  function setLimitOil({ target: { name, value } }) {
+    const foundElement = oils.find((oil) => oil._id === value);
+    setTheOil(foundElement);
+    if (foundElement) {
+      setMaxOil(foundElement.balance);
+      setRate(foundElement.current_rate);
+    }
+    setNewFuel((newOil) => ({ ...newOil, [name]: value }));
   }
 
-  async function SetAllInitials() {
-    const lastVoucher = await getLastVoucherEntry();
-    const vehicles = await GetVehicles();
-    const oils = await getOilBalance();
-    setOils(oils);
-    setVehicles(vehicles);
-    setVehicle(vehicles[0]);
-    setOil(vehicles[0].fuel_type);
-    setNewOil({
-      ...newOil,
-      issue_voucher_no:
-        "IV/POL/" +
-        (lastVoucher.slno ? lastVoucher.slno + 1 : 1) +
-        "/" +
-        moment().format("YYYY") +
-        "/MT-CTC(T&IT)",
-      vehicle: vehicles[0]._id,
-      for: "vehicle_fuel",
-      date: new Date().toISOString().substr(0, 10),
-      cost: 0,
-      type: vehicles[0].fuel_type._id,
-      rate: vehicles[0].fuel_type.current_rate,
-      previous_balance: vehicles[0].fuel_type.balance,
-    });
-    setMaxOilValue(vehicles[0].fuel_type.balance);
-  }
-
-  function setDetails({ target: { name, value } }) {
-    setNewOil({ ...newOil, [name]: value });
+  function setOilFor({ target: { name, value } }) {
+    setNewFuel((newOil) => ({ ...newOil, [name]: value }));
+    if (value == "vehicle_fuel") {
+      setShowVehicle(true);
+      setNewFuel((newOil) => ({
+        ...newOil,
+        vehicle: vehicles[0]._id,
+        type: vehicles[0].fuel_type,
+      }));
+      setShowFuel(true);
+    } else if (value == "vehicle_maintenance") {
+      setShowVehicle(true);
+      setNewFuel((newOil) => ({ ...newOil, vehicle: vehicles[0]._id }));
+      setShowFuel(false);
+      setMaxOil(oils[0].balance);
+      setRate(oils[0].current_rate);
+      setTheOil(oils[0]);
+    } else {
+      setShowVehicle(false);
+      delete newOil.vehicle;
+      setShowFuel(false);
+    }
   }
 
   useEffect(() => {
-    SetAllInitials();
+    getOilBalance().then((fetchedOils) => {
+      getLastVoucherEntry().then((lastV) => {
+        GetVehicles().then((fetchedVehicles) => {
+          setTheOil(fetchedOils[0]);
+          setVehicle(fetchedVehicles[0]);
+          setVehicles(fetchedVehicles);
+          setOils(fetchedOils);
+          setVoucherNo(
+            "IV/POL/" +
+              (lastV.slno ? lastV.slno + 1 : 1) +
+              "/" +
+              moment().format("YYYY") +
+              "/MT-CTC(T&IT)"
+          );
+          setNewFuel((newOil) => ({
+            ...newOil,
+            issue_voucher_no:
+              "IV/POL/" +
+              (lastV.slno ? lastV.slno + 1 : 1) +
+              "/" +
+              moment().format("YYYY") +
+              "/MT-CTC(T&IT)",
+            date: moment().format("YYYY-MM-DD"),
+            for: "vehicle_fuel",
+            type: fetchedVehicles[0] ? fetchedVehicles[0].fuel_type : "",
+            cost: 0,
+            issued_amount: 0,
+            rate: fetchedOils[0] ? fetchedOils[0].current_rate : 0,
+            vehicle: fetchedVehicles[0] ? fetchedVehicles[0]._id : "",
+            slno: lastV.slno ? lastV.slno + 1 : 1,
+            rate: fetchedVehicles[0]
+              ? fetchedVehicles[0].fuel_type.current_rate
+              : 0,
+          }));
+          setRate(fetchedVehicles[0].fuel_type.current_rate);
+          
+          setMaxOil(
+            fetchedVehicles[0] ? fetchedVehicles[0].fuel_type.balance : 0
+          );
+          setOilDetails({
+            name: fetchedVehicles[0].fuel_type.type,
+            balance: fetchedVehicles[0].fuel_type.balance,
+          });
+        });
+      });
+    });
   }, []);
 
   return (
@@ -138,7 +160,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
-                          defaultValue={newOil.issue_voucher_no}
+                          defaultValue={voucherNo}
                           type="text"
                           name="issue_voucher_no"
                           className="form-control"
@@ -150,7 +172,7 @@ export default function Home() {
                       <label className="col-sm-5 col-form-label">For</label>
                       <div className="col-sm-7">
                         <select
-                          onChange={handleOilForChange}
+                          onChange={setOilFor}
                           name="for"
                           className="form-select"
                           aria-label="Default select example"
@@ -196,7 +218,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
-                          onChange={setDetails}
+                          onChange={setOil}
                           type="text"
                           name="description"
                           className="form-control"
@@ -213,7 +235,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
-                          onChange={setDetails}
+                          onChange={setOil}
                           type="date"
                           min={new Date().toISOString().substr(0, 10)}
                           defaultValue={new Date().toISOString().substr(0, 10)}
@@ -223,7 +245,7 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {newOil.for == "vehicle_fuel" && (
+                    {showFuel && (
                       <>
                         <div className="row mb-3">
                           <label className="col-sm-5 col-form-label">
@@ -231,10 +253,8 @@ export default function Home() {
                           </label>
                           <div className="col-sm-7">
                             <b>
-                              {oil.type}
-                              {" ( Balance : "}
-                              {oil.balance}
-                              {" L )"}
+                              {oilDetails.name} ( Balance : {oilDetails.balance}{" "}
+                              L )
                             </b>
                           </div>
                         </div>
@@ -243,11 +263,7 @@ export default function Home() {
                             Fuel Capacity :
                           </label>
                           <div className="col-sm-7">
-                            <b>{vehicle.fuel_capacity} L </b>
-                            <b>
-                              ( Empty: {vehicle.fuel_capacity - vehicle.fuel} L
-                              )
-                            </b>
+                            <b>{vehicle.fuel_capacity} L</b>
                           </div>
                         </div>
                         <div className="row mb-3">
@@ -255,7 +271,7 @@ export default function Home() {
                             Current Fuel Rate :
                           </label>
                           <div className="col-sm-7">
-                            <b>&#8377; {oil.current_rate} / L</b>
+                            <b>&#8377; {vehicle.fuel_type?.current_rate} / L</b>
                           </div>
                         </div>
                         <div className="row mb-3">
@@ -268,32 +284,27 @@ export default function Home() {
                           <div className="col-sm-7">
                             <input
                               ref={oilAmountRef}
-                              onChange={setAmount}
-                              max={
-                                vehicle.fuel_capacity - vehicle.fuel <
-                                oil.balance
-                                  ? vehicle.fuel_capacity - vehicle.fuel
-                                  : oil.balance
-                              }
+                              max={maxOil}
+                              onChange={setOil}
                               type="number"
                               name="issued_amount"
-                              className="form-control no-spinner"
-                              step="0.01"
+                              className="form-control"
                             />
                           </div>
                         </div>
                       </>
                     )}
 
-                    {newOil.for == "vehicle_maintenance" && (
+                    {!showFuel && (
                       <>
+                        {" "}
                         <div className="row mb-3">
                           <label className="col-sm-5 col-form-label">
                             Oil Type :
                           </label>
                           <div className="col-sm-7">
                             <select
-                              onChange={handleOilChange}
+                              onChange={setLimitOil}
                               name="type"
                               className="form-select"
                               aria-label="Default select example"
@@ -306,13 +317,12 @@ export default function Home() {
                             </select>
                           </div>
                         </div>
-
                         <div className="row mb-3">
                           <label className="col-sm-5 col-form-label">
-                            Current Oil Rate :
+                            Rate :
                           </label>
                           <div className="col-sm-7">
-                            <b>&#8377; {oil.current_rate} / L</b>
+                            <b>&#8377; {rate} / L</b>
                           </div>
                         </div>
                         <div className="row mb-3">
@@ -325,64 +335,11 @@ export default function Home() {
                           <div className="col-sm-7">
                             <input
                               ref={oilAmountRef}
-                              max={oil.balance}
-                              onChange={setAmount}
+                              max={theoil.balance}
+                              onChange={setOil}
                               type="number"
                               name="issued_amount"
                               className="form-control"
-                              step="0.01"
-                            />
-                          </div>
-                        </div>
-                      </>
-                    )}
-
-                    {newOil.for == "other" && (
-                      <>
-                        <div className="row mb-3">
-                          <label className="col-sm-5 col-form-label">
-                            Oil Type :
-                          </label>
-                          <div className="col-sm-7">
-                            <select
-                              onChange={handleOilChange}
-                              name="type"
-                              className="form-select"
-                              aria-label="Default select example"
-                            >
-                              {oils.map((oil, index) => (
-                                <option key={index + 1} value={oil._id}>
-                                  {oil.type} (Balance : {oil.balance} L)
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-
-                        <div className="row mb-3">
-                          <label className="col-sm-5 col-form-label">
-                            Current Oil Rate :
-                          </label>
-                          <div className="col-sm-7">
-                            <b>&#8377; {oil.current_rate} / L</b>
-                          </div>
-                        </div>
-                        <div className="row mb-3">
-                          <label
-                            htmlFor="inputText"
-                            className="col-sm-5 col-form-label"
-                          >
-                            Amount of Oil (in L) :
-                          </label>
-                          <div className="col-sm-7">
-                            <input
-                              ref={oilAmountRef}
-                              max={oil.balance}
-                              onChange={setAmount}
-                              type="number"
-                              name="issued_amount"
-                              className="form-control"
-                              step="0.01"
                             />
                           </div>
                         </div>
@@ -397,7 +354,7 @@ export default function Home() {
                         Total Cost :
                       </label>
                       <div className="col-sm-7">
-                        <b>&#8377; {newOil.cost ? newOil.cost : 0}</b>
+                        <b>&#8377; {newOil.cost}</b>
                       </div>
                     </div>
 
@@ -410,7 +367,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
-                          onChange={setDetails}
+                          onChange={setOil}
                           type="text"
                           name="remarks"
                           className="form-control"

@@ -78,6 +78,7 @@ export async function addOilType(event) {
 
 export async function allotFuel(event, newOil) {
   event.preventDefault();
+  console.log(newOil);
   const res = await axios({
     url: "/oilstockregister/allot",
     withCredentials: true,
@@ -86,11 +87,15 @@ export async function allotFuel(event, newOil) {
   });
   if (res.data.status == 200) {
     Router.push("/admin/fuel/balance");
+    console.log(res.data);
+  } else {
+    alert(res.data.message);
   }
 }
 
 export async function addFuel(event, newFuel) {
   event.preventDefault();
+  console.log(newFuel);
   const res = await axios({
     url: "/oilstockregister/add",
     withCredentials: true,

@@ -149,7 +149,7 @@ function Home() {
               className="col-lg-3 card p-4 m-1 opac-80"
               style={{ maxHeight: "70vh" }}
             >
-              <DutiesRightSideMenu disable={"all_duties"} />
+              <DutiesRightSideMenu disable={"duties"} />
             </div>
           </Row>
         </main>

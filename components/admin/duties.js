@@ -14,10 +14,17 @@ export function DutiesRightSideMenu({ disable }) {
         BACK
       </Button>
       <hr />
-      {!(disable === "all_duties") && (
+      {!(disable === "duties") && (
         <Link href={"/admin/duties/"}>
           <Button className="w-100 mb-1 btn-light">
-            <i className="bi bi-list-ul"></i>All Duties
+          <i className="bi bi-car-front-fill"></i> Duties
+          </Button>
+        </Link>
+      )}
+      {!(disable === "all_duties") && (
+        <Link href={"/admin/duties/all"}>
+          <Button className="w-100 mb-1 btn-light">
+            <i className="bi bi-list-ul"></i> All Duties
           </Button>
         </Link>
       )}
@@ -32,7 +39,7 @@ export function DutiesRightSideMenu({ disable }) {
       {!(disable === "update_duties") && (
         <Link href={"/admin/duties/update"}>
           <Button className="w-100 mb-1 btn-light">
-            <i className="bi bi-list-task"></i> Update Duties
+          <i className="bi bi-pencil-square"></i> Update Duties
           </Button>
         </Link>
       )}

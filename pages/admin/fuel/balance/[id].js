@@ -89,9 +89,8 @@ const Post = () => {
 
   return (
     <>
-      <AdminLayout title="Oil Balance Log">
-        <main id="main" className="col-11 mt-0 row opac-80">
-          <h3 className="josefin-sans">{oil.type} Oil Balance Log</h3>
+      <AdminLayout title={`${oil.type} Balance Log`}>
+        <main id="main" className="col-11 mt-n2 row opac-80">
           <Row>
             <div className="col-8 m-1 card p-5">
               <table className="table table-hover">

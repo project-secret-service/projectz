@@ -59,6 +59,7 @@ export async function UserLogin(event) {
   if (res.data === "INVALID CREDENTIALS") {
     alert("Invalid Credentials");
   } else if (res.status === 200) {
+    console.log(res.data);
     localStorage.setItem("isLoggedIn", true);
     localStorage.setItem("user", JSON.stringify(res.data.user));
     return res;

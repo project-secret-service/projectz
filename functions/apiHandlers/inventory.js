@@ -117,7 +117,7 @@ export async function AddOrder() {
 
 export async function LastOrder() {
   const res = await axios({
-    url: "/inventory/order",
+    url: "/inventory/last_voucher/sno",
     method: "GET",
     withCredentials: true,
   });

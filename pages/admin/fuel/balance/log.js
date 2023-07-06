@@ -15,6 +15,9 @@ const Post = () => {
 
   useEffect(() => {
     getAllOilBalance().then((data) => {
+      data.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
       setOilBalance(data);
     });
   }, [router.isReady]);
@@ -84,10 +87,9 @@ const Post = () => {
   return (
     <>
       <AdminLayout title={`Oil Balance Log`}>
-        <main id="main" className="col-11 mt-0 row opac-80">
-          <h3 className="josefin-sans"> Oil Balance Log</h3>
+        <main id="main" className="col-11 mt-n2 row opac-80">
           <Row>
-            <div className="col-8 m-1 card p-5">
+            <div className="col-8 m-1 card p-4">
               <table className="table table-hover">
                 <thead>
                   <tr>

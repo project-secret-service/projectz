@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import moment from "moment";
 import Link from "next/link";
 import { Button } from "react-bootstrap";
@@ -15,8 +15,18 @@ export default function Home() {
   const [voucherNo, setVoucherNo] = useState("");
   const [newFuel, setNewFuel] = useState({});
 
+  const AmountRef = useRef(null);
+  const CostRef = useRef(null);
+
   function setFuel({ target: { name, value } }) {
-    setNewFuel((newFuel) => ({ ...newFuel, [name]: value }));
+    setNewFuel((newFuel) => ({
+      ...newFuel,
+      [name]: value,
+      rate: Number(
+        Math.round(CostRef.current.value / AmountRef.current.value + "e3") +
+          "e-3"
+      ),
+    }));
   }
 
   useEffect(() => {
@@ -50,12 +60,11 @@ export default function Home() {
 
   return (
     <>
-      <AdminLayout title={`Add Fuel`}>
-        <main id="main" className="col-lg-10 main mt-0 opac-80">
-          <h1>Add Fuel</h1>
+      <AdminLayout title={`Update Oil Balance`}>
+        <main id="main" className="col-lg-11 main mt-n2 opac-80">
           <div className="row">
             <div className="col-8 m-1">
-              <div className="card p-3">
+              <div className="card p-5">
                 <div className="card-body">
                   <form
                     onSubmit={() => {
@@ -144,6 +153,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          ref={AmountRef}
                           onChange={setFuel}
                           type="number"
                           name="recieved_amount"
@@ -161,6 +171,7 @@ export default function Home() {
                       </label>
                       <div className="col-sm-7">
                         <input
+                          ref={CostRef}
                           onChange={setFuel}
                           type="number"
                           name="cost"
@@ -168,6 +179,19 @@ export default function Home() {
                         />
                       </div>
                     </div>
+
+                    <div className="row mb-3">
+                      <label
+                        htmlFor="inputText"
+                        className="col-sm-5 col-form-label"
+                      >
+                        Current Rate :
+                      </label>
+                      <div className="col-sm-7">
+                        <b>&#8377; {newFuel.rate ? newFuel.rate : 0} / L</b>
+                      </div>
+                    </div>
+
                     <div className="row mb-3">
                       <label
                         htmlFor="inputText"

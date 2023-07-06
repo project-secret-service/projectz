@@ -7,10 +7,12 @@ import Link from "next/link";
 import { GetVehicle, updateVehicle } from "@/functions/apiHandlers/vehicles";
 import { AXIOS_BASE_URL } from "@/functions/constants";
 import AdminLayout from "@/components/admin/AdminLayout";
+import { getOilBalance } from "@/functions/apiHandlers/fuel";
 
 export default function Home() {
   const [vehicle, setVehicle] = useState({});
   const [updatedVehicle, setUpdatedVehicle] = useState({});
+  const [oils, setOils] = useState([]);
   const router = useRouter();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -48,13 +50,29 @@ export default function Home() {
     setUpdatedVehicle({ ...updatedVehicle, [name]: value });
   }
 
+  function setVehicleType(event) {
+    var selectedIndex = event.target.selectedIndex;
+    var selectedOption = event.target.options[selectedIndex];
+    var selectedText = selectedOption.innerText;
+    setUpdatedVehicle({
+      ...updatedVehicle,
+      vehicle_type: selectedText,
+      category: event.target.value,
+    });
+  }
+
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
     GetVehicle(id).then((data) => {
       if (data.status === 200) {
+        console.log(data.vehicle);
         setVehicle(data.vehicle);
       }
+    });
+    getOilBalance().then((data) => {
+      console.log(data);
+      setOils(data);
     });
   }, [router.isReady]);
 
@@ -372,10 +390,11 @@ export default function Home() {
                     <select
                       name="vehicle_type"
                       className="form-select"
-                      defaultValue={vehicle.vehicle_type}
+                      defaultValue={vehicle.category}
                       aria-label="Default select example"
+                      onChange={setVehicleType}
                     >
-                      <option value={vehicle.vehicle_type}>
+                      <option value={vehicle.category}>
                         {vehicle.vehicle_type}
                       </option>
                       <option value="TWOWHEELER">2 Wheeler</option>
@@ -397,10 +416,49 @@ export default function Home() {
                         setV(e);
                       }}
                       name="cost"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm no-spinner"
                       defaultValue={vehicle.cost}
                       type="number"
                     ></input>
+                  </li>
+                  <li
+                    href="#"
+                    className="list-group-item list-group-item-action"
+                  >
+                    Current Fuel Efficiency (km/ltr):
+                    <input
+                      onChange={(e) => {
+                        setV(e);
+                      }}
+                      name="current_kmpl"
+                      className="form-control form-control-sm "
+                      defaultValue={vehicle?.current_kmpl}
+                      type="number"
+                    ></input>
+                  </li>
+                  <li
+                    href="#"
+                    className="list-group-item list-group-item-action"
+                  >
+                    Vehicle Fuel Type:
+                    <select
+                      name="fuel_type"
+                      className="form-select"
+                      defaultValue={vehicle.fuel_type?._id}
+                      aria-label="Default select example"
+                      onChange={(e) => {
+                        setV(e);
+                      }}
+                    >
+                      <option value={vehicle.fuel_type?._id}>
+                        {vehicle.fuel_type?.type}
+                      </option>
+                      {oils.map((oil, index) => (
+                        <option key={index} value={oil._id}>
+                          {oil.type}
+                        </option>
+                      ))}
+                    </select>
                   </li>
                 </div>
               </Col>

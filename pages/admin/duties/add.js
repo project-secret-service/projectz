@@ -107,6 +107,9 @@ export default function Home() {
                                 <option key={index + 1} value={vehicle._id}>
                                   CRP - {vehicle.vehicle_crp_no}{" "}
                                   {vehicle.registration_no}
+                                  {" ("} {vehicle.name}
+                                  {") "}
+                                  {vehicle.vehicle_type}
                                 </option>
                               );
                             })}

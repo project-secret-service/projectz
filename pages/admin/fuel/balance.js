@@ -20,15 +20,15 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={`Oil Balance`}>
-        <main id="main" className="col-lg-10 main opac-80 mt-0">
-          <h1>Oil Balance</h1>
+        <main id="main" className="col-lg-11 main opac-80 mt-n2">
           <Row>
-            <div className="col-8 m-1 card p-5">
+            <div className="col-8 m-1 card p-4">
               <table className="table table-hover">
                 <thead>
                   <tr>
                     <th scope="col">Type</th>
                     <th scope="col">Balance</th>
+                    <th scope="col">Current Rate</th>
                   </tr>
                 </thead>
                 <tbody style={{ cursor: "pointer" }}>
@@ -41,7 +41,8 @@ export default function Home() {
                         }}
                       >
                         <th>{oilbalance.type}</th>
-                        <td>{oilbalance.balance}</td>
+                        <td>{oilbalance.balance} L</td>
+                        <td>&#8377; {oilbalance.current_rate} / L</td>
                       </tr>
                     );
                   })}

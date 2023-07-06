@@ -10,10 +10,9 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={`Add Oil Type`}>
-        <main id="main" className="col-lg-10 main mt-0 opac-80">
+        <main id="main" className="col-lg-11 main mt-n2 opac-80">
           <div className="d-flex">
             <div className="col-12">
-              <h1>Add Oil Type</h1>
               <Row>
                 <div className="card col-8 m-1 p-5">
                   <div className="card-body">

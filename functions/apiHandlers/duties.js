@@ -92,8 +92,10 @@ export async function UpdateDutyDetails(event, duty) {
   event.preventDefault();
   var data = {
     in_datetime: event.target.in_datetime.value,
-    fuel: event.target.fuel.value,
+    fuel: duty.fuel,
+    fuel_utilized: duty.fuel_change,
     meter_count: event.target.meter_count.value,
+    km_run: duty.km_run,
     mission_ended: true,
   };
 
@@ -105,7 +107,7 @@ export async function UpdateDutyDetails(event, duty) {
   });
 
   if (res.status == 200) {
-    Router.push("/admin/duties");
+    // Router.push("/admin/duties");
   }
 }
 

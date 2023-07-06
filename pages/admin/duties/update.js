@@ -9,8 +9,11 @@ import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function Home() {
   const [onDutyVehicles, setOnDutyVehicles] = useState([]);
-  const [duty, setDuty] = useState({});
+  const [duty, setDuty] = useState({
+    fuel_change: 0,
+  });
   const [showSubmit, setShowSubmit] = useState(false);
+  const [kmChange, setKmChange] = useState(0);
 
   async function SetAllDetails() {
     let data = await GetOnDutyVehicles();
@@ -21,11 +24,27 @@ export default function Home() {
     }
   }
 
+  function handleMeterCountChange({ target: { name, value } }) {
+    let meterCount = duty.vehicle.total_kilo_meter;
+    let kmChange = value - meterCount;
+    setKmChange(kmChange);
+    let fuel = kmChange / duty.vehicle.current_kmpl;
+    console.log(duty.vehicle.current_kmpl);
+    let fuelRound = Math.round(fuel * 100) / 100;
+    setDuty({
+      ...duty,
+      fuel: duty.vehicle.fuel - fuelRound,
+      fuel_change: fuelRound,
+      km_run: kmChange,
+    });
+  }
+
   async function changeDuty({ target: { name, value } }) {
     let newDuty = onDutyVehicles.find((thisDuty) => {
       return thisDuty._id == value;
     });
     setDuty(newDuty);
+    setKmChange(0);
   }
   useEffect(() => {
     SetAllDetails();
@@ -112,6 +131,7 @@ export default function Home() {
                         type="number"
                         name="meter_count"
                         className="form-control"
+                        onChange={handleMeterCountChange}
                       />
                     </div>
                   </div>
@@ -121,19 +141,50 @@ export default function Home() {
                       htmlFor="inputText"
                       className="col-sm-5 col-form-label"
                     >
-                      Fuel :
+                      Kilometer Difference :
                     </label>
                     <div className="col-sm-7">
-                      <input
-                        defaultValue={duty && duty.vehicle && duty.vehicle.fuel}
-                        max={duty && duty.vehicle && duty.vehicle.fuel_capacity}
-                        min={0}
-                        type="number"
-                        name="fuel"
-                        className="form-control"
-                      />
+                      <b>{kmChange} km</b>
                     </div>
                   </div>
+
+                  <div className="row mb-3">
+                    <label
+                      htmlFor="inputText"
+                      className="col-sm-5 col-form-label"
+                    >
+                      Fuel Efficiency :
+                    </label>
+                    <div className="col-sm-7">
+                      <b>{duty.vehicle?.current_kmpl} km/ ltr</b>
+                    </div>
+                  </div>
+
+                  <div className="row mb-3">
+                    <label
+                      htmlFor="inputText"
+                      className="col-sm-5 col-form-label"
+                    >
+                      Fuel Utilized:
+                    </label>
+                    <div className="col-sm-7">
+                      <b>{duty.fuel_change ? duty.fuel_change : 0} ltr</b>
+                    </div>
+                  </div>
+
+
+                  <div className="row mb-3">
+                    <label
+                      htmlFor="inputText"
+                      className="col-sm-5 col-form-label"
+                    >
+                      Total Cost :
+                    </label>
+                    <div className="col-sm-7">
+                      <b>{duty.fuel_change ? duty.fuel_change : 0} ltr</b>
+                    </div>
+                  </div>
+
                   {showSubmit && (
                     <div className="row mb-3">
                       <div className="col-sm-10">

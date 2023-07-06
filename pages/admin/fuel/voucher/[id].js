@@ -99,7 +99,7 @@ const Post = () => {
   return (
     <>
       <AdminLayout title={`Voucher No : ${voucher.voucher_no}`}>
-        <main id="main" className="col-11 mt-0 row opac-80">
+        <main id="main" className="col-11 mt-n2 row opac-80">
           <Row>
             <div className="col-8 m-1 card">
               <div className="col-12 p-5" ref={printRef}>
@@ -285,12 +285,13 @@ const Post = () => {
 
                             {voucher.for === "vehicle_fuel" && (
                               <>
+                                {" "}
                                 {voucher.description &&
                                   "For " + voucher.description}{" "}
                                 in
                                 <b>
-                                  {" "}
-                                  {voucher.vehicle.vehicle_crp_no},{" "}
+                                  {" CRP-("}
+                                  {voucher.vehicle.vehicle_crp_no}{"), "}
                                   {voucher.vehicle.registration_no},{" "}
                                   {voucher.vehicle.name}
                                 </b>

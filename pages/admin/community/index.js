@@ -176,7 +176,7 @@ export default function Community() {
                         </div>
                         <div
                           style={{
-                            maxHeight: "50vh",
+                            maxHeight: "80vh",
                             overflow: "hidden",
                             marginBottom: "3rem",
                           }}

@@ -65,6 +65,7 @@ export async function GetVehicle(id) {
 }
 
 export async function updateVehicle(updatedVehicle, id) {
+  console.log(updatedVehicle);
   const res = await axios({
     url: "/vehicles/" + id + "/update",
     method: "POST",

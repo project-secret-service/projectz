@@ -66,7 +66,13 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={"Vehicle Details"}>
-        <main id="main" className="col-lg-11 main mt-0 opac-80">
+        <main
+          id="main"
+          className="col-lg-11 main opac-80"
+          style={{
+            marginTop: "-2rem",
+          }}
+        >
           <Row>
             <Col lg="4" className="card m-2 p-5 text-center">
               <div style={{ height: "80%", alignItems: "center" }}>
@@ -230,6 +236,21 @@ export default function Home() {
                       <>&#8377; {indianNumberFormat.format(vehicle.cost)} </>
                     )}
                   </b>
+                </li>
+                <li href="#" className="list-group-item list-group-item-action">
+                  <img
+                    src="/assets/img/vehicle/icons/fuel-efficiency.png"
+                    style={{ width: "2rem" }}
+                  ></img>{" "}
+                  Current Fuel Efficiency: <b>{vehicle.current_kmpl} km/ltr</b>
+                </li>
+
+                <li href="#" className="list-group-item list-group-item-action">
+                  <img
+                    src="/assets/img/vehicle/icons/fuel-efficiency.png"
+                    style={{ width: "2rem" }}
+                  ></img>{" "}
+                  Fuel Type : <b>{vehicle.fuel_type?.type}</b>
                 </li>
               </div>
 
