@@ -93,7 +93,9 @@ export async function AddIssue(data) {
     withCredentials: true,
     data: data,
   });
-  return res;
+  if (res.data.status === 200) {
+    Router.push("/admin/inventory/voucher/" + res.data.issue_id);
+  }
 }
 
 export async function LastIssue() {
@@ -105,14 +107,16 @@ export async function LastIssue() {
   return res.data;
 }
 
-export async function AddOrder() {
+export async function AddOrder(data) {
   const res = await axios({
     url: "/inventory/order/add",
     method: "POST",
     withCredentials: true,
     data: data,
   });
-  return res;
+  if (res.data.status === 200) {
+    Router.push("/admin/inventory/storage");
+  }
 }
 
 export async function LastOrder() {

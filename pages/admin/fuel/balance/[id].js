@@ -18,6 +18,9 @@ const Post = () => {
     if (!router.isReady) return;
     const { id } = router.query;
     getOilBalanceLog(id).then((data) => {
+      data.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
       setOilBalances(data);
     });
     getOil(id).then((data) => {

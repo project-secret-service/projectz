@@ -35,10 +35,12 @@ export default function Home() {
                   <tr>
                     <th scope="col">SL No</th>
                     <th scope="col">Item Name</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Cost of Each Item</th>
-                    <th scope="col">Total Cost</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Balance</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Total Value</th>
+                    <th scope="col" style={{ textAlign: "center" }}>
+                      Status
+                    </th>
                   </tr>
                 </thead>
                 <tbody style={{ cursor: "pointer" }}>
@@ -47,13 +49,32 @@ export default function Home() {
                       <tr key={index + 1} onClick={() => OpenLink(item._id)}>
                         <>
                           <th scope="row">{index + 1} </th>
-                          <td>{item.name}</td>
-                          <td>{item.quantity}</td>
-                          <td>Rs. {item.rate}</td>
-                          <td>Rs. {item.quantity * item.rate}</td>
+                          <th>{item.name}</th>
+                          <td>{item.balance}</td>
+                          <td>&#8377; {item.current_rate}</td>
                           <td>
-                            {item.quantity != 0 && <>Available</>}
-                            {item.quantity === 0 && "Unavailable"}
+                            &#8377;{" "}
+                            {Math.round(
+                              item.balance * item.current_rate * 100
+                            ) / 100}
+                          </td>
+                          <td style={{ textAlign: "center" }}>
+                            {item.balance != 0 && (
+                              <>
+                                <i
+                                  class="bi bi-archive-fill"
+                                  style={{ color: "green" }}
+                                ></i>
+                              </>
+                            )}
+                            {item.balance === 0 && (
+                              <>
+                                <i
+                                  class="bi bi-archive-fill"
+                                  style={{ color: "red" }}
+                                ></i>
+                              </>
+                            )}
                           </td>
                         </>
                       </tr>

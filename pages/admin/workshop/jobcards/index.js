@@ -22,8 +22,7 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={`Job Cards`}>
-        <main id="main" className="col-lg-10 main mt-0 opac-80">
-          <h1>Job Cards</h1>
+        <main id="main" className="col-lg-11 main mt-n2 opac-80">
           <Row>
             <div className="col-lg-8">
               <div className="card p-3">

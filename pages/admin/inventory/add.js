@@ -3,13 +3,15 @@ import Link from "next/link";
 import { Button, Row, Col } from "react-bootstrap";
 import { addNewItem } from "@/functions/apiHandlers/inventory";
 import AdminLayout from "@/components/admin/AdminLayout";
+import { useState } from "react";
 
 export default function Home() {
+  const [item, setItem] = useState({});
+  
   return (
     <>
       <AdminLayout title={`Add New Item`}>
-        <main id="main" className="col-lg-10 main mt-0">
-          <h1>Add New Item</h1>
+        <main id="main" className="col-lg-11 main mt-n2">
           <Row>
             <div className="col-lg-7">
               <div className="card">

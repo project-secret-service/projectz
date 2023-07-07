@@ -28,9 +28,7 @@ export default function Home() {
     setShowItemForm(false);
   }
 
-  function setI({ target: { name, value } }) {
-
-  }
+ 
 
   useEffect(() => {
     GetItems().then((data) => {

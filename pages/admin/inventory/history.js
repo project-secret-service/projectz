@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Button, Row } from "react-bootstrap";
@@ -7,6 +6,7 @@ import dateFormat from "dateformat";
 import router from "next/router";
 import { GetOrders, GetIssues } from "@/functions/apiHandlers/inventory";
 import AdminLayout from "@/components/admin/AdminLayout";
+import axios from "axios";
 
 export default function Home() {
   const [inventoryHistory, setInventoryHistory] = useState([]);
@@ -14,24 +14,13 @@ export default function Home() {
   const [searchResultList, setSearchResultList] = useState([]);
   const [search, setSearch] = useState(false);
 
-  async function MergeHistory() {
-    const orders = await GetOrders();
-    const issues = await GetIssues();
-
-    let mergedData = [...orders, ...issues];
-
-    mergedData.sort((a, b) => b.voucher_no.localeCompare(a.voucher_no));
-    mergedData.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    mergedData.forEach((data) => {
-      data.itemString = "";
-      data.items.forEach((item) => {
-        data.itemString += item.item.name + ", ";
-      });
-      data.itemString = data.itemString.slice(0, -2);
+  async function GetVoucherHistory() {
+    const res = await axios({
+      method: "get",
+      url: "http://localhost:3000/inventory/history",
+      withCredentials: true,
     });
-
-    setInventoryHistory(mergedData);
+    return res.data;
   }
 
   function handleSearchFilter({ target: { name, value } }) {
@@ -56,6 +45,7 @@ export default function Home() {
       );
     }
   }
+
   function handleSearch({ target: { name, value } }) {
     let search = value;
     let searchFilter = searchFilterRef.current.value;
@@ -74,9 +64,7 @@ export default function Home() {
     if (searchFilter == "date") {
       setSearchResultList(
         inventoryHistory.filter((data) =>
-          dateFormat(data.date, "dS mmmm, yyyy - DDDD")
-            .toLowerCase()
-            .includes(search.toLowerCase())
+          data.dateString.toLowerCase().includes(search.toLowerCase())
         )
       );
     }
@@ -90,16 +78,32 @@ export default function Home() {
   }
 
   useEffect(() => {
-    MergeHistory();
+    GetVoucherHistory().then((data) => {
+      data.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+      //Create itemString
+      data.forEach((data) => {
+        let itemString = "";
+        data.items.forEach((item) => {
+          itemString += item.item.name + ", ";
+        });
+        itemString = itemString.slice(0, -2);
+        data.itemString = itemString;
+        data.dateString = dateFormat(
+          data.date,
+          "dS mmmm, yyyy - DDDD hh:MM TT"
+        );
+      });
+
+      setInventoryHistory(data);
+    });
   }, []);
 
   return (
     <>
       <AdminLayout title={`Inventory History`}>
-        <main id="main" className="col-lg-11 main mt-0 opac-80">
-          <Row className="p-1">
-            <h1>Inventory History</h1>
-          </Row>
+        <main id="main" className="col-lg-11 main mt-n2 opac-80">
           <div className="col-lg-12 d-flex">
             <div className="col-lg-8 card m-1 p-4">
               <table className="table table-hover">
@@ -125,15 +129,22 @@ export default function Home() {
                         <th className="col-3">{data.voucher_no}</th>
                         <td>
                           {data.date &&
-                            dateFormat(data.date, "dS mmmm, yyyy - DDDD")}
+                            dateFormat(
+                              data.date,
+                              "dS mmmm, yyyy - DDDD - HH:MM TT"
+                            )}
                         </td>
                         <td>{data.itemString}</td>
                         <td style={{ textAlign: "center" }}>
                           {data.voucher_no.split("/")[0] === "RV" && (
-                            <span style={{ color: "green" }}>RECIEVE</span>
+                            <span style={{ color: "green" }}>
+                              <i className="bi bi-box-arrow-in-down"></i>
+                            </span>
                           )}
                           {data.voucher_no.split("/")[0] === "IV" && (
-                            <span style={{ color: "red" }}>ISSUE</span>
+                            <span style={{ color: "red" }}>
+                              <i className="bi bi-box-arrow-up"></i>
+                            </span>
                           )}
                         </td>
                       </tr>
@@ -148,17 +159,19 @@ export default function Home() {
                         }}
                       >
                         <th className="col-3">{data.voucher_no}</th>
-                        <td>
-                          {data.date &&
-                            dateFormat(data.date, "dS mmmm, yyyy - DDDD")}
-                        </td>
+                        <td>{data.dateString}</td>
                         <td>{data.itemString}</td>
                         <td style={{ textAlign: "center" }}>
                           {data.voucher_no.split("/")[0] === "RV" && (
-                            <span style={{ color: "green" }}>RECIEVE</span>
+                            <span style={{ color: "green" }}>
+                              {" "}
+                              <i className="bi bi-box-arrow-in-down"></i>
+                            </span>
                           )}
                           {data.voucher_no.split("/")[0] === "IV" && (
-                            <span style={{ color: "red" }}>ISSUE</span>
+                            <span style={{ color: "red" }}>
+                              <i className="bi bi-box-arrow-up"></i>
+                            </span>
                           )}
                         </td>
                       </tr>

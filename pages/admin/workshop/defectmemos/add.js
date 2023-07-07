@@ -183,8 +183,7 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={`Create Defect Memo`}>
-        <main id="main" className="col-lg-11 main mt-0 opac-80">
-          <h1>Create Defect Memo</h1>
+        <main id="main" className="col-lg-11 main mt-n2 opac-80">
           <Row>
             <div className="col-lg-8">
               <div className="card p-3">

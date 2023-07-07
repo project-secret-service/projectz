@@ -19,24 +19,16 @@ export default function Home() {
 
   async function ItemHistory(id) {
     const history = await GetItemHistory(id);
-
-    //get Item String
-    history.forEach((data) => {
-      let quantity = 0;
-      //Get Quantity of Items inside history where The Item ID is item._id
-      data.items.forEach((this_item) => {
-        if (this_item.item._id === id) {
-          quantity += this_item.quantity;
-        }
-      });
-      data.quantity = quantity;
-
-      if (data.voucher_no.split("/")[0] === "RV") data.isRV = true;
-      else data.isIV = true;
+    history.forEach((voucher) => {
+      const item = voucher.items.find((item) => item.item._id == id);
+      voucher.change_quantity = item.new_quantity - item.quantity;
+      console.log(voucher.change_quantity);
+      voucher.new_quantity = item.new_quantity;
     });
     history.sort((a, b) => {
       return new Date(b.date) - new Date(a.date);
     });
+    console.log(history);
     setInventoryHistory(history);
   }
 
@@ -50,14 +42,14 @@ export default function Home() {
     if (searchFilter == "recieve") {
       setSearchResultList(
         inventoryHistory.filter(
-          (data) => data.voucher_no.split("/")[0] === "RV"
+          (voucher) => voucher.voucher_no.split("/")[0] === "RV"
         )
       );
     }
     if (searchFilter == "issue") {
       setSearchResultList(
         inventoryHistory.filter(
-          (data) => data.voucher_no.split("/")[0] === "IV"
+          (voucher) => voucher.voucher_no.split("/")[0] === "IV"
         )
       );
     }
@@ -72,15 +64,15 @@ export default function Home() {
     setSearch(true);
     if (searchFilter == "voucher_no") {
       setSearchResultList(
-        inventoryHistory.filter((data) =>
-          data.voucher_no.toLowerCase().includes(search.toLowerCase())
+        inventoryHistory.filter((voucher) =>
+          voucher.voucher_no.toLowerCase().includes(search.toLowerCase())
         )
       );
     }
     if (searchFilter == "date") {
       setSearchResultList(
-        inventoryHistory.filter((data) =>
-          dateFormat(data.date, "dS mmmm, yyyy - DDDD")
+        inventoryHistory.filter((voucher) =>
+          dateFormat(voucher.date, "dS mmmm, yyyy - DDDD")
             .toLowerCase()
             .includes(search.toLowerCase())
         )
@@ -88,8 +80,8 @@ export default function Home() {
     }
     if (searchFilter == "items") {
       setSearchResultList(
-        inventoryHistory.filter((data) =>
-          data.itemString.toLowerCase().includes(search.toLowerCase())
+        inventoryHistory.filter((voucher) =>
+          voucher.itemString.toLowerCase().includes(search.toLowerCase())
         )
       );
     }
@@ -98,8 +90,8 @@ export default function Home() {
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
-    GetItemDetails(id).then((data) => {
-      setItem(data);
+    GetItemDetails(id).then((item) => {
+      setItem(item);
     });
     ItemHistory(id);
   }, [router.isReady]);
@@ -121,6 +113,7 @@ export default function Home() {
                   <tr>
                     <th scope="col">Voucher No</th>
                     <th scope="col">Date</th>
+                    <th scope="col">Balance</th>
                     <th scope="col" style={{ textAlign: "center" }}>
                       Change
                     </th>
@@ -131,67 +124,71 @@ export default function Home() {
                 </thead>
                 <tbody style={{ cursor: "pointer" }}>
                   {!search &&
-                    inventoryHistory.map((data, index) => (
+                    inventoryHistory.map((voucher, index) => (
                       <tr
                         key={index}
                         onClick={() => {
-                          router.push(`/admin/inventory/voucher/${data._id}`);
+                          router.push(`/admin/inventory/voucher/${voucher._id}`);
                         }}
                       >
-                        <th className="col-3">{data.voucher_no}</th>
+                        <th className="col-3">{voucher.voucher_no}</th>
                         <td>
-                          {data.date &&
-                            dateFormat(data.date, "dS mmmm, yyyy - DDDD")}
+                          {voucher.date &&
+                            dateFormat(
+                              voucher.date,
+                              "dS mmmm, yyyy - DDDD - hh:MM TT"
+                            )}
                         </td>
+                        <td>{voucher.new_quantity}</td>
                         <td style={{ textAlign: "center" }}>
-                          {data.isRV && (
+                          {voucher.isRecieve && (
                             <span style={{ color: "green" }}>
-                              +{data.quantity}
+                              +{voucher.change_quantity}
                             </span>
                           )}
-                          {data.isIV && (
+                          {voucher.isIssue && (
                             <span style={{ color: "red" }}>
-                              -{data.quantity}
+                              -{voucher.change_quantity}
                             </span>
                           )}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          {data.isRV && (
-                            <span style={{ color: "green" }}>RECIEVE</span>
+                          {voucher.isRecieve && (
+                            <span style={{ color: "green" }}><i className="bi bi-box-arrow-in-down"></i></span>
                           )}
-                          {data.isIV && (
-                            <span style={{ color: "red" }}>ISSUE</span>
+                          {voucher.isIssue && (
+                            <span style={{ color: "red" }}><i className="bi bi-box-arrow-up"></i></span>
                           )}
                         </td>
                       </tr>
                     ))}
 
                   {search &&
-                    searchResultList.map((data, index) => (
+                    searchResultList.map((voucher, index) => (
                       <tr
                         key={index}
                         onClick={() => {
-                          router.push(`/admin/inventory/voucher/${data._id}`);
+                          router.push(`/admin/inventory/voucher/${voucher._id}`);
                         }}
                       >
-                        <th className="col-3">{data.voucher_no}</th>
+                        <th className="col-3">{voucher.voucher_no}</th>
                         <td>
-                          {data.date &&
-                            dateFormat(data.date, "dS mmmm, yyyy - DDDD")}
+                          {voucher.date &&
+                            dateFormat(voucher.date, "dS mmmm, yyyy - DDDD")}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          {data.isRV && (
+                          {voucher.isRV && (
                             <span style={{ color: "green" }}>RECIEVE</span>
                           )}
-                          {data.isIV && (
+                          {voucher.isIV && (
                             <span style={{ color: "red" }}>ISSUE</span>
                           )}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          {data.isRV && (
+                          {voucher.isRV && (
                             <span style={{ color: "green" }}>RECIEVE</span>
                           )}
-                          {data.isIV && (
+                          {voucher.isIV && (
                             <span style={{ color: "red" }}>ISSUE</span>
                           )}
                         </td>

@@ -117,7 +117,7 @@ const Post = () => {
   return (
     <>
       <AdminLayout title={`Voucher No. ${voucher.voucher_no}`}>
-        <main id="main" className="col-11 mt-0 row opac-80">
+        <main id="main" className="col-11 mt-n2 row opac-80">
           <Row>
             <div className="col-8 m-1 card">
               <div className="col-12 p-5" ref={printRef}>
@@ -170,7 +170,7 @@ const Post = () => {
                               <td>{item.item.name}</td>
                               <td>{item.quantity}</td>
                               <td>&#8377;{item.rate}</td>
-                              <td>&#8377;{item.rate * item.quantity}</td>
+                              <td>&#8377;{item.cost}</td>
                             </tr>
                           ))}
                           <tr>
@@ -178,7 +178,7 @@ const Post = () => {
                             <td></td>
                             <td></td>
                             <th>GRAND TOTAL :</th>
-                            <th>&#8377;{grandTotal}</th>
+                            <th>&#8377;{voucher.total_amount}</th>
                           </tr>
                         </tbody>
                       </table>
@@ -238,7 +238,7 @@ const Post = () => {
                       To be completed by the Issuing Officer <br />
                       <br />
                       <p>
-                        Issue Voucher No : <b> {voucher.issue_voucher_no}</b>
+                        Issue Voucher No : <b> {voucher.voucher_no}</b>
                       </p>
                       <p>
                         Unit/Estt : <b>M.T.O. CTC (T&IT)</b>
@@ -278,10 +278,17 @@ const Post = () => {
                               <td>{index + 1}</td>
                               <td>{item.item.name}</td>
                               <td>{item.quantity}</td>
-                              <td>&#8377;{item.rate}</td>
-                              <td>&#8377;{item.rate * item.quantity}</td>
+                              <td>&#8377; {item.rate}</td>
+                              <td>&#8377; {item.cost}</td>
                             </tr>
                           ))}
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <th>GRAND TOTAL :</th>
+                            <th>&#8377; {voucher.total_amount}</th>
+                          </tr>
                         </tbody>
                       </table>
                       <br />

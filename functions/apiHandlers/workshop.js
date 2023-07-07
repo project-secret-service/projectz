@@ -32,6 +32,15 @@ export async function GetParts() {
   return res.data;
 }
 
+export async function GetItems() {
+  const res = await axios({
+    url: "/inventory/items/",
+    method: "GET",
+    withCredentials: true,
+  });
+  return res.data;
+}
+
 export async function GetMemos() {
   const res = await axios({
     url: "/defectmemos/desc",
