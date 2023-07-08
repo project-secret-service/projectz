@@ -82,11 +82,10 @@ export default function Home() {
       data.sort((a, b) => {
         return new Date(b.date) - new Date(a.date);
       });
-      //Create itemString
       data.forEach((data) => {
         let itemString = "";
         data.items.forEach((item) => {
-          itemString += item.item.name + ", ";
+          itemString += item.item?.name + ", ";
         });
         itemString = itemString.slice(0, -2);
         data.itemString = itemString;
@@ -117,66 +116,80 @@ export default function Home() {
                     </th>
                   </tr>
                 </thead>
-                <tbody style={{ cursor: "pointer" }}>
-                  {!search &&
-                    inventoryHistory.map((data, index) => (
-                      <tr
-                        key={index}
-                        onClick={() => {
-                          router.push(`/admin/inventory/voucher/${data._id}`);
-                        }}
-                      >
-                        <th className="col-3">{data.voucher_no}</th>
-                        <td>
-                          {data.date &&
-                            dateFormat(
-                              data.date,
-                              "dS mmmm, yyyy - DDDD - HH:MM TT"
-                            )}
-                        </td>
-                        <td>{data.itemString}</td>
-                        <td style={{ textAlign: "center" }}>
-                          {data.voucher_no.split("/")[0] === "RV" && (
-                            <span style={{ color: "green" }}>
-                              <i className="bi bi-box-arrow-in-down"></i>
-                            </span>
-                          )}
-                          {data.voucher_no.split("/")[0] === "IV" && (
-                            <span style={{ color: "red" }}>
-                              <i className="bi bi-box-arrow-up"></i>
-                            </span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-
-                  {search &&
-                    searchResultList.map((data, index) => (
-                      <tr
-                        key={index}
-                        onClick={() => {
-                          router.push(`/admin/inventory/voucher/${data._id}`);
-                        }}
-                      >
-                        <th className="col-3">{data.voucher_no}</th>
-                        <td>{data.dateString}</td>
-                        <td>{data.itemString}</td>
-                        <td style={{ textAlign: "center" }}>
-                          {data.voucher_no.split("/")[0] === "RV" && (
-                            <span style={{ color: "green" }}>
-                              {" "}
-                              <i className="bi bi-box-arrow-in-down"></i>
-                            </span>
-                          )}
-                          {data.voucher_no.split("/")[0] === "IV" && (
-                            <span style={{ color: "red" }}>
-                              <i className="bi bi-box-arrow-up"></i>
-                            </span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
+                {inventoryHistory.length > 0 && (
+                  <>
+                    <tbody style={{ cursor: "pointer" }}>
+                      {!search &&
+                        inventoryHistory &&
+                        inventoryHistory.map((data, index) => (
+                          <tr
+                            key={index}
+                            onClick={() => {
+                              router.push(
+                                `/admin/inventory/voucher/${data._id}`
+                              );
+                            }}
+                          >
+                            <th className="col-3">{data.voucher_no}</th>
+                            <td>
+                              {data.date &&
+                                dateFormat(
+                                  data.date,
+                                  "dS mmmm, yyyy - DDDD - HH:MM TT"
+                                )}
+                            </td>
+                            <td>{data.itemString}</td>
+                            <td style={{ textAlign: "center" }}>
+                              {data.voucher_no.split("/")[0] === "RV" && (
+                                <span style={{ color: "green" }}>
+                                  <i className="bi bi-box-arrow-in-down"></i>
+                                </span>
+                              )}
+                              {data.voucher_no.split("/")[0] === "IV" && (
+                                <span style={{ color: "red" }}>
+                                  <i className="bi bi-box-arrow-up"></i>
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      {search &&
+                        searchResultList &&
+                        searchResultList.map((data, index) => (
+                          <tr
+                            key={index}
+                            onClick={() => {
+                              router.push(
+                                `/admin/inventory/voucher/${data._id}`
+                              );
+                            }}
+                          >
+                            <th className="col-3">{data.voucher_no}</th>
+                            <td>
+                              {data.date &&
+                                dateFormat(
+                                  data.date,
+                                  "dS mmmm, yyyy - DDDD - HH:MM TT"
+                                )}
+                            </td>
+                            <td>{data.itemString}</td>
+                            <td style={{ textAlign: "center" }}>
+                              {data.voucher_no.split("/")[0] === "RV" && (
+                                <span style={{ color: "green" }}>
+                                  <i className="bi bi-box-arrow-in-down"></i>
+                                </span>
+                              )}
+                              {data.voucher_no.split("/")[0] === "IV" && (
+                                <span style={{ color: "red" }}>
+                                  <i className="bi bi-box-arrow-up"></i>
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </>
+                )}
               </table>
             </div>
             <div
@@ -216,19 +229,25 @@ export default function Home() {
                 BACK
               </Button>
 
-              <Link href={"/admin/inventory/add"}>
-                <Button className="w-100 mb-1 btn-success">
-                  Create new Item
+              <hr />
+              <Link href={"/admin/inventory/storage"}>
+                <Button className="w-100 mb-1 btn-light">Storage</Button>
+              </Link>
+              <Link href={"/admin/inventory/history"}>
+                <Button className="w-100 mb-1 btn-light">
+                  Inventory History
                 </Button>
               </Link>
-              <Link href={"/admin/inventory/storage"}>
-                <Button className="w-100 mb-1 btn-secondary">List Items</Button>
-              </Link>
               <Link href={"/admin/inventory/orders/order"}>
-                <Button className="w-100 mb-1 btn-light">Order an Item</Button>
+                <Button className="w-100 mb-1 btn-light">Order Items</Button>
               </Link>
               <Link href={"/admin/inventory/issues/issue"}>
-                <Button className="w-100 mb-1 btn-info">Issue an Item</Button>
+                <Button className="w-100 mb-1 btn-light">Issue Items</Button>
+              </Link>
+              <Link href={"/admin/inventory/add"}>
+                <Button className="w-100 mb-1 btn-light">
+                  Create New Item
+                </Button>
               </Link>
             </div>
           </div>

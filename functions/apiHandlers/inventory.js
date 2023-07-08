@@ -59,14 +59,9 @@ export async function GetOrders() {
   return res.data;
 }
 
-export async function addNewItem(event) {
+export async function addNewItem(event, data) {
   event.preventDefault();
-  var data = {
-    name: event.target.name.value,
-    quantity: event.target.quantity.value,
-    rate: event.target.rate.value,
-    description: event.target.description.value,
-  };
+
   const res = await axios({
     url: "/inventory/items/add",
     withCredentials: true,
@@ -74,7 +69,11 @@ export async function addNewItem(event) {
     data: data,
   });
 
-  Router.push("/admin/inventory/storage");
+  if (res.data.status === 200) {
+    Router.push("/admin/inventory/storage");
+  } else {
+    alert(res.data.message);
+  }
 }
 
 export async function GetItems() {
@@ -115,7 +114,7 @@ export async function AddOrder(data) {
     data: data,
   });
   if (res.data.status === 200) {
-    Router.push("/admin/inventory/storage");
+    Router.push("/admin/inventory/voucher/" + res.data.order_id);
   }
 }
 

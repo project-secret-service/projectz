@@ -10,6 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     GetItems().then((data) => {
+      console.log(data);
       setItems(data);
     });
   }, []);
@@ -33,7 +34,7 @@ export default function Home() {
               <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">SL No</th>
+                    <th scope="col">Sl No</th>
                     <th scope="col">Item Name</th>
                     <th scope="col">Balance</th>
                     <th scope="col">Rate</th>
@@ -79,7 +80,7 @@ export default function Home() {
                         </>
                       </tr>
                     );
-                  })}{" "}
+                  })}
                 </tbody>
               </table>
             </div>
@@ -94,7 +95,7 @@ export default function Home() {
               </Button>
               <hr />
               <Link href={"/admin/inventory/history"}>
-                <Button className="w-100 mb-1 btn-light">History</Button>
+                <Button className="w-100 mb-1 btn-light">Inventory History</Button>
               </Link>
               <Link href={"/admin/inventory/orders/order"}>
                 <Button className="w-100 mb-1 btn-light">Order Items</Button>

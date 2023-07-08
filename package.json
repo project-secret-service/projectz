@@ -19,6 +19,7 @@
     "indian-number-format": "^1.0.5",
     "js-cookie": "^3.0.5",
     "leaflet-routing-machine": "^3.2.12",
+    "mathjs": "^11.8.2",
     "moment": "^2.29.4",
     "next": "13.2.3",
     "next-remove-imports": "^1.0.11",

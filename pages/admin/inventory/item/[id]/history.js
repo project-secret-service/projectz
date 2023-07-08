@@ -21,14 +21,12 @@ export default function Home() {
     const history = await GetItemHistory(id);
     history.forEach((voucher) => {
       const item = voucher.items.find((item) => item.item._id == id);
-      voucher.change_quantity = item.new_quantity - item.quantity;
-      console.log(voucher.change_quantity);
-      voucher.new_quantity = item.new_quantity;
+      voucher.change_quantity = item.quantity;
+      voucher.new_balance = item.new_balance;
     });
     history.sort((a, b) => {
       return new Date(b.date) - new Date(a.date);
     });
-    console.log(history);
     setInventoryHistory(history);
   }
 
@@ -128,7 +126,9 @@ export default function Home() {
                       <tr
                         key={index}
                         onClick={() => {
-                          router.push(`/admin/inventory/voucher/${voucher._id}`);
+                          router.push(
+                            `/admin/inventory/voucher/${voucher._id}`
+                          );
                         }}
                       >
                         <th className="col-3">{voucher.voucher_no}</th>
@@ -139,7 +139,7 @@ export default function Home() {
                               "dS mmmm, yyyy - DDDD - hh:MM TT"
                             )}
                         </td>
-                        <td>{voucher.new_quantity}</td>
+                        <td>{voucher.new_balance}</td>
                         <td style={{ textAlign: "center" }}>
                           {voucher.isRecieve && (
                             <span style={{ color: "green" }}>
@@ -154,10 +154,14 @@ export default function Home() {
                         </td>
                         <td style={{ textAlign: "center" }}>
                           {voucher.isRecieve && (
-                            <span style={{ color: "green" }}><i className="bi bi-box-arrow-in-down"></i></span>
+                            <span style={{ color: "green" }}>
+                              <i className="bi bi-box-arrow-in-down"></i>
+                            </span>
                           )}
                           {voucher.isIssue && (
-                            <span style={{ color: "red" }}><i className="bi bi-box-arrow-up"></i></span>
+                            <span style={{ color: "red" }}>
+                              <i className="bi bi-box-arrow-up"></i>
+                            </span>
                           )}
                         </td>
                       </tr>
@@ -168,28 +172,42 @@ export default function Home() {
                       <tr
                         key={index}
                         onClick={() => {
-                          router.push(`/admin/inventory/voucher/${voucher._id}`);
+                          router.push(
+                            `/admin/inventory/voucher/${voucher._id}`
+                          );
                         }}
                       >
                         <th className="col-3">{voucher.voucher_no}</th>
                         <td>
                           {voucher.date &&
-                            dateFormat(voucher.date, "dS mmmm, yyyy - DDDD")}
+                            dateFormat(
+                              voucher.date,
+                              "dS mmmm, yyyy - DDDD - hh:MM TT"
+                            )}
+                        </td>
+                        <td>{voucher.new_balance}</td>
+                        <td style={{ textAlign: "center" }}>
+                          {voucher.isRecieve && (
+                            <span style={{ color: "green" }}>
+                              +{voucher.change_quantity}
+                            </span>
+                          )}
+                          {voucher.isIssue && (
+                            <span style={{ color: "red" }}>
+                              -{voucher.change_quantity}
+                            </span>
+                          )}
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          {voucher.isRV && (
-                            <span style={{ color: "green" }}>RECIEVE</span>
+                          {voucher.isRecieve && (
+                            <span style={{ color: "green" }}>
+                              <i className="bi bi-box-arrow-in-down"></i>
+                            </span>
                           )}
-                          {voucher.isIV && (
-                            <span style={{ color: "red" }}>ISSUE</span>
-                          )}
-                        </td>
-                        <td style={{ textAlign: "center" }}>
-                          {voucher.isRV && (
-                            <span style={{ color: "green" }}>RECIEVE</span>
-                          )}
-                          {voucher.isIV && (
-                            <span style={{ color: "red" }}>ISSUE</span>
+                          {voucher.isIssue && (
+                            <span style={{ color: "red" }}>
+                              <i className="bi bi-box-arrow-up"></i>
+                            </span>
                           )}
                         </td>
                       </tr>
@@ -233,20 +251,23 @@ export default function Home() {
               >
                 BACK
               </Button>
-
-              <Link href={"/admin/inventory/add"}>
-                <Button className="w-100 mb-1 btn-success">
-                  Create new Item
-                </Button>
-              </Link>
+              <hr />
               <Link href={"/admin/inventory/storage"}>
-                <Button className="w-100 mb-1 btn-secondary">List Items</Button>
+                <Button className="w-100 mb-1 btn-light">Storage</Button>
+              </Link>
+              <Link href={"/admin/inventory/history"}>
+                <Button className="w-100 mb-1 btn-light">History</Button>
               </Link>
               <Link href={"/admin/inventory/orders/order"}>
-                <Button className="w-100 mb-1 btn-light">Order an Item</Button>
+                <Button className="w-100 mb-1 btn-light">Order Items</Button>
               </Link>
               <Link href={"/admin/inventory/issues/issue"}>
-                <Button className="w-100 mb-1 btn-info">Issue an Item</Button>
+                <Button className="w-100 mb-1 btn-light">Issue Items</Button>
+              </Link>
+              <Link href={"/admin/inventory/add"}>
+                <Button className="w-100 mb-1 btn-light">
+                  Create New Item
+                </Button>
               </Link>
             </div>
           </div>

@@ -7,6 +7,7 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import moment from "moment";
 import axios from "axios";
 import { AddOrder } from "@/functions/apiHandlers/inventory";
+import Link from "next/link";
 
 export default function Home() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -42,6 +43,17 @@ export default function Home() {
     });
   }
 
+  function SetItemName(event) {
+    let foundItem = items.find((item) => item._id === event.target.value);
+
+    setItem({
+      ...item,
+      [event.target.name]: event.target.value,
+      units: foundItem.units,
+      current_unit: foundItem.units[0]?.name,
+    });
+  }
+
   function deleteItem(index) {
     let s = selectedItems.find((item, i) => i === index);
 
@@ -49,7 +61,7 @@ export default function Home() {
       ...order,
       total_amount:
         Math.round(
-          (parseFloat(order.total_amount) - parseFloat(s.cost)) * 100
+          (parseFloat(order.total_amount) - parseFloat(s.cost_per_unit)) * 100
         ) / 100,
     });
     setSelectedItems(selectedItems.filter((item, i) => i !== index));
@@ -64,27 +76,35 @@ export default function Home() {
       alert("Item already added");
       return;
     }
+    // console.log(foundItem);
     let name = foundItem.name;
-    let balance = foundItem.quantity;
+    let balance = foundItem.balance;
     let newItem = {
       id: item.id,
       item: item.id,
       name: name,
       quantity: item.quantity,
-      cost: item.cost,
-      rate: Math.round((item.cost / item.quantity) * 100) / 100,
-      new_quantity: parseFloat(balance) + parseFloat(item.quantity),
+      last_balance: parseFloat(balance),
+      cost_per_unit: item.cost_per_unit,
+      current_unit: item.current_unit ? item.current_unit : "",
+      rate_per_unit:
+        Math.round((item.cost_per_unit / item.quantity) * 100) / 100,
+      new_balance: parseFloat(balance) + parseFloat(item.quantity),
     };
+    console.log(newItem);
     setSelectedItems([...selectedItems, newItem]);
     setItem({
       id: items[0]._id,
+      current_unit: items[0].units[0]?.name,
+      units: items[0].units,
       quantity: "",
     });
     setOrder({
       ...order,
       total_amount:
         Math.round(
-          (parseFloat(order.total_amount) + parseFloat(item.cost)) * 100
+          (parseFloat(order.total_amount) + parseFloat(item.cost_per_unit)) *
+            100
         ) / 100,
     });
     displayItems ? setDisplayItems(false) : setDisplayItems(true);
@@ -122,13 +142,14 @@ export default function Home() {
       .split(" ")
       .join("");
 
-    //Set Item
     setItem({
       id: items[0]._id,
       quantity: "",
       name: items[0].name,
+      units: items[0].units,
+      current_unit: items[0].units[0].name,
     });
-    //Set Order
+
     setOrder({
       voucher_no: voucher_no,
       date: dateFormat(new Date(), "yyyy-mm-dd"),
@@ -223,9 +244,14 @@ export default function Home() {
                                   <tr key={index}>
                                     <th scope="row">{index + 1}</th>
                                     <td>{item.name}</td>
-                                    <td>{item.quantity}</td>
-                                    <td>&#8377; {item.rate}</td>
-                                    <td>&#8377; {item.cost}</td>
+                                    <td>
+                                      {item.quantity} {item.current_unit}
+                                    </td>
+                                    <td>
+                                      &#8377; {item.rate_per_unit} /{" "}
+                                      {item.current_unit}
+                                    </td>
+                                    <td>&#8377; {item.cost_per_unit}</td>
 
                                     <td
                                       style={{
@@ -269,7 +295,7 @@ export default function Home() {
                               <div className="col-sm-7">
                                 <select
                                   name="id"
-                                  onChange={SetItem}
+                                  onChange={SetItemName}
                                   className="form-select"
                                   aria-label="Default select Example"
                                   defaultValue={item._id ? items._id : ""}
@@ -299,13 +325,34 @@ export default function Home() {
 
                             <div className="row mb-3">
                               <label htmlFor="inputText" className="col-sm-3">
+                                Unit :
+                              </label>
+                              <div className="col-sm-7">
+                                <select
+                                  name="current_unit"
+                                  onChange={SetItem}
+                                  className="form-select"
+                                  aria-label="Default select Example"
+                                >
+                                  {item.units &&
+                                    item.units.map((unit, index) => (
+                                      <option key={index} value={unit.name}>
+                                        {unit.name}
+                                      </option>
+                                    ))}
+                                </select>
+                              </div>
+                            </div>
+
+                            <div className="row mb-3">
+                              <label htmlFor="inputText" className="col-sm-3">
                                 Cost :
                               </label>
                               <div className="col-sm-7">
                                 <input
                                   onChange={SetItem}
                                   type="number"
-                                  name="cost"
+                                  name="cost_per_unit"
                                   className="form-control"
                                 />
                               </div>
@@ -379,15 +426,26 @@ export default function Home() {
               >
                 BACK
               </Button>
-              <Button
-                className="mb-1 "
-                variant="light"
-                onClick={() => {
-                  Router.push("/admin/inventory/history");
-                }}
-              >
-                Inventory History
-              </Button>
+              <hr />
+              <Link href={"/admin/inventory/storage"}>
+                <Button className="w-100 mb-1 btn-light">Storage</Button>
+              </Link>
+              <Link href={"/admin/inventory/history"}>
+                <Button className="w-100 mb-1 btn-light">
+                  Inventory History
+                </Button>
+              </Link>
+              <Link href={"/admin/inventory/orders/order"}>
+                <Button className="w-100 mb-1 btn-light">Order Items</Button>
+              </Link>
+              <Link href={"/admin/inventory/issues/issue"}>
+                <Button className="w-100 mb-1 btn-light">Issue Items</Button>
+              </Link>
+              <Link href={"/admin/inventory/add"}>
+                <Button className="w-100 mb-1 btn-light">
+                  Create New Item
+                </Button>
+              </Link>
             </div>
           </Row>
         </main>

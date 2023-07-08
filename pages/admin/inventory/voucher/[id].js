@@ -8,6 +8,7 @@ import {
   AddSignToInventoryVoucher,
 } from "@/functions/apiHandlers/inventory";
 import AdminLayout from "@/components/admin/AdminLayout";
+import Link from "next/link";
 
 const SignatureModal = ({
   signAs,
@@ -352,7 +353,7 @@ const Post = () => {
               <Button onClick={handlePrint} className="w-100 mb-3 btn-primary">
                 Print Voucher
               </Button>
-
+              <hr />
               {!voucher.sign_mtic && (
                 <Button
                   className="mb-1 btn-light"
@@ -386,6 +387,27 @@ const Post = () => {
                 voucher={voucher}
                 setVoucher={setVoucher}
               />
+
+              <hr />
+              <Link href={"/admin/inventory/storage"}>
+                <Button className="w-100 mb-1 btn-light">Storage</Button>
+              </Link>
+              <Link href={"/admin/inventory/history"}>
+                <Button className="w-100 mb-1 btn-light">
+                  Inventory History
+                </Button>
+              </Link>
+              <Link href={"/admin/inventory/orders/order"}>
+                <Button className="w-100 mb-1 btn-light">Order Items</Button>
+              </Link>
+              <Link href={"/admin/inventory/issues/issue"}>
+                <Button className="w-100 mb-1 btn-light">Issue Items</Button>
+              </Link>
+              <Link href={"/admin/inventory/add"}>
+                <Button className="w-100 mb-1 btn-light">
+                  Create New Item
+                </Button>
+              </Link>
             </div>
           </Row>
         </main>
