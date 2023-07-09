@@ -27,45 +27,14 @@ const Post = () => {
               >
                 BACK
               </Button>
-              <Button
-                className="mb-1 btn-light"
-                onClick={() => {
-                  Router.push("/admin/workshop/defectmemos/");
-                }}
-              >
-                Defect Memos
-              </Button>
-              <Button
-                className="mb-1 btn-light"
-                onClick={() => {
-                  Router.push("/admin/workshop/defectmemos/add");
-                }}
-              >
-                Add Memos
-              </Button>
-              <Button
-                className="mb-1 btn-light"
-                onClick={() => {
-                  Router.push("/admin/workshop/jobcards");
-                }}
-              >
-                Job Cards
-              </Button>
-              <Button
-                className="mb-1 btn-light"
-                onClick={() => {
-                  Router.push("/admin/workshop/jobcards/add");
-                }}
-              >
-                Add Job Cards
-              </Button>
+              <hr />
               <Button
                 className="mb-1 btn-light"
                 onClick={() => {
                   Router.push("/admin/workshop/inspections");
                 }}
               >
-                Inspections
+                <i class="bi bi-card-checklist"></i> Inspections
               </Button>
               <Button
                 className="mb-1 btn-light"
@@ -73,7 +42,41 @@ const Post = () => {
                   Router.push("/admin/workshop/inspections/add");
                 }}
               >
-                + Add Inspection
+                <i class="bi bi-plus-circle"></i> Add Inspection Report
+              </Button>
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/defectmemos/");
+                }}
+              >
+                <i class="bi bi-card-list"></i> Defect Memos
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/defectmemos/add");
+                }}
+              >
+                <i class="bi bi-plus-circle"></i> Add Memo
+              </Button>
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/jobcards");
+                }}
+              >
+                <i class="bi bi-credit-card-2-front"></i> Job Cards
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/jobcards/add");
+                }}
+              >
+                <i class="bi bi-plus-circle"></i> Add Job Card
               </Button>
             </div>
           </div>

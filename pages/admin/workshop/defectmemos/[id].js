@@ -114,7 +114,7 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={`Defect Memo - ${memo._id}`}>
-        <main id="main" className="col-lg-11 main mt-0 opac-80">
+        <main id="main" className="col-lg-11 main mt-n2 opac-80">
           <div className="d-flex justify-content-between">
             <h3>Defect Memo</h3>
             <div>

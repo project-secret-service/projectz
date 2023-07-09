@@ -69,8 +69,7 @@ export default function Home() {
   return (
     <>
       <AdminLayout title="Drivers">
-        <main id="main" className=" col-lg-11 main mt-0">
-          <h1>All Drivers</h1>
+        <main id="main" className=" col-lg-11 main mt-n2">
           <Row>
             <div className="col-lg-8 m-1">
               <div className="card opac-90">
@@ -188,7 +187,7 @@ export default function Home() {
               </div>
             </div>
             <div
-              className="col-lg-3 card p-3 m-1 opac-80"
+              className="col-lg-3 card p-5 m-1 opac-80"
               style={{ maxHeight: "60vh" }}
             >
               <div className="row p-3">

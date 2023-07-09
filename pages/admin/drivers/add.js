@@ -26,8 +26,7 @@ export default function Home() {
   return (
     <>
       <AdminLayout title="Add New Driver">
-        <main id="main" className="col-11 main mt-0 opac-80">
-          <h1>Add New Driver</h1>
+        <main id="main" className="col-11 main mt-n2 opac-80">
           <div className="row">
             <div className="card col-8 m-1">
               <div className="card-body">

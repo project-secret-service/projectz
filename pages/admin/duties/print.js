@@ -40,7 +40,7 @@ export default function Home() {
   return (
     <>
       <AdminLayout title="Duties">
-        <main id="main" className=" col-lg-11 main mt-0 opac-80">
+        <main id="main" className=" col-lg-11 main mt-n2 opac-80">
           <div className="d-flex justify-content-between">
             <div className="d-flex" style={{ display: "inline" }}>
               <div style={{ marginRight: "10px" }}>

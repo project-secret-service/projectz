@@ -20,10 +20,10 @@ const Post = () => {
   return (
     <>
       <AdminLayout title="Driver Details">
-        <main id="main" className="col-11 main mt-0 opac-80">
-          <h1 className="josefin-sans">{driver.name}</h1>
+        <main id="main" className="col-11 main mt-n2 opac-80">
+          <h1 className="josefin-sans mt-2">{driver.name}</h1>
           <Row>
-            <div className="card col-8 m-1">
+            <div className="card col-8">
               <div className="row">
                 <div className="col-4">
                   <div
@@ -65,7 +65,9 @@ const Post = () => {
                 <div className="col-8 p-5">
                   <Row>
                     <Col>
-                      <p>DRIVER DETAILS</p>
+                      <h3 className="josefin-sans">
+                        <b>DRIVER DETAILS</b>
+                      </h3>
                       <br />
                     </Col>
                   </Row>
@@ -108,7 +110,7 @@ const Post = () => {
               </div>
             </div>
             <div
-              className="col-lg-3 card p-4 m-1 opac-80"
+              className="col-lg-3 card p-4 opac-80"
               style={{ maxHeight: "40vh" }}
             >
               <Button

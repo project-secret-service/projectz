@@ -96,7 +96,7 @@ const Post = () => {
   return (
     <>
       <AdminLayout title={`Duty Details`}>
-        <main id="main" className="col-11 mt-0 row">
+        <main id="main" className="col-11 mt-n2 row">
           <div className="col-9 opac-80">
             <div id="printableArea" className="p-5 card">
               <div

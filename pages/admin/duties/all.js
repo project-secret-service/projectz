@@ -212,86 +212,8 @@ function Home() {
     <>
       <AdminLayout title={"All Duties"}>
         <main id="main" className=" col-lg-11 main mt-n2">
-          <div className="d-flex justify-content-between">
-            <div className="d-flex" style={{ display: "inline" }}>
-              <div style={{ marginRight: "10px" }}>
-                <div className="input-group mb-3">
-                  <div
-                    className="input-group-prepend"
-                    style={{ cursor: "pointer" }}
-                    onClick={PreviousPage}
-                  >
-                    <span className="input-group-text" id="basic-addon1">
-                      Previous
-                    </span>
-                  </div>
-                  <input
-                    defaultValue={page.current}
-                    type="number"
-                    className="form-control"
-                    placeholder="Page No"
-                    aria-describedby="basic-addon1"
-                    style={{ maxWidth: "50px" }}
-                    disabled
-                  />
-
-                  {page.total_pages > 1 && (
-                    <input
-                      type="text"
-                      placeholder={"of " + page.total_pages + " Pages"}
-                      className="form-control"
-                      style={{ maxWidth: "7rem" }}
-                      disabled
-                    />
-                  )}
-                  {page.total_pages <= 1 && (
-                    <input
-                      type="text"
-                      placeholder={"of " + page.total_pages + " Page"}
-                      className="form-control"
-                      style={{ maxWidth: "7rem" }}
-                      disabled
-                    />
-                  )}
-                  <div
-                    className="input-group-prepend"
-                    style={{ cursor: "pointer" }}
-                    onClick={NextPage}
-                  >
-                    <span className="input-group-text" id="basic-addon1">
-                      Next
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <Row>
             <div className="col-lg-8 m-1">
-              <div className="row m-1">
-                <div className="col card m-1 p-3">
-                  Today
-                  <div className="row">
-                    <div
-                      className="p-3 col-3 text-center"
-                      style={{ backgroundColor: "yellow", borderRadius: "50%" }}
-                    >
-                      <span style={{ fontSize: "2rem", color: "red" }}>12</span>
-                    </div>
-                    <div className="p-3 col-9">
-                      <span
-                        className="animate__animated animate__bounce"
-                        style={{ fontSize: "1.5rem", color: "red" }}
-                      >
-                        Vehicles On Duty
-                      </span>
-                    </div>
-                  </div>
-                  <div>Vehicles Available : 45</div>
-                </div>
-                <div className="col card m-1 p-3">Hello</div>
-                <div className="col card m-1 p-3">Hello</div>
-              </div>
               <div className="card opac-90">
                 <div className="card-body">
                   <table className="table table-hover">
@@ -469,6 +391,66 @@ function Home() {
               className="col-lg-3 card p-4 m-1 opac-80"
               style={{ maxHeight: "70vh" }}
             >
+              <div className="d-flex justify-content-between">
+                <div
+                  className="d-flex"
+                  style={{
+                    display: "inline",
+                    margin: "0px auto",
+                  }}
+                >
+                  <div>
+                    <div className="input-group ">
+                      <div
+                        className="input-group-prepend"
+                        style={{ cursor: "pointer" }}
+                        onClick={PreviousPage}
+                      >
+                        <span className="input-group-text" id="basic-addon1">
+                          Previous
+                        </span>
+                      </div>
+                      <input
+                        defaultValue={page.current}
+                        type="number"
+                        className="form-control"
+                        placeholder="Page No"
+                        aria-describedby="basic-addon1"
+                        style={{ maxWidth: "50px", backgroundColor: "white" }}
+                        disabled
+                      />
+
+                      {page.total_pages > 1 && (
+                        <input
+                          type="text"
+                          placeholder={"of " + page.total_pages + " Pages"}
+                          className="form-control"
+                          style={{ maxWidth: "7rem", backgroundColor: "white" }}
+                          disabled
+                        />
+                      )}
+                      {page.total_pages <= 1 && (
+                        <input
+                          type="text"
+                          placeholder={"of " + page.total_pages + " Page"}
+                          className="form-control"
+                          style={{ maxWidth: "7rem", backgroundColor: "white" }}
+                          disabled
+                        />
+                      )}
+                      <div
+                        className="input-group-prepend"
+                        style={{ cursor: "pointer", backgroundColor: "white" }}
+                        onClick={NextPage}
+                      >
+                        <span className="input-group-text" id="basic-addon1">
+                          Next
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="row p-3">
                 <input
                   onChange={handleSearch}

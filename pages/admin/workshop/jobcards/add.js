@@ -153,7 +153,9 @@ export default function Home() {
                             <th scope="col">#</th>
                             <th scope="col">Part</th>
                             <th scope="col">Quantity</th>
-                            <th scope="col" className="col-1 text-center">Delete</th>
+                            <th scope="col" className="col-1 text-center">
+                              Delete
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -293,12 +295,49 @@ export default function Home() {
               >
                 BACK
               </button>
-              <button
-                className="btn btn-primary mb-1"
-                onClick={() => Router.push("/admin/workshop/jobcards/")}
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/inspections");
+                }}
               >
-                Job Cards
-              </button>
+                <i class="bi bi-card-checklist"></i> Inspections
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/inspections/add");
+                }}
+              >
+                <i class="bi bi-plus-circle"></i> Add Inspection Report
+              </Button>
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/defectmemos/");
+                }}
+              >
+                <i class="bi bi-card-list"></i> Defect Memos
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/defectmemos/add");
+                }}
+              >
+                <i class="bi bi-plus-circle"></i> Add Memo
+              </Button>
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/jobcards");
+                }}
+              >
+                <i class="bi bi-credit-card-2-front"></i> Job Cards
+              </Button>
             </div>
           </Row>
         </main>

@@ -8,6 +8,7 @@ import moment from "moment";
 import axios from "axios";
 import { AddOrder } from "@/functions/apiHandlers/inventory";
 import Link from "next/link";
+import { fraction, multiply, inv, string } from "mathjs";
 
 export default function Home() {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -61,7 +62,7 @@ export default function Home() {
       ...order,
       total_amount:
         Math.round(
-          (parseFloat(order.total_amount) - parseFloat(s.cost_per_unit)) * 100
+          (parseFloat(order.total_amount) - parseFloat(s.cost)) * 100
         ) / 100,
     });
     setSelectedItems(selectedItems.filter((item, i) => i !== index));
@@ -76,35 +77,58 @@ export default function Home() {
       alert("Item already added");
       return;
     }
-    // console.log(foundItem);
     let name = foundItem.name;
     let balance = foundItem.balance;
+    let smallestUnit = foundItem.units[0];
+    let quantity = item.quantity_in_unit;
+    let rate = Math.round((item.cost / item.quantity_in_unit) * 100) / 100;
+    let cost = item.cost;
+    if (item.current_unit != smallestUnit.name) {
+      let conversion_factor = inv(
+        fraction(
+          smallestUnit.conversions.find((c) => c.to_unit === item.current_unit)
+            ?.conversion_factor
+        )
+      );
+      quantity = string(
+        fraction(string(multiply(quantity, conversion_factor)))
+      );
+      rate = string(fraction(string(multiply(rate, inv(conversion_factor)))));
+
+      console.log(quantity, rate, cost);
+    }
     let newItem = {
       id: item.id,
       item: item.id,
       name: name,
-      quantity: item.quantity,
-      last_balance: parseFloat(balance),
-      cost_per_unit: item.cost_per_unit,
+
+      quantity: quantity,
+      cost: item.cost,
+      rate: rate,
+
+      quantity_in_unit: item.quantity_in_unit,
       current_unit: item.current_unit ? item.current_unit : "",
       rate_per_unit:
-        Math.round((item.cost_per_unit / item.quantity) * 100) / 100,
-      new_balance: parseFloat(balance) + parseFloat(item.quantity),
+        Math.round((item.cost / item.quantity_in_unit) * 100) / 100,
+
+      last_balance: parseFloat(balance),
+      new_balance: parseFloat(balance) + parseFloat(quantity),
     };
+
     console.log(newItem);
+
     setSelectedItems([...selectedItems, newItem]);
     setItem({
       id: items[0]._id,
       current_unit: items[0].units[0]?.name,
       units: items[0].units,
-      quantity: "",
+      quantity_in_unit: "",
     });
     setOrder({
       ...order,
       total_amount:
         Math.round(
-          (parseFloat(order.total_amount) + parseFloat(item.cost_per_unit)) *
-            100
+          (parseFloat(order.total_amount) + parseFloat(item.cost)) * 100
         ) / 100,
     });
     displayItems ? setDisplayItems(false) : setDisplayItems(true);
@@ -124,7 +148,7 @@ export default function Home() {
   function cancelItem() {
     setItem({
       id: items[0]._id,
-      quantity: "",
+      quantity_in_unit: "",
     });
     displayItems ? setDisplayItems(false) : setDisplayItems(true);
   }
@@ -144,7 +168,7 @@ export default function Home() {
 
     setItem({
       id: items[0]._id,
-      quantity: "",
+      quantity_in_unit: "",
       name: items[0].name,
       units: items[0].units,
       current_unit: items[0].units[0].name,
@@ -245,13 +269,14 @@ export default function Home() {
                                     <th scope="row">{index + 1}</th>
                                     <td>{item.name}</td>
                                     <td>
-                                      {item.quantity} {item.current_unit}
+                                      {item.quantity_in_unit}{" "}
+                                      {item.current_unit}
                                     </td>
                                     <td>
                                       &#8377; {item.rate_per_unit} /{" "}
                                       {item.current_unit}
                                     </td>
-                                    <td>&#8377; {item.cost_per_unit}</td>
+                                    <td>&#8377; {item.cost}</td>
 
                                     <td
                                       style={{
@@ -317,7 +342,7 @@ export default function Home() {
                                 <input
                                   onChange={SetItem}
                                   type="number"
-                                  name="quantity"
+                                  name="quantity_in_unit"
                                   className="form-control"
                                 />
                               </div>
@@ -352,7 +377,7 @@ export default function Home() {
                                 <input
                                   onChange={SetItem}
                                   type="number"
-                                  name="cost_per_unit"
+                                  name="cost"
                                   className="form-control"
                                 />
                               </div>

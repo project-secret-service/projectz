@@ -79,21 +79,40 @@ export default function Home() {
               >
                 BACK
               </Button>
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/inspections");
+                }}
+              >
+                <i class="bi bi-card-checklist"></i> Inspections
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/inspections/add");
+                }}
+              >
+                <i class="bi bi-plus-circle"></i> Add Inspection Report
+              </Button>
+              <hr />
               <Button
                 className="mb-1 btn-light"
                 onClick={() => {
                   Router.push("/admin/workshop/defectmemos/add");
                 }}
               >
-                + Add Memos
+                <i class="bi bi-plus-circle"></i> Add Memo
               </Button>
+              <hr />
               <Button
                 className="mb-1 btn-light"
                 onClick={() => {
                   Router.push("/admin/workshop/jobcards");
                 }}
               >
-                Job Cards
+                <i class="bi bi-credit-card-2-front"></i> Job Cards
               </Button>
               <Button
                 className="mb-1 btn-light"
@@ -101,7 +120,7 @@ export default function Home() {
                   Router.push("/admin/workshop/jobcards/add");
                 }}
               >
-               + Add Job Cards
+                <i class="bi bi-plus-circle"></i> Add Job Card
               </Button>
             </div>
           </Row>

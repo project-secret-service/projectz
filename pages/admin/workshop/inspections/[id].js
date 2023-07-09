@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Row, Button } from "react-bootstrap";
 import Router, { useRouter } from "next/router";
 import { GetVehicles } from "@/functions/apiHandlers/vehicles";
 import dateFormat from "dateformat";
 import AdminLayout from "@/components/admin/AdminLayout";
+import ReactToPrint from "react-to-print";
+
 import {
   chassisChecks,
   electricalChecks,
@@ -26,6 +28,20 @@ export default function Home() {
   const [inspection, setInspection] = useState({});
   const router = useRouter();
 
+  const componentRef = useRef();
+
+  const printStyles = `
+  @page {
+    margin: 2rem;
+  }
+  
+  @media print {
+    body {
+      margin: 2rem; 
+    }
+  }
+`;
+
   useEffect(() => {
     if (!router.isReady) return;
     const { id } = router.query;
@@ -36,6 +52,8 @@ export default function Home() {
 
   return (
     <>
+      <style>{printStyles}</style>
+
       <AdminLayout title={`Inspect Vehicle`}>
         <main
           id="main"
@@ -46,7 +64,7 @@ export default function Home() {
         >
           <Row>
             <div className="col-lg-8 card p-3 m-1">
-              <div>
+              <div className="" ref={componentRef}>
                 <div className="card-body">
                   <form>
                     <div className="row mb-3">
@@ -553,8 +571,66 @@ export default function Home() {
                 onClick={() => {
                   Router.back();
                 }}
+                className="mb-1"
               >
                 BACK
+              </Button>
+              <ReactToPrint
+                trigger={() => (
+                  <button className="btn btn-primary mb-1">Print</button>
+                )}
+                content={() => componentRef.current}
+              />
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/inspections");
+                }}
+              >
+                <i class="bi bi-card-checklist"></i> Inspections
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/inspections/add");
+                }}
+              >
+                <i class="bi bi-plus-circle"></i> Add Inspection Report
+              </Button>
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/defectmemos/");
+                }}
+              >
+                <i class="bi bi-card-list"></i> Defect Memos
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/defectmemos/add");
+                }}
+              >
+                <i class="bi bi-plus-circle"></i> Add Memo
+              </Button>
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/jobcards");
+                }}
+              >
+                <i class="bi bi-credit-card-2-front"></i> Job Cards
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/jobcards/add");
+                }}
+              >
+                <i class="bi bi-plus-circle"></i> Add Job Card
               </Button>
             </div>
           </Row>

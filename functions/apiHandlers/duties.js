@@ -107,7 +107,7 @@ export async function UpdateDutyDetails(event, duty) {
   });
 
   if (res.status == 200) {
-    // Router.push("/admin/duties");
+    Router.push("/admin/duties");
   }
 }
 

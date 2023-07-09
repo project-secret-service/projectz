@@ -7,16 +7,23 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import moment from "moment";
 import axios from "axios";
 import { AddIssue } from "@/functions/apiHandlers/inventory";
+import { multiply, fraction, string, inv } from "mathjs";
 
 export default function Home() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [displayItems, setDisplayItems] = useState(false);
+  const [currentItemRate, setCurrentItemRate] = useState({
+    rate: 0,
+    unit: "",
+  });
   const [issue, setIssue] = useState({});
 
   const items_sno = useRef(null);
   const itemQuantity = useRef(null);
+
   const [items, setItems] = useState([]);
   const [item, setItem] = useState({});
+  const [current_rate, setCurrentRate] = useState(0);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -61,9 +68,48 @@ export default function Home() {
       [name]: value,
       current_rate: foundItem.current_rate,
       quantity: 0,
-      cost:
-        Math.round(itemQuantity.current.value * foundItem.current_rate * 100) /
-        100,
+      cost: 0,
+      units: UnitsWithBalance(foundItem),
+    });
+
+    setCurrentItemRate({
+      rate: foundItem.current_rate,
+      unit: foundItem.units[0].name,
+    });
+  }
+
+  function SetUnit({ target: { name, value } }) {
+    let [unit, conversion_factor] = value.split("____");
+    let foundItem = items.find((theitem) => theitem.name === item.name);
+
+    let foundUnit = foundItem.smallest_unit.conversions.find(
+      (theunit) => theunit.to_unit === unit
+    );
+
+    if (foundItem.smallest_unit.name === unit) {
+      foundUnit = foundItem.smallest_unit;
+    }
+
+    let this_conversion_factor = foundUnit
+      ? foundUnit.conversion_factor
+        ? foundUnit.conversion_factor
+        : "1"
+      : "1";
+    let the_fraction = inv(fraction(this_conversion_factor)).n;
+    console.log(the_fraction);
+    // console.log(item.units.find((theunit) => theunit.name === unit));
+
+    itemQuantity.current.value = 0;
+    setItem({
+      ...item,
+      [name]: value,
+      quantity: 0,
+      cost: 0,
+    });
+
+    setCurrentItemRate({
+      rate: item.current_rate * the_fraction,
+      unit: unit,
     });
   }
 
@@ -139,6 +185,27 @@ export default function Home() {
     displayItems ? setDisplayItems(false) : setDisplayItems(true);
   }
 
+  function UnitsWithBalance(item) {
+    let units = item.units;
+    item.units[0].balanceFloat = item.balance.toString();
+    item.units[0].balance = item.balance.toString();
+
+    item.units[0].conversions.forEach((unit) => {
+      let balance = multiply(
+        fraction(unit.conversion_factor),
+        fraction(item.balance.toString())
+      );
+      let thebalance = string(balance.n + "/" + balance.d);
+      let balanceFloat = parseFloat(fraction(thebalance));
+      let foundItem = item.units.find((u) => u.name === unit.to_unit);
+      if (foundItem) {
+        foundItem.balance = thebalance;
+        foundItem.balanceFloat = balanceFloat;
+      }
+    });
+    return units;
+  }
+
   async function SetInitials() {
     const items = await GetItems();
     setItems(items);
@@ -159,7 +226,14 @@ export default function Home() {
       name: items[0].name,
       current_rate: items[0].current_rate,
       cost: 0,
+      units: UnitsWithBalance(items[0]),
     });
+
+    setCurrentItemRate({
+      rate: items[0].current_rate,
+      unit: items[0].units[0].name,
+    });
+
     //Set Issue
     setIssue({
       voucher_no: voucher_no,
@@ -317,6 +391,31 @@ export default function Home() {
 
                             <div className="row mb-3">
                               <label htmlFor="inputText" className="col-sm-3">
+                                Unit :
+                              </label>
+                              <div className="col-sm-7">
+                                <select
+                                  name="current_unit"
+                                  onChange={SetUnit}
+                                  className="form-select"
+                                  aria-label="Default select Example"
+                                  defaultValue={item._id ? items._id : ""}
+                                >
+                                  {item.units?.map((unit, index) => (
+                                    <option
+                                      key={index}
+                                      value={`${unit.name}____${unit.balance}`}
+                                    >
+                                      {unit.name} ( Balance :{" "}
+                                      {unit.balanceFloat} )
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
+
+                            <div className="row mb-3">
+                              <label htmlFor="inputText" className="col-sm-3">
                                 Quantity :
                               </label>
                               <div className="col-sm-7">
@@ -335,7 +434,10 @@ export default function Home() {
                                 Rate :
                               </label>
                               <div className="col-sm-7">
-                                <b>&#8377; {item.current_rate}</b>
+                                <b>
+                                  &#8377; {currentItemRate.rate} /{" "}
+                                  {currentItemRate.unit}
+                                </b>
                               </div>
                             </div>
 

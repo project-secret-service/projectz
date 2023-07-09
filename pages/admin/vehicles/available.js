@@ -71,11 +71,11 @@ export default function Home() {
   return (
     <>
       <AdminLayout title="Available Vehicles">
-        <main id="main" className="col-lg-11 main mt-0 opac-80">
+        <main id="main" className="col-lg-11 main mt-n2 opac-80">
           <div className="col-lg-12 d-flex">
             <div className="col-lg-8 m-1">
               <div>
-                <h2>Available Vehicles</h2>
+                <h5>Available Vehicles</h5>
                 <div className="card p-3">
                   <table className="table table-hover">
                     <thead>
@@ -150,7 +150,7 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <h2>Vehicles On Duty</h2>
+                <h5>Vehicles On Duty</h5>
                 <div className="card p-3">
                   <table className="table table-hover">
                     <thead>
@@ -226,7 +226,7 @@ export default function Home() {
               </div>
             </div>
             <div
-              className="col-lg-3 card p-5 mt-5"
+              className="col-lg-3 card p-5 mt-4"
               style={{ maxHeight: "50vh" }}
             >
               <div className="row p-3">

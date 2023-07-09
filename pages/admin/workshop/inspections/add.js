@@ -662,6 +662,50 @@ export default function Home() {
               >
                 BACK
               </Button>
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/inspections");
+                }}
+              >
+                <i class="bi bi-card-checklist"></i> Inspections
+              </Button>
+
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/defectmemos/");
+                }}
+              >
+                <i class="bi bi-card-list"></i> Defect Memos
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/defectmemos/add");
+                }}
+              >
+                <i class="bi bi-plus-circle"></i> Add Memo
+              </Button>
+              <hr />
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/jobcards");
+                }}
+              >
+                <i class="bi bi-credit-card-2-front"></i> Job Cards
+              </Button>
+              <Button
+                className="mb-1 btn-light"
+                onClick={() => {
+                  Router.push("/admin/workshop/jobcards/add");
+                }}
+              >
+                <i class="bi bi-plus-circle"></i> Add Job Card
+              </Button>
             </div>
           </Row>
         </main>

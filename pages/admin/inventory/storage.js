@@ -51,7 +51,9 @@ export default function Home() {
                         <>
                           <th scope="row">{index + 1} </th>
                           <th>{item.name}</th>
-                          <td>{item.balance}</td>
+                          <td>
+                            {item.balance} {item.smallest_unit?.name}
+                          </td>
                           <td>&#8377; {item.current_rate}</td>
                           <td>
                             &#8377;{" "}
@@ -63,7 +65,7 @@ export default function Home() {
                             {item.balance != 0 && (
                               <>
                                 <i
-                                  class="bi bi-archive-fill"
+                                  className="bi bi-archive-fill"
                                   style={{ color: "green" }}
                                 ></i>
                               </>
@@ -71,7 +73,7 @@ export default function Home() {
                             {item.balance === 0 && (
                               <>
                                 <i
-                                  class="bi bi-archive-fill"
+                                  className="bi bi-archive-fill"
                                   style={{ color: "red" }}
                                 ></i>
                               </>
@@ -95,7 +97,9 @@ export default function Home() {
               </Button>
               <hr />
               <Link href={"/admin/inventory/history"}>
-                <Button className="w-100 mb-1 btn-light">Inventory History</Button>
+                <Button className="w-100 mb-1 btn-light">
+                  Inventory History
+                </Button>
               </Link>
               <Link href={"/admin/inventory/orders/order"}>
                 <Button className="w-100 mb-1 btn-light">Order Items</Button>

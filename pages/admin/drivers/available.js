@@ -72,12 +72,13 @@ export default function Home() {
   return (
     <>
       <AdminLayout title="Available Drivers">
-        <main id="main" className="col-lg-11 main mt-0 opac-80">
-          <Row className="p-1"></Row>
+        <main id="main" className="col-lg-11 main mt-n2 opac-80">
           <div className="col-lg-12 d-flex">
             <div className="col-lg-8 mt-1">
               <div>
-                <h2>Available Drivers</h2>
+                <h5>
+                  <b>Drivers On Duty</b>
+                </h5>
                 <div className="card p-3">
                   <table className="table table-hover">
                     <thead>
@@ -92,7 +93,7 @@ export default function Home() {
                     <tbody style={{ cursor: "pointer" }}>
                       {!search &&
                         drivers.map((driver, index) => {
-                          if (driver.available) {
+                          if (driver.available === false) {
                             return (
                               <tr
                                 key={index + 1}
@@ -107,9 +108,6 @@ export default function Home() {
                                       }
                                       style={{
                                         width: "4rem",
-                                        WebkitFilter:
-                                          "drop-shadow(1px 1px 1px #222)",
-                                        filter: "drop-shadow(1px 1px 5px #222)",
                                       }}
                                       alt="Avatar"
                                     />
@@ -119,9 +117,6 @@ export default function Home() {
                                       src={"/assets/img/profile1.png"}
                                       style={{
                                         width: "4rem",
-                                        WebkitFilter:
-                                          "drop-shadow(1px 1px 1px #222)",
-                                        filter: "drop-shadow(1px 1px 5px #222)",
                                       }}
                                       alt="Avatar"
                                     />
@@ -130,14 +125,14 @@ export default function Home() {
                                 <th>{driver.name}</th>
                                 <td>{driver.license_no}</td>
                                 <td>{driver.rank}</td>
-                                <td style={{ color: "green" }}>Available</td>
+                                <td style={{ color: "red" }}>On Duty</td>
                               </tr>
                             );
                           }
                         })}
                       {search &&
                         searchResultList.map((driver, index) => {
-                          if (driver.available) {
+                          if (driver.available === false) {
                             return (
                               <tr
                                 key={index + 1}
@@ -152,9 +147,6 @@ export default function Home() {
                                       }
                                       style={{
                                         width: "4rem",
-                                        WebkitFilter:
-                                          "drop-shadow(1px 1px 1px #222)",
-                                        filter: "drop-shadow(1px 1px 5px #222)",
                                       }}
                                       alt="Avatar"
                                     />
@@ -164,9 +156,6 @@ export default function Home() {
                                       src={"/assets/img/profile1.png"}
                                       style={{
                                         width: "4rem",
-                                        WebkitFilter:
-                                          "drop-shadow(1px 1px 1px #222)",
-                                        filter: "drop-shadow(1px 1px 5px #222)",
                                       }}
                                       alt="Avatar"
                                     />
@@ -175,7 +164,7 @@ export default function Home() {
                                 <th>{driver.name}</th>
                                 <td>{driver.license_no}</td>
                                 <td>{driver.rank}</td>
-                                <td style={{ color: "green" }}>Available</td>
+                                <td style={{ color: "red" }}>On Duty</td>
                               </tr>
                             );
                           }
@@ -185,7 +174,9 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <h2>Drivers On Duty</h2>
+                <h5>
+                  <b>Available Drivers</b>
+                </h5>
                 <div className="card p-3">
                   <table className="table table-hover">
                     <thead>
@@ -200,7 +191,7 @@ export default function Home() {
                     <tbody style={{ cursor: "pointer" }}>
                       {!search &&
                         drivers.map((driver, index) => {
-                          if (driver.available === false) {
+                          if (driver.available) {
                             return (
                               <tr
                                 key={index + 1}
@@ -215,6 +206,9 @@ export default function Home() {
                                       }
                                       style={{
                                         width: "4rem",
+                                        WebkitFilter:
+                                          "drop-shadow(1px 1px 1px #222)",
+                                        filter: "drop-shadow(1px 1px 5px #222)",
                                       }}
                                       alt="Avatar"
                                     />
@@ -224,6 +218,9 @@ export default function Home() {
                                       src={"/assets/img/profile1.png"}
                                       style={{
                                         width: "4rem",
+                                        WebkitFilter:
+                                          "drop-shadow(1px 1px 1px #222)",
+                                        filter: "drop-shadow(1px 1px 5px #222)",
                                       }}
                                       alt="Avatar"
                                     />
@@ -232,14 +229,14 @@ export default function Home() {
                                 <th>{driver.name}</th>
                                 <td>{driver.license_no}</td>
                                 <td>{driver.rank}</td>
-                                <td style={{ color: "red" }}>On Duty</td>
+                                <td style={{ color: "green" }}>Available</td>
                               </tr>
                             );
                           }
                         })}
                       {search &&
                         searchResultList.map((driver, index) => {
-                          if (driver.available === false) {
+                          if (driver.available) {
                             return (
                               <tr
                                 key={index + 1}
@@ -254,6 +251,9 @@ export default function Home() {
                                       }
                                       style={{
                                         width: "4rem",
+                                        WebkitFilter:
+                                          "drop-shadow(1px 1px 1px #222)",
+                                        filter: "drop-shadow(1px 1px 5px #222)",
                                       }}
                                       alt="Avatar"
                                     />
@@ -263,6 +263,9 @@ export default function Home() {
                                       src={"/assets/img/profile1.png"}
                                       style={{
                                         width: "4rem",
+                                        WebkitFilter:
+                                          "drop-shadow(1px 1px 1px #222)",
+                                        filter: "drop-shadow(1px 1px 5px #222)",
                                       }}
                                       alt="Avatar"
                                     />
@@ -271,7 +274,7 @@ export default function Home() {
                                 <th>{driver.name}</th>
                                 <td>{driver.license_no}</td>
                                 <td>{driver.rank}</td>
-                                <td style={{ color: "red" }}>On Duty</td>
+                                <td style={{ color: "green" }}>Available</td>
                               </tr>
                             );
                           }
@@ -282,7 +285,7 @@ export default function Home() {
               </div>
             </div>
             <div
-              className="col-lg-3 card p-5 m-1 mt-5"
+              className="col-lg-3 card p-5  m-4"
               style={{ maxHeight: "50vh" }}
             >
               <div className="row p-3">

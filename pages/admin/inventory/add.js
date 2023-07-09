@@ -120,6 +120,7 @@ export default function Home() {
                       let data = {
                         ...item,
                         units: units,
+                        smallest_unit: smallestUnit,
                       };
                       addNewItem(e, data);
                     }}
