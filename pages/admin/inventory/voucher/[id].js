@@ -284,8 +284,13 @@ const Post = () => {
                             <tr key={index}>
                               <td>{index + 1}</td>
                               <td>{item.item.name}</td>
-                              <td>{item.quantity}</td>
-                              <td>&#8377; {item.rate}</td>
+                              <td>
+                                {item.quantity_in_unit} {item.current_unit}
+                              </td>
+                              <td>
+                                &#8377; {item.rate_per_unit} /{" "}
+                                {item.current_unit}
+                              </td>
                               <td>&#8377; {item.cost}</td>
                             </tr>
                           ))}

@@ -21,7 +21,9 @@ export default function Home() {
     const history = await GetItemHistory(id);
     history.forEach((voucher) => {
       const item = voucher.items.find((item) => item.item._id == id);
-      voucher.change_quantity = item.quantity;
+      voucher.change_quantity = item.quantity_in_smallest_unit
+        ? item.quantity_in_smallest_unit
+        : item.quantity;
       voucher.new_balance = item.new_balance;
     });
     history.sort((a, b) => {
@@ -218,7 +220,7 @@ export default function Home() {
             </div>
             <div
               className="col-lg-3 card p-4 m-1"
-              style={{ maxHeight: "50vh" }}
+              style={{ maxHeight: "70vh" }}
             >
               <div className="row p-3">
                 <input
@@ -270,6 +272,11 @@ export default function Home() {
                   Create New Item
                 </Button>
               </Link>
+              <hr />
+              <div className="mb-3 text-center">
+                Balance and Changes are in Smallest Unit:{" "}
+                <b>{item.smallest_unit?.name}</b>
+              </div>
             </div>
           </div>
         </main>
