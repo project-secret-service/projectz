@@ -79,6 +79,9 @@ export default function Home() {
 
   useEffect(() => {
     GetVoucherHistory().then((data) => {
+      if (data.length === 0) {
+        return;
+      }
       data.sort((a, b) => {
         return new Date(b.date) - new Date(a.date);
       });
@@ -105,92 +108,99 @@ export default function Home() {
         <main id="main" className="col-lg-11 main mt-n2 opac-80">
           <div className="col-lg-12 d-flex">
             <div className="col-lg-8 card m-1 p-4">
-              <table className="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">Voucher No</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Items</th>
-                    <th scope="col" style={{ textAlign: "center" }}>
-                      Type
-                    </th>
-                  </tr>
-                </thead>
-                {inventoryHistory.length > 0 && (
-                  <>
-                    <tbody style={{ cursor: "pointer" }}>
-                      {!search &&
-                        inventoryHistory &&
-                        inventoryHistory.map((data, index) => (
-                          <tr
-                            key={index}
-                            onClick={() => {
-                              router.push(
-                                `/admin/inventory/voucher/${data._id}`
-                              );
-                            }}
-                          >
-                            <th className="col-3">{data.voucher_no}</th>
-                            <td>
-                              {data.date &&
-                                dateFormat(
-                                  data.date,
-                                  "dS mmmm, yyyy - DDDD - HH:MM TT"
+              {inventoryHistory.length != 0 ? (
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Voucher No</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Items</th>
+                      <th scope="col" style={{ textAlign: "center" }}>
+                        Type
+                      </th>
+                    </tr>
+                  </thead>
+                  {inventoryHistory.length > 0 && (
+                    <>
+                      <tbody style={{ cursor: "pointer" }}>
+                        {!search &&
+                          inventoryHistory &&
+                          inventoryHistory.map((data, index) => (
+                            <tr
+                              key={index}
+                              onClick={() => {
+                                router.push(
+                                  `/admin/inventory/voucher/${data._id}`
+                                );
+                              }}
+                            >
+                              <th className="col-3">{data.voucher_no}</th>
+                              <td>
+                                {data.date &&
+                                  dateFormat(
+                                    data.date,
+                                    "dS mmmm, yyyy - DDDD - HH:MM TT"
+                                  )}
+                              </td>
+                              <td>{data.itemString}</td>
+                              <td style={{ textAlign: "center" }}>
+                                {data.voucher_no.split("/")[0] === "RV" && (
+                                  <span style={{ color: "green" }}>
+                                    <i className="bi bi-box-arrow-in-down"></i>
+                                  </span>
                                 )}
-                            </td>
-                            <td>{data.itemString}</td>
-                            <td style={{ textAlign: "center" }}>
-                              {data.voucher_no.split("/")[0] === "RV" && (
-                                <span style={{ color: "green" }}>
-                                  <i className="bi bi-box-arrow-in-down"></i>
-                                </span>
-                              )}
-                              {data.voucher_no.split("/")[0] === "IV" && (
-                                <span style={{ color: "red" }}>
-                                  <i className="bi bi-box-arrow-up"></i>
-                                </span>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      {search &&
-                        searchResultList &&
-                        searchResultList.map((data, index) => (
-                          <tr
-                            key={index}
-                            onClick={() => {
-                              router.push(
-                                `/admin/inventory/voucher/${data._id}`
-                              );
-                            }}
-                          >
-                            <th className="col-3">{data.voucher_no}</th>
-                            <td>
-                              {data.date &&
-                                dateFormat(
-                                  data.date,
-                                  "dS mmmm, yyyy - DDDD - HH:MM TT"
+                                {data.voucher_no.split("/")[0] === "IV" && (
+                                  <span style={{ color: "red" }}>
+                                    <i className="bi bi-box-arrow-up"></i>
+                                  </span>
                                 )}
-                            </td>
-                            <td>{data.itemString}</td>
-                            <td style={{ textAlign: "center" }}>
-                              {data.voucher_no.split("/")[0] === "RV" && (
-                                <span style={{ color: "green" }}>
-                                  <i className="bi bi-box-arrow-in-down"></i>
-                                </span>
-                              )}
-                              {data.voucher_no.split("/")[0] === "IV" && (
-                                <span style={{ color: "red" }}>
-                                  <i className="bi bi-box-arrow-up"></i>
-                                </span>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </>
-                )}
-              </table>
+                              </td>
+                            </tr>
+                          ))}
+                        {search &&
+                          searchResultList &&
+                          searchResultList.map((data, index) => (
+                            <tr
+                              key={index}
+                              onClick={() => {
+                                router.push(
+                                  `/admin/inventory/voucher/${data._id}`
+                                );
+                              }}
+                            >
+                              <th className="col-3">{data.voucher_no}</th>
+                              <td>
+                                {data.date &&
+                                  dateFormat(
+                                    data.date,
+                                    "dS mmmm, yyyy - DDDD - HH:MM TT"
+                                  )}
+                              </td>
+                              <td>{data.itemString}</td>
+                              <td style={{ textAlign: "center" }}>
+                                {data.voucher_no.split("/")[0] === "RV" && (
+                                  <span style={{ color: "green" }}>
+                                    <i className="bi bi-box-arrow-in-down"></i>
+                                  </span>
+                                )}
+                                {data.voucher_no.split("/")[0] === "IV" && (
+                                  <span style={{ color: "red" }}>
+                                    <i className="bi bi-box-arrow-up"></i>
+                                  </span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </>
+                  )}
+                </table>
+              ) : (
+                <b>
+                  No Inventory History Found.<br></br> Please Add Orders and
+                  Issues First To See Inventory History
+                </b>
+              )}
             </div>
             <div
               className="col-lg-3 card p-4 m-1"

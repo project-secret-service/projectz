@@ -10,8 +10,10 @@ export default function Home() {
 
   useEffect(() => {
     GetItems().then((data) => {
-      console.log(data);
       setItems(data);
+      if (data.length === 0) {
+        return;
+      }
     });
   }, []);
 
@@ -31,60 +33,67 @@ export default function Home() {
         >
           <div className="col-lg-12 d-flex">
             <div className="col-lg-8 card m-1 p-4">
-              <table className="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">Sl No</th>
-                    <th scope="col">Item Name</th>
-                    <th scope="col">Balance</th>
-                    <th scope="col">Rate</th>
-                    <th scope="col">Total Value</th>
-                    <th scope="col" style={{ textAlign: "center" }}>
-                      Status
-                    </th>
-                  </tr>
-                </thead>
-                <tbody style={{ cursor: "pointer" }}>
-                  {items.map((item, index) => {
-                    return (
-                      <tr key={index + 1} onClick={() => OpenLink(item._id)}>
-                        <>
-                          <th scope="row">{index + 1} </th>
-                          <th>{item.name}</th>
-                          <td>
-                            {item.balance} {item.smallest_unit?.name}
-                          </td>
-                          <td>&#8377; {item.current_rate}</td>
-                          <td>
-                            &#8377;{" "}
-                            {Math.round(
-                              item.balance * item.current_rate * 100
-                            ) / 100}
-                          </td>
-                          <td style={{ textAlign: "center" }}>
-                            {item.balance != 0 && (
-                              <>
-                                <i
-                                  className="bi bi-archive-fill"
-                                  style={{ color: "green" }}
-                                ></i>
-                              </>
-                            )}
-                            {item.balance === 0 && (
-                              <>
-                                <i
-                                  className="bi bi-archive-fill"
-                                  style={{ color: "red" }}
-                                ></i>
-                              </>
-                            )}
-                          </td>
-                        </>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              {items.length != 0 ? (
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Sl No</th>
+                      <th scope="col">Item Name</th>
+                      <th scope="col">Balance</th>
+                      <th scope="col">Rate</th>
+                      <th scope="col">Total Value</th>
+                      <th scope="col" style={{ textAlign: "center" }}>
+                        Status
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody style={{ cursor: "pointer" }}>
+                    {items.map((item, index) => {
+                      return (
+                        <tr key={index + 1} onClick={() => OpenLink(item._id)}>
+                          <>
+                            <th scope="row">{index + 1} </th>
+                            <th>{item.name}</th>
+                            <td>
+                              {item.balance} {item.smallest_unit?.name}
+                            </td>
+                            <td>&#8377; {item.current_rate}</td>
+                            <td>
+                              &#8377;{" "}
+                              {Math.round(
+                                item.balance * item.current_rate * 100
+                              ) / 100}
+                            </td>
+                            <td style={{ textAlign: "center" }}>
+                              {item.balance != 0 && (
+                                <>
+                                  <i
+                                    className="bi bi-archive-fill"
+                                    style={{ color: "green" }}
+                                  ></i>
+                                </>
+                              )}
+                              {item.balance === 0 && (
+                                <>
+                                  <i
+                                    className="bi bi-archive-fill"
+                                    style={{ color: "red" }}
+                                  ></i>
+                                </>
+                              )}
+                            </td>
+                          </>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              ) : (
+                <b>
+                  No Items Details Found.<br></br> Please Add Items First To See
+                  Storage Details.
+                </b>
+              )}
             </div>
             <div className="col-lg-3 card p-4 m-1">
               <Button

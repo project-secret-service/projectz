@@ -107,6 +107,7 @@ export async function LastIssue() {
 }
 
 export async function AddOrder(data) {
+  console.log(data);
   const res = await axios({
     url: "/inventory/order/add",
     method: "POST",
@@ -114,7 +115,6 @@ export async function AddOrder(data) {
     data: data,
   });
   if (res.data.status === 200) {
-    console.log(res.data.order_id);
     Router.push("/admin/inventory/voucher/" + res.data.order_id);
   }
 }

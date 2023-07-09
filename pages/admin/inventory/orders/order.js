@@ -94,8 +94,6 @@ export default function Home() {
         fraction(string(multiply(quantity, conversion_factor)))
       );
       rate = string(fraction(string(multiply(rate, inv(conversion_factor)))));
-
-      console.log(quantity, rate, cost);
     }
     let newItem = {
       id: item.id,
@@ -105,6 +103,7 @@ export default function Home() {
       quantity: quantity,
       cost: item.cost,
       rate: rate,
+      smallest_unit: smallestUnit.name,
 
       quantity_in_unit: item.quantity_in_unit,
       current_unit: item.current_unit ? item.current_unit : "",
@@ -155,6 +154,7 @@ export default function Home() {
 
   async function SetInitials() {
     const items = await GetItems();
+    if (!items.length) return;
     setItems(items);
     const lastSno = await GetLastVoucherSNo();
     const voucher_no = (
@@ -196,249 +196,262 @@ export default function Home() {
           <Row>
             <div className="col-lg-8">
               <div className="card p-3">
-                <div className="card-body">
-                  <form onSubmit={handleSubmit}>
-                    <div className="row mb-3">
-                      <label htmlFor="inputText" className="col-sm-3">
-                        Voucher No :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={SetOrder}
-                          defaultValue={order.voucher_no}
-                          type="text"
-                          name="voucher_no"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label htmlFor="inputText" className="col-sm-3">
-                        Date :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={SetOrder}
-                          defaultValue={dateFormat(new Date(), "yyyy-mm-dd")}
-                          type="date"
-                          name="date"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="row mb-3">
-                      <label htmlFor="inputText" className="col-sm-3">
-                        Station :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={SetOrder}
-                          defaultValue={order.station}
-                          type="text"
-                          name="station"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <hr />
-                    {selectedItems[0] && (
-                      <>
-                        <div className="p-3">
-                          {selectedItems[0] && (
-                            <table className="table">
-                              <thead>
-                                <tr>
-                                  <th scope="col">Sl No</th>
-                                  <th scope="col">Required Items</th>
-                                  <th scope="col">Quantity</th>
-                                  <th scope="col">Rate</th>
-                                  <th scope="col">Sub Total</th>
-                                  <th
-                                    style={{ textAlign: "center" }}
-                                    className="col-1"
-                                  >
-                                    Delete
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {selectedItems.map((item, index) => (
-                                  <tr key={index}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{item.name}</td>
-                                    <td>
-                                      {item.quantity_in_unit}{" "}
-                                      {item.current_unit}
-                                    </td>
-                                    <td>
-                                      &#8377; {item.rate_per_unit} /{" "}
-                                      {item.current_unit}
-                                    </td>
-                                    <td>&#8377; {item.cost}</td>
-
-                                    <td
-                                      style={{
-                                        textAlign: "center",
-                                        cursor: "pointer",
-                                      }}
-                                      className="col-1 bg-danger"
-                                      onClick={() => deleteItem(index)}
-                                    >
-                                      <span style={{ color: "white" }}>
-                                        <i className="bi bi-trash"></i>
-                                      </span>
-                                    </td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          )}
+                {items.length != 0 && (
+                  <div className="card-body">
+                    <form onSubmit={handleSubmit}>
+                      <div className="row mb-3">
+                        <label htmlFor="inputText" className="col-sm-3">
+                          Voucher No :
+                        </label>
+                        <div className="col-sm-7">
+                          <input
+                            onChange={SetOrder}
+                            defaultValue={order.voucher_no}
+                            type="text"
+                            name="voucher_no"
+                            className="form-control"
+                          />
                         </div>
-                        <div style={{ textAlign: "center" }}>
-                          Total : <b>&#8377; {order.total_amount}</b>
+                      </div>
+                      <div className="row mb-3">
+                        <label htmlFor="inputText" className="col-sm-3">
+                          Date :
+                        </label>
+                        <div className="col-sm-7">
+                          <input
+                            onChange={SetOrder}
+                            defaultValue={dateFormat(new Date(), "yyyy-mm-dd")}
+                            type="date"
+                            name="date"
+                            className="form-control"
+                          />
                         </div>
-                      </>
-                    )}
-                    <div>
-                      {displayItems && (
+                      </div>
+
+                      <div className="row mb-3">
+                        <label htmlFor="inputText" className="col-sm-3">
+                          Station :
+                        </label>
+                        <div className="col-sm-7">
+                          <input
+                            onChange={SetOrder}
+                            defaultValue={order.station}
+                            type="text"
+                            name="station"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <hr />
+                      {selectedItems[0] && (
                         <>
-                          <div className="p-3 m-1">
-                            <div className="row mb-3">
-                              <label htmlFor="inputText" className="col-sm-3">
-                                Sl No :
-                              </label>
-                              <div className="col-sm-7">
-                                <b ref={items_sno}>
-                                  {selectedItems.length + 1}
-                                </b>
-                              </div>
-                            </div>
-                            <div className="row mb-3">
-                              <label className="col-sm-3">Item Name</label>
-                              <div className="col-sm-7">
-                                <select
-                                  name="id"
-                                  onChange={SetItemName}
-                                  className="form-select"
-                                  aria-label="Default select Example"
-                                  defaultValue={item._id ? items._id : ""}
-                                >
-                                  {items.map((item, index) => (
-                                    <option key={index} value={item._id}>
-                                      {item.name}
-                                    </option>
+                          <div className="p-3">
+                            {selectedItems[0] && (
+                              <table className="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Sl No</th>
+                                    <th scope="col">Required Items</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Rate</th>
+                                    <th scope="col">Rate/ Smallest Unit</th>
+                                    <th scope="col">Sub Total</th>
+                                    <th
+                                      style={{ textAlign: "center" }}
+                                      className="col-1"
+                                    >
+                                      Delete
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {selectedItems.map((item, index) => (
+                                    <tr key={index}>
+                                      <th scope="row">{index + 1}</th>
+                                      <td>{item.name}</td>
+                                      <td>
+                                        {item.quantity_in_unit}{" "}
+                                        {item.current_unit}
+                                      </td>
+                                      <td>
+                                        &#8377; {item.rate_per_unit} /{" "}
+                                        {item.current_unit}
+                                      </td>
+
+                                      <td>
+                                        &#8377; {item.rate} /{" "}
+                                        {item.smallest_unit}
+                                      </td>
+                                      <td>&#8377; {item.cost}</td>
+
+                                      <td
+                                        style={{
+                                          textAlign: "center",
+                                          cursor: "pointer",
+                                        }}
+                                        className="col-1 bg-danger"
+                                        onClick={() => deleteItem(index)}
+                                      >
+                                        <span style={{ color: "white" }}>
+                                          <i className="bi bi-trash"></i>
+                                        </span>
+                                      </td>
+                                    </tr>
                                   ))}
-                                </select>
-                              </div>
-                            </div>
-
-                            <div className="row mb-3">
-                              <label htmlFor="inputText" className="col-sm-3">
-                                Quantity :
-                              </label>
-                              <div className="col-sm-7">
-                                <input
-                                  onChange={SetItem}
-                                  type="number"
-                                  name="quantity_in_unit"
-                                  className="form-control"
-                                />
-                              </div>
-                            </div>
-
-                            <div className="row mb-3">
-                              <label htmlFor="inputText" className="col-sm-3">
-                                Unit :
-                              </label>
-                              <div className="col-sm-7">
-                                <select
-                                  name="current_unit"
-                                  onChange={SetItem}
-                                  className="form-select"
-                                  aria-label="Default select Example"
-                                >
-                                  {item.units &&
-                                    item.units.map((unit, index) => (
-                                      <option key={index} value={unit.name}>
-                                        {unit.name}
-                                      </option>
-                                    ))}
-                                </select>
-                              </div>
-                            </div>
-
-                            <div className="row mb-3">
-                              <label htmlFor="inputText" className="col-sm-3">
-                                Cost :
-                              </label>
-                              <div className="col-sm-7">
-                                <input
-                                  onChange={SetItem}
-                                  type="number"
-                                  name="cost"
-                                  className="form-control"
-                                />
-                              </div>
-                            </div>
-
-                            <div
-                              className="mt-3"
-                              style={{ textAlign: "right" }}
-                            >
-                              <Button
-                                variant="success"
-                                style={{ marginRight: "1rem" }}
-                                onClick={AddItemToSelected}
-                              >
-                                + Add Item
-                              </Button>
-
-                              <Button variant="light" onClick={cancelItem}>
-                                Cancel
-                              </Button>
-                            </div>
+                                </tbody>
+                              </table>
+                            )}
+                          </div>
+                          <div style={{ textAlign: "center" }}>
+                            Total : <b>&#8377; {order.total_amount}</b>
                           </div>
                         </>
                       )}
-                    </div>
-                    {!displayItems && (
-                      <div className="mt-3" style={{ textAlign: "right" }}>
-                        <Button variant="success" onClick={showItemsFields}>
-                          + Add Items
-                        </Button>
-                      </div>
-                    )}
-                    <hr />
+                      <div>
+                        {displayItems && (
+                          <>
+                            <div className="p-3 m-1">
+                              <div className="row mb-3">
+                                <label htmlFor="inputText" className="col-sm-3">
+                                  Sl No :
+                                </label>
+                                <div className="col-sm-7">
+                                  <b ref={items_sno}>
+                                    {selectedItems.length + 1}
+                                  </b>
+                                </div>
+                              </div>
+                              <div className="row mb-3">
+                                <label className="col-sm-3">Item Name</label>
+                                <div className="col-sm-7">
+                                  <select
+                                    name="id"
+                                    onChange={SetItemName}
+                                    className="form-select"
+                                    aria-label="Default select Example"
+                                    defaultValue={item._id ? items._id : ""}
+                                  >
+                                    {items.map((item, index) => (
+                                      <option key={index} value={item._id}>
+                                        {item.name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
 
-                    <div className="row mb-3">
-                      <label htmlFor="inputText" className="col-sm-3">
-                        Remarks :
-                      </label>
-                      <div className="col-sm-7">
-                        <input
-                          onChange={SetOrder}
-                          type="text"
-                          name="remarks"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
+                              <div className="row mb-3">
+                                <label htmlFor="inputText" className="col-sm-3">
+                                  Quantity :
+                                </label>
+                                <div className="col-sm-7">
+                                  <input
+                                    onChange={SetItem}
+                                    type="number"
+                                    name="quantity_in_unit"
+                                    className="form-control"
+                                  />
+                                </div>
+                              </div>
 
-                    <div className="row mb-3">
-                      <div className="col-sm-7">
-                        <button
-                          type="submit"
-                          className="btn btn-primary"
-                          style={{ float: "right" }}
-                        >
-                          Create Order
-                        </button>
+                              <div className="row mb-3">
+                                <label htmlFor="inputText" className="col-sm-3">
+                                  Unit :
+                                </label>
+                                <div className="col-sm-7">
+                                  <select
+                                    name="current_unit"
+                                    onChange={SetItem}
+                                    className="form-select"
+                                    aria-label="Default select Example"
+                                  >
+                                    {item.units &&
+                                      item.units.map((unit, index) => (
+                                        <option key={index} value={unit.name}>
+                                          {unit.name}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
+                              </div>
+
+                              <div className="row mb-3">
+                                <label htmlFor="inputText" className="col-sm-3">
+                                  Cost :
+                                </label>
+                                <div className="col-sm-7">
+                                  <input
+                                    onChange={SetItem}
+                                    type="number"
+                                    name="cost"
+                                    className="form-control"
+                                  />
+                                </div>
+                              </div>
+
+                              <div
+                                className="mt-3"
+                                style={{ textAlign: "right" }}
+                              >
+                                <Button
+                                  variant="success"
+                                  style={{ marginRight: "1rem" }}
+                                  onClick={AddItemToSelected}
+                                >
+                                  + Add Item
+                                </Button>
+
+                                <Button variant="light" onClick={cancelItem}>
+                                  Cancel
+                                </Button>
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
-                    </div>
-                  </form>
-                </div>
+                      {!displayItems && (
+                        <div className="mt-3" style={{ textAlign: "right" }}>
+                          <Button variant="success" onClick={showItemsFields}>
+                            + Add Items
+                          </Button>
+                        </div>
+                      )}
+                      <hr />
+
+                      <div className="row mb-3">
+                        <label htmlFor="inputText" className="col-sm-3">
+                          Remarks :
+                        </label>
+                        <div className="col-sm-7">
+                          <input
+                            onChange={SetOrder}
+                            type="text"
+                            name="remarks"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mb-3">
+                        <div className="col-sm-7">
+                          <button
+                            type="submit"
+                            className="btn btn-primary"
+                            style={{ float: "right" }}
+                          >
+                            Create Order
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                )}
+                {items.length == 0 && (
+                  <b>
+                    No Items Details Found.<br></br> Please Add Items First.
+                  </b>
+                )}
               </div>
             </div>
             <div className="col-3 card p-3">
@@ -460,9 +473,9 @@ export default function Home() {
                   Inventory History
                 </Button>
               </Link>
-              <Link href={"/admin/inventory/orders/order"}>
+              {/* <Link href={"/admin/inventory/orders/order"}>
                 <Button className="w-100 mb-1 btn-light">Order Items</Button>
-              </Link>
+              </Link> */}
               <Link href={"/admin/inventory/issues/issue"}>
                 <Button className="w-100 mb-1 btn-light">Issue Items</Button>
               </Link>
