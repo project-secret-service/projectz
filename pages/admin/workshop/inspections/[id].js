@@ -581,6 +581,19 @@ export default function Home() {
                 )}
                 content={() => componentRef.current}
               />
+              <Button
+                className="mb-1 btn-success"
+                onClick={() => {
+                  Router.push(
+                    "/admin/workshop/inspections/" +
+                      inspection.id +
+                      "/createdefectmemo"
+                  );
+                }}
+              >
+                <i class="bi bi-plus-circle"></i> Create Defect Memo
+              </Button>
+
               <hr />
               <Button
                 className="mb-1 btn-light"

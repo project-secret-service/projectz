@@ -27,12 +27,11 @@ export default function Home() {
 
   return (
     <>
-      <AdminLayout title={`KM Run`}>
-        <main id="main" className="main col-10 mt-0 opac-80">
-          <h1 className="josefin-sans">Odometer History</h1>
+      <AdminLayout title={`Odometer History`}>
+        <main id="main" className="main col-11 mt-n2 opac-80">
           <div className="row col-12">
             <div className="row">
-              <div className="col-8 card m-1 p-5">
+              <div className="col-8 card m-1 p-4">
                 <table className="table">
                   <thead>
                     <tr>
@@ -70,7 +69,7 @@ export default function Home() {
               </div>
               <div className="col-3 m-1 card p-3" style={{ maxHeight: "40vh" }}>
                 <Button
-                  className="btn-primary w-100"
+                  className="btn-dark w-100"
                   onClick={() => {
                     router.back();
                   }}

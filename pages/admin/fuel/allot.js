@@ -245,8 +245,11 @@ export default function Home() {
                           <div className="col-sm-7">
                             <b>{vehicle.fuel_capacity} L </b>
                             <b>
-                              ( Empty: {vehicle.fuel_capacity - vehicle.fuel} L
-                              )
+                              ( Empty:{" "}
+                              {Math.round(
+                                (vehicle.fuel_capacity - vehicle.fuel) * 100
+                              ) / 100}{" "}
+                              L )
                             </b>
                           </div>
                         </div>

@@ -95,15 +95,17 @@ const Post = () => {
       <AdminLayout title={`${oil.type} Balance Log`}>
         <main id="main" className="col-11 mt-n2 row opac-80">
           <Row>
-            <div className="col-8 m-1 card p-5">
+            <div className="col-8 m-1 card p-4">
               <table className="table table-hover">
                 <thead>
                   <tr>
                     <th scope="col">Voucher (IV/RV)</th>
+                    <th scope="col">Date</th>
                     <th scope="col">Balance</th>
                     <th scope="col">Difference</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Issued/Recieved</th>
+                    <th scope="col" style={{ textAlign: "center" }}>
+                      Iss / Rec
+                    </th>
                   </tr>
                 </thead>
                 <tbody style={{ cursor: "pointer" }}>
@@ -121,12 +123,6 @@ const Post = () => {
                           {oilbalance.recieved && (
                             <>
                               <th>{oilbalance.recieve_voucher_no}</th>
-                              <td>{oilbalance.current_balance}</td>
-                              <td>
-                                <span style={{ color: "green" }}>
-                                  +{oilbalance.recieved_amount}
-                                </span>
-                              </td>
                               <td>
                                 {oilbalance.date &&
                                   dateFormat(
@@ -134,20 +130,23 @@ const Post = () => {
                                     " dS mmmm, yyyy - dddd"
                                   )}
                               </td>
+                              <td>{oilbalance.current_balance} L</td>
+
                               <td>
-                                <span style={{ color: "green" }}>RECIEVED</span>
+                                <span style={{ color: "green" }}>
+                                  +{oilbalance.recieved_amount} L
+                                </span>
+                              </td>
+                              <td className="text-center">
+                                <span style={{ color: "green" }}>
+                                  <i className="bi bi-box-arrow-in-down"></i>
+                                </span>
                               </td>
                             </>
                           )}
                           {oilbalance.issued && (
                             <>
                               <th>{oilbalance.issue_voucher_no}</th>
-                              <td>{oilbalance.current_balance}</td>
-                              <td>
-                                <span style={{ color: "red" }}>
-                                  - {oilbalance.issued_amount}
-                                </span>
-                              </td>
                               <td>
                                 {oilbalance.date &&
                                   dateFormat(
@@ -155,8 +154,17 @@ const Post = () => {
                                     " dS mmmm, yyyy - dddd"
                                   )}
                               </td>
+                              <td>{oilbalance.current_balance} L</td>
                               <td>
-                                <span style={{ color: "red" }}>ISSUED</span>
+                                <span style={{ color: "red" }}>
+                                  - {oilbalance.issued_amount} L
+                                </span>
+                              </td>
+
+                              <td className="text-center">
+                                <span style={{ color: "red" }}>
+                                  <i className="bi bi-box-arrow-up"></i>
+                                </span>
                               </td>
                             </>
                           )}
@@ -190,7 +198,7 @@ const Post = () => {
                                     " dS mmmm, yyyy - dddd"
                                   )}
                               </td>
-                              <td>
+                              <td className="text-center">
                                 <span style={{ color: "green" }}>RECIEVED</span>
                               </td>
                             </>

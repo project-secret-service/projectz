@@ -9,6 +9,9 @@ export default function Home() {
   const [inspectionsHistory, setInspectionsHistory] = useState([]);
   useEffect(() => {
     GetInspectionHistory().then((data) => {
+      if (data.length == 0) {
+        return;
+      }
       setInspectionsHistory(data);
     });
   }, []);
@@ -25,65 +28,76 @@ export default function Home() {
         >
           <div className="col-8">
             <div className="card p-3">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Vehicle</th>
-                    <th scope="col">Defects</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {inspectionsHistory.map((inspection, index) => {
-                    let defects = "";
-                    if (
-                      inspection.engine &&
-                      Object.keys(inspection.engine).length > 0
-                    )
-                      defects += "Engine, ";
-                    if (
-                      inspection.transmission &&
-                      Object.keys(inspection.transmission).length > 0
-                    )
-                      defects += "Transmission, ";
-                    if (
-                      inspection.electrical &&
-                      Object.keys(inspection.electrical).length > 0
-                    )
-                      defects += "Electrical, ";
-                    if (
-                      inspection.chassis &&
-                      Object.keys(inspection.chassis).length > 0
-                    )
-                      defects += "Chaissis, ";
-                    if (
-                      inspection.lubrication &&
-                      Object.keys(inspection.lubrication).length > 0
-                    )
-                      defects += "Lubrication , ";
-                    defects = defects.substring(0, defects.length - 2);
-                    return (
-                      <tr
-                        key={index}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => {
-                          Router.push(
-                            "/admin/workshop/inspections/" + inspection._id
-                          );
-                        }}
-                      >
-                        <th scope="row">{index + 1}</th>
-                        <td>
-                          {dateFormat(inspection.date, "dS mmmm, yyyy - DDDD")}
-                        </td>
-                        <td>{inspection.vehicle.name}</td>
-                        <td>{defects}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              {inspectionsHistory.length != 0 ? (
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Vehicle</th>
+                      <th scope="col">Defects</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {inspectionsHistory.map((inspection, index) => {
+                      let defects = "";
+                      if (
+                        inspection.engine &&
+                        Object.keys(inspection.engine).length > 0
+                      )
+                        defects += "Engine, ";
+                      if (
+                        inspection.transmission &&
+                        Object.keys(inspection.transmission).length > 0
+                      )
+                        defects += "Transmission, ";
+                      if (
+                        inspection.electrical &&
+                        Object.keys(inspection.electrical).length > 0
+                      )
+                        defects += "Electrical, ";
+                      if (
+                        inspection.chassis &&
+                        Object.keys(inspection.chassis).length > 0
+                      )
+                        defects += "Chaissis, ";
+                      if (
+                        inspection.lubrication &&
+                        Object.keys(inspection.lubrication).length > 0
+                      )
+                        defects += "Lubrication , ";
+                      defects = defects.substring(0, defects.length - 2);
+                      return (
+                        <tr
+                          key={index}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            Router.push(
+                              "/admin/workshop/inspections/" + inspection._id
+                            );
+                          }}
+                        >
+                          <th scope="row">{index + 1}</th>
+                          <td>
+                            {dateFormat(
+                              inspection.date,
+                              "dS mmmm, yyyy - DDDD"
+                            )}
+                          </td>
+                          <td>{inspection.vehicle.name}</td>
+                          <td>{defects}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              ) : (
+                <b>
+                  No Inspections Found !
+                  <br />
+                  Please add an Inspection Reports to view them here .
+                </b>
+              )}
             </div>
           </div>
           <div className="col-3 card p-3">
@@ -103,7 +117,7 @@ export default function Home() {
                 Router.push("/admin/workshop/inspections/add");
               }}
             >
-              <i class="bi bi-plus-circle"></i> Add Inspection Report
+              <i className="bi bi-plus-circle"></i> Add Inspection Report
             </Button>
             <hr />
             <Button
@@ -112,7 +126,7 @@ export default function Home() {
                 Router.push("/admin/workshop/defectmemos/");
               }}
             >
-              <i class="bi bi-card-list"></i> Defect Memos
+              <i className="bi bi-card-list"></i> Defect Memos
             </Button>
             <Button
               className="mb-1 btn-light"
@@ -120,7 +134,7 @@ export default function Home() {
                 Router.push("/admin/workshop/defectmemos/add");
               }}
             >
-              <i class="bi bi-plus-circle"></i> Add Memo
+              <i className="bi bi-plus-circle"></i> Add Memo
             </Button>
             <hr />
             <Button
@@ -129,7 +143,7 @@ export default function Home() {
                 Router.push("/admin/workshop/jobcards");
               }}
             >
-              <i class="bi bi-credit-card-2-front"></i> Job Cards
+              <i className="bi bi-credit-card-2-front"></i> Job Cards
             </Button>
             <Button
               className="mb-1 btn-light"
@@ -137,7 +151,7 @@ export default function Home() {
                 Router.push("/admin/workshop/jobcards/add");
               }}
             >
-              <i class="bi bi-plus-circle"></i> Add Job Card
+              <i className="bi bi-plus-circle"></i> Add Job Card
             </Button>
           </div>
         </main>

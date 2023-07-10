@@ -14,6 +14,9 @@ export default function Home() {
     if (!router.isReady) return;
     const { id } = router.query;
     GetMemos().then((data) => {
+      if (data.length == 0) {
+        return;
+      }
       setMemos(data);
     });
   }, [router.isReady]);
@@ -31,42 +34,49 @@ export default function Home() {
           <Row>
             <div className="col-lg-8">
               <div className="card p-3">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Date</th>
-                      <th scope="col">Vehicle</th>
-                      <th scope="col">Defects</th>
-                      <th scope="col">Jobs</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {memos.map((memo, index) => {
-                      let no_of_defects = memo.defects?.length || 0;
-                      let no_of_jobs = memo.job_works?.length || 0;
-                      return (
-                        <tr
-                          key={index}
-                          style={{ cursor: "pointer" }}
-                          onClick={() => {
-                            Router.push(
-                              "/admin/workshop/defectmemos/" + memo._id
-                            );
-                          }}
-                        >
-                          <th scope="row">{index + 1}</th>
-                          <td>
-                            {dateFormat(memo.date, "dS mmmm, yyyy - DDDD")}
-                          </td>
-                          <td>{memo.vehicle.name}</td>
-                          <td>{no_of_defects}</td>
-                          <td>{no_of_jobs}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                {memos.length != 0 ? (
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Vehicle</th>
+                        <th scope="col">Defects</th>
+                        <th scope="col">Jobs</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {memos.map((memo, index) => {
+                        let no_of_defects = memo.defects?.length || 0;
+                        let no_of_jobs = memo.job_works?.length || 0;
+                        return (
+                          <tr
+                            key={index}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              Router.push(
+                                "/admin/workshop/defectmemos/" + memo._id
+                              );
+                            }}
+                          >
+                            <th scope="row">{index + 1}</th>
+                            <td>
+                              {dateFormat(memo.date, "dS mmmm, yyyy - DDDD")}
+                            </td>
+                            <td>{memo.vehicle.name}</td>
+                            <td>{no_of_defects}</td>
+                            <td>{no_of_jobs}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                ) : (
+                  <b>
+                    No Defect Memos Found. <br />
+                    Please Add a new Memo to view it here.
+                  </b>
+                )}
               </div>
             </div>
             <div className="col-3 card p-3">
@@ -86,7 +96,7 @@ export default function Home() {
                   Router.push("/admin/workshop/inspections");
                 }}
               >
-                <i class="bi bi-card-checklist"></i> Inspections
+                <i className="bi bi-card-checklist"></i> Inspections
               </Button>
               <Button
                 className="mb-1 btn-light"
@@ -94,7 +104,7 @@ export default function Home() {
                   Router.push("/admin/workshop/inspections/add");
                 }}
               >
-                <i class="bi bi-plus-circle"></i> Add Inspection Report
+                <i className="bi bi-plus-circle"></i> Add Inspection Report
               </Button>
               <hr />
               <Button
@@ -103,7 +113,7 @@ export default function Home() {
                   Router.push("/admin/workshop/defectmemos/add");
                 }}
               >
-                <i class="bi bi-plus-circle"></i> Add Memo
+                <i className="bi bi-plus-circle"></i> Add Memo
               </Button>
               <hr />
               <Button
@@ -112,7 +122,7 @@ export default function Home() {
                   Router.push("/admin/workshop/jobcards");
                 }}
               >
-                <i class="bi bi-credit-card-2-front"></i> Job Cards
+                <i className="bi bi-credit-card-2-front"></i> Job Cards
               </Button>
               <Button
                 className="mb-1 btn-light"
@@ -120,7 +130,7 @@ export default function Home() {
                   Router.push("/admin/workshop/jobcards/add");
                 }}
               >
-                <i class="bi bi-plus-circle"></i> Add Job Card
+                <i className="bi bi-plus-circle"></i> Add Job Card
               </Button>
             </div>
           </Row>

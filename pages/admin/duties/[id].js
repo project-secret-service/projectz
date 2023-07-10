@@ -483,20 +483,8 @@ const Post = () => {
                 )}
                 content={() => componentRef.current}
               />
-              {!duty.mission_ended && (
-                <>
-                  <Button
-                    className="btn-success mb-1"
-                    onClick={() => {
-                      Router.push("/admin/duties/" + duty._id + "/update");
-                    }}
-                  >
-                    Update Duty
-                  </Button>
-                </>
-              )}
-              <br />
 
+              <br />
               {!duty.sign_indenter && (
                 <Button
                   className="btn-light mb-1"
@@ -547,6 +535,20 @@ const Post = () => {
                 >
                   Sign as Intending Office
                 </Button>
+              )}
+
+              <hr />
+              {!duty.mission_ended && (
+                <>
+                  <Button
+                    className="btn-light mb-1"
+                    onClick={() => {
+                      Router.push("/admin/duties/" + duty._id + "/update");
+                    }}
+                  >
+                    Update Duty
+                  </Button>
+                </>
               )}
 
               <SignatureModal

@@ -21,8 +21,8 @@ const Post = () => {
   return (
     <>
       <AdminLayout title={"User Details"}>
-        <main id="main" className="col-11 main mt-0 opac-80">
-          <h1 className="josefin-sans">{user.name}</h1>
+        <main id="main" className="col-11 main mt-n2 opac-80">
+          <h1 className="josefin-sans mt-3">{user.name}</h1>
           <Row>
             <div className="card col-8 m-1">
               <div className="row">
@@ -68,9 +68,14 @@ const Post = () => {
                     <tbody>
                       <tr>
                         <th>
-                          USER DETAILS
-                          <br />
-                          <br />
+                          <h6
+                            className="josefin-sans"
+                            style={{
+                              fontSize: "1.5rem",
+                            }}
+                          >
+                            USER DETAILS
+                          </h6>
                         </th>
                       </tr>
                       <tr>

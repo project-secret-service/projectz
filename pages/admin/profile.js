@@ -53,8 +53,7 @@ export default function Home() {
     <>
       <AdminLayout title={"Profile"}>
         {user && (
-          <main id="main" className="main col-10 mt-0">
-            <h1>Profile</h1>
+          <main id="main" className="main col-10 mt-n2">
             <section>
               <div className="row opac-80">
                 <div className="col-4">

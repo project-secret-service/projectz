@@ -86,5 +86,9 @@ export async function AddMemo(event, memo, selectedParts, defects, jobWorks) {
     data: data,
     withCredentials: true,
   });
-  Router.push("/defectmemos");
+  if (res.data.status === 200) {
+    Router.push("/admin/workshop/defectmemos/" + res.data.memoID);
+  } else {
+    alert(res.data.message);
+  }
 }
