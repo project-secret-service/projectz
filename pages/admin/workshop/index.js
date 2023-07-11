@@ -3,6 +3,7 @@ import Router from "next/router";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 
 async function GetWorkshopDetails() {
   const res = await axios({
@@ -36,7 +37,7 @@ const Post = () => {
 
   return (
     <>
-      <AdminLayout title={`Workshop Page`}>
+      <AdminLayout title={`Workshop`}>
         <main
           id="main"
           className="main col-11 opac-90"
@@ -47,17 +48,38 @@ const Post = () => {
           <div className="row">
             <div className="col-8 card p-3">
               <div>
-                <div className="col-6" style={{ border: "0px" }}>
+                <div className="col-12" style={{ border: "0px" }}>
                   <div className="">
+                    <h3 className="josefin-sans">Jobs</h3>
                     <div class="list-group">
                       {jobs.map((job, index) => (
-                        <a
+                        <Link
                           href="#"
                           class="list-group-item list-group-item-action"
+                          style={{
+                            border: "0px",
+                            borderBottom: "1px solid #dee2e6",
+                          }}
                         >
-                          <i class="bi bi-tools"></i> <b>{job.job}</b> <br />{" "}
-                          {job.vehicle}
-                        </a>
+                          <i class="bi bi-tools"></i>{" "}
+                          <b>
+                            {job.job}{" "}
+                            {job.completed ? (
+                              () => (
+                                <i
+                                  style={{ color: "green" }}
+                                  class="bi bi-check-circle-fill"
+                                ></i>
+                              )
+                            ) : (
+                              <i
+                                style={{ color: "red" }}
+                                class="bi bi-exclamation-circle-fill"
+                              ></i>
+                            )}
+                          </b>{" "}
+                          <br /> {job.vehicle}
+                        </Link>
                       ))}
                     </div>
                   </div>
