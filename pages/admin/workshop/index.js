@@ -1,8 +1,39 @@
 import AdminLayout from "@/components/admin/AdminLayout";
 import Router from "next/router";
 import { Button } from "react-bootstrap";
+import axios from "axios";
+import { useEffect, useState, useRef } from "react";
+
+async function GetWorkshopDetails() {
+  const res = await axios({
+    method: "get",
+    url: "http://localhost:3000/workshop",
+    withCredentials: true,
+  });
+  return res.data;
+}
 
 const Post = () => {
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    GetWorkshopDetails().then((data) => {
+      let defectmemos = data;
+      let jobs = [];
+      defectmemos.forEach((defectmemo) => {
+        defectmemo.job_works?.forEach((job_work) => {
+          jobs.push({
+            job: job_work.name,
+            completed: job_work.completed,
+            vehicle: `CRP-(${defectmemo.vehicle.vehicle_crp_no}) ${defectmemo.vehicle.registration_no} (${defectmemo.vehicle.name})`,
+          });
+        });
+      });
+      console.log(jobs);
+      setJobs(jobs);
+    });
+  }, []);
+
   return (
     <>
       <AdminLayout title={`Workshop Page`}>
@@ -15,7 +46,23 @@ const Post = () => {
         >
           <div className="row">
             <div className="col-8 card p-3">
-              <div></div>
+              <div>
+                <div className="col-6" style={{ border: "0px" }}>
+                  <div className="">
+                    <div class="list-group">
+                      {jobs.map((job, index) => (
+                        <a
+                          href="#"
+                          class="list-group-item list-group-item-action"
+                        >
+                          <i class="bi bi-tools"></i> <b>{job.job}</b> <br />{" "}
+                          {job.vehicle}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="col-3 card p-3">
               <Button
@@ -34,7 +81,7 @@ const Post = () => {
                   Router.push("/admin/workshop/inspections");
                 }}
               >
-                <i class="bi bi-card-checklist"></i> Inspections
+                <i className="bi bi-card-checklist"></i> Inspections
               </Button>
               <Button
                 className="mb-1 btn-light"
@@ -42,7 +89,7 @@ const Post = () => {
                   Router.push("/admin/workshop/inspections/add");
                 }}
               >
-                <i class="bi bi-plus-circle"></i> Add Inspection Report
+                <i className="bi bi-plus-circle"></i> Add Inspection Report
               </Button>
               <hr />
               <Button
@@ -51,7 +98,7 @@ const Post = () => {
                   Router.push("/admin/workshop/defectmemos/");
                 }}
               >
-                <i class="bi bi-card-list"></i> Defect Memos
+                <i className="bi bi-card-list"></i> Defect Memos
               </Button>
               <Button
                 className="mb-1 btn-light"
@@ -59,7 +106,7 @@ const Post = () => {
                   Router.push("/admin/workshop/defectmemos/add");
                 }}
               >
-                <i class="bi bi-plus-circle"></i> Add Memo
+                <i className="bi bi-plus-circle"></i> Add Memo
               </Button>
               <hr />
               <Button
@@ -68,7 +115,7 @@ const Post = () => {
                   Router.push("/admin/workshop/jobcards");
                 }}
               >
-                <i class="bi bi-credit-card-2-front"></i> Job Cards
+                <i className="bi bi-credit-card-2-front"></i> Job Cards
               </Button>
               <Button
                 className="mb-1 btn-light"
@@ -76,7 +123,7 @@ const Post = () => {
                   Router.push("/admin/workshop/jobcards/add");
                 }}
               >
-                <i class="bi bi-plus-circle"></i> Add Job Card
+                <i className="bi bi-plus-circle"></i> Add Job Card
               </Button>
             </div>
           </div>

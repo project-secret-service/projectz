@@ -5,7 +5,8 @@ export default function SideBar(props) {
     <>
       <aside id="sidebar" className="sidebar opac-90">
         <ul className="sidebar-nav" id="sidebar-nav">
-          <li className="nav-item">
+          
+          {/* <li className="nav-item">
             <Link
               className="nav-link collapsed"
               href={"/admin/"}
@@ -14,7 +15,7 @@ export default function SideBar(props) {
               <i className="bi bi-speedometer2"></i>
               <span>Dashboard</span>
             </Link>
-          </li>
+          </li> */}
 
           <li className="nav-item">
             <Link

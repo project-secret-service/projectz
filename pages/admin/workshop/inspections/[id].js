@@ -586,7 +586,7 @@ export default function Home() {
                 onClick={() => {
                   Router.push(
                     "/admin/workshop/inspections/" +
-                      inspection.id +
+                      inspection._id +
                       "/createdefectmemo"
                   );
                 }}

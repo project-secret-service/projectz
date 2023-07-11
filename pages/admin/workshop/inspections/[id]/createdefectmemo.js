@@ -7,10 +7,10 @@ import { GetVehicles } from "@/functions/apiHandlers/vehicles";
 import { GetParts } from "@/functions/apiHandlers/workshop";
 import AdminLayout from "@/components/admin/AdminLayout";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function Home() {
-  const [memos, setMemos] = useState([]);
-  const [vehicles, setVehicles] = useState([]);
+  const [inspection, setInspection] = useState({});
   const [defects, setDefects] = useState([]);
   const [selectedParts, setSelectedParts] = useState([]);
   const [displayParts, setDisplayParts] = useState(false);
@@ -24,6 +24,15 @@ export default function Home() {
   const [parts, setParts] = useState([]);
   const jobworks_sno = useRef(null);
   const [part, setPart] = useState({});
+
+  async function GetInspection(id) {
+    const res = await axios({
+      method: "get",
+      url: "http://localhost:3000/inspection/" + id,
+      withCredentials: true,
+    });
+    return res.data;
+  }
 
   async function GetLastMemoSlNo() {
     const res = await axios({
@@ -54,6 +63,13 @@ export default function Home() {
   }
 
   function AddPartToSelected(event) {
+    let foundInSelectedParts = selectedParts.find(
+      (selectedPart) => selectedPart.id == part.id
+    );
+    if (foundInSelectedParts) {
+      alert("Part Already Added");
+      return;
+    }
     let foundPart = parts.find((this_part) => this_part._id === part.id);
     let name = foundPart.name;
     let balance = foundPart.balance;
@@ -171,13 +187,34 @@ export default function Home() {
     displayJobWork ? setDisplayJobWork(false) : setDisplayJobWork(true);
   }
 
-  async function setInitials() {
-    const vehicles = await GetVehicles();
-    setVehicles(vehicles);
+  async function setInitials(id) {
+    const inspection = await GetInspection(id);
+    setInspection(inspection);
+
+    let default_defects = [];
+    for (let key in inspection) {
+      if (
+        key == "engine" ||
+        key == "transmission" ||
+        key == "chassis" ||
+        key == "electrical" ||
+        key == "lubrication"
+      ) {
+        for (let key2 in inspection[key]) {
+          let defect = inspection[key][key2];
+          console.log(defect.label.split(". ")[1] + ": " + defect.description);
+          default_defects.push({
+            name: defect.label.split(". ")[1] + ": " + defect.description,
+            reason: "",
+            remedy_suggestion: "",
+          });
+        }
+      }
+    }
+
+    setDefects(default_defects);
 
     const last_slno = await GetLastMemoSlNo();
-    console.log(last_slno);
-
     setMemo({
       ...memo,
       slno: last_slno + 1,
@@ -188,7 +225,9 @@ export default function Home() {
         new Date().toISOString().slice(5, 7) +
         "/" +
         (last_slno + 1).toString().padStart(5, "0"),
-      vehicle: vehicles[0]._id,
+      vehicle: inspection.vehicle._id,
+      vehicle_name: `CRP-${inspection.vehicle.vehicle_crp_no}
+      ${inspection.vehicle.registration_no} (${inspection.vehicle.name})`,
       date: new Date().toISOString().slice(0, 10),
     });
 
@@ -203,12 +242,30 @@ export default function Home() {
     });
   }
 
-  useEffect(() => {
-    GetMemos().then((data) => {
-      setMemos(data);
+  function EditDefect(index) {
+    setDefect({
+      name: defects[index].name,
+      reason: defects[index].reason,
+      remedy_suggestion: defects[index].remedy_suggestion,
     });
-    setInitials();
-  }, []);
+
+    console.log({
+      name: defects[index].name,
+      reason: defects[index].reason,
+      remedy_suggestion: defects[index].remedy_suggestion,
+    });
+    setDisplayDefect(true);
+    setDefects(defects.filter((defect, i) => i !== index));
+  }
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const { id } = router.query;
+
+    setInitials(id);
+  }, [router.isReady]);
 
   return (
     <>
@@ -254,21 +311,9 @@ export default function Home() {
                     </div>
 
                     <div className="row mb-3">
-                      <label className="col-sm-3">Vehicle</label>
+                      <label className="col-sm-3">Vehicle :</label>
                       <div className="col-sm-7">
-                        <select
-                          name="vehicle"
-                          className="form-select"
-                          aria-label="Default select Example"
-                          onChange={SetMemo}
-                        >
-                          {vehicles.map((vehicle, index) => (
-                            <option key={index + 1} value={vehicle._id}>
-                              CRP-{vehicle.vehicle_crp_no}{" "}
-                              {vehicle.registration_no} ({vehicle.name})
-                            </option>
-                          ))}
-                        </select>
+                        <b>{memo.vehicle_name}</b>
                       </div>
                     </div>
 
@@ -300,6 +345,12 @@ export default function Home() {
                                   style={{ textAlign: "center" }}
                                   className="col-1"
                                 >
+                                  Edit
+                                </th>
+                                <th
+                                  style={{ textAlign: "center" }}
+                                  className="col-1"
+                                >
                                   Delete
                                 </th>
                               </tr>
@@ -311,6 +362,18 @@ export default function Home() {
                                   <td>{defect.name}</td>
                                   <td>{defect.reason}</td>
                                   <td>{defect.remedy_suggestion}</td>
+                                  <td
+                                    style={{
+                                      textAlign: "center",
+                                      cursor: "pointer",
+                                    }}
+                                    className="col-1 bg-warning"
+                                    onClick={() => EditDefect(index)}
+                                  >
+                                    <span style={{ color: "white" }}>
+                                      <i class="bi bi-pencil-square"></i>
+                                    </span>
+                                  </td>
                                   <td
                                     style={{
                                       textAlign: "center",
@@ -347,6 +410,7 @@ export default function Home() {
                               <div className="col-sm-7">
                                 <input
                                   onChange={SetDefect}
+                                  defaultValue={defect.name}
                                   type="text"
                                   name="name"
                                   className="form-control"
@@ -360,6 +424,7 @@ export default function Home() {
                               <div className="col-sm-7">
                                 <input
                                   onChange={SetDefect}
+                                  defaultValue={defect.reason}
                                   type="text"
                                   name="reason"
                                   className="form-control"
@@ -373,6 +438,7 @@ export default function Home() {
                               <div className="col-sm-7">
                                 <input
                                   onChange={SetDefect}
+                                  defaultValue={defect.remedy_suggestion}
                                   type="text"
                                   name="remedy_suggestion"
                                   className="form-control"
