@@ -191,7 +191,7 @@ th {
   height: auto;
 }
 
-.mt-n2{
+.mt-n2 {
   margin-top: -2rem !important;
 }
 
@@ -203,4 +203,9 @@ input.no-spinner::-webkit-outer-spin-button {
 
 input.no-spinner {
   -moz-appearance: textfield; /* Firefox */
+}
+
+input {
+  color: black;
+  background-color: white;
 }

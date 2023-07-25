@@ -30,6 +30,7 @@ export default function Login() {
         style={{
           height: "100vh",
           width: "100vw",
+          backgroundColor: "white",
         }}
         className="opac-80"
       >
@@ -133,7 +134,7 @@ export default function Login() {
         </div>
 
         <div
-          className={`${styles.footer} opac-80`}
+          className={`${styles.footer} bg-white`}
           style={{
             textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
           }}

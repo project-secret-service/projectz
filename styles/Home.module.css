@@ -84,7 +84,10 @@
   margin: auto;
   box-shadow: 5px 10px 15px -3px rgba(47, 13, 13, 0.335);
   width: 100%;
+  background-color: white;
+  color: black;
 }
+
 
 .input_label {
   margin-top: 2rem;

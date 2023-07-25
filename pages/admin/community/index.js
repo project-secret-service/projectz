@@ -98,7 +98,7 @@ export default function Community() {
                 id="markdown_preview"
                 style={{
                   display: "flex",
-                  maxWidth: "90%",
+                  width: "90%",
                   flexDirection: "column",
                   justifyContent: "center",
                   margin: "auto",
