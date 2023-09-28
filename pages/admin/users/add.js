@@ -102,8 +102,7 @@ export default function Home() {
   return (
     <>
       <AdminLayout title={`Add User`}>
-        <main id="main" className="col-lg-11 main mt-0">
-          <h1>Add User</h1>
+        <main id="main" className="col-lg-11 main mt-n2">
           <Row>
             <div className="col-lg-8">
               <div className="card p-3 m-1">
@@ -165,7 +164,7 @@ export default function Home() {
                         name="name"
                         type="text"
                         className="form-control"
-                        placeholder="Enter your name"
+                        placeholder="Enter Name"
                       />
                       <span style={{ color: "red" }}>{error.nameRequired}</span>
                     </div>
@@ -184,7 +183,7 @@ export default function Home() {
                         name="role"
                         type="text"
                         className="form-control"
-                        placeholder="Enter your role"
+                        placeholder="Enter Role"
                       />
                     </div>
                   </div>
@@ -202,7 +201,7 @@ export default function Home() {
                         name="rank"
                         type="text"
                         className="form-control"
-                        placeholder="Enter your rank"
+                        placeholder="Enter Rank"
                       />
                     </div>
                   </div>
@@ -220,7 +219,7 @@ export default function Home() {
                         name="phone"
                         type="number"
                         className="form-control"
-                        placeholder="Enter your contact_No"
+                        placeholder="Enter Contact No"
                       />
                     </div>
                   </div>
@@ -238,7 +237,7 @@ export default function Home() {
                         name="email"
                         type="email"
                         className="form-control"
-                        placeholder="Enter your email id"
+                        placeholder="Enter Email Id"
                         autoComplete="off"
                       />
                       <span style={{ color: "red" }}>

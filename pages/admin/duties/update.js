@@ -173,7 +173,7 @@ export default function Home() {
                   </div>
 
 
-                  <div className="row mb-3">
+                  {/* <div className="row mb-3">
                     <label
                       htmlFor="inputText"
                       className="col-sm-5 col-form-label"
@@ -183,7 +183,7 @@ export default function Home() {
                     <div className="col-sm-7">
                       <b>{duty.fuel_change ? duty.fuel_change : 0} ltr</b>
                     </div>
-                  </div>
+                  </div> */}
 
                   {showSubmit && (
                     <div className="row mb-3">
