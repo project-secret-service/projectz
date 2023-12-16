@@ -18,8 +18,9 @@ export async function updateProfileDetails(event, setLoading, user) {
   setLoading(true);
   var data = {
     name: event.target.name.value,
-    role: event.target.company.value,
+    role: event.target.role.value,
     rank: event.target.rank.value,
+    designation: event.target.designation.value,
     phone: event.target.phone.value,
     email: event.target.email.value,
     photo: event.target.profile_pic.files[0],

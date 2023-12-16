@@ -1,18 +1,27 @@
 import Scripts from "../Scripts";
 import styles from "@/styles/Home.module.css";
 import Script from "next/script";
-import { useContext } from "react";
-import AuthContext from "@/functions/auth/AuthContext";
-import LoginError from "./LoginError";
 import Header from "./Header";
 import SideBar from "./Sidebar";
 import Head from "next/head";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import Router from "next/router";
+import { checkIfLoggedIn } from "@/functions/loginAPI";
+import { setUser } from "@/functions/redux/reducers/authReducer";
 
 const AdminLayout = ({ children, title }) => {
-  const { isLoggedIn, user } = useContext(AuthContext);
-  if (!isLoggedIn || (user && user.role !== "admin")) {
-    return <LoginError />;
-  }
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    checkIfLoggedIn().then((res) => {
+      if (res.status === 200) {
+        dispatch(setUser(res.user));
+      } else {
+        Router.push("/login");
+      }
+    });
+  }, []);
   return (
     <>
       <main className={styles.main}>

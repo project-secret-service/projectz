@@ -1,21 +1,23 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import { useContext, useEffect, useState } from "react";
-import { checkLogin, UserLogin } from "@/functions/loginAPI";
-import AuthContext from "@/functions/auth/AuthContext";
+import { useEffect, useState } from "react";
+import { UserLogin } from "@/functions/loginAPI";
+import { checkIfLoggedIn } from "@/functions/loginAPI";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/functions/redux/reducers/authReducer";
 import Router from "next/router";
 
 export default function Login() {
-  const { login, setUser, setIsLoggedIn } = useContext(AuthContext);
   const [loginSpinner, setLoginSpinner] = useState(false);
+  const [wrongPassword, setWrongPassword] = useState("");
+  const [wrongCredentials, setWrongCredentials] = useState("");
+  const dispatch = useDispatch();
   useEffect(() => {
-    checkLogin().then((res) => {
-      // if (res.status === 200) {
-      //   setUser(res.user);
-      //   login();
-      //   console.log(res.status);
-      // }
-      console.log(res);
+    checkIfLoggedIn().then((res) => {
+      if (res.status === 200) {
+        dispatch(setUser(res.user));
+        Router.push("/admin/duties");
+      }
     });
   }, []);
   return (
@@ -51,63 +53,95 @@ export default function Login() {
         </div>
 
         <div className={`${styles.middle} login_main`}>
-          <div
-            className={styles.form}
-            style={{ opacity: 1, backgroundColor: "white", opacity: 0.8 }}
-          >
+          <div className={styles.form} style={{ opacity: 0.8 }}>
             <form
               onSubmit={async () => {
                 let res = await UserLogin(event);
-                if (res && res.data && res.data.status === 200) {
+                if (res.status === 200) {
                   setLoginSpinner(true);
-                  setUser(res.data.user);
-                  login();
-                  Router.push("/admin/duties/");
+                  Router.push("/admin/duties");
+                }
+                if (res.status === 401) {
+                  setWrongPassword(true);
+                  setLoginSpinner(false);
+                }
+                if (res.status === 404) {
+                  setWrongCredentials(true);
+                  setLoginSpinner(false);
                 }
               }}
+              style={{ width: "80%", margin: "2rem" }}
             >
-              <div className={styles.form_inputs}>
+              <div className="text-center" style={{ width: "100%" }}>
+                <h1
+                  className="josefin-sans"
+                  style={{
+                    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  CRPF Login
+                </h1>
+                <hr />
+                <br />
+              </div>
+              <div>
+                <span className={styles.input_label}>Email / Username</span>
+                <br></br>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Enter Username"
+                  className={styles.input_field}
+                  style={{ color: "black" }}
+                  onFocus={() => {
+                    setWrongPassword("");
+                    setWrongCredentials("");
+                  }}
+                ></input>
+              </div>
+
+              <div style={{ marginTop: "1rem" }}>
+                <span className={styles.input_label}>Password</span>
+                <br></br>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Enter Password"
+                  className={styles.input_field}
+                  style={{ color: "black" }}
+                  onFocus={() => {
+                    setWrongPassword("");
+                    setWrongCredentials("");
+                  }}
+                ></input>
+                <div style={{ textAlign: "center" }}>
+                  <br></br>
+                  {wrongPassword ? (
+                    <span style={{ color: "red" }}>
+                      <i>Wrong Password</i>
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </div>
                 <div className="text-center">
-                  <h1
-                    className="josefin-sans"
-                    style={{
-                      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
-                    }}
-                  >
-                    CRPF Login
-                  </h1>
-                  <hr />
-                  <br />
+                  {wrongCredentials ? (
+                    <span style={{ color: "red" }}>
+                      <i>Wrong Credentials</i>
+                    </span>
+                  ) : (
+                    ""
+                  )}
                 </div>
-                <div>
-                  <span className={styles.input_label}>Email / Username</span>
-                  <br></br>
-                  <input
-                    type="text"
-                    name="username"
-                    placeholder="Enter Username"
-                    className={styles.input_field}
-                  ></input>
-                </div>
-                <div style={{ marginTop: "1rem" }}>
-                  <span className={styles.input_label}>Password</span>
-                  <br></br>
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="Enter Password"
-                    className={styles.input_field}
-                  ></input>
-                  <span
-                    style={{
-                      float: "right",
-                      color: "blue",
-                      marginTop: "1rem",
-                    }}
-                  >
-                    <u>Forgot Password ?</u>
-                  </span>
-                </div>
+                <span
+                  style={{
+                    float: "right",
+                    color: "blue",
+                    marginTop: "1rem",
+                  }}
+                >
+                  <u>Forgot Password ?</u>
+                </span>
               </div>
               <div style={{ marginTop: "4rem" }}>
                 {!loginSpinner ? (

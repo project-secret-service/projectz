@@ -3,12 +3,14 @@ import "bootstrap/dist/css/bootstrap.css";
 import "leaflet/dist/leaflet.css";
 import "react-toastify/dist/ReactToastify.css";
 import "animate.css";
-import AuthContextProvider from "@/functions/auth/AuthContextProvider";
+
+import { Provider } from "react-redux";
+import store from "@/functions/redux/store";
 
 export default function App({ Component, pageProps }) {
   return (
-    <AuthContextProvider>
+    <Provider store={store}>
       <Component {...pageProps} />
-    </AuthContextProvider>
+    </Provider>
   );
 }

@@ -80,15 +80,20 @@ export default function Home() {
                         {newUserDetails.name ? newUserDetails.name : user.name}
                       </h1>
                       <h4>
-                        {newUserDetails.role ? newUserDetails.role : user.role}
+                        {newUserDetails.designation
+                          ? newUserDetails.designation
+                          : user.designation}
                       </h4>
                       <h4>
-                        Rank -
                         <b>
                           {newUserDetails.rank
                             ? newUserDetails.rank
                             : user.rank}
                         </b>
+                      </h4>
+                      <h4>
+                        ({newUserDetails.role ? newUserDetails.role : user.role}
+                        )
                       </h4>
                     </div>
                   </div>
@@ -145,10 +150,11 @@ export default function Home() {
                             </div>
                             <div className="row mb-3">
                               <div className="col-lg-3 col-md-4 label">
-                                <i className="bi bi-person-workspace"></i> Role
+                                <i className="bi bi-person-workspace"></i>{" "}
+                                Designation
                               </div>
                               <div className="col-lg-9 col-md-8">
-                                : <b>{user.role}</b>
+                                : <b>{user.designation}</b>
                               </div>
                             </div>
                             <div className="row mb-3">
@@ -158,6 +164,14 @@ export default function Home() {
                               </div>
                               <div className="col-lg-9 col-md-8">
                                 : <b>{user.rank}</b>
+                              </div>
+                            </div>
+                            <div className="row mb-3">
+                              <div className="col-lg-3 col-md-4 label">
+                                <i className="bi bi-person-workspace"></i> Role
+                              </div>
+                              <div className="col-lg-9 col-md-8">
+                                : <b>{user.role}</b>
                               </div>
                             </div>
                             <div className="row mb-3">
@@ -258,17 +272,18 @@ export default function Home() {
                                 htmlFor="company"
                                 className="col-md-4 col-lg-3 col-form-label"
                               >
-                                <i className="bi bi-person-workspace"></i> Role
+                                <i className="bi bi-person-workspace"></i>{" "}
+                                Designation
                               </label>
                               <div className="col-md-8 col-lg-9">
                                 <input
                                   onChange={setU}
-                                  name="role"
+                                  name="designation"
                                   type="text"
                                   className="form-control"
                                   id="company"
-                                  defaultValue={user.role}
-                                  placeholder="Enter your role"
+                                  defaultValue={user.designation}
+                                  placeholder="Enter your Designation"
                                 />
                               </div>
                             </div>
@@ -290,6 +305,26 @@ export default function Home() {
                                   id="Job"
                                   defaultValue={user.rank}
                                   placeholder="Enter your rank"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="row mb-3">
+                              <label
+                                htmlFor="company"
+                                className="col-md-4 col-lg-3 col-form-label"
+                              >
+                                <i className="bi bi-person-workspace"></i> Role
+                              </label>
+                              <div className="col-md-8 col-lg-9">
+                                <input
+                                  onChange={setU}
+                                  name="role"
+                                  type="text"
+                                  className="form-control"
+                                  id="company"
+                                  defaultValue={user.role}
+                                  placeholder="Enter your role"
                                 />
                               </div>
                             </div>

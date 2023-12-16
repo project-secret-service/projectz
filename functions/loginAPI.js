@@ -1,8 +1,7 @@
 import axios from "axios";
 import Router from "next/router";
 import { AXIOS_BASE_URL } from "./constants";
-import { useContext } from "react";
-import AuthContext from "./auth/AuthContext";
+import { re } from "mathjs";
 
 axios.defaults.baseURL = AXIOS_BASE_URL;
 
@@ -13,11 +12,7 @@ export async function checkIfLoggedIn() {
     url: "/checklogin",
     withCredentials: true,
   });
-  if (res.data.status === 200) {
-    Router.push("/admin/duties/");
-  } else {
-    Router.push("/login");
-  }
+  return res.data;
 }
 
 export async function checkLoggedIn() {
@@ -37,9 +32,8 @@ export async function checkLogin() {
     withCredentials: true,
   });
   if (res.data.status === 200) {
-    console.log(res.data);
     return res.data;
-  }else{
+  } else {
     Router.push("/login");
   }
 }
@@ -50,19 +44,17 @@ export async function UserLogin(event) {
     username: event.target.username.value,
     password: event.target.password.value,
   };
+  console.log(data);
   const res = await axios({
     method: "POST",
     url: "/login",
     data: data,
     withCredentials: true,
   });
-  if (res.data === "INVALID CREDENTIALS") {
-    alert("Invalid Credentials");
-  } else if (res.status === 200) {
-    console.log(res.data);
-    localStorage.setItem("isLoggedIn", true);
-    localStorage.setItem("user", JSON.stringify(res.data.user));
-    return res;
+  if (res.data) {
+    return res.data;
+  } else {
+    alert("Server Error");
   }
 }
 

@@ -1,1 +1,1 @@
-export const AXIOS_BASE_URL = "https://web-service-vdmo.onrender.com";
+export const AXIOS_BASE_URL = "http://localhost:3000";

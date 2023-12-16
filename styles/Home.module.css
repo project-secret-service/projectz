@@ -42,11 +42,11 @@
 .form {
   margin-top: 3rem;
   border-radius: 1rem;
-  width: 25vw;
+  width: 30vw;
   box-shadow: -5px -6px 35px 19px rgba(0, 0, 0, 0.1);
   height: 50vh;
   opacity: 80%;
-  padding: 2rem;
+  padding: 0rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,6 +76,7 @@
   background-color: white;
   color: black;
 }
+
 .input_field {
   font-size: 1.2rem;
   border-radius: 0.4rem;

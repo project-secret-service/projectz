@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { LogOut } from "@/functions/loginAPI";
 import { AXIOS_BASE_URL } from "@/functions/constants";
-import { useContext, useEffect } from "react";
-import AuthContext from "@/functions/auth/AuthContext";
 import Router from "next/router";
+import { logOut } from "@/functions/redux/reducers/authReducer";
+import { useDispatch } from "react-redux";
 
 export default function Header({ user, title }) {
-  const { logout } = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   function ChangeSidebar() {
     document.body.classList.toggle("toggle-sidebar");
@@ -365,7 +365,7 @@ export default function Header({ user, title }) {
                         onClick={() => {
                           LogOut().then((res) => {
                             if (res === 200) {
-                              logout();
+                              dispatch(logOut());
                               Router.push("/login");
                             }
                           });

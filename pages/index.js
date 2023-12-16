@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { checkIfLoggedIn } from "@/functions/loginAPI";
+import Router from "next/router";
 
 export default function Home() {
   return (
@@ -39,7 +40,11 @@ export default function Home() {
             }}
           ></img>
           <br />
-          <div onClick={checkIfLoggedIn}>
+          <div
+            onClick={() => {
+              Router.push("/login");
+            }}
+          >
             <button
               id="home-login-button"
               className="mt-3 josefin-sans"
