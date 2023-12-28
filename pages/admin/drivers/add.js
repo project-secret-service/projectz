@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Link from "next/link";
 import { addNewDriver } from "@/functions/apiHandlers/drivers";
@@ -20,8 +20,13 @@ export default function Home() {
   };
 
   function setD({ target: { name, value } }) {
+    console.log(driver);
     setDrivers((prev) => ({ ...prev, [name]: value }));
   }
+
+  useEffect(() => {
+    setDrivers((prev) => ({ ...prev, role: "driver" }));
+  }, []);
 
   return (
     <>
@@ -78,6 +83,25 @@ export default function Home() {
                         type="text"
                         name="name"
                         className="form-control"
+                        placeholder="Enter Full Name"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row mb-3">
+                    <label
+                      htmlFor="inputText"
+                      className="col-md-4 col-lg-3 col-form-label"
+                    >
+                      Designation:
+                    </label>
+                    <div className="col-sm-7">
+                      <input
+                        onChange={setD}
+                        type="text"
+                        name="designation"
+                        className="form-control"
+                        placeholder="Enter Designation"
                       />
                     </div>
                   </div>
@@ -95,6 +119,67 @@ export default function Home() {
                         type="text"
                         name="rank"
                         className="form-control"
+                        placeholder="Enter Rank"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row mb-3">
+                    <label
+                      htmlFor="inputText"
+                      className="col-md-4 col-lg-3 col-form-label"
+                    >
+                      Role:
+                    </label>
+                    <div className="col-sm-7">
+                      <select
+                        class="form-select"
+                        aria-label="Default select example"
+                        name="role"
+                        onChange={setD}
+                      >
+                        <option value="driver" selected>
+                          Driver
+                        </option>
+                        <option value="officer">Officer</option>
+                        <option value="viewer">Viewer</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="row mb-3">
+                    <label
+                      htmlFor="inputText"
+                      className="col-md-4 col-lg-3 col-form-label"
+                    >
+                      Username:
+                    </label>
+                    <div className="col-sm-7">
+                      <input
+                        onChange={setD}
+                        type="text"
+                        name="username"
+                        className="form-control"
+                        placeholder="Enter Username"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row mb-3">
+                    <label
+                      htmlFor="inputText"
+                      className="col-md-4 col-lg-3 col-form-label"
+                    >
+                      Password:
+                    </label>
+                    <div className="col-sm-7">
+                      <input
+                        onChange={setD}
+                        type="password"
+                        name="password"
+                        className="form-control"
+                        placeholder="Enter Password"
                       />
                     </div>
                   </div>
@@ -112,6 +197,7 @@ export default function Home() {
                         type="string"
                         name="license_no"
                         className="form-control"
+                        placeholder="Enter License No"
                       />
                     </div>
                   </div>
@@ -129,6 +215,7 @@ export default function Home() {
                         type="date"
                         name="date_from"
                         className="form-control"
+                        placeholder="Enter Date From"
                       />
                     </div>
                   </div>
@@ -146,6 +233,7 @@ export default function Home() {
                         type="date"
                         name="date_to"
                         className="form-control"
+                        placeholder="Enter Date To"
                       />
                     </div>
                   </div>

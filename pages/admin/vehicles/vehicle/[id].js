@@ -54,10 +54,11 @@ export default function Home() {
     if (!router.isReady) return;
     const { id } = router.query;
     GetVehicle(id).then((data) => {
+      console.log(data);
       if (data.status === 200) {
         let vehicle = data.vehicle;
         setVehicle(vehicle);
-        setKms(vehicle.total_kilo_meter);
+        setKms(vehicle.odometer_log[vehicle.odometer_log.length - 1].km_run | 0);
         setFuel(vehicle.fuel, vehicle.fuel_capacity);
       }
     });

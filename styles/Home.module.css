@@ -7,12 +7,17 @@
   align-items: center;
   padding: 5rem;
   min-height: 100vh;
-  background: rgb(238, 174, 202);
-  background: radial-gradient(
-    circle,
-    rgba(238, 174, 202, 1) 12%,
-    rgba(139, 217, 240, 0.6278886554621849) 99%
-  );
+  background: #70e1f5; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f8dada,
+    #d5f3f8
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #ebe6de,
+    #beecf4
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .main_page {
@@ -88,7 +93,6 @@
   background-color: white;
   color: black;
 }
-
 
 .input_label {
   margin-top: 2rem;

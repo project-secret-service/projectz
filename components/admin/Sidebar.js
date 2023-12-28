@@ -5,7 +5,6 @@ export default function SideBar(props) {
     <>
       <aside id="sidebar" className="sidebar opac-90">
         <ul className="sidebar-nav" id="sidebar-nav">
-          
           {/* <li className="nav-item">
             <Link
               className="nav-link collapsed"
@@ -102,6 +101,17 @@ export default function SideBar(props) {
             >
               <i className="bi bi-rss"></i>
               <span>Community</span>
+            </Link>
+          </li>
+
+          <li className="nav-item">
+            <Link
+              className="nav-link collapsed"
+              id="profile-sidebar"
+              href={"/admin/maps"}
+            >
+              <i className="bi bi-rss"></i>
+              <span>Maps</span>
             </Link>
           </li>
 
